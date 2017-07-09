@@ -95,7 +95,7 @@ public class RelayComputer {
     public void start() {
         while (!halted) {
             //Fetch: Loads the byte at memory address pointed to by PC, into the INST register.
-            INST = mainMemory[PC];
+            INST = mainMemory[(char) PC];
 
             //Increment: Increment the PC register
             PC = (short) (PC + 1);
@@ -116,196 +116,196 @@ public class RelayComputer {
             /*
              * MOVE. Move values between registers.
              */
-            case (short) 0b1111_1111_11_000_000: //MOVE AX AX | CLR AX
+            case (short) 0b1111_1111_11_000_000: //MOV AX AX | CLR AX
                 AX = 0;
                 break;
-            case (short) 0b1111_1111_11_000_001: //MOVE AX BX
+            case (short) 0b1111_1111_11_000_001: //MOV AX BX
                 AX = BX;
                 break;
-            case (short) 0b1111_1111_11_000_010: //MOVE AX CX
+            case (short) 0b1111_1111_11_000_010: //MOV AX CX
                 AX = CX;
                 break;
-            case (short) 0b1111_1111_11_000_011: //MOVE AX DX
+            case (short) 0b1111_1111_11_000_011: //MOV AX DX
                 AX = DX;
                 break;
-            case (short) 0b1111_1111_11_000_100: //MOVE AX EX
+            case (short) 0b1111_1111_11_000_100: //MOV AX EX
                 AX = EX;
                 break;
-            case (short) 0b1111_1111_11_000_101: //MOVE AX SP
+            case (short) 0b1111_1111_11_000_101: //MOV AX SP
                 AX = SP;
                 break;
-            case (short) 0b1111_1111_11_000_110: //MOVE AX RP
+            case (short) 0b1111_1111_11_000_110: //MOV AX RP
                 AX = RP;
                 break;
-            case (short) 0b1111_1111_11_000_111: //MOVE AX PC
+            case (short) 0b1111_1111_11_000_111: //MOV AX PC
                 AX = PC;
                 break;
-            case (short) 0b1111_1111_11_001_000: //MOVE BX AX
+            case (short) 0b1111_1111_11_001_000: //MOV BX AX
                 BX = AX;
                 break;
-            case (short) 0b1111_1111_11_001_001: //MOVE BX BX | CLR BX
+            case (short) 0b1111_1111_11_001_001: //MOV BX BX | CLR BX
                 BX = 0;
                 break;
-            case (short) 0b1111_1111_11_001_010: //MOVE BX CX
+            case (short) 0b1111_1111_11_001_010: //MOV BX CX
                 BX = CX;
                 break;
-            case (short) 0b1111_1111_11_001_011: //MOVE BX DX
+            case (short) 0b1111_1111_11_001_011: //MOV BX DX
                 BX = DX;
                 break;
-            case (short) 0b1111_1111_11_001_100: //MOVE BX EX
+            case (short) 0b1111_1111_11_001_100: //MOV BX EX
                 BX = EX;
                 break;
-            case (short) 0b1111_1111_11_001_101: //MOVE BX SP
+            case (short) 0b1111_1111_11_001_101: //MOV BX SP
                 BX = SP;
                 break;
-            case (short) 0b1111_1111_11_001_110: //MOVE BX RP
+            case (short) 0b1111_1111_11_001_110: //MOV BX RP
                 BX = RP;
                 break;
-            case (short) 0b1111_1111_11_001_111: //MOVE BX PC
+            case (short) 0b1111_1111_11_001_111: //MOV BX PC
                 BX = PC;
                 break;
-            case (short) 0b1111_1111_11_010_000: //MOVE CX AX
+            case (short) 0b1111_1111_11_010_000: //MOV CX AX
                 CX = AX;
                 break;
-            case (short) 0b1111_1111_11_010_001: //MOVE CX BX
+            case (short) 0b1111_1111_11_010_001: //MOV CX BX
                 CX = BX;
                 break;
-            case (short) 0b1111_1111_11_010_010: //MOVE CX CX | CLR CX
+            case (short) 0b1111_1111_11_010_010: //MOV CX CX | CLR CX
                 CX = 0;
                 break;
-            case (short) 0b1111_1111_11_010_011: //MOVE CX DX
+            case (short) 0b1111_1111_11_010_011: //MOV CX DX
                 CX = DX;
                 break;
-            case (short) 0b1111_1111_11_010_100: //MOVE CX EX
+            case (short) 0b1111_1111_11_010_100: //MOV CX EX
                 CX = EX;
                 break;
-            case (short) 0b1111_1111_11_010_101: //MOVE CX SP
+            case (short) 0b1111_1111_11_010_101: //MOV CX SP
                 CX = SP;
                 break;
-            case (short) 0b1111_1111_11_010_110: //MOVE CX RP
+            case (short) 0b1111_1111_11_010_110: //MOV CX RP
                 CX = RP;
                 break;
-            case (short) 0b1111_1111_11_010_111: //MOVE CX PC
+            case (short) 0b1111_1111_11_010_111: //MOV CX PC
                 CX = PC;
                 break;
-            case (short) 0b1111_1111_11_011_000: //MOVE DX AX
+            case (short) 0b1111_1111_11_011_000: //MOV DX AX
                 DX = AX;
                 break;
-            case (short) 0b1111_1111_11_011_001: //MOVE DX BX
+            case (short) 0b1111_1111_11_011_001: //MOV DX BX
                 DX = BX;
                 break;
-            case (short) 0b1111_1111_11_011_010: //MOVE DX CX
+            case (short) 0b1111_1111_11_011_010: //MOV DX CX
                 DX = CX;
                 break;
-            case (short) 0b1111_1111_11_011_011: //MOVE DX DX | CLR DX
+            case (short) 0b1111_1111_11_011_011: //MOV DX DX | CLR DX
                 DX = 0;
                 break;
-            case (short) 0b1111_1111_11_011_100: //MOVE DX EX
+            case (short) 0b1111_1111_11_011_100: //MOV DX EX
                 DX = EX;
                 break;
-            case (short) 0b1111_1111_11_011_101: //MOVE DX SP
+            case (short) 0b1111_1111_11_011_101: //MOV DX SP
                 DX = SP;
                 break;
-            case (short) 0b1111_1111_11_011_110: //MOVE DX RP
+            case (short) 0b1111_1111_11_011_110: //MOV DX RP
                 DX = RP;
                 break;
-            case (short) 0b1111_1111_11_011_111: //MOVE DX PC
+            case (short) 0b1111_1111_11_011_111: //MOV DX PC
                 DX = PC;
                 break;
-            case (short) 0b1111_1111_11_100_000: //MOVE EX AX
+            case (short) 0b1111_1111_11_100_000: //MOV EX AX
                 EX = AX;
                 break;
-            case (short) 0b1111_1111_11_100_001: //MOVE EX BX
+            case (short) 0b1111_1111_11_100_001: //MOV EX BX
                 EX = BX;
                 break;
-            case (short) 0b1111_1111_11_100_010: //MOVE EX CX
+            case (short) 0b1111_1111_11_100_010: //MOV EX CX
                 EX = CX;
                 break;
-            case (short) 0b1111_1111_11_100_011: //MOVE EX DX
+            case (short) 0b1111_1111_11_100_011: //MOV EX DX
                 EX = DX;
                 break;
-            case (short) 0b1111_1111_11_100_100: //MOVE EX EX | CLR EX
+            case (short) 0b1111_1111_11_100_100: //MOV EX EX | CLR EX
                 EX = 0;
                 break;
-            case (short) 0b1111_1111_11_100_101: //MOVE EX SP
+            case (short) 0b1111_1111_11_100_101: //MOV EX SP
                 EX = SP;
                 break;
-            case (short) 0b1111_1111_11_100_110: //MOVE EX RP
+            case (short) 0b1111_1111_11_100_110: //MOV EX RP
                 EX = RP;
                 break;
-            case (short) 0b1111_1111_11_100_111: //MOVE EX PC
+            case (short) 0b1111_1111_11_100_111: //MOV EX PC
                 EX = PC;
                 break;
-            case (short) 0b1111_1111_11_101_000: //MOVE SP AX
+            case (short) 0b1111_1111_11_101_000: //MOV SP AX
                 SP = AX;
                 break;
-            case (short) 0b1111_1111_11_101_001: //MOVE SP BX
+            case (short) 0b1111_1111_11_101_001: //MOV SP BX
                 SP = BX;
                 break;
-            case (short) 0b1111_1111_11_101_010: //MOVE SP CX
+            case (short) 0b1111_1111_11_101_010: //MOV SP CX
                 SP = CX;
                 break;
-            case (short) 0b1111_1111_11_101_011: //MOVE SP DX
+            case (short) 0b1111_1111_11_101_011: //MOV SP DX
                 SP = DX;
                 break;
-            case (short) 0b1111_1111_11_101_100: //MOVE SP EX
+            case (short) 0b1111_1111_11_101_100: //MOV SP EX
                 SP = EX;
                 break;
-            case (short) 0b1111_1111_11_101_101: //MOVE SP SP | CLR SP
+            case (short) 0b1111_1111_11_101_101: //MOV SP SP | CLR SP
                 SP = 0;
                 break;
-            case (short) 0b1111_1111_11_101_110: //MOVE SP RP
+            case (short) 0b1111_1111_11_101_110: //MOV SP RP
                 SP = RP;
                 break;
-            case (short) 0b1111_1111_11_101_111: //MOVE SP PC
+            case (short) 0b1111_1111_11_101_111: //MOV SP PC
                 SP = PC;
                 break;
-            case (short) 0b1111_1111_11_110_000: //MOVE RP AX
+            case (short) 0b1111_1111_11_110_000: //MOV RP AX
                 RP = AX;
                 break;
-            case (short) 0b1111_1111_11_110_001: //MOVE RP BX
+            case (short) 0b1111_1111_11_110_001: //MOV RP BX
                 RP = BX;
                 break;
-            case (short) 0b1111_1111_11_110_010: //MOVE RP CX
+            case (short) 0b1111_1111_11_110_010: //MOV RP CX
                 RP = CX;
                 break;
-            case (short) 0b1111_1111_11_110_011: //MOVE RP DX
+            case (short) 0b1111_1111_11_110_011: //MOV RP DX
                 RP = DX;
                 break;
-            case (short) 0b1111_1111_11_110_100: //MOVE RP EX
+            case (short) 0b1111_1111_11_110_100: //MOV RP EX
                 RP = EX;
                 break;
-            case (short) 0b1111_1111_11_110_101: //MOVE RP SP
+            case (short) 0b1111_1111_11_110_101: //MOV RP SP
                 RP = SP;
                 break;
-            case (short) 0b1111_1111_11_110_110: //MOVE RP RP | CLR RP
+            case (short) 0b1111_1111_11_110_110: //MOV RP RP | CLR RP
                 RP = 0;
                 break;
-            case (short) 0b1111_1111_11_110_111: //MOVE RP PC
+            case (short) 0b1111_1111_11_110_111: //MOV RP PC
                 RP = PC;
                 break;
-            case (short) 0b1111_1111_11_111_000: //MOVE PC AX
+            case (short) 0b1111_1111_11_111_000: //MOV PC AX
                 PC = AX;
                 break;
-            case (short) 0b1111_1111_11_111_001: //MOVE PC BX
+            case (short) 0b1111_1111_11_111_001: //MOV PC BX
                 PC = BX;
                 break;
-            case (short) 0b1111_1111_11_111_010: //MOVE PC CX
+            case (short) 0b1111_1111_11_111_010: //MOV PC CX
                 PC = CX;
                 break;
-            case (short) 0b1111_1111_11_111_011: //MOVE PC DX
+            case (short) 0b1111_1111_11_111_011: //MOV PC DX
                 PC = DX;
                 break;
-            case (short) 0b1111_1111_11_111_100: //MOVE PC EX
+            case (short) 0b1111_1111_11_111_100: //MOV PC EX
                 PC = EX;
                 break;
-            case (short) 0b1111_1111_11_111_101: //MOVE PC SP
+            case (short) 0b1111_1111_11_111_101: //MOV PC SP
                 PC = SP;
                 break;
-            case (short) 0b1111_1111_11_111_110: //MOVE PC RP
+            case (short) 0b1111_1111_11_111_110: //MOV PC RP
                 PC = RP;
                 break;
-            case (short) 0b1111_1111_11_111_111: //MOVE PC PC | CLR PC | HALT
+            case (short) 0b1111_1111_11_111_111: //MOV PC PC | CLR PC | HALT
                 PC = 0;
                 halted = true;
                 break;
@@ -8824,42 +8824,42 @@ public class RelayComputer {
             /*
              * Conditional Jump: JMP to address depending on condition register
              */
-            case 0b0000_1000_000_0_0001: //JMPS
+            case 0b0000_1000_000_0_0001: //JNEG
                 if (sign) {
                     PC = loadImmediate();
                 }
                 break;
-            case 0b0000_1000_000_0_0010: //JMPZ
+            case 0b0000_1000_000_0_0010: //JZ
                 if (zero) {
                     PC = loadImmediate();
                 }
                 break;
-            case 0b0000_1000_000_0_0100: //JMPC
+            case 0b0000_1000_000_0_0100: //JC
                 if (carry) {
                     PC = loadImmediate();
                 }
                 break;
-            case 0b0000_1000_000_0_1000: //JMPO
+            case 0b0000_1000_000_0_1000: //JO
                 if (overflow) {
                     PC = loadImmediate();
                 }
                 break;
-            case 0b0000_1000_000_1_0001: //JMPNS
+            case 0b0000_1000_000_1_0001: //JNNEG
                 if (!sign) {
                     PC = loadImmediate();
                 }
                 break;
-            case 0b0000_1000_000_1_0010: //JMPNZ
+            case 0b0000_1000_000_1_0010: //JNZ
                 if (!zero) {
                     PC = loadImmediate();
                 }
                 break;
-            case 0b0000_1000_000_1_0100: //JMPNC
+            case 0b0000_1000_000_1_0100: //JNC
                 if (!carry) {
                     PC = loadImmediate();
                 }
                 break;
-            case 0b0000_1000_000_1_1000: //JMPNO
+            case 0b0000_1000_000_1_1000: //JNO
                 if (!overflow) {
                     PC = loadImmediate();
                 }
@@ -9381,21 +9381,21 @@ public class RelayComputer {
     private void push(StackReg stackRegister, short sourceRegister) {
         if (stackRegister == STACK_SP) {
             SP++; //Increment the stack pointer to the new TOS
-            mainMemory[SP] = sourceRegister; //Insert value at TOS
+            mainMemory[(char) SP] = sourceRegister; //Insert value at TOS
         } else {
             RP++; //Increment the stack pointer to the new TOS
-            mainMemory[RP] = sourceRegister; //Insert value at TOS
+            mainMemory[(char) RP] = sourceRegister; //Insert value at TOS
 
         }
     }
 
     private short pop(StackReg stackRegister) {
         if (stackRegister == STACK_SP) {
-            short value = mainMemory[SP];//Get value at TOS
+            short value = mainMemory[(char) SP];//Get value at TOS
             SP--; //Decrement the stack pointer to the new TOS
             return value;
         } else {
-            short value = mainMemory[RP];//Get value at TOS
+            short value = mainMemory[(char) RP];//Get value at TOS
             RP--; //Decrement the stack pointer to the new TOS
             return value;
         }
@@ -9407,25 +9407,25 @@ public class RelayComputer {
 
         if (stackRegister == STACK_SP) {
             SP++; //Increment the stack pointer to the new TOS
-            mainMemory[SP] = PC; //Insert PC value at TOS
+            mainMemory[(char) SP] = PC; //Insert PC value at TOS
         } else {
             RP++; //Increment the stack pointer to the new TOS
-            mainMemory[RP] = PC; //Insert PC value at TOS
+            mainMemory[(char) RP] = PC; //Insert PC value at TOS
         }
 
-        PC = TMP1X; //Move the value into PC to jump
+        PC = TMP1X; //MOV the value into PC to jump
     }
 
     private void call(StackReg stackRegister, short sourceRegister) {
         if (stackRegister == STACK_SP) {
             SP++; //Increment the stack pointer to the new TOS
-            mainMemory[SP] = PC; //Insert PC value at TOS
+            mainMemory[(char) SP] = PC; //Insert PC value at TOS
         } else {
             RP++; //Increment the stack pointer to the new TOS
-            mainMemory[RP] = PC; //Insert PC value at TOS
+            mainMemory[(char) RP] = PC; //Insert PC value at TOS
         }
 
-        PC = sourceRegister; //Move the value of the source into PC to jump
+        PC = sourceRegister; //MOV the value of the source into PC to jump
     }
 
     private short wordIn() {
