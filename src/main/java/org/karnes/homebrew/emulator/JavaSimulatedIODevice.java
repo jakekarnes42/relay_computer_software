@@ -9,16 +9,16 @@ public class JavaSimulatedIODevice implements IODevice {
         in = new Scanner(System.in);
     }
 
-    public boolean hasByte() {
-        return in.hasNextByte();
+    public boolean hasWord() {
+        return in.hasNextShort();
     }
 
-    public byte getByte() {
-        return in.nextByte();
+    public short getWord() {
+        return in.nextShort();
     }
 
-    public void sendByte(byte outputByte) {
-        System.out.println(outputByte);
+    public void sendWord(short outputShort) {
+        System.out.println(outputShort);
     }
 
     @Override

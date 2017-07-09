@@ -1,9 +1,10 @@
 package org.karnes.homebrew.emulator;
 
 public interface IODevice {
-    public boolean hasByte();
+    boolean hasWord();
 
-    public byte getByte();
+    short getWord();
 
-    public void sendByte(byte outputByte);
+    void sendWord(short outputShort);
+
 }
