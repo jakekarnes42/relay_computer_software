@@ -1,5 +1,8 @@
 package org.karnes.homebrew.emulator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.karnes.homebrew.emulator.StackReg.STACK_RP;
 import static org.karnes.homebrew.emulator.StackReg.STACK_SP;
 
@@ -88,7 +91,9 @@ public class RelayComputer {
      */
     private IODevice ioDevice = new JavaSimulatedIODevice();
 
-    //Emulator specific: Indicator that the computer should stop
+    /**
+     * Emulator specific: Indicator that the computer should stop
+     */
     private boolean halted = false;
 
 
@@ -106,16 +111,98 @@ public class RelayComputer {
     }
 
     private void executeCurrentInstruction() {
-        switch (INST) {
-            /*
-             * NO-OP. Do nothing.
-             */
-            case 0b0000_0000_0000_0000: //NOP
+        InstructionOpcode currentOpcode = InstructionOpcode.getOpcode(INST);
+        switch (currentOpcode) {
+            case NOP:
+                executeNOPInstruction();
                 break;
+            case HALT:
+            case MOV:
+                executeMOVInstruction();
+                break;
+            case INC:
+                executeINCInstruction();
+                break;
+            case DEC:
+                executeDECInstruction();
+                break;
+            case NOT:
+                executeNOTInstruction();
+                break;
+            case ROL:
+                executeROLInstruction();
+                break;
+            case ADD:
+                executeADDInstruction();
+                break;
+            case AND:
+                executeANDInstruction();
+                break;
+            case OR:
+                executeORInstruction();
+                break;
+            case XOR:
+                executeXORInstruction();
+                break;
+            case CMP:
+            case SUB:
+                executeCMPSUBInstruction();
+                break;
+            case LOADI:
+            case JMP:
+                executeLOADIInstruction();
+                break;
+            case JNEG:
+            case JZ:
+            case JC:
+            case JO:
+            case JNNEG:
+            case JNZ:
+            case JNC:
+            case JNO:
+                executeConditionalJumpInstruction();
+                break;
+            case STORE:
+                executeSTOREInstruction();
+                break;
+            case LOAD:
+                executeLOADInstruction();
+                break;
+            case PUSH:
+                executePUSHInstruction();
+                break;
+            case POP:
+                executePOPInstruction();
+                break;
+            case CALLI:
+                executeCALLIInstruction();
+                break;
+            case CALL:
+                executeCALLInstruction();
+                break;
+            case WRDIN:
+                executeWRDINInstruction();
+                break;
+            case WRDOUT:
+                executeWRDOUTInstruction();
+                break;
+        }
+    }
 
-            /*
-             * MOVE. Move values between registers.
-             */
+
+    /*
+     * NO-OP. Do nothing.
+     */
+    private void executeNOPInstruction() {
+        return; //Intentionally empty
+    }
+
+
+    /*
+     * MOVE. Move values between registers.
+     */
+    private void executeMOVInstruction() {
+        switch (INST) {
             case (short) 0b1111_1111_11_000_000: //MOV AX AX | CLR AX
                 AX = 0;
                 break;
@@ -309,10 +396,18 @@ public class RelayComputer {
                 PC = 0;
                 halted = true;
                 break;
+            default:
+                unknownInstruction(INST);
 
-            /*
-             * INC. Increment a value by one.
-             */
+        }
+    }
+
+    /*
+     * INC. Increment a value by one.
+     */
+    private void executeINCInstruction() {
+        switch (INST) {
+
             case 0b0001_0000_00_000_000: //INC AX AX (AX + 1 -> AX)
                 AX = aluIncrement(AX);
                 break;
@@ -505,10 +600,16 @@ public class RelayComputer {
             case 0b0001_0000_00_111_111: //INC PC PC (PC + 1 -> PC)
                 PC = aluIncrement(PC);
                 break;
+            default:
+                unknownInstruction(INST);
+        }
+    }
 
-            /*
-             * Decrement. Decrement a value by one.
-             */
+    /*
+     * Decrement. Decrement a value by one.
+     */
+    private void executeDECInstruction() {
+        switch (INST) {
             case 0b0001_0000_01_000_000: //DEC AX AX (AX - 1 -> AX)
                 AX = aluDecrement(AX);
                 break;
@@ -702,9 +803,15 @@ public class RelayComputer {
                 PC = aluDecrement(PC);
                 break;
 
-            /*
-             * Negation. Binary NOT of a value.
-             */
+
+        }
+    }
+
+    /*
+     * Negation. Binary NOT of a value.
+     */
+    private void executeNOTInstruction() {
+        switch (INST) {
             case 0b0001_0000_10_000_000: //NOT AX AX (~AX -> AX)
                 AX = aluNegate(AX);
                 break;
@@ -898,9 +1005,16 @@ public class RelayComputer {
                 PC = aluNegate(PC);
                 break;
 
-            /*
-             * ROL: rotation one bit left
-             */
+
+        }
+
+    }
+
+    /*
+     * ROL: rotation one bit left
+     */
+    private void executeROLInstruction() {
+        switch (INST) {
             case 0b0001_0000_11_000_000: //ROL AX AX (rol AX -> AX)
                 AX = aluLeftRotation(AX);
                 break;
@@ -1094,9 +1208,18 @@ public class RelayComputer {
                 PC = aluLeftRotation(PC);
                 break;
 
-            /*
-             * ADD: add two registers together, storing into the destination register
-             */
+
+            default:
+                unknownInstruction(INST);
+        }
+    }
+
+    /*
+     * ADD: add two registers together, storing into the destination register
+     */
+    private void executeADDInstruction() {
+
+        switch (INST) {
             case 0b0001_1_00_000_000_000: //ADD AX AX AX (AX + AX -> AX)
                 AX = aluAdd(AX, AX);
                 break;
@@ -2633,9 +2756,18 @@ public class RelayComputer {
             case 0b0001_1_00_111_111_111: //ADD PC PC PC (PC + PC -> PC)
                 PC = aluAdd(PC, PC);
                 break;
-            /*
-             * AND: Bit-wise AND two registers together, storing into the destination register
-             */
+
+            default:
+                unknownInstruction(INST);
+        }
+
+    }
+
+    /*
+     * AND: Bit-wise AND two registers together, storing into the destination register
+     */
+    private void executeANDInstruction() {
+        switch (INST) {
             case 0b0001_1_01_000_000_000: //AND AX AX AX (AX & AX -> AX)
                 AX = aluAnd(AX, AX);
                 break;
@@ -4172,9 +4304,20 @@ public class RelayComputer {
             case 0b0001_1_01_111_111_111: //AND PC PC PC (PC & PC -> PC)
                 PC = aluAnd(PC, PC);
                 break;
-            /*
-             * OR: Bit-wise OR two registers together, storing into the destination register
-             */
+
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
+
+
+    /*
+     * OR: Bit-wise OR two registers together, storing into the destination register
+     */
+    private void executeORInstruction() {
+        switch (INST) {
+
             case 0b0001_1_10_000_000_000: //OR AX AX AX (AX | AX -> AX)
                 AX = aluOr(AX, AX);
                 break;
@@ -5711,9 +5854,17 @@ public class RelayComputer {
             case 0b0001_1_10_111_111_111: //OR PC PC PC (PC | PC -> PC)
                 PC = aluOr(PC, PC);
                 break;
-            /*
-             * XOR: Bit-wise XOR two registers together, storing into the destination register
-             */
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
+
+    /*
+     * XOR: Bit-wise XOR two registers together, storing into the destination register
+     */
+    private void executeXORInstruction() {
+        switch (INST) {
             case 0b0001_1_11_000_000_000: //XOR AX AX AX (AX ^ AX -> AX)
                 AX = aluXor(AX, AX);
                 break;
@@ -7250,10 +7401,21 @@ public class RelayComputer {
             case 0b0001_1_11_111_111_111: //XOR PC PC PC (PC ^ PC -> PC)
                 PC = aluXor(PC, PC);
                 break;
-            /*
-             * Compare/Subtract: Subtract two registers, storing into the destination register.
-			 * This is useful for comparing values and updating condition registers
-             */
+
+            default:
+                unknownInstruction(INST);
+                break;
+
+        }
+    }
+
+
+    /*
+     * Compare/Subtract: Subtract two registers, storing into the destination register.
+	 * This is useful for comparing values and updating condition registers
+     */
+    private void executeCMPSUBInstruction() {
+        switch (INST) {
             case 0b0001_010_000_000_000: //CMP/SUB AX AX AX (AX - AX -> AX)
                 AX = compareSubtract(AX, AX);
                 break;
@@ -8790,9 +8952,19 @@ public class RelayComputer {
             case 0b0001_010_111_111_111: //CMP/SUB PC PC PC (PC - PC -> PC)
                 PC = compareSubtract(PC, PC);
                 break;
-            /*
-             * LOADI: Immediately load word from memory to register
-			 */
+
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
+
+    /*
+     * LOADI: Immediately load word from memory to register
+	*/
+    private void executeLOADIInstruction() {
+        switch (INST) {
+
             case 0b0010_0001_0000_0_000: //LOADI AX
                 AX = loadImmediate();
                 break;
@@ -8821,9 +8993,19 @@ public class RelayComputer {
                 PC = loadImmediate();
                 break;
 
-            /*
-             * Conditional Jump: JMP to address depending on condition register
-             */
+            default:
+                unknownInstruction(INST);
+                break;
+
+        }
+
+    }
+
+    /*
+     * Conditional Jump: JMP to address depending on condition register
+     */
+    private void executeConditionalJumpInstruction() {
+        switch (INST) {
             case 0b0000_1000_000_0_0001: //JNEG
                 if (sign) {
                     PC = loadImmediate();
@@ -8865,9 +9047,222 @@ public class RelayComputer {
                 }
                 break;
 
-            /*
-             * LOAD. Load word from memory to register
-             */
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
+
+    /*
+     * Store. Store a word from a register to memory
+     */
+    private void executeSTOREInstruction() {
+        switch (INST) {
+            case 0b0010_0010_00_000_000: //STORE AX AX (AX -> [AX])
+                store(AX, AX);
+                break;
+            case 0b0010_0010_00_000_001: //STORE AX BX (AX -> [BX])
+                store(AX, BX);
+                break;
+            case 0b0010_0010_00_000_010: //STORE AX CX (AX -> [CX])
+                store(AX, CX);
+                break;
+            case 0b0010_0010_00_000_011: //STORE AX DX (AX -> [DX])
+                store(AX, DX);
+                break;
+            case 0b0010_0010_00_000_100: //STORE AX EX (AX -> [EX])
+                store(AX, EX);
+                break;
+            case 0b0010_0010_00_000_101: //STORE AX SP (AX -> [SP])
+                store(AX, SP);
+                break;
+            case 0b0010_0010_00_000_110: //STORE AX RP (AX -> [RP])
+                store(AX, RP);
+                break;
+            case 0b0010_0010_00_000_111: //STORE AX PC (AX -> [PC])
+                store(AX, PC);
+                break;
+            case 0b0010_0010_00_001_000: //STORE BX AX (BX -> [AX])
+                store(BX, AX);
+                break;
+            case 0b0010_0010_00_001_001: //STORE BX BX (BX -> [BX])
+                store(BX, BX);
+                break;
+            case 0b0010_0010_00_001_010: //STORE BX CX (BX -> [CX])
+                store(BX, CX);
+                break;
+            case 0b0010_0010_00_001_011: //STORE BX DX (BX -> [DX])
+                store(BX, DX);
+                break;
+            case 0b0010_0010_00_001_100: //STORE BX EX (BX -> [EX])
+                store(BX, EX);
+                break;
+            case 0b0010_0010_00_001_101: //STORE BX SP (BX -> [SP])
+                store(BX, SP);
+                break;
+            case 0b0010_0010_00_001_110: //STORE BX RP (BX -> [RP])
+                store(BX, RP);
+                break;
+            case 0b0010_0010_00_001_111: //STORE BX PC (BX -> [PC])
+                store(BX, PC);
+                break;
+            case 0b0010_0010_00_010_000: //STORE CX AX (CX -> [AX])
+                store(CX, AX);
+                break;
+            case 0b0010_0010_00_010_001: //STORE CX BX (CX -> [BX])
+                store(CX, BX);
+                break;
+            case 0b0010_0010_00_010_010: //STORE CX CX (CX -> [CX])
+                store(CX, CX);
+                break;
+            case 0b0010_0010_00_010_011: //STORE CX DX (CX -> [DX])
+                store(CX, DX);
+                break;
+            case 0b0010_0010_00_010_100: //STORE CX EX (CX -> [EX])
+                store(CX, EX);
+                break;
+            case 0b0010_0010_00_010_101: //STORE CX SP (CX -> [SP])
+                store(CX, SP);
+                break;
+            case 0b0010_0010_00_010_110: //STORE CX RP (CX -> [RP])
+                store(CX, RP);
+                break;
+            case 0b0010_0010_00_010_111: //STORE CX PC (CX -> [PC])
+                store(CX, PC);
+                break;
+            case 0b0010_0010_00_011_000: //STORE DX AX (DX -> [AX])
+                store(DX, AX);
+                break;
+            case 0b0010_0010_00_011_001: //STORE DX BX (DX -> [BX])
+                store(DX, BX);
+                break;
+            case 0b0010_0010_00_011_010: //STORE DX CX (DX -> [CX])
+                store(DX, CX);
+                break;
+            case 0b0010_0010_00_011_011: //STORE DX DX (DX -> [DX])
+                store(DX, DX);
+                break;
+            case 0b0010_0010_00_011_100: //STORE DX EX (DX -> [EX])
+                store(DX, EX);
+                break;
+            case 0b0010_0010_00_011_101: //STORE DX SP (DX -> [SP])
+                store(DX, SP);
+                break;
+            case 0b0010_0010_00_011_110: //STORE DX RP (DX -> [RP])
+                store(DX, RP);
+                break;
+            case 0b0010_0010_00_011_111: //STORE DX PC (DX -> [PC])
+                store(DX, PC);
+                break;
+            case 0b0010_0010_00_100_000: //STORE EX AX (EX -> [AX])
+                store(EX, AX);
+                break;
+            case 0b0010_0010_00_100_001: //STORE EX BX (EX -> [BX])
+                store(EX, BX);
+                break;
+            case 0b0010_0010_00_100_010: //STORE EX CX (EX -> [CX])
+                store(EX, CX);
+                break;
+            case 0b0010_0010_00_100_011: //STORE EX DX (EX -> [DX])
+                store(EX, DX);
+                break;
+            case 0b0010_0010_00_100_100: //STORE EX EX (EX -> [EX])
+                store(EX, EX);
+                break;
+            case 0b0010_0010_00_100_101: //STORE EX SP (EX -> [SP])
+                store(EX, SP);
+                break;
+            case 0b0010_0010_00_100_110: //STORE EX RP (EX -> [RP])
+                store(EX, RP);
+                break;
+            case 0b0010_0010_00_100_111: //STORE EX PC (EX -> [PC])
+                store(EX, PC);
+                break;
+            case 0b0010_0010_00_101_000: //STORE SP AX (SP -> [AX])
+                store(SP, AX);
+                break;
+            case 0b0010_0010_00_101_001: //STORE SP BX (SP -> [BX])
+                store(SP, BX);
+                break;
+            case 0b0010_0010_00_101_010: //STORE SP CX (SP -> [CX])
+                store(SP, CX);
+                break;
+            case 0b0010_0010_00_101_011: //STORE SP DX (SP -> [DX])
+                store(SP, DX);
+                break;
+            case 0b0010_0010_00_101_100: //STORE SP EX (SP -> [EX])
+                store(SP, EX);
+                break;
+            case 0b0010_0010_00_101_101: //STORE SP SP (SP -> [SP])
+                store(SP, SP);
+                break;
+            case 0b0010_0010_00_101_110: //STORE SP RP (SP -> [RP])
+                store(SP, RP);
+                break;
+            case 0b0010_0010_00_101_111: //STORE SP PC (SP -> [PC])
+                store(SP, PC);
+                break;
+            case 0b0010_0010_00_110_000: //STORE RP AX (RP -> [AX])
+                store(RP, AX);
+                break;
+            case 0b0010_0010_00_110_001: //STORE RP BX (RP -> [BX])
+                store(RP, BX);
+                break;
+            case 0b0010_0010_00_110_010: //STORE RP CX (RP -> [CX])
+                store(RP, CX);
+                break;
+            case 0b0010_0010_00_110_011: //STORE RP DX (RP -> [DX])
+                store(RP, DX);
+                break;
+            case 0b0010_0010_00_110_100: //STORE RP EX (RP -> [EX])
+                store(RP, EX);
+                break;
+            case 0b0010_0010_00_110_101: //STORE RP SP (RP -> [SP])
+                store(RP, SP);
+                break;
+            case 0b0010_0010_00_110_110: //STORE RP RP (RP -> [RP])
+                store(RP, RP);
+                break;
+            case 0b0010_0010_00_110_111: //STORE RP PC (RP -> [PC])
+                store(RP, PC);
+                break;
+            case 0b0010_0010_00_111_000: //STORE PC AX (PC -> [AX])
+                store(PC, AX);
+                break;
+            case 0b0010_0010_00_111_001: //STORE PC BX (PC -> [BX])
+                store(PC, BX);
+                break;
+            case 0b0010_0010_00_111_010: //STORE PC CX (PC -> [CX])
+                store(PC, CX);
+                break;
+            case 0b0010_0010_00_111_011: //STORE PC DX (PC -> [DX])
+                store(PC, DX);
+                break;
+            case 0b0010_0010_00_111_100: //STORE PC EX (PC -> [EX])
+                store(PC, EX);
+                break;
+            case 0b0010_0010_00_111_101: //STORE PC SP (PC -> [SP])
+                store(PC, SP);
+                break;
+            case 0b0010_0010_00_111_110: //STORE PC RP (PC -> [RP])
+                store(PC, RP);
+                break;
+            case 0b0010_0010_00_111_111: //STORE PC PC (PC -> [PC])
+                store(PC, PC);
+                break;
+
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
+
+    /*
+     * LOAD. Load word from memory to register
+     */
+    private void executeLOADInstruction() {
+        switch (INST) {
+
             case 0b0010_0100_00_000_000: //LOAD AX AX ([AX] -> AX)
                 AX = load(AX);
                 break;
@@ -9060,9 +9455,18 @@ public class RelayComputer {
             case 0b0010_0100_00_111_111: //LOAD PC PC ([PC] -> PC)
                 PC = load(PC);
                 break;
-            /*
-             * PUSH. Push register value onto a stack
-             */
+
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
+
+    /*
+     * PUSH. Push register value onto a stack
+     */
+    private void executePUSHInstruction() {
+        switch (INST) {
             case 0b0100_0000_0001_0_000: //PUSH SP AX
                 push(STACK_SP, AX);
                 break;
@@ -9112,9 +9516,19 @@ public class RelayComputer {
                 push(STACK_RP, PC);
                 break;
 
-			/*
-             * POP. Pop the value from a stack into a register
-             */
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
+
+    /*
+     * POP. Pop the value from a stack into a register
+     */
+    private void executePOPInstruction() {
+        switch (INST) {
+
+
             case 0b0100_0000_0010_0_000: //POP AX SP
                 AX = pop(STACK_SP);
                 break;
@@ -9164,9 +9578,18 @@ public class RelayComputer {
                 PC = pop(STACK_RP);
                 break;
 
-            /*
-             * CALL_I: Push PC to stack and Jump Immediate
-             */
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
+
+
+    /*
+     * CALL_I: Push PC to stack and Jump Immediate
+     */
+    private void executeCALLIInstruction() {
+        switch (INST) {
             case 0b0100_0000_0100_0_000: //CALLI SP
                 callImmediate(STACK_SP);
                 break;
@@ -9174,9 +9597,18 @@ public class RelayComputer {
                 callImmediate(STACK_RP);
                 break;
 
-            /*
-             * CALL.  Push PC to stack and Jump Indirect
-             */
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
+
+
+    /*
+     * CALL.  Push PC to stack and Jump Indirect
+     */
+    private void executeCALLInstruction() {
+        switch (INST) {
             case 0b0100_0000_1000_0_000: //CALL SP AX
                 call(STACK_SP, AX);
                 break;
@@ -9225,10 +9657,19 @@ public class RelayComputer {
             case 0b0100_0000_1000_1_111: //CALL RP PC
                 call(STACK_RP, PC);
                 break;
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
 
-            /*
-             * WRDIN. RECEIVE I/O WORD
-             */
+
+    /*
+     * WRDIN. RECEIVE I/O WORD
+     */
+    private void executeWRDINInstruction() {
+        switch (INST) {
+
             case (short) 0b1000_0000_0000_0_000: //WRDIN AX
                 AX = wordIn();
                 break;
@@ -9254,9 +9695,19 @@ public class RelayComputer {
                 PC = wordIn();
                 break;
 
-            /*
-             * WRDOUT. Send I/O word
-             */
+            default:
+                unknownInstruction(INST);
+                break;
+        }
+    }
+
+
+    /*
+     * WRDOUT. Send I/O word
+     */
+    private void executeWRDOUTInstruction() {
+        switch (INST) {
+
             case (short) 0b1000_1000_0000_0_000: //WRDOUT AX
                 wordOut(AX);
                 break;
@@ -9282,9 +9733,17 @@ public class RelayComputer {
                 wordOut(PC);
                 break;
             default:
-                throw new IllegalStateException("Unable to decode instruction: " + INST);
+                unknownInstruction(INST);
+                break;
         }
     }
+
+
+    private void unknownInstruction(short instruction) {
+        throw new IllegalArgumentException("Unknown instruction: "
+                + Integer.toBinaryString(0xFFFF & instruction));
+    }
+
 
     private short aluIncrement(short inputRegister) {
         TMP1X = inputRegister;
@@ -9373,6 +9832,10 @@ public class RelayComputer {
         return TMP1X;
     }
 
+    private void store(short sourceRegister, short destinationRegister) {
+        mainMemory[(char) destinationRegister] = sourceRegister; //Put the value of source into mem pointed to by dest
+    }
+
     private short load(short sourceRegister) {
         short memValue = mainMemory[(char) sourceRegister]; //Get the value in mem pointed to by source
         return memValue;
@@ -9443,4 +9906,79 @@ public class RelayComputer {
         ioDevice.sendWord(sourceRegister);
     }
 
+    public boolean isZero() {
+        return zero;
+    }
+
+    public boolean isCarry() {
+        return carry;
+    }
+
+    public boolean isSign() {
+        return sign;
+    }
+
+    public boolean isOverflow() {
+        return overflow;
+    }
+
+    public short getINST() {
+        return INST;
+    }
+
+    public short getPC() {
+        return PC;
+    }
+
+    public short getSP() {
+        return SP;
+    }
+
+    public short getRP() {
+        return RP;
+    }
+
+    public short getAX() {
+        return AX;
+    }
+
+    public short getBX() {
+        return BX;
+    }
+
+    public short getCX() {
+        return CX;
+    }
+
+    public short getDX() {
+        return DX;
+    }
+
+    public short getEX() {
+        return EX;
+    }
+
+    public short getTMP1X() {
+        return TMP1X;
+    }
+
+    public short getTMP2X() {
+        return TMP2X;
+    }
+
+    public short[] getMainMemory() {
+        return mainMemory;
+    }
+
+    public void setMainMemory(short[] mainMemory) {
+        this.mainMemory = mainMemory;
+    }
+
+    public IODevice getIoDevice() {
+        return ioDevice;
+    }
+
+    public boolean isHalted() {
+        return halted;
+    }
 }

@@ -16,13 +16,13 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProg(AsmHomeBrewParser.ProgContext ctx) { }
+	@Override public void enterProgram(AsmHomeBrewParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProg(AsmHomeBrewParser.ProgContext ctx) { }
+	@Override public void exitProgram(AsmHomeBrewParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -100,42 +100,6 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBinaryOperation(AsmHomeBrewParser.BinaryOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBinaryOperation(AsmHomeBrewParser.BinaryOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAluOperation(AsmHomeBrewParser.AluOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAluOperation(AsmHomeBrewParser.AluOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAluOpcode(AsmHomeBrewParser.AluOpcodeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAluOpcode(AsmHomeBrewParser.AluOpcodeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterIoOperation(AsmHomeBrewParser.IoOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -184,49 +148,61 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMovOperation(AsmHomeBrewParser.MovOperationContext ctx) { }
+	@Override public void enterBinaryOperation(AsmHomeBrewParser.BinaryOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMovOperation(AsmHomeBrewParser.MovOperationContext ctx) { }
+	@Override public void exitBinaryOperation(AsmHomeBrewParser.BinaryOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMemoryOperation(AsmHomeBrewParser.MemoryOperationContext ctx) { }
+	@Override public void enterBinaryRegRegOperation(AsmHomeBrewParser.BinaryRegRegOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMemoryOperation(AsmHomeBrewParser.MemoryOperationContext ctx) { }
+	@Override public void exitBinaryRegRegOperation(AsmHomeBrewParser.BinaryRegRegOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLoadOperation(AsmHomeBrewParser.LoadOperationContext ctx) { }
+	@Override public void enterBinaryRegRegOpCode(AsmHomeBrewParser.BinaryRegRegOpCodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLoadOperation(AsmHomeBrewParser.LoadOperationContext ctx) { }
+	@Override public void exitBinaryRegRegOpCode(AsmHomeBrewParser.BinaryRegRegOpCodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStoreOperation(AsmHomeBrewParser.StoreOperationContext ctx) { }
+	@Override public void enterBinaryRegValOperation(AsmHomeBrewParser.BinaryRegValOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStoreOperation(AsmHomeBrewParser.StoreOperationContext ctx) { }
+	@Override public void exitBinaryRegValOperation(AsmHomeBrewParser.BinaryRegValOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinaryRegValOpCode(AsmHomeBrewParser.BinaryRegValOpCodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryRegValOpCode(AsmHomeBrewParser.BinaryRegValOpCodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -268,6 +244,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCallIOperation(AsmHomeBrewParser.CallIOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCallIOperation(AsmHomeBrewParser.CallIOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCallOperation(AsmHomeBrewParser.CallOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -275,6 +263,42 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCallOperation(AsmHomeBrewParser.CallOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTernaryOperation(AsmHomeBrewParser.TernaryOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTernaryOperation(AsmHomeBrewParser.TernaryOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAluTernaryOperation(AsmHomeBrewParser.AluTernaryOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAluTernaryOperation(AsmHomeBrewParser.AluTernaryOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAluTernaryOpcode(AsmHomeBrewParser.AluTernaryOpcodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAluTernaryOpcode(AsmHomeBrewParser.AluTernaryOpcodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -316,18 +340,6 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAluDestinationRegister(AsmHomeBrewParser.AluDestinationRegisterContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAluDestinationRegister(AsmHomeBrewParser.AluDestinationRegisterContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterStackRegister(AsmHomeBrewParser.StackRegisterContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -359,18 +371,6 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssemblerOrgDirective(AsmHomeBrewParser.AssemblerOrgDirectiveContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAssemblerByteDeclaration(AsmHomeBrewParser.AssemblerByteDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAssemblerByteDeclaration(AsmHomeBrewParser.AssemblerByteDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

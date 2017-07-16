@@ -1,6 +1,6 @@
 grammar AsmHomeBrew;
 
-prog
+program
    : (line? EOL) +
    ;
 
@@ -22,6 +22,7 @@ operation
    : noArgOperation
    | unaryOperation
    | binaryOperation
+   | ternaryOperation
    ;
 
 noArgOperation
@@ -30,40 +31,17 @@ noArgOperation
    ;
 
 unaryOperation
-   : aluOperation
-   | ioOperation
+   : ioOperation
    | jumpOperation
    ;
-
-binaryOperation
-   : movOperation
-   | memoryOperation
-   | stackOperation
-   | callOperation
-   ;
-
-aluOperation
-   : aluOpcode aluDestinationRegister
-   ;
-
-aluOpcode
-   : ADD
-   | INC
-   | AND
-   | OR
-   | XOR
-   | NOT
-   | ROL
-   ;
-
 
 ioOperation
    : ioOpcode register
    ;
 
 ioOpcode
-    : BYIN
-    | BYOUT
+    : WRDIN
+    | WRDOUT
     ;
 
 jumpOperation
@@ -83,26 +61,40 @@ jumpOpcode
    ;
 
 
-movOperation
-   : MOV register ',' register
+binaryOperation
+   : binaryRegRegOperation
+   | binaryRegValOperation
+   | stackOperation
    ;
 
-memoryOperation
-   : loadOperation
-   | storeOperation
+
+binaryRegRegOperation
+    : binaryRegRegOpCode register ',' register
+    ;
+
+binaryRegRegOpCode
+   : MOV
+   | INC
+   | DEC
+   | NOT
+   | ROL
+   | STORE
+   | LOAD
    ;
 
-loadOperation
-   : LOAD register ',' value
+binaryRegValOperation
+   : binaryRegValOpCode register ',' value
    ;
 
-storeOperation
-   : STORE register ',' register
+binaryRegValOpCode
+   : LOADI
    ;
 
 stackOperation
    : pushOperation
    | popOperation
+   | callOperation
+   | callIOperation
    ;
 
 pushOperation
@@ -113,9 +105,34 @@ popOperation
    : POP register ',' stackRegister
    ;
 
-callOperation
-   : CALL stackRegister ',' value
+callIOperation
+   : CALLI stackRegister ',' value
    ;
+
+callOperation
+   : CALL stackRegister ',' register
+   ;
+
+
+ternaryOperation
+    : aluTernaryOperation
+    ;
+
+
+aluTernaryOperation
+   : aluTernaryOpcode register ',' register  ',' register
+   ;
+
+aluTernaryOpcode
+   : ADD
+   | AND
+   | OR
+   | XOR
+   | CMP
+   | SUB
+   ;
+
+
 
 value
    : label
@@ -133,16 +150,12 @@ register
    | BX
    | CX
    | DX
-   | IP
+   | EX
    | SP
    | RP
    | PC
    ;
 
-aluDestinationRegister
-   : AX
-   | DX
-   ;
 
 stackRegister
    : SP
@@ -152,16 +165,11 @@ stackRegister
 assemblerDirective
    : jsExpression
    | assemblerOrgDirective
-   | assemblerByteDeclaration
    | assemblerWordDeclaration
    ;
 
 assemblerOrgDirective
     : ORG jsExpression
-    ;
-
-assemblerByteDeclaration
-    : DB value
     ;
 
 assemblerWordDeclaration
@@ -189,18 +197,23 @@ opcode
    : MOV
    | ADD
    | INC
+   | DEC
    | AND
    | OR
    | XOR
    | NOT
    | ROL
+   | CMP
+   | SUB
    | LOAD
+   | LOADI
    | STORE
    | PUSH
    | POP
    | CALL
-   | BYIN
-   | BYOUT
+   | CALLI
+   | WRDIN
+   | WRDOUT
    | JMP
    | JZ
    | JNZ
@@ -353,18 +366,23 @@ fragment Z
 MOV: M O V ;
 ADD: A D D ;
 INC: I N C ;
+DEC: D E C ;
 AND: A N D ;
 OR: O R ;
 XOR: X O R ;
 NOT: N O T ;
-ROL: R O L ;
+ROL: R O L;
+CMP: C M P;
+SUB: S U B;
 LOAD: L O A D ;
+LOADI: L O A D I;
 STORE: S T O R E ;
 PUSH: P U S H ;
 POP: P O P ;
 CALL: C A L L ;
-BYIN: B Y I N ;
-BYOUT: B Y O U T ;
+CALLI: C A L L I;
+WRDIN: W R D I N ;
+WRDOUT: W R D O U T ;
 JMP: J M P ;
 JZ: J Z ;
 JNZ: J N Z ;
@@ -399,8 +417,8 @@ DX
    : D X
    ;
 
-IP
-   : I P
+EX
+   : E X
    ;
 SP
    : S P
@@ -412,10 +430,6 @@ RP
 
 PC
    : P C
-   ;
-
-DB
-   : D B
    ;
 
 DW
