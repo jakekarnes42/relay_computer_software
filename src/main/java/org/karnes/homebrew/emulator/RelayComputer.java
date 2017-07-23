@@ -145,9 +145,9 @@ public class RelayComputer {
             case SUB:
                 executeCMPSUBInstruction();
                 break;
-            case LOADI:
+            case LOAD:
             case JMP:
-                executeLOADIInstruction();
+                executeLOADJMPInstruction();
                 break;
             case JNEG:
             case JZ:
@@ -8955,37 +8955,37 @@ public class RelayComputer {
     }
 
     /*
-     * LOADI: Immediately fetch word from memory to register
+     * LOAD/JMP: Immediately fetch word from memory to register
 	*/
-    private void executeLOADIInstruction() {
+    private void executeLOADJMPInstruction() {
         switch (INST) {
 
-            case 0b0010_0001_0000_0_000: //LOADI AX
-                AX = loadImmediate();
+            case 0b0010_0001_0000_0_000: //LOAD AX
+                AX = load();
                 break;
-            case 0b0010_0001_0000_0_001: //LOADI BX
-                BX = loadImmediate();
+            case 0b0010_0001_0000_0_001: //LOAD BX
+                BX = load();
                 break;
-            case 0b0010_0001_0000_0_010: //LOADI CX
-                CX = loadImmediate();
+            case 0b0010_0001_0000_0_010: //LOAD CX
+                CX = load();
                 break;
-            case 0b0010_0001_0000_0_011: //LOADI DX
-                DX = loadImmediate();
+            case 0b0010_0001_0000_0_011: //LOAD DX
+                DX = load();
                 break;
-            case 0b0010_0001_0000_0_100: //LOADI EX
-                EX = loadImmediate();
+            case 0b0010_0001_0000_0_100: //LOAD EX
+                EX = load();
                 break;
-            case 0b0010_0001_0000_0_101: //LOADI SP
-                SP = loadImmediate();
+            case 0b0010_0001_0000_0_101: //LOAD SP
+                SP = load();
                 break;
-            case 0b0010_0001_0000_0_110: //LOADI RP
-                RP = loadImmediate();
+            case 0b0010_0001_0000_0_110: //LOAD RP
+                RP = load();
                 break;
             /*
              * JMP: Unconditional Jump to next following value in memory
 			 */
-            case 0b0010_0001_0000_0_111: //JMP | LOADI PC
-                PC = loadImmediate();
+            case 0b0010_0001_0000_0_111: //JMP | LOAD PC
+                PC = load();
                 break;
 
             default:
@@ -9003,42 +9003,42 @@ public class RelayComputer {
         switch (INST) {
             case 0b0000_1000_000_0_0001: //JNEG
                 if (sign) {
-                    PC = loadImmediate();
+                    PC = load();
                 }
                 break;
             case 0b0000_1000_000_0_0010: //JZ
                 if (zero) {
-                    PC = loadImmediate();
+                    PC = load();
                 }
                 break;
             case 0b0000_1000_000_0_0100: //JC
                 if (carry) {
-                    PC = loadImmediate();
+                    PC = load();
                 }
                 break;
             case 0b0000_1000_000_0_1000: //JO
                 if (overflow) {
-                    PC = loadImmediate();
+                    PC = load();
                 }
                 break;
             case 0b0000_1000_000_1_0001: //JNNEG
                 if (!sign) {
-                    PC = loadImmediate();
+                    PC = load();
                 }
                 break;
             case 0b0000_1000_000_1_0010: //JNZ
                 if (!zero) {
-                    PC = loadImmediate();
+                    PC = load();
                 }
                 break;
             case 0b0000_1000_000_1_0100: //JNC
                 if (!carry) {
-                    PC = loadImmediate();
+                    PC = load();
                 }
                 break;
             case 0b0000_1000_000_1_1000: //JNO
                 if (!overflow) {
-                    PC = loadImmediate();
+                    PC = load();
                 }
                 break;
 
@@ -9761,7 +9761,7 @@ public class RelayComputer {
         sign = ((short) aluOutput < 0);
     }
 
-    private short loadImmediate() {
+    private short load() {
         TMP1X = mainMemory[(char) PC]; //Get the value in mem following instruction
         PC++; //Increment PC to next mem addr
         return TMP1X;

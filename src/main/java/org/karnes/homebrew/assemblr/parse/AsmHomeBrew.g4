@@ -91,7 +91,7 @@ binaryRegValOperation
    ;
 
 binaryRegValOpCode
-   : LOADI
+   : LOAD
    ;
 
 stackOperation
@@ -204,7 +204,7 @@ opcode
    | ROL
    | CMP
    | SUB
-   | LOADI
+   | LOAD
    | FETCH
    | STORE
    | PUSH
@@ -373,7 +373,7 @@ NOT: N O T ;
 ROL: R O L;
 CMP: C M P;
 SUB: S U B;
-LOADI: L O A D I;
+LOAD: L O A D;
 FETCH: F E T C H ;
 STORE: S T O R E ;
 PUSH: P U S H ;

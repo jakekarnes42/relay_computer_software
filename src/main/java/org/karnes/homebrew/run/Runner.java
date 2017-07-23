@@ -10,10 +10,10 @@ public class Runner {
 
     public static void main(String[] args) {
         String code = ";Let's subtract!\r\n"
-                + "         LOADI SP, 1000; Get the stack pointer far away\r\n"
-                + "         LOADI RP, 2000; Get the return pointer far away\r\n"
-                + "         LOADI BX, 100; B = 100\r\n"
-                + "         LOADI CX, 777; C = 777\r\n"
+                + "         LOAD SP, 1000; Get the stack pointer far away\r\n"
+                + "         LOAD RP, 2000; Get the return pointer far away\r\n"
+                + "         LOAD BX, 100; B = 100\r\n"
+                + "         LOAD CX, 777; C = 777\r\n"
                 + "         CALL RP, SUBME; A = CX - BX\r\n"
                 + "         HALT        ; DONE\r\n"
                 + "\r\n"

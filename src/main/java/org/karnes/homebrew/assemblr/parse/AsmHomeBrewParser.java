@@ -18,7 +18,7 @@ public class AsmHomeBrewParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, MOV=3, ADD=4, INC=5, DEC=6, AND=7, OR=8, XOR=9, NOT=10, 
-		ROL=11, CMP=12, SUB=13, LOADI=14, FETCH=15, STORE=16, PUSH=17, POP=18, 
+		ROL=11, CMP=12, SUB=13, LOAD=14, FETCH=15, STORE=16, PUSH=17, POP=18, 
 		RET=19, CALL=20, WRDIN=21, WRDOUT=22, JMP=23, JZ=24, JNZ=25, JNEG=26, 
 		JNNEG=27, JC=28, JNC=29, JO=30, JNO=31, NOP=32, HALT=33, ORG=34, AX=35, 
 		BX=36, CX=37, DX=38, EX=39, SP=40, RP=41, PC=42, DW=43, NAME=44, NUMBER=45, 
@@ -51,11 +51,11 @@ public class AsmHomeBrewParser extends Parser {
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, "MOV", "ADD", "INC", "DEC", "AND", "OR", "XOR", "NOT", 
-		"ROL", "CMP", "SUB", "LOADI", "FETCH", "STORE", "PUSH", "POP", "RET", 
-		"CALL", "WRDIN", "WRDOUT", "JMP", "JZ", "JNZ", "JNEG", "JNNEG", "JC", 
-		"JNC", "JO", "JNO", "NOP", "HALT", "ORG", "AX", "BX", "CX", "DX", "EX", 
-		"SP", "RP", "PC", "DW", "NAME", "NUMBER", "DECIMAL", "HEX", "COMMENT", 
-		"STRING", "JAVASCRIPT", "EOL", "WS"
+		"ROL", "CMP", "SUB", "LOAD", "FETCH", "STORE", "PUSH", "POP", "RET", "CALL", 
+		"WRDIN", "WRDOUT", "JMP", "JZ", "JNZ", "JNEG", "JNNEG", "JC", "JNC", "JO", 
+		"JNO", "NOP", "HALT", "ORG", "AX", "BX", "CX", "DX", "EX", "SP", "RP", 
+		"PC", "DW", "NAME", "NUMBER", "DECIMAL", "HEX", "COMMENT", "STRING", "JAVASCRIPT", 
+		"EOL", "WS"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -152,7 +152,7 @@ public class AsmHomeBrewParser extends Parser {
 				setState(73);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << ADD) | (1L << INC) | (1L << DEC) | (1L << AND) | (1L << OR) | (1L << XOR) | (1L << NOT) | (1L << ROL) | (1L << CMP) | (1L << SUB) | (1L << LOADI) | (1L << FETCH) | (1L << STORE) | (1L << PUSH) | (1L << POP) | (1L << RET) | (1L << CALL) | (1L << WRDIN) | (1L << WRDOUT) | (1L << JMP) | (1L << JZ) | (1L << JNZ) | (1L << JNEG) | (1L << JNNEG) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO) | (1L << NOP) | (1L << HALT) | (1L << ORG) | (1L << DW) | (1L << NAME) | (1L << COMMENT) | (1L << JAVASCRIPT))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << ADD) | (1L << INC) | (1L << DEC) | (1L << AND) | (1L << OR) | (1L << XOR) | (1L << NOT) | (1L << ROL) | (1L << CMP) | (1L << SUB) | (1L << LOAD) | (1L << FETCH) | (1L << STORE) | (1L << PUSH) | (1L << POP) | (1L << RET) | (1L << CALL) | (1L << WRDIN) | (1L << WRDOUT) | (1L << JMP) | (1L << JZ) | (1L << JNZ) | (1L << JNEG) | (1L << JNNEG) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO) | (1L << NOP) | (1L << HALT) | (1L << ORG) | (1L << DW) | (1L << NAME) | (1L << COMMENT) | (1L << JAVASCRIPT))) != 0)) {
 					{
 					setState(72);
 					line();
@@ -166,7 +166,7 @@ public class AsmHomeBrewParser extends Parser {
 				setState(78); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << ADD) | (1L << INC) | (1L << DEC) | (1L << AND) | (1L << OR) | (1L << XOR) | (1L << NOT) | (1L << ROL) | (1L << CMP) | (1L << SUB) | (1L << LOADI) | (1L << FETCH) | (1L << STORE) | (1L << PUSH) | (1L << POP) | (1L << RET) | (1L << CALL) | (1L << WRDIN) | (1L << WRDOUT) | (1L << JMP) | (1L << JZ) | (1L << JNZ) | (1L << JNEG) | (1L << JNNEG) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO) | (1L << NOP) | (1L << HALT) | (1L << ORG) | (1L << DW) | (1L << NAME) | (1L << COMMENT) | (1L << JAVASCRIPT) | (1L << EOL))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << ADD) | (1L << INC) | (1L << DEC) | (1L << AND) | (1L << OR) | (1L << XOR) | (1L << NOT) | (1L << ROL) | (1L << CMP) | (1L << SUB) | (1L << LOAD) | (1L << FETCH) | (1L << STORE) | (1L << PUSH) | (1L << POP) | (1L << RET) | (1L << CALL) | (1L << WRDIN) | (1L << WRDOUT) | (1L << JMP) | (1L << JZ) | (1L << JNZ) | (1L << JNEG) | (1L << JNNEG) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO) | (1L << NOP) | (1L << HALT) | (1L << ORG) | (1L << DW) | (1L << NAME) | (1L << COMMENT) | (1L << JAVASCRIPT) | (1L << EOL))) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -235,7 +235,7 @@ public class AsmHomeBrewParser extends Parser {
 			case ROL:
 			case CMP:
 			case SUB:
-			case LOADI:
+			case LOAD:
 			case FETCH:
 			case STORE:
 			case PUSH:
@@ -483,7 +483,7 @@ public class AsmHomeBrewParser extends Parser {
 			case DEC:
 			case NOT:
 			case ROL:
-			case LOADI:
+			case LOAD:
 			case FETCH:
 			case STORE:
 			case PUSH:
@@ -960,7 +960,7 @@ public class AsmHomeBrewParser extends Parser {
 				binaryRegRegOperation();
 				}
 				break;
-			case LOADI:
+			case LOAD:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(125);
@@ -1161,7 +1161,7 @@ public class AsmHomeBrewParser extends Parser {
 	}
 
 	public static class BinaryRegValOpCodeContext extends ParserRuleContext {
-		public TerminalNode LOADI() { return getToken(AsmHomeBrewParser.LOADI, 0); }
+		public TerminalNode LOAD() { return getToken(AsmHomeBrewParser.LOAD, 0); }
 		public BinaryRegValOpCodeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1188,7 +1188,7 @@ public class AsmHomeBrewParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(141);
-			match(LOADI);
+			match(LOAD);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2168,7 +2168,7 @@ public class AsmHomeBrewParser extends Parser {
 		public TerminalNode ROL() { return getToken(AsmHomeBrewParser.ROL, 0); }
 		public TerminalNode CMP() { return getToken(AsmHomeBrewParser.CMP, 0); }
 		public TerminalNode SUB() { return getToken(AsmHomeBrewParser.SUB, 0); }
-		public TerminalNode LOADI() { return getToken(AsmHomeBrewParser.LOADI, 0); }
+		public TerminalNode LOAD() { return getToken(AsmHomeBrewParser.LOAD, 0); }
 		public TerminalNode FETCH() { return getToken(AsmHomeBrewParser.FETCH, 0); }
 		public TerminalNode STORE() { return getToken(AsmHomeBrewParser.STORE, 0); }
 		public TerminalNode PUSH() { return getToken(AsmHomeBrewParser.PUSH, 0); }
@@ -2216,7 +2216,7 @@ public class AsmHomeBrewParser extends Parser {
 			{
 			setState(204);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << ADD) | (1L << INC) | (1L << DEC) | (1L << AND) | (1L << OR) | (1L << XOR) | (1L << NOT) | (1L << ROL) | (1L << CMP) | (1L << SUB) | (1L << LOADI) | (1L << FETCH) | (1L << STORE) | (1L << PUSH) | (1L << POP) | (1L << RET) | (1L << CALL) | (1L << WRDIN) | (1L << WRDOUT) | (1L << JMP) | (1L << JZ) | (1L << JNZ) | (1L << JNEG) | (1L << JNNEG) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO) | (1L << NOP) | (1L << HALT))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << ADD) | (1L << INC) | (1L << DEC) | (1L << AND) | (1L << OR) | (1L << XOR) | (1L << NOT) | (1L << ROL) | (1L << CMP) | (1L << SUB) | (1L << LOAD) | (1L << FETCH) | (1L << STORE) | (1L << PUSH) | (1L << POP) | (1L << RET) | (1L << CALL) | (1L << WRDIN) | (1L << WRDOUT) | (1L << JMP) | (1L << JZ) | (1L << JNZ) | (1L << JNEG) | (1L << JNNEG) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO) | (1L << NOP) | (1L << HALT))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {

@@ -14,7 +14,7 @@ public enum InstructionOpcode {
     XOR((short) 0b0001_1_11_000_000_000, (byte) 7),
     CMP((short) 0b0001_0_10_000_000_000, (byte) 7),
     SUB((short) 0b0001_0_10_000_000_000, (byte) 7),
-    LOADI((short) 0b0010_0001_0000_0_000, (byte) 13),
+    LOAD((short) 0b0010_0001_0000_0_000, (byte) 13),
     JMP((short) 0b0010_0001_0000_0_111, (byte) 13),
     JNEG((short) 0b0000_1000_000_0_0001, (byte) 16),
     JZ((short) 0b0000_1000_000_0_0010, (byte) 16),
