@@ -83,7 +83,7 @@ binaryRegRegOpCode
    | NOT
    | ROL
    | STORE
-   | LOAD
+   | FETCH
    ;
 
 binaryRegValOperation
@@ -204,8 +204,8 @@ opcode
    | ROL
    | CMP
    | SUB
-   | LOAD
    | LOADI
+   | FETCH
    | STORE
    | PUSH
    | POP
@@ -373,8 +373,8 @@ NOT: N O T ;
 ROL: R O L;
 CMP: C M P;
 SUB: S U B;
-LOAD: L O A D ;
 LOADI: L O A D I;
+FETCH: F E T C H ;
 STORE: S T O R E ;
 PUSH: P U S H ;
 POP: P O P ;

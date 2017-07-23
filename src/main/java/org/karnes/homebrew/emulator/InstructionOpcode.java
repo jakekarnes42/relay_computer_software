@@ -25,7 +25,7 @@ public enum InstructionOpcode {
     JNC((short) 0b0000_1000_000_1_0100, (byte) 16),
     JNO((short) 0b0000_1000_000_1_1000, (byte) 16),
     STORE((short) 0b0010_0010_00_000_000, (byte) 10),
-    LOAD((short) 0b0010_0100_00_000_000, (byte) 10),
+    FETCH((short) 0b0010_0100_00_000_000, (byte) 10),
     PUSH((short) 0b0100_0000_0001_0_000, (byte) 12),
     POP((short) 0b0100_0000_0010_0_000, (byte) 12),
     RET((short) 0b0100_0000_0010_0_111, (byte) 12),

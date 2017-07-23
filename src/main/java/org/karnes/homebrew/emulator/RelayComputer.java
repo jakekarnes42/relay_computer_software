@@ -1,8 +1,5 @@
 package org.karnes.homebrew.emulator;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.karnes.homebrew.emulator.StackReg.STACK_RP;
 import static org.karnes.homebrew.emulator.StackReg.STACK_SP;
 
@@ -165,8 +162,8 @@ public class RelayComputer {
             case STORE:
                 executeSTOREInstruction();
                 break;
-            case LOAD:
-                executeLOADInstruction();
+            case FETCH:
+                executeFETCHInstruction();
                 break;
             case PUSH:
                 executePUSHInstruction();
@@ -8958,7 +8955,7 @@ public class RelayComputer {
     }
 
     /*
-     * LOADI: Immediately load word from memory to register
+     * LOADI: Immediately fetch word from memory to register
 	*/
     private void executeLOADIInstruction() {
         switch (INST) {
@@ -9256,202 +9253,202 @@ public class RelayComputer {
     }
 
     /*
-     * LOAD. Load word from memory to register
+     * FETCH. Load word from memory to register
      */
-    private void executeLOADInstruction() {
+    private void executeFETCHInstruction() {
         switch (INST) {
 
-            case 0b0010_0100_00_000_000: //LOAD AX AX ([AX] -> AX)
-                AX = load(AX);
+            case 0b0010_0100_00_000_000: //FETCH AX AX ([AX] -> AX)
+                AX = fetch(AX);
                 break;
-            case 0b0010_0100_00_000_001: //LOAD AX BX ([BX] -> AX)
-                AX = load(BX);
+            case 0b0010_0100_00_000_001: //FETCH AX BX ([BX] -> AX)
+                AX = fetch(BX);
                 break;
-            case 0b0010_0100_00_000_010: //LOAD AX CX ([CX] -> AX)
-                AX = load(CX);
+            case 0b0010_0100_00_000_010: //FETCH AX CX ([CX] -> AX)
+                AX = fetch(CX);
                 break;
-            case 0b0010_0100_00_000_011: //LOAD AX DX ([DX] -> AX)
-                AX = load(DX);
+            case 0b0010_0100_00_000_011: //FETCH AX DX ([DX] -> AX)
+                AX = fetch(DX);
                 break;
-            case 0b0010_0100_00_000_100: //LOAD AX EX ([EX] -> AX)
-                AX = load(EX);
+            case 0b0010_0100_00_000_100: //FETCH AX EX ([EX] -> AX)
+                AX = fetch(EX);
                 break;
-            case 0b0010_0100_00_000_101: //LOAD AX SP ([SP] -> AX)
-                AX = load(SP);
+            case 0b0010_0100_00_000_101: //FETCH AX SP ([SP] -> AX)
+                AX = fetch(SP);
                 break;
-            case 0b0010_0100_00_000_110: //LOAD AX RP ([RP] -> AX)
-                AX = load(RP);
+            case 0b0010_0100_00_000_110: //FETCH AX RP ([RP] -> AX)
+                AX = fetch(RP);
                 break;
-            case 0b0010_0100_00_000_111: //LOAD AX PC ([PC] -> AX)
-                AX = load(PC);
+            case 0b0010_0100_00_000_111: //FETCH AX PC ([PC] -> AX)
+                AX = fetch(PC);
                 break;
-            case 0b0010_0100_00_001_000: //LOAD BX AX ([AX] -> BX)
-                BX = load(AX);
+            case 0b0010_0100_00_001_000: //FETCH BX AX ([AX] -> BX)
+                BX = fetch(AX);
                 break;
-            case 0b0010_0100_00_001_001: //LOAD BX BX ([BX] -> BX)
-                BX = load(BX);
+            case 0b0010_0100_00_001_001: //FETCH BX BX ([BX] -> BX)
+                BX = fetch(BX);
                 break;
-            case 0b0010_0100_00_001_010: //LOAD BX CX ([CX] -> BX)
-                BX = load(CX);
+            case 0b0010_0100_00_001_010: //FETCH BX CX ([CX] -> BX)
+                BX = fetch(CX);
                 break;
-            case 0b0010_0100_00_001_011: //LOAD BX DX ([DX] -> BX)
-                BX = load(DX);
+            case 0b0010_0100_00_001_011: //FETCH BX DX ([DX] -> BX)
+                BX = fetch(DX);
                 break;
-            case 0b0010_0100_00_001_100: //LOAD BX EX ([EX] -> BX)
-                BX = load(EX);
+            case 0b0010_0100_00_001_100: //FETCH BX EX ([EX] -> BX)
+                BX = fetch(EX);
                 break;
-            case 0b0010_0100_00_001_101: //LOAD BX SP ([SP] -> BX)
-                BX = load(SP);
+            case 0b0010_0100_00_001_101: //FETCH BX SP ([SP] -> BX)
+                BX = fetch(SP);
                 break;
-            case 0b0010_0100_00_001_110: //LOAD BX RP ([RP] -> BX)
-                BX = load(RP);
+            case 0b0010_0100_00_001_110: //FETCH BX RP ([RP] -> BX)
+                BX = fetch(RP);
                 break;
-            case 0b0010_0100_00_001_111: //LOAD BX PC ([PC] -> BX)
-                BX = load(PC);
+            case 0b0010_0100_00_001_111: //FETCH BX PC ([PC] -> BX)
+                BX = fetch(PC);
                 break;
-            case 0b0010_0100_00_010_000: //LOAD CX AX ([AX] -> CX)
-                CX = load(AX);
+            case 0b0010_0100_00_010_000: //FETCH CX AX ([AX] -> CX)
+                CX = fetch(AX);
                 break;
-            case 0b0010_0100_00_010_001: //LOAD CX BX ([BX] -> CX)
-                CX = load(BX);
+            case 0b0010_0100_00_010_001: //FETCH CX BX ([BX] -> CX)
+                CX = fetch(BX);
                 break;
-            case 0b0010_0100_00_010_010: //LOAD CX CX ([CX] -> CX)
-                CX = load(CX);
+            case 0b0010_0100_00_010_010: //FETCH CX CX ([CX] -> CX)
+                CX = fetch(CX);
                 break;
-            case 0b0010_0100_00_010_011: //LOAD CX DX ([DX] -> CX)
-                CX = load(DX);
+            case 0b0010_0100_00_010_011: //FETCH CX DX ([DX] -> CX)
+                CX = fetch(DX);
                 break;
-            case 0b0010_0100_00_010_100: //LOAD CX EX ([EX] -> CX)
-                CX = load(EX);
+            case 0b0010_0100_00_010_100: //FETCH CX EX ([EX] -> CX)
+                CX = fetch(EX);
                 break;
-            case 0b0010_0100_00_010_101: //LOAD CX SP ([SP] -> CX)
-                CX = load(SP);
+            case 0b0010_0100_00_010_101: //FETCH CX SP ([SP] -> CX)
+                CX = fetch(SP);
                 break;
-            case 0b0010_0100_00_010_110: //LOAD CX RP ([RP] -> CX)
-                CX = load(RP);
+            case 0b0010_0100_00_010_110: //FETCH CX RP ([RP] -> CX)
+                CX = fetch(RP);
                 break;
-            case 0b0010_0100_00_010_111: //LOAD CX PC ([PC] -> CX)
-                CX = load(PC);
+            case 0b0010_0100_00_010_111: //FETCH CX PC ([PC] -> CX)
+                CX = fetch(PC);
                 break;
-            case 0b0010_0100_00_011_000: //LOAD DX AX ([AX] -> DX)
-                DX = load(AX);
+            case 0b0010_0100_00_011_000: //FETCH DX AX ([AX] -> DX)
+                DX = fetch(AX);
                 break;
-            case 0b0010_0100_00_011_001: //LOAD DX BX ([BX] -> DX)
-                DX = load(BX);
+            case 0b0010_0100_00_011_001: //FETCH DX BX ([BX] -> DX)
+                DX = fetch(BX);
                 break;
-            case 0b0010_0100_00_011_010: //LOAD DX CX ([CX] -> DX)
-                DX = load(CX);
+            case 0b0010_0100_00_011_010: //FETCH DX CX ([CX] -> DX)
+                DX = fetch(CX);
                 break;
-            case 0b0010_0100_00_011_011: //LOAD DX DX ([DX] -> DX)
-                DX = load(DX);
+            case 0b0010_0100_00_011_011: //FETCH DX DX ([DX] -> DX)
+                DX = fetch(DX);
                 break;
-            case 0b0010_0100_00_011_100: //LOAD DX EX ([EX] -> DX)
-                DX = load(EX);
+            case 0b0010_0100_00_011_100: //FETCH DX EX ([EX] -> DX)
+                DX = fetch(EX);
                 break;
-            case 0b0010_0100_00_011_101: //LOAD DX SP ([SP] -> DX)
-                DX = load(SP);
+            case 0b0010_0100_00_011_101: //FETCH DX SP ([SP] -> DX)
+                DX = fetch(SP);
                 break;
-            case 0b0010_0100_00_011_110: //LOAD DX RP ([RP] -> DX)
-                DX = load(RP);
+            case 0b0010_0100_00_011_110: //FETCH DX RP ([RP] -> DX)
+                DX = fetch(RP);
                 break;
-            case 0b0010_0100_00_011_111: //LOAD DX PC ([PC] -> DX)
-                DX = load(PC);
+            case 0b0010_0100_00_011_111: //FETCH DX PC ([PC] -> DX)
+                DX = fetch(PC);
                 break;
-            case 0b0010_0100_00_100_000: //LOAD EX AX ([AX] -> EX)
-                EX = load(AX);
+            case 0b0010_0100_00_100_000: //FETCH EX AX ([AX] -> EX)
+                EX = fetch(AX);
                 break;
-            case 0b0010_0100_00_100_001: //LOAD EX BX ([BX] -> EX)
-                EX = load(BX);
+            case 0b0010_0100_00_100_001: //FETCH EX BX ([BX] -> EX)
+                EX = fetch(BX);
                 break;
-            case 0b0010_0100_00_100_010: //LOAD EX CX ([CX] -> EX)
-                EX = load(CX);
+            case 0b0010_0100_00_100_010: //FETCH EX CX ([CX] -> EX)
+                EX = fetch(CX);
                 break;
-            case 0b0010_0100_00_100_011: //LOAD EX DX ([DX] -> EX)
-                EX = load(DX);
+            case 0b0010_0100_00_100_011: //FETCH EX DX ([DX] -> EX)
+                EX = fetch(DX);
                 break;
-            case 0b0010_0100_00_100_100: //LOAD EX EX ([EX] -> EX)
-                EX = load(EX);
+            case 0b0010_0100_00_100_100: //FETCH EX EX ([EX] -> EX)
+                EX = fetch(EX);
                 break;
-            case 0b0010_0100_00_100_101: //LOAD EX SP ([SP] -> EX)
-                EX = load(SP);
+            case 0b0010_0100_00_100_101: //FETCH EX SP ([SP] -> EX)
+                EX = fetch(SP);
                 break;
-            case 0b0010_0100_00_100_110: //LOAD EX RP ([RP] -> EX)
-                EX = load(RP);
+            case 0b0010_0100_00_100_110: //FETCH EX RP ([RP] -> EX)
+                EX = fetch(RP);
                 break;
-            case 0b0010_0100_00_100_111: //LOAD EX PC ([PC] -> EX)
-                EX = load(PC);
+            case 0b0010_0100_00_100_111: //FETCH EX PC ([PC] -> EX)
+                EX = fetch(PC);
                 break;
-            case 0b0010_0100_00_101_000: //LOAD SP AX ([AX] -> SP)
-                SP = load(AX);
+            case 0b0010_0100_00_101_000: //FETCH SP AX ([AX] -> SP)
+                SP = fetch(AX);
                 break;
-            case 0b0010_0100_00_101_001: //LOAD SP BX ([BX] -> SP)
-                SP = load(BX);
+            case 0b0010_0100_00_101_001: //FETCH SP BX ([BX] -> SP)
+                SP = fetch(BX);
                 break;
-            case 0b0010_0100_00_101_010: //LOAD SP CX ([CX] -> SP)
-                SP = load(CX);
+            case 0b0010_0100_00_101_010: //FETCH SP CX ([CX] -> SP)
+                SP = fetch(CX);
                 break;
-            case 0b0010_0100_00_101_011: //LOAD SP DX ([DX] -> SP)
-                SP = load(DX);
+            case 0b0010_0100_00_101_011: //FETCH SP DX ([DX] -> SP)
+                SP = fetch(DX);
                 break;
-            case 0b0010_0100_00_101_100: //LOAD SP EX ([EX] -> SP)
-                SP = load(EX);
+            case 0b0010_0100_00_101_100: //FETCH SP EX ([EX] -> SP)
+                SP = fetch(EX);
                 break;
-            case 0b0010_0100_00_101_101: //LOAD SP SP ([SP] -> SP)
-                SP = load(SP);
+            case 0b0010_0100_00_101_101: //FETCH SP SP ([SP] -> SP)
+                SP = fetch(SP);
                 break;
-            case 0b0010_0100_00_101_110: //LOAD SP RP ([RP] -> SP)
-                SP = load(RP);
+            case 0b0010_0100_00_101_110: //FETCH SP RP ([RP] -> SP)
+                SP = fetch(RP);
                 break;
-            case 0b0010_0100_00_101_111: //LOAD SP PC ([PC] -> SP)
-                SP = load(PC);
+            case 0b0010_0100_00_101_111: //FETCH SP PC ([PC] -> SP)
+                SP = fetch(PC);
                 break;
-            case 0b0010_0100_00_110_000: //LOAD RP AX ([AX] -> RP)
-                RP = load(AX);
+            case 0b0010_0100_00_110_000: //FETCH RP AX ([AX] -> RP)
+                RP = fetch(AX);
                 break;
-            case 0b0010_0100_00_110_001: //LOAD RP BX ([BX] -> RP)
-                RP = load(BX);
+            case 0b0010_0100_00_110_001: //FETCH RP BX ([BX] -> RP)
+                RP = fetch(BX);
                 break;
-            case 0b0010_0100_00_110_010: //LOAD RP CX ([CX] -> RP)
-                RP = load(CX);
+            case 0b0010_0100_00_110_010: //FETCH RP CX ([CX] -> RP)
+                RP = fetch(CX);
                 break;
-            case 0b0010_0100_00_110_011: //LOAD RP DX ([DX] -> RP)
-                RP = load(DX);
+            case 0b0010_0100_00_110_011: //FETCH RP DX ([DX] -> RP)
+                RP = fetch(DX);
                 break;
-            case 0b0010_0100_00_110_100: //LOAD RP EX ([EX] -> RP)
-                RP = load(EX);
+            case 0b0010_0100_00_110_100: //FETCH RP EX ([EX] -> RP)
+                RP = fetch(EX);
                 break;
-            case 0b0010_0100_00_110_101: //LOAD RP SP ([SP] -> RP)
-                RP = load(SP);
+            case 0b0010_0100_00_110_101: //FETCH RP SP ([SP] -> RP)
+                RP = fetch(SP);
                 break;
-            case 0b0010_0100_00_110_110: //LOAD RP RP ([RP] -> RP)
-                RP = load(RP);
+            case 0b0010_0100_00_110_110: //FETCH RP RP ([RP] -> RP)
+                RP = fetch(RP);
                 break;
-            case 0b0010_0100_00_110_111: //LOAD RP PC ([PC] -> RP)
-                RP = load(PC);
+            case 0b0010_0100_00_110_111: //FETCH RP PC ([PC] -> RP)
+                RP = fetch(PC);
                 break;
-            case 0b0010_0100_00_111_000: //LOAD PC AX ([AX] -> PC)
-                PC = load(AX);
+            case 0b0010_0100_00_111_000: //FETCH PC AX ([AX] -> PC)
+                PC = fetch(AX);
                 break;
-            case 0b0010_0100_00_111_001: //LOAD PC BX ([BX] -> PC)
-                PC = load(BX);
+            case 0b0010_0100_00_111_001: //FETCH PC BX ([BX] -> PC)
+                PC = fetch(BX);
                 break;
-            case 0b0010_0100_00_111_010: //LOAD PC CX ([CX] -> PC)
-                PC = load(CX);
+            case 0b0010_0100_00_111_010: //FETCH PC CX ([CX] -> PC)
+                PC = fetch(CX);
                 break;
-            case 0b0010_0100_00_111_011: //LOAD PC DX ([DX] -> PC)
-                PC = load(DX);
+            case 0b0010_0100_00_111_011: //FETCH PC DX ([DX] -> PC)
+                PC = fetch(DX);
                 break;
-            case 0b0010_0100_00_111_100: //LOAD PC EX ([EX] -> PC)
-                PC = load(EX);
+            case 0b0010_0100_00_111_100: //FETCH PC EX ([EX] -> PC)
+                PC = fetch(EX);
                 break;
-            case 0b0010_0100_00_111_101: //LOAD PC SP ([SP] -> PC)
-                PC = load(SP);
+            case 0b0010_0100_00_111_101: //FETCH PC SP ([SP] -> PC)
+                PC = fetch(SP);
                 break;
-            case 0b0010_0100_00_111_110: //LOAD PC RP ([RP] -> PC)
-                PC = load(RP);
+            case 0b0010_0100_00_111_110: //FETCH PC RP ([RP] -> PC)
+                PC = fetch(RP);
                 break;
-            case 0b0010_0100_00_111_111: //LOAD PC PC ([PC] -> PC)
-                PC = load(PC);
+            case 0b0010_0100_00_111_111: //FETCH PC PC ([PC] -> PC)
+                PC = fetch(PC);
                 break;
 
             default:
@@ -9774,7 +9771,7 @@ public class RelayComputer {
         mainMemory[(char) destinationRegister] = sourceRegister; //Put the value of source into mem pointed to by dest
     }
 
-    private short load(short sourceRegister) {
+    private short fetch(short sourceRegister) {
         short memValue = mainMemory[(char) sourceRegister]; //Get the value in mem pointed to by source
         return memValue;
     }
