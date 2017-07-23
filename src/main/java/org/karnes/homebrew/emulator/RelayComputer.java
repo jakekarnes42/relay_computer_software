@@ -115,6 +115,7 @@ public class RelayComputer {
                 break;
             case HALT:
             case MOV:
+            case CLR:
                 executeMOVInstruction();
                 break;
             case INC:

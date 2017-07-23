@@ -45,6 +45,15 @@ public class SymbolResolver extends DirectiveExecutor {
     }
 
     @Override
+    public Void visitClearOperation(AsmHomeBrewParser.ClearOperationContext ctx) {
+        //Takes one word
+        counter++;
+
+        //Don't continue descent
+        return null;
+    }
+
+    @Override
     public Void visitJumpOperation(AsmHomeBrewParser.JumpOperationContext ctx) {
         //Jump Operation takes 2 bytes
         counter += 2;
@@ -90,7 +99,7 @@ public class SymbolResolver extends DirectiveExecutor {
     }
 
     @Override
-    public Void visitRetOperation(AsmHomeBrewParser.RetOperationContext ctx) {
+    public Void visitReturnOperation(AsmHomeBrewParser.ReturnOperationContext ctx) {
         //Takes one word
         counter++;
 

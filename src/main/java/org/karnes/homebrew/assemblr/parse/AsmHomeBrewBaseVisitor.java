@@ -73,7 +73,14 @@ public class AsmHomeBrewBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRetOperation(AsmHomeBrewParser.RetOperationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitReturnOperation(AsmHomeBrewParser.ReturnOperationContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitClearOperation(AsmHomeBrewParser.ClearOperationContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -256,11 +263,4 @@ public class AsmHomeBrewBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitComment(AsmHomeBrewParser.CommentContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitOpcode(AsmHomeBrewParser.OpcodeContext ctx) { return visitChildren(ctx); }
 }

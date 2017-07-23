@@ -32,15 +32,21 @@ noArgOperation
 
 unaryOperation
    : ioOperation
-   | retOperation
+   | returnOperation
    | jumpOperation
+   | clearOperation
    ;
 
 ioOperation
    : ioOpcode register
    ;
-retOperation
+
+returnOperation
    : RET stackRegister
+   ;
+
+clearOperation
+   : CLR register
    ;
 
 ioOpcode
@@ -192,43 +198,6 @@ comment
    : COMMENT
    ;
 
-opcode
-   : MOV
-   | ADD
-   | INC
-   | DEC
-   | AND
-   | OR
-   | XOR
-   | NOT
-   | ROL
-   | CMP
-   | SUB
-   | LOAD
-   | FETCH
-   | STORE
-   | PUSH
-   | POP
-   | RET
-   | CALL
-   | WRDIN
-   | WRDOUT
-   | JMP
-   | JZ
-   | JNZ
-   | JNEG
-   | JNNEG
-   | JC
-   | JNC
-   | JO
-   | JNO
-   | NOP
-   | HALT
-   ;
-
-
-
-
 fragment A
    : ('a' | 'A')
    ;
@@ -363,6 +332,7 @@ fragment Z
 */
 
 MOV: M O V ;
+CLR: C L R ;
 ADD: A D D ;
 INC: I N C ;
 DEC: D E C ;
