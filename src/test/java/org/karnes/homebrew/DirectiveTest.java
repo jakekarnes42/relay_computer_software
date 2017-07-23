@@ -1,15 +1,13 @@
 package org.karnes.homebrew;
 
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.karnes.homebrew.assemblr.Assembler;
-import org.karnes.homebrew.emulator.ForthRelayComputer;
+import org.karnes.homebrew.emulator.RelayComputer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Created by jake on 4/25/17.
- */
 public class DirectiveTest {
 
     @Test
@@ -31,20 +29,20 @@ public class DirectiveTest {
 
         Assembler assembler = new Assembler();
 
-        byte[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble(code);
 
-        ForthRelayComputer computer = new ForthRelayComputer();
+        RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
         computer.start();
 
-        assertEquals((char) 20 * 20, computer.getAX(), "AX should have the result of \"20*20\"");
-        assertEquals((char) 2, computer.getBX(), "BX should have the value of the CELL variable");
-        assertEquals((char) 2 + 5, computer.getCX(), "CX should be have the value of CELL + 5");
-        assertEquals((char) 42, computer.getDX(), "DX should be have the value of MY_CONST");
+        assertEquals((short) 20 * 20, computer.getAX(), "AX should have the result of \"20*20\"");
+        assertEquals((short) 2, computer.getBX(), "BX should have the value of the CELL variable");
+        assertEquals((short) 2 + 5, computer.getCX(), "CX should be have the value of CELL + 5");
+        assertEquals((short) 42, computer.getDX(), "DX should be have the value of MY_CONST");
     }
 
     @Test
-    @DisplayName("Test declaring a byte directly")
+    @DisplayName("Test declaring a word directly")
     public void testDeclareWord() {
         String code = ";Let's play with directives!\r\n"
                 + " DW 0xABCD; Write word\r\n"
@@ -52,10 +50,10 @@ public class DirectiveTest {
 
         Assembler assembler = new Assembler();
 
-        byte[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble(code);
 
-        assertEquals((byte) 0xAB, RAM[0], "Declare Word should set the high byte correctly");
-        assertEquals((byte) 0xCD, RAM[1], "Declare Word should set the low byte correctly");
+        assertEquals((short) 0xABCD, RAM[0], "Declare Word should set the short into memory");
+
     }
 
 

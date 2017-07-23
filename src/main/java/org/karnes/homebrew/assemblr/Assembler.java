@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.karnes.homebrew.assemblr.parse.*;
+import org.karnes.homebrew.assemblr.parse.AsmHomeBrewLexer;
 import org.karnes.homebrew.assemblr.parse.AsmHomeBrewParser;
 
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
 public class Assembler {
 
 
-    public byte[] assemble(String text) {
+    public short[] assemble(String text) {
         //Expand Macros
         //text = expandMacros(text);
 
@@ -34,7 +34,7 @@ public class Assembler {
         return translator.getSymbolTable();
     }
 
-    private byte[] convertToMachineCode(ParseTree parseTree, Map<String, Character> symbolTable) {
+    private short[] convertToMachineCode(ParseTree parseTree, Map<String, Character> symbolTable) {
         //Convert to machine code
         MachineCodeTranslator translator = new MachineCodeTranslator(symbolTable);
         translator.visit(parseTree);
@@ -51,7 +51,7 @@ public class Assembler {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         AsmHomeBrewParser parser = new AsmHomeBrewParser(tokens);
         parser.addErrorListener(errorListener);
-        ParseTree parseTree = parser.prog();
+        ParseTree parseTree = parser.program();
 
         //Error if invalid syntax found
         if (!errorListener.getErrors().isEmpty()) {

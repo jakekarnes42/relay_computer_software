@@ -1,29 +1,21 @@
 package org.karnes.homebrew.assemblr;
 
-import org.karnes.homebrew.Util;
 import org.karnes.homebrew.assemblr.parse.AsmHomeBrewBaseVisitor;
 import org.karnes.homebrew.assemblr.parse.AsmHomeBrewParser;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.karnes.homebrew.Util.literalToChar;
 
-/*
- * This class tries to resolve symbols. We don't need to actually store the instructions themselves, only placeholders.
- *
- * All one-byte instructions can have the same dummy value in memory. We really need to make sure the multi-byte instructions are added in.
- *
- * This is good enough for now while there aren't assembler directives.
- */
+
 public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
     protected Map<String, Character> symbolTable = new HashMap<>();
 
-    protected byte[] memory = new byte[Character.MAX_VALUE];
+    protected short[] memory = new short[Character.MAX_VALUE];
 
     //Woah! Let's use JavaScript. This is so terrible for so many reasons.
     //Yo dawg, I heard you like Javascript in your Java in your assembler in your assembly
@@ -51,27 +43,13 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
         return null;
     }
 
-    @Override
-    public Void visitAssemblerByteDeclaration(AsmHomeBrewParser.AssemblerByteDeclarationContext ctx) {
-        //Get the value
-        char value = getValue(ctx.value());
-        //Convert to byte
-        byte valueByte = (byte) value;
-        //Store it
-        memory[counter] = valueByte;
-        //Move counter to next byte
-        counter++;
-
-        return null;
-    }
 
     @Override
     public Void visitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx) {
         //Get the value
         char value = getValue(ctx.value());
         //Store it
-        memory[counter] = Util.getHighByteFromChar(value);
-        memory[counter + 1] = Util.getLowByteFromChar(value);
+        memory[counter] = (short) value;
 
         //Increment our counter.
         counter += 2;

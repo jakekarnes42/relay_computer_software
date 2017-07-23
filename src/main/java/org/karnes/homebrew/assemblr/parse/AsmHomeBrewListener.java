@@ -8,15 +8,15 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface AsmHomeBrewListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#prog}.
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#program}.
 	 * @param ctx the parse tree
 	 */
-	void enterProg(AsmHomeBrewParser.ProgContext ctx);
+	void enterProgram(AsmHomeBrewParser.ProgramContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#prog}.
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#program}.
 	 * @param ctx the parse tree
 	 */
-	void exitProg(AsmHomeBrewParser.ProgContext ctx);
+	void exitProgram(AsmHomeBrewParser.ProgramContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#line}.
 	 * @param ctx the parse tree
@@ -78,36 +78,6 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 */
 	void exitUnaryOperation(AsmHomeBrewParser.UnaryOperationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#binaryOperation}.
-	 * @param ctx the parse tree
-	 */
-	void enterBinaryOperation(AsmHomeBrewParser.BinaryOperationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#binaryOperation}.
-	 * @param ctx the parse tree
-	 */
-	void exitBinaryOperation(AsmHomeBrewParser.BinaryOperationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#aluOperation}.
-	 * @param ctx the parse tree
-	 */
-	void enterAluOperation(AsmHomeBrewParser.AluOperationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#aluOperation}.
-	 * @param ctx the parse tree
-	 */
-	void exitAluOperation(AsmHomeBrewParser.AluOperationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#aluOpcode}.
-	 * @param ctx the parse tree
-	 */
-	void enterAluOpcode(AsmHomeBrewParser.AluOpcodeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#aluOpcode}.
-	 * @param ctx the parse tree
-	 */
-	void exitAluOpcode(AsmHomeBrewParser.AluOpcodeContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#ioOperation}.
 	 * @param ctx the parse tree
 	 */
@@ -117,6 +87,16 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIoOperation(AsmHomeBrewParser.IoOperationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#retOperation}.
+	 * @param ctx the parse tree
+	 */
+	void enterRetOperation(AsmHomeBrewParser.RetOperationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#retOperation}.
+	 * @param ctx the parse tree
+	 */
+	void exitRetOperation(AsmHomeBrewParser.RetOperationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#ioOpcode}.
 	 * @param ctx the parse tree
@@ -148,45 +128,55 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 */
 	void exitJumpOpcode(AsmHomeBrewParser.JumpOpcodeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#movOperation}.
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#binaryOperation}.
 	 * @param ctx the parse tree
 	 */
-	void enterMovOperation(AsmHomeBrewParser.MovOperationContext ctx);
+	void enterBinaryOperation(AsmHomeBrewParser.BinaryOperationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#movOperation}.
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#binaryOperation}.
 	 * @param ctx the parse tree
 	 */
-	void exitMovOperation(AsmHomeBrewParser.MovOperationContext ctx);
+	void exitBinaryOperation(AsmHomeBrewParser.BinaryOperationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#memoryOperation}.
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#binaryRegRegOperation}.
 	 * @param ctx the parse tree
 	 */
-	void enterMemoryOperation(AsmHomeBrewParser.MemoryOperationContext ctx);
+	void enterBinaryRegRegOperation(AsmHomeBrewParser.BinaryRegRegOperationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#memoryOperation}.
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#binaryRegRegOperation}.
 	 * @param ctx the parse tree
 	 */
-	void exitMemoryOperation(AsmHomeBrewParser.MemoryOperationContext ctx);
+	void exitBinaryRegRegOperation(AsmHomeBrewParser.BinaryRegRegOperationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#loadOperation}.
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#binaryRegRegOpCode}.
 	 * @param ctx the parse tree
 	 */
-	void enterLoadOperation(AsmHomeBrewParser.LoadOperationContext ctx);
+	void enterBinaryRegRegOpCode(AsmHomeBrewParser.BinaryRegRegOpCodeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#loadOperation}.
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#binaryRegRegOpCode}.
 	 * @param ctx the parse tree
 	 */
-	void exitLoadOperation(AsmHomeBrewParser.LoadOperationContext ctx);
+	void exitBinaryRegRegOpCode(AsmHomeBrewParser.BinaryRegRegOpCodeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#storeOperation}.
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#binaryRegValOperation}.
 	 * @param ctx the parse tree
 	 */
-	void enterStoreOperation(AsmHomeBrewParser.StoreOperationContext ctx);
+	void enterBinaryRegValOperation(AsmHomeBrewParser.BinaryRegValOperationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#storeOperation}.
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#binaryRegValOperation}.
 	 * @param ctx the parse tree
 	 */
-	void exitStoreOperation(AsmHomeBrewParser.StoreOperationContext ctx);
+	void exitBinaryRegValOperation(AsmHomeBrewParser.BinaryRegValOperationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#binaryRegValOpCode}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinaryRegValOpCode(AsmHomeBrewParser.BinaryRegValOpCodeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#binaryRegValOpCode}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinaryRegValOpCode(AsmHomeBrewParser.BinaryRegValOpCodeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#stackOperation}.
 	 * @param ctx the parse tree
@@ -228,6 +218,36 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 */
 	void exitCallOperation(AsmHomeBrewParser.CallOperationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#ternaryOperation}.
+	 * @param ctx the parse tree
+	 */
+	void enterTernaryOperation(AsmHomeBrewParser.TernaryOperationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#ternaryOperation}.
+	 * @param ctx the parse tree
+	 */
+	void exitTernaryOperation(AsmHomeBrewParser.TernaryOperationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#aluTernaryOperation}.
+	 * @param ctx the parse tree
+	 */
+	void enterAluTernaryOperation(AsmHomeBrewParser.AluTernaryOperationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#aluTernaryOperation}.
+	 * @param ctx the parse tree
+	 */
+	void exitAluTernaryOperation(AsmHomeBrewParser.AluTernaryOperationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#aluTernaryOpcode}.
+	 * @param ctx the parse tree
+	 */
+	void enterAluTernaryOpcode(AsmHomeBrewParser.AluTernaryOpcodeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#aluTernaryOpcode}.
+	 * @param ctx the parse tree
+	 */
+	void exitAluTernaryOpcode(AsmHomeBrewParser.AluTernaryOpcodeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#value}.
 	 * @param ctx the parse tree
 	 */
@@ -258,16 +278,6 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 */
 	void exitRegister(AsmHomeBrewParser.RegisterContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#aluDestinationRegister}.
-	 * @param ctx the parse tree
-	 */
-	void enterAluDestinationRegister(AsmHomeBrewParser.AluDestinationRegisterContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#aluDestinationRegister}.
-	 * @param ctx the parse tree
-	 */
-	void exitAluDestinationRegister(AsmHomeBrewParser.AluDestinationRegisterContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#stackRegister}.
 	 * @param ctx the parse tree
 	 */
@@ -297,16 +307,6 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssemblerOrgDirective(AsmHomeBrewParser.AssemblerOrgDirectiveContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#assemblerByteDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssemblerByteDeclaration(AsmHomeBrewParser.AssemblerByteDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#assemblerByteDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssemblerByteDeclaration(AsmHomeBrewParser.AssemblerByteDeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#assemblerWordDeclaration}.
 	 * @param ctx the parse tree
