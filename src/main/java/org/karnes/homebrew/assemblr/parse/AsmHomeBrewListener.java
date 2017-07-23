@@ -88,6 +88,16 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 */
 	void exitIoOperation(AsmHomeBrewParser.IoOperationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#retOperation}.
+	 * @param ctx the parse tree
+	 */
+	void enterRetOperation(AsmHomeBrewParser.RetOperationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#retOperation}.
+	 * @param ctx the parse tree
+	 */
+	void exitRetOperation(AsmHomeBrewParser.RetOperationContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#ioOpcode}.
 	 * @param ctx the parse tree
 	 */
@@ -197,16 +207,6 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPopOperation(AsmHomeBrewParser.PopOperationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#callIOperation}.
-	 * @param ctx the parse tree
-	 */
-	void enterCallIOperation(AsmHomeBrewParser.CallIOperationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#callIOperation}.
-	 * @param ctx the parse tree
-	 */
-	void exitCallIOperation(AsmHomeBrewParser.CallIOperationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#callOperation}.
 	 * @param ctx the parse tree

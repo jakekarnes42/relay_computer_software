@@ -28,8 +28,8 @@ public enum InstructionOpcode {
     LOAD((short) 0b0010_0100_00_000_000, (byte) 10),
     PUSH((short) 0b0100_0000_0001_0_000, (byte) 12),
     POP((short) 0b0100_0000_0010_0_000, (byte) 12),
-    CALLI((short) 0b0100_0000_0100_0_000, (byte) 12),
-    CALL((short) 0b0100_0000_1000_0_000, (byte) 12),
+    RET((short) 0b0100_0000_0010_0_111, (byte) 12),
+    CALL((short) 0b0100_0000_0100_0_000, (byte) 12),
     WRDIN((short) 0b0100_0000_0000_0_000, (byte) 13),
     WRDOUT((short) 0b0100_1000_0000_0_000, (byte) 13);
 

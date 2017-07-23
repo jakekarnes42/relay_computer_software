@@ -47,6 +47,19 @@ public class MachineCodeTranslator extends DirectiveExecutor {
     }
 
     @Override
+    public Void visitRetOperation(AsmHomeBrewParser.RetOperationContext ctx) {
+        //Get instruction
+        short instruction = (short) (getOpcodeMask("RET") | getStackMask(ctx.stackRegister()) | getLastRegisterMask("PC"));
+
+        //Store instruction into memory
+        memory[counter] = instruction;
+        //Increment our counter.
+        counter++;
+        //No need to continue descent
+        return null;
+    }
+
+    @Override
     public Void visitJumpOperation(AsmHomeBrewParser.JumpOperationContext ctx) {
         //Get instruction
         short instruction = getOpcodeMask(ctx.jumpOpcode());
@@ -124,23 +137,11 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         return null;
     }
 
+
     @Override
     public Void visitCallOperation(AsmHomeBrewParser.CallOperationContext ctx) {
         //Get instruction
-        short instruction = (short) (getOpcodeMask("CALL") | getStackMask(ctx.stackRegister()) | getLastRegisterMask(ctx.register()));
-
-        //Store instruction into memory
-        memory[counter] = instruction;
-        //Increment our counter.
-        counter++;
-        //No need to continue descent
-        return null;
-    }
-
-    @Override
-    public Void visitCallIOperation(AsmHomeBrewParser.CallIOperationContext ctx) {
-        //Get instruction
-        short instruction = (short) (getOpcodeMask("CALLI") | getStackMask(ctx.stackRegister()));
+        short instruction = (short) (getOpcodeMask("CALL") | getStackMask(ctx.stackRegister()));
 
         //Store instruction into memory
         memory[counter] = instruction;
@@ -184,6 +185,10 @@ public class MachineCodeTranslator extends DirectiveExecutor {
 
     private short getLastRegisterMask(AsmHomeBrewParser.RegisterContext ctx) {
         String registerStr = ctx.getText().toUpperCase();
+        return getLastRegisterMask(registerStr);
+    }
+
+    private short getLastRegisterMask(String registerStr) {
         return Register.valueOf(registerStr).getThirdPositionInstructionMask();
     }
 

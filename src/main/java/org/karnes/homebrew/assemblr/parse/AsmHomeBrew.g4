@@ -32,11 +32,15 @@ noArgOperation
 
 unaryOperation
    : ioOperation
+   | retOperation
    | jumpOperation
    ;
 
 ioOperation
    : ioOpcode register
+   ;
+retOperation
+   : RET stackRegister
    ;
 
 ioOpcode
@@ -94,7 +98,6 @@ stackOperation
    : pushOperation
    | popOperation
    | callOperation
-   | callIOperation
    ;
 
 pushOperation
@@ -105,12 +108,8 @@ popOperation
    : POP register ',' stackRegister
    ;
 
-callIOperation
-   : CALLI stackRegister ',' value
-   ;
-
 callOperation
-   : CALL stackRegister ',' register
+   : CALL stackRegister ',' value
    ;
 
 
@@ -210,8 +209,8 @@ opcode
    | STORE
    | PUSH
    | POP
+   | RET
    | CALL
-   | CALLI
    | WRDIN
    | WRDOUT
    | JMP
@@ -379,8 +378,8 @@ LOADI: L O A D I;
 STORE: S T O R E ;
 PUSH: P U S H ;
 POP: P O P ;
+RET: R E T;
 CALL: C A L L ;
-CALLI: C A L L I;
 WRDIN: W R D I N ;
 WRDOUT: W R D O U T ;
 JMP: J M P ;

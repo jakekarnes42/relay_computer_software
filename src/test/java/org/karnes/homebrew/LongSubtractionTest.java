@@ -1,46 +1,53 @@
 package org.karnes.homebrew;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.karnes.homebrew.assemblr.Assembler;
+import org.karnes.homebrew.emulator.RelayComputer;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * Created by jake on 4/25/17.
  */
-public class SubtractionTest {
+public class LongSubtractionTest {
 
-//    @Test
-//    @DisplayName("Test a single subtraction case")
-//    public void testSimpleSubtraction() {
-//        String code = ";Let's subtract!\r\n"
-//                + "         LOAD SP, 0xFF; Get the stack pointer far away\r\n"
-//                + "         LOAD RP, 0xFFF; Get the return pointer far away\r\n"
-//                + "         LOAD BX, 100; B = 100\r\n"
-//                + "         LOAD CX, 777; C = 777\r\n"
-//                + "         CALL RP, SUB; A = CX - BX\r\n"
-//                + "         HALT        ; DONE\r\n"
-//                + "\r\n"
-//                + ";SUB C - B -> A                      \r\n"
-//                + "SUB:     PUSH SP, BX ; Save B        \r\n"
-//                + "         PUSH SP, CX ; Save C        \r\n"
-//                + "         NOT AX      ; A = NOT B     \r\n"
-//                + "         MOV BX, AX  ; B = A         \r\n"
-//                + "         INC AX      ; A = B + 1     \r\n"
-//                + "         MOV BX, AX  ; B = A         \r\n"
-//                + "         ADD AX      ; A = B + C     \r\n"
-//                + "         POP CX, SP  ; restore C     \r\n"
-//                + "         POP BX, SP  ; restore B     \r\n"
-//                + "         POP PC, RP  ; return        \r\n"
-//                + "\r\n";
-//
-//        Assembler assembler = new Assembler();
-//
-//        byte[] RAM = assembler.assemble(code);
-//
-//        RelayComputer computer = new RelayComputer();
-//        computer.setMainMemory(RAM);
-//        computer.start();
-//
-//        assertEquals((char) 677, computer.getAX(), "AX should have the result of CX - BX");
-//        assertEquals((char) 100, computer.getBX(), "BX should be restored to original value");
-//        assertEquals((char) 777, computer.getCX(), "CX should be restored to original value");
-//    }
+    @Test
+    @DisplayName("Test a single subtraction case")
+    public void testSimpleSubtraction() {
+        String code = ";Let's subtract!\r\n"
+                + "         LOADI SP, 1000; Get the stack pointer far away\r\n"
+                + "         LOADI RP, 2000; Get the return pointer far away\r\n"
+                + "         LOADI BX, 100; B = 100\r\n"
+                + "         LOADI CX, 777; C = 777\r\n"
+                + "         CALL RP, LONGSUB; A = CX - BX\r\n"
+                + "         HALT        ; DONE\r\n"
+                + "\r\n"
+                + ";LONGSUB C - B -> A                      \r\n"
+                + "LONGSUB: PUSH SP, BX     ; Save B        \r\n"
+                + "         PUSH SP, CX     ; Save C        \r\n"
+                + "         NOT AX, BX      ; A = NOT B     \r\n"
+                + "         MOV BX, AX      ; B = A         \r\n"
+                + "         INC AX, BX      ; A = B + 1     \r\n"
+                + "         MOV BX, AX      ; B = A         \r\n"
+                + "         ADD AX, BX, CX  ; A = B + C     \r\n"
+                + "         POP CX, SP      ; restore C     \r\n"
+                + "         POP BX, SP      ; restore B     \r\n"
+                + "         RET RP          ; return        \r\n"
+                + "\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        assertEquals((char) 677, computer.getAX(), "AX should have the result of CX - BX");
+        assertEquals((char) 100, computer.getBX(), "BX should be restored to original value");
+        assertEquals((char) 777, computer.getCX(), "CX should be restored to original value");
+    }
 //
 //
 //    @Test

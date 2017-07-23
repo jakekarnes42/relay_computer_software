@@ -59,6 +59,12 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIoOperation(AsmHomeBrewParser.IoOperationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#retOperation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRetOperation(AsmHomeBrewParser.RetOperationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#ioOpcode}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -124,12 +130,6 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPopOperation(AsmHomeBrewParser.PopOperationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AsmHomeBrewParser#callIOperation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCallIOperation(AsmHomeBrewParser.CallIOperationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#callOperation}.
 	 * @param ctx the parse tree

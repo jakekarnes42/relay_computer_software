@@ -92,9 +92,9 @@ public class SymbolResolver extends DirectiveExecutor {
     }
 
     @Override
-    public Void visitCallIOperation(AsmHomeBrewParser.CallIOperationContext ctx) {
-        //CALLI Operation takes 2 bytes
-        counter += 2;
+    public Void visitRetOperation(AsmHomeBrewParser.RetOperationContext ctx) {
+        //Takes one word
+        counter++;
 
         //Don't continue descent
         return null;
@@ -102,12 +102,13 @@ public class SymbolResolver extends DirectiveExecutor {
 
     @Override
     public Void visitCallOperation(AsmHomeBrewParser.CallOperationContext ctx) {
-        //Takes one word
-        counter++;
+        //CALL Operation takes 2 bytes
+        counter += 2;
 
         //Don't continue descent
         return null;
     }
+
 
     public Map<String, Character> getSymbolTable() {
         return symbolTable;

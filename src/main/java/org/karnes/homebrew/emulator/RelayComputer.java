@@ -172,10 +172,8 @@ public class RelayComputer {
                 executePUSHInstruction();
                 break;
             case POP:
+            case RET:
                 executePOPInstruction();
-                break;
-            case CALLI:
-                executeCALLIInstruction();
                 break;
             case CALL:
                 executeCALLInstruction();
@@ -9550,7 +9548,7 @@ public class RelayComputer {
             case 0b0100_0000_0010_0_110: //POP RP SP
                 RP = pop(STACK_SP);
                 break;
-            case 0b0100_0000_0010_0_111: //POP PC SP
+            case 0b0100_0000_0010_0_111: //POP PC SP | RET SP
                 PC = pop(STACK_SP);
                 break;
             case 0b0100_0000_0010_1_000: //POP AX RP
@@ -9574,7 +9572,7 @@ public class RelayComputer {
             case 0b0100_0000_0010_1_110: //POP RP RP
                 RP = pop(STACK_RP);
                 break;
-            case 0b0100_0000_0010_1_111: //POP PC RP
+            case 0b0100_0000_0010_1_111: //POP PC RP | RET RP
                 PC = pop(STACK_RP);
                 break;
 
@@ -9586,77 +9584,17 @@ public class RelayComputer {
 
 
     /*
-     * CALL_I: Push PC to stack and Jump Immediate
-     */
-    private void executeCALLIInstruction() {
-        switch (INST) {
-            case 0b0100_0000_0100_0_000: //CALLI SP
-                callImmediate(STACK_SP);
-                break;
-            case 0b0100_0000_0100_1_000: //CALLI RP
-                callImmediate(STACK_RP);
-                break;
-
-            default:
-                unknownInstruction(INST);
-                break;
-        }
-    }
-
-
-    /*
-     * CALL.  Push PC to stack and Jump Indirect
+     * CALL: Push PC to stack and Jump Immediate
      */
     private void executeCALLInstruction() {
         switch (INST) {
-            case 0b0100_0000_1000_0_000: //CALL SP AX
-                call(STACK_SP, AX);
+            case 0b0100_0000_0100_0_000: //CALL SP
+                callImmediate(STACK_SP);
                 break;
-            case 0b0100_0000_1000_0_001: //CALL SP BX
-                call(STACK_SP, BX);
+            case 0b0100_0000_0100_1_000: //CALL RP
+                callImmediate(STACK_RP);
                 break;
-            case 0b0100_0000_1000_0_010: //CALL SP CX
-                call(STACK_SP, CX);
-                break;
-            case 0b0100_0000_1000_0_011: //CALL SP DX
-                call(STACK_SP, DX);
-                break;
-            case 0b0100_0000_1000_0_100: //CALL SP EX
-                call(STACK_SP, EX);
-                break;
-            case 0b0100_0000_1000_0_101: //CALL SP SP
-                call(STACK_SP, SP);
-                break;
-            case 0b0100_0000_1000_0_110: //CALL SP RP
-                call(STACK_SP, RP);
-                break;
-            case 0b0100_0000_1000_0_111: //CALL SP PC
-                call(STACK_SP, PC);
-                break;
-            case 0b0100_0000_1000_1_000: //CALL RP AX
-                call(STACK_RP, AX);
-                break;
-            case 0b0100_0000_1000_1_001: //CALL RP BX
-                call(STACK_RP, BX);
-                break;
-            case 0b0100_0000_1000_1_010: //CALL RP CX
-                call(STACK_RP, CX);
-                break;
-            case 0b0100_0000_1000_1_011: //CALL RP DX
-                call(STACK_RP, DX);
-                break;
-            case 0b0100_0000_1000_1_100: //CALL RP EX
-                call(STACK_RP, EX);
-                break;
-            case 0b0100_0000_1000_1_101: //CALL RP SP
-                call(STACK_RP, SP);
-                break;
-            case 0b0100_0000_1000_1_110: //CALL RP RP
-                call(STACK_RP, RP);
-                break;
-            case 0b0100_0000_1000_1_111: //CALL RP PC
-                call(STACK_RP, PC);
-                break;
+
             default:
                 unknownInstruction(INST);
                 break;

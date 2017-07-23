@@ -112,6 +112,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRetOperation(AsmHomeBrewParser.RetOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRetOperation(AsmHomeBrewParser.RetOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIoOpcode(AsmHomeBrewParser.IoOpcodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -239,18 +251,6 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPopOperation(AsmHomeBrewParser.PopOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCallIOperation(AsmHomeBrewParser.CallIOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCallIOperation(AsmHomeBrewParser.CallIOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
