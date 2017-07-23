@@ -1,12 +1,10 @@
 package org.karnes.homebrew.assemblr;
 
-import org.karnes.homebrew.Util;
 import org.karnes.homebrew.assemblr.parse.AsmHomeBrewBaseVisitor;
 import org.karnes.homebrew.assemblr.parse.AsmHomeBrewParser;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-
 import java.util.HashMap;
 import java.util.Map;
 

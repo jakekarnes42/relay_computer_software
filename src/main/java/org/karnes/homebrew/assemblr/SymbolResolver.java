@@ -1,9 +1,7 @@
 package org.karnes.homebrew.assemblr;
 
-import org.karnes.homebrew.assemblr.parse.AsmHomeBrewBaseVisitor;
 import org.karnes.homebrew.assemblr.parse.AsmHomeBrewParser;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /*

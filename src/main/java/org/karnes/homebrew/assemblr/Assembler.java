@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.karnes.homebrew.assemblr.parse.*;
+import org.karnes.homebrew.assemblr.parse.AsmHomeBrewLexer;
 import org.karnes.homebrew.assemblr.parse.AsmHomeBrewParser;
 
 import java.util.Map;
