@@ -117,6 +117,7 @@ public class RelayComputer {
                 break;
             case HALT:
             case MOV:
+            case CLR:
                 executeMOVInstruction();
                 break;
             case INC:
@@ -9653,15 +9654,15 @@ public class RelayComputer {
 
     private short aluIncrement(short inputRegister) {
         TMP1X = inputRegister;
-        int output = TMP1X + 1;
-        updateConditionCodes(output);
+        int output = ((char) TMP1X) + 1;
+        updateConditionCodes(inputRegister, (short) 1, output);
         return (short) output;
     }
 
     private short aluDecrement(short inputRegister) {
         TMP1X = inputRegister;
-        int output = TMP1X - 1;
-        updateConditionCodes(output);
+        int output = ((char) TMP1X) - 1;
+        updateConditionCodes(inputRegister, (short) -1, output);
         return (short) output;
     }
 
@@ -9688,8 +9689,8 @@ public class RelayComputer {
     private short aluAdd(short inputRegister, short inputRegister2) {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
-        int output = TMP1X + TMP2X;
-        updateConditionCodes(output);
+        int output = ((char) TMP1X) + ((char) TMP2X);
+        updateConditionCodes(TMP1X, TMP2X, output);
         return (short) output;
     }
 
@@ -9697,7 +9698,10 @@ public class RelayComputer {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
         int output = TMP1X & TMP2X;
-        updateConditionCodes(output);
+        carry = false;
+        overflow = false;
+        zero = output == 0;
+        sign = output < 0;
         return (short) output;
     }
 
@@ -9705,7 +9709,10 @@ public class RelayComputer {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
         int output = TMP1X | TMP2X;
-        updateConditionCodes(output);
+        carry = false;
+        overflow = false;
+        zero = output == 0;
+        sign = output < 0;
         return (short) output;
     }
 
@@ -9713,23 +9720,38 @@ public class RelayComputer {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
         int output = TMP1X ^ TMP2X;
-        updateConditionCodes(output);
+        carry = false;
+        overflow = false;
+        zero = output == 0;
+        sign = output < 0;
         return (short) output;
     }
 
     private short compareSubtract(short inputRegister, short inputRegister2) {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
-        int output = TMP1X - TMP2X;
-        updateConditionCodes(output);
+
+        //Subtraction computed in same way as ALU
+        int output = ((char) TMP1X) + (~((char) TMP2X)) + 1;
+
+        updateConditionCodes(inputRegister, inputRegister2, output);
         return (short) output;
     }
 
-    private void updateConditionCodes(int aluOutput) {
-        carry = aluOutput > Character.MAX_VALUE;
-        overflow = aluOutput > Short.MAX_VALUE || aluOutput < Short.MIN_VALUE;
+    private void updateConditionCodes(short input1, short input2, int aluOutput) {
+        //Carry when 17th bit is set (too large for 16 bit num)
+        BigInteger output = BigInteger.valueOf(aluOutput);
+        carry = output.testBit(16); //Use 16 because of zero-indexing
+
+        //Overflow when output sign doesn't match input signs
+        overflow = (((short) aluOutput) < 0 && (input1 >= 0 && input2 >= 0))
+                || (((short) aluOutput) >= 0 && (input1 < 0 && input2 < 0));
+
+        //Zero when output would be truncated to zero
         zero = ((short) aluOutput) == 0;
-        sign = ((short) aluOutput < 0);
+
+        //Sign when highest bit (16) is 1
+        sign = output.testBit(15); //Use 15 because of zero-indexing
     }
 
     private short load() {
@@ -9812,19 +9834,19 @@ public class RelayComputer {
         ioDevice.sendWord(sourceRegister);
     }
 
-    public boolean isZero() {
+    public boolean getZeroFlag() {
         return zero;
     }
 
-    public boolean isCarry() {
+    public boolean getCarryFlag() {
         return carry;
     }
 
-    public boolean isSign() {
+    public boolean getSignFlag() {
         return sign;
     }
 
-    public boolean isOverflow() {
+    public boolean getOverflowFlag() {
         return overflow;
     }
 

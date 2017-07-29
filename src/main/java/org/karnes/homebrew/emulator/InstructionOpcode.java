@@ -4,6 +4,7 @@ public enum InstructionOpcode {
     NOP((short) 0b0000_0000_0000_0000, (byte) 16),
     HALT((short) 0b1111_1111_1111_1111, (byte) 16),
     MOV((short) 0b1111_1111_11_000_000, (byte) 10),
+    CLR((short) 0b1111_1111_11_000_000, (byte) 10),
     INC((short) 0b0001_0000_00_000_000, (byte) 10),
     DEC((short) 0b0001_0000_01_000_000, (byte) 10),
     NOT((short) 0b0001_0000_10_000_000, (byte) 10),
