@@ -5,14 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.karnes.homebrew.assemblr.Assembler;
 import org.karnes.homebrew.emulator.RelayComputer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CmpTest {
 
     @Test
-    @DisplayName("Test a comparison")
+    @DisplayName("Test comparison. A=C-B. B is less than C.")
     public void testComparison() {
         String code = ";Let's compare!\r\n"
                 + "         LOAD BX, 150    ; B = 150\r\n"
@@ -41,7 +39,7 @@ public class CmpTest {
     }
 
     @Test
-    @DisplayName("Test a reverse comparison")
+    @DisplayName("Test comparison. A=C-B. B is greater than C.")
     public void testReverseComparison() {
         String code = ";Let's compare!\r\n"
                 + "         LOAD BX, 250    ; B = 250\r\n"
@@ -70,7 +68,7 @@ public class CmpTest {
     }
 
     @Test
-    @DisplayName("Test negative comparison")
+    @DisplayName("Test comparison. A=C-B. B is less than C. Values are negative")
     public void testNegativeComparison() {
         String code = ";Let's compare!\r\n"
                 + "         LOAD BX, -250    ; B = -250\r\n"
@@ -99,7 +97,7 @@ public class CmpTest {
     }
 
     @Test
-    @DisplayName("Test negative comparison 2")
+    @DisplayName("Test comparison. A=C-B. B is greater than C. Values are negative")
     public void testNegativeComparison2() {
         String code = ";Let's compare!\r\n"
                 + "         LOAD BX, -150    ; B = -150\r\n"
@@ -127,9 +125,67 @@ public class CmpTest {
         assertTrue(computer.getSignFlag(), "The sign flag should be set, since the result is negative");
     }
 
+    @Test
+    @DisplayName("Test comparison. A=C-B. B is less than C. B is negative")
+    public void testNegativeComparison3() {
+        String code = ";Let's compare!\r\n"
+                + "         LOAD BX, -150   ; B = -150\r\n"
+                + "         LOAD CX, 250    ; C = 250\r\n"
+                + "         CMP AX, CX, BX  ; AX = CX - BX\n"
+                + "         HALT            ; DONE\r\n"
+                + "\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        assertEquals((short) 400, computer.getAX(), "AX should have the result of CX - BX");
+        assertEquals((short) -150, computer.getBX(), "BX should still have its original value");
+        assertEquals((short) 250, computer.getCX(), "CX should still have its original value");
+
+        //Check condition registers
+        assertTrue(computer.getCarryFlag(), "The carry flag should be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
 
     @Test
-    @DisplayName("Comparison of equal values")
+    @DisplayName("Test comparison. A=C-B. B is less than C. C is negative")
+    public void testNegativeComparison4() {
+        String code = ";Let's compare!\r\n"
+                + "         LOAD BX, 150   ; B = 150\r\n"
+                + "         LOAD CX, -250    ; C = -250\r\n"
+                + "         CMP AX, CX, BX  ; AX = CX - BX\n"
+                + "         HALT            ; DONE\r\n"
+                + "\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        assertEquals((short) -400, computer.getAX(), "AX should have the result of CX - BX");
+        assertEquals((short) 150, computer.getBX(), "BX should still have its original value");
+        assertEquals((short) -250, computer.getCX(), "CX should still have its original value");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertTrue(computer.getSignFlag(), "The sign flag should be set");
+    }
+
+
+    @Test
+    @DisplayName("Test comparison. A=C-B. B is equal to C.")
     public void testEqualsComparison() {
         String code = ";Let's compare!\r\n"
                 + "         LOAD BX, 250    ; B = 250\r\n"
@@ -155,6 +211,35 @@ public class CmpTest {
         assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set, since the output's sign matches the inputs' signs");
         assertTrue(computer.getZeroFlag(), "The zero flag should be set");
         assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
+    @Test
+    @DisplayName("Test comparison. A=C-B. B is less than C. Large values.")
+    public void testComparisonLarge() {
+        String code = ";Let's compare!\r\n"
+                + "         LOAD BX, -32768 ; B = -32768\r\n"
+                + "         LOAD CX, 32767  ; C = 32767\r\n"
+                + "         CMP AX, CX, BX  ; AX = CX - BX\n"
+                + "         HALT            ; DONE\r\n"
+                + "\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        assertEquals((short) -1, computer.getAX(), "AX should have the result of CX - BX");
+        assertEquals((short) -32768, computer.getBX(), "BX should still have its original value");
+        assertEquals((short) 32767, computer.getCX(), "CX should still have its original value");
+
+        //Check condition registers
+        assertTrue(computer.getCarryFlag(), "The carry flag should be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertTrue(computer.getSignFlag(), "The sign flag should be set");
     }
 
 }
