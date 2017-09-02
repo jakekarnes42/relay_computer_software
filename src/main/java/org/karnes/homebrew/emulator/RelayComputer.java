@@ -9004,52 +9004,21 @@ public class RelayComputer {
      * Conditional Jump: JMP to address depending on condition register
      */
     private void executeConditionalJumpInstruction() {
-        switch (INST) {
-            case 0b0000_1000_000_0_0001: //JNEG
-                if (sign) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_0_0010: //JZ
-                if (zero) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_0_0100: //JC
-                if (carry) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_0_1000: //JO
-                if (overflow) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_1_0001: //JNNEG
-                if (!sign) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_1_0010: //JNZ
-                if (!zero) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_1_0100: //JNC
-                if (!carry) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_1_1000: //JNO
-                if (!overflow) {
-                    PC = load();
-                }
-                break;
+        BigInteger instruction = BigInteger.valueOf(INST);
 
-            default:
-                unknownInstruction(INST);
-                break;
+        boolean negateBit = instruction.testBit(4);
+        boolean zeroBit = instruction.testBit(3);
+        boolean signBit = instruction.testBit(2);
+        boolean overflowBit = instruction.testBit(1);
+        boolean carryBit = instruction.testBit(0);
+
+        //JMP ≡ (n) ⊕ ( (z ∧ zero_reg) ∨ (s ∧ sign_reg) ∨ (o ∧ overflow_reg) ∨ (c ∧ carry_reg) )
+        boolean shouldJump = (negateBit ^ ((zeroBit && zero) || (signBit && sign) || (overflowBit && overflow) || (carryBit && carry)));
+
+        if (shouldJump) {
+            PC = load();
         }
+
     }
 
     /*
