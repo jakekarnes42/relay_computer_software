@@ -113,7 +113,7 @@ public class IncTest {
         //Check registers
         assertEquals(value, computer.getAX(), "AX should have its original value");
         assertEquals((char) value + 1, (char) computer.getBX(), "BX should have AX + 1, when viewed as an unsigned value");
-        assertEquals(Short.MIN_VALUE, ((short) computer.getBX()), "BX should have smallest short value, when viewed as an signed value");
+        assertEquals(Short.MIN_VALUE, computer.getBX(), "BX should have smallest short value, when viewed as an signed value");
 
         //Check condition registers
         assertFalse(computer.getCarryFlag(), "The carry flag should not be set");

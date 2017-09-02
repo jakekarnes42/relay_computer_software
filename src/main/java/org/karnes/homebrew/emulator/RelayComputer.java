@@ -191,6 +191,7 @@ public class RelayComputer {
     /*
      * NO-OP. Do nothing.
      */
+    @SuppressWarnings("EmptyMethod")
     private void executeNOPInstruction() {
         return; //Intentionally empty
     }
