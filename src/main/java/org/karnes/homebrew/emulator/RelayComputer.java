@@ -9761,7 +9761,7 @@ public class RelayComputer {
         return TMP1X;
     }
 
-    private void store(short sourceRegister, short destinationRegister) {
+    private void store(short destinationRegister, short sourceRegister) {
         mainMemory[(char) destinationRegister] = sourceRegister; //Put the value of source into mem pointed to by dest
     }
 
