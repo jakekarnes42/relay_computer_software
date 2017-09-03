@@ -95,7 +95,7 @@ public class RolTest {
 
 
     @Test
-    @DisplayName("Self NOT")
+    @DisplayName("Self ROL")
     public void testSelfRol() {
         short value = 0b0000_0000_0000_0001;
         String code = "     LOAD AX, " + value + "  ; AX = value\r\n"
