@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.karnes.homebrew.assemblr.Assembler;
 import org.karnes.homebrew.emulator.RelayComputer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class IncTest {
 

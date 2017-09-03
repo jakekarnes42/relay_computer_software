@@ -107,6 +107,6 @@ public class MovTest {
         assertEquals(0, computer.getAX(), "AX should have its value cleared");
 
     }
-    
+
 
 }
