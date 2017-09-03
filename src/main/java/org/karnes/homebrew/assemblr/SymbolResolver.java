@@ -55,7 +55,7 @@ public class SymbolResolver extends DirectiveExecutor {
 
     @Override
     public Void visitJumpOperation(AsmHomeBrewParser.JumpOperationContext ctx) {
-        //Jump Operation takes 2 bytes
+        //Jump Operation takes 2 words
         counter += 2;
 
         //Don't continue descent
@@ -73,7 +73,7 @@ public class SymbolResolver extends DirectiveExecutor {
 
     @Override
     public Void visitBinaryRegValOperation(AsmHomeBrewParser.BinaryRegValOperationContext ctx) {
-        //Jump Operation takes 2 bytes
+        //Jump Operation takes 2 words
         counter += 2;
 
         //Don't continue descent
@@ -109,13 +109,21 @@ public class SymbolResolver extends DirectiveExecutor {
 
     @Override
     public Void visitCallOperation(AsmHomeBrewParser.CallOperationContext ctx) {
-        //CALL Operation takes 2 bytes
+        //CALL Operation takes 2 words
         counter += 2;
 
         //Don't continue descent
         return null;
     }
 
+    @Override
+    public Void visitTernaryOperation(AsmHomeBrewParser.TernaryOperationContext ctx) {
+        //Takes one word
+        counter++;
+
+        //Don't continue descent
+        return null;
+    }
 
     public Map<String, Character> getSymbolTable() {
         return symbolTable;
