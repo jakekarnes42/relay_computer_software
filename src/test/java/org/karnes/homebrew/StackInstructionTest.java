@@ -283,4 +283,171 @@ public class StackInstructionTest {
         assertEquals((short) 877, computer.getAX(), "AX should have the result of EX - DX");
     }
 
+    @Test
+    @DisplayName("Nested CALL and RET instruction combination with RP pointer")
+    public void testNestedCALLandRETRP() {
+        short value1 = 1000;
+        short value2 = 2000;
+        short value3 = 3000;
+        short value4 = 4000;
+        short value5 = 5000;
+        short value6 = 6000;
+        short value7 = 7000;
+
+        String code = ";Let's use nested subroutines\r\n"
+                + "     LOAD SP, 1000   ; Get the stack pointer far away\r\n"
+                + "     LOAD RP, 2000   ; Get the return pointer far away\r\n"
+                + "     CALL RP , LOADER        ; Call loading sub routine\r\n"
+                + "     HALT                    ; DONE\r\n"
+                + ";This is not efficient but a neat test of nested subroutines\r\n"
+                + "LOADE:       LOAD EX, " + value5 + "     ; EX = value5\r\n"
+                + "             RET RP                      ; DONE\r\n"
+                + "LOADD:       LOAD DX, " + value4 + "     ; DX = value4\r\n"
+                + "             CALL RP, LOADE              ; Call LOADE subroutine\r\n"
+                + "             RET RP                      ; DONE\r\n"
+                + "LOADC:       LOAD CX, " + value3 + "     ; CX = value3\r\n"
+                + "             CALL RP, LOADD              ; Call LOADD subroutine\r\n"
+                + "             RET RP                      ; DONE\r\n"
+                + "LOADB:       LOAD BX, " + value2 + "     ; BX = value2\r\n"
+                + "             CALL RP, LOADC              ; Call LOADC subroutine\r\n"
+                + "             RET RP                      ; DONE\r\n"
+                + "LOADA:       LOAD AX, " + value1 + "     ; AX = value1\r\n"
+                + "             CALL RP, LOADB              ; Call LOADB subroutine\r\n"
+                + "             RET RP                      ; DONE\r\n"
+                + "LOADER:      CALL RP , LOADA         ;Call LOADA subroutine\r\n"
+                + "             RET RP                    ; DONE\r\n";
+
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals(value1, computer.getAX(), "AX should have the loaded value");
+        assertEquals(value2, computer.getBX(), "BX should have the loaded value");
+        assertEquals(value3, computer.getCX(), "CX should have the loaded value");
+        assertEquals(value4, computer.getDX(), "DX should have the loaded value");
+        assertEquals(value5, computer.getEX(), "EX should have the loaded value");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
+    @Test
+    @DisplayName("Nested CALL and RET instruction combination with SP pointer")
+    public void testNestedCALLandRETSP() {
+        short value1 = 1000;
+        short value2 = 2000;
+        short value3 = 3000;
+        short value4 = 4000;
+        short value5 = 5000;
+        short value6 = 6000;
+        short value7 = 7000;
+
+        String code = ";Let's use nested subroutines\r\n"
+                + "     LOAD SP, 1000   ; Get the stack pointer far away\r\n"
+                + "     CALL SP , LOADER        ; Call loading sub routine\r\n"
+                + "     HALT                    ; DONE\r\n"
+                + ";This is not efficient but a neat test of nested subroutines\r\n"
+                + "LOADE:       LOAD EX, " + value5 + "     ; EX = value5\r\n"
+                + "             RET SP                      ; DONE\r\n"
+                + "LOADD:       LOAD DX, " + value4 + "     ; DX = value4\r\n"
+                + "             CALL SP, LOADE              ; Call LOADE subroutine\r\n"
+                + "             RET SP                      ; DONE\r\n"
+                + "LOADC:       LOAD CX, " + value3 + "     ; CX = value3\r\n"
+                + "             CALL SP, LOADD              ; Call LOADD subroutine\r\n"
+                + "             RET SP                      ; DONE\r\n"
+                + "LOADB:       LOAD BX, " + value2 + "     ; BX = value2\r\n"
+                + "             CALL SP, LOADC              ; Call LOADC subroutine\r\n"
+                + "             RET SP                      ; DONE\r\n"
+                + "LOADA:       LOAD AX, " + value1 + "     ; AX = value1\r\n"
+                + "             CALL SP, LOADB              ; Call LOADB subroutine\r\n"
+                + "             RET SP                      ; DONE\r\n"
+                + "LOADER:      CALL SP , LOADA         ;Call LOADA subroutine\r\n"
+                + "             RET SP                    ; DONE\r\n";
+
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals(value1, computer.getAX(), "AX should have the loaded value");
+        assertEquals(value2, computer.getBX(), "BX should have the loaded value");
+        assertEquals(value3, computer.getCX(), "CX should have the loaded value");
+        assertEquals(value4, computer.getDX(), "DX should have the loaded value");
+        assertEquals(value5, computer.getEX(), "EX should have the loaded value");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+    @Test
+    @DisplayName("Nested CALL and RET instruction combination with both pointers")
+    public void testNestedCALLandRETBoth() {
+        short value1 = 1000;
+        short value2 = 2000;
+        short value3 = 3000;
+        short value4 = 4000;
+        short value5 = 5000;
+
+
+        String code = ";Let's use nested subroutines\r\n"
+                + "     LOAD SP, 1000   ; Get the stack pointer far away\r\n"
+                + "     LOAD RP, 2000   ; Get the stack pointer far away\r\n"
+                + "     CALL SP , LOADER        ; Call loading sub routine\r\n"
+                + "     HALT                    ; DONE\r\n"
+                + ";This is not efficient but a neat test of nested subroutines\r\n"
+                + "LOADE:       LOAD EX, " + value5 + "     ; EX = value5\r\n"
+                + "             RET RP                      ; DONE\r\n"
+                + "LOADD:       LOAD DX, " + value4 + "     ; DX = value4\r\n"
+                + "             CALL RP, LOADE              ; Call LOADE subroutine\r\n"
+                + "             RET SP                      ; DONE\r\n"
+                + "LOADC:       LOAD CX, " + value3 + "     ; CX = value3\r\n"
+                + "             CALL SP, LOADD              ; Call LOADD subroutine\r\n"
+                + "             RET RP                      ; DONE\r\n"
+                + "LOADB:       LOAD BX, " + value2 + "     ; BX = value2\r\n"
+                + "             CALL RP, LOADC              ; Call LOADC subroutine\r\n"
+                + "             RET SP                      ; DONE\r\n"
+                + "LOADA:       LOAD AX, " + value1 + "     ; AX = value1\r\n"
+                + "             CALL SP, LOADB              ; Call LOADB subroutine\r\n"
+                + "             RET RP                      ; DONE\r\n"
+                + "LOADER:      CALL RP , LOADA         ;Call LOADA subroutine\r\n"
+                + "             RET SP                    ; DONE\r\n";
+
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals(value1, computer.getAX(), "AX should have the loaded value");
+        assertEquals(value2, computer.getBX(), "BX should have the loaded value");
+        assertEquals(value3, computer.getCX(), "CX should have the loaded value");
+        assertEquals(value4, computer.getDX(), "DX should have the loaded value");
+        assertEquals(value5, computer.getEX(), "EX should have the loaded value");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
 }
