@@ -9017,6 +9017,8 @@ public class RelayComputer {
 
         if (shouldJump) {
             PC = load();
+        } else {
+            PC++;
         }
 
     }
