@@ -9577,7 +9577,6 @@ public class RelayComputer {
      */
     private void executeWRDINInstruction() {
         switch (INST) {
-
             case (short) 0b1000_0000_0000_0_000: //WRDIN AX
                 AX = wordIn();
                 break;
@@ -9905,6 +9904,10 @@ public class RelayComputer {
 
     public IODevice getIoDevice() {
         return ioDevice;
+    }
+
+    public void setIoDevice(IODevice ioDevice) {
+        this.ioDevice = ioDevice;
     }
 
     public boolean isHalted() {

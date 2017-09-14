@@ -31,8 +31,8 @@ public enum InstructionOpcode {
     RET((short) 0b0100_0000_0010_0_111, (byte) 16),
     POP((short) 0b0100_0000_0010_0_000, (byte) 12),
     CALL((short) 0b0100_0000_0100_0_000, (byte) 12),
-    WRDIN((short) 0b0100_0000_0000_0_000, (byte) 13),
-    WRDOUT((short) 0b0100_1000_0000_0_000, (byte) 13);
+    WRDIN((short) 0b1000_0000_0000_0_000, (byte) 13),
+    WRDOUT((short) 0b1000_1000_0000_0_000, (byte) 13);
 
 
     private final short instructionOpcodeMask;
