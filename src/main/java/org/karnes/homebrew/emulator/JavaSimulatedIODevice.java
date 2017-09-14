@@ -43,10 +43,4 @@ public class JavaSimulatedIODevice implements IODevice {
         }
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        in.close();
-        out.flush();
-        out.close();
-    }
 }
