@@ -144,5 +144,77 @@ public class IOInstructionTest {
     }
 
 
-    //TODO: write a test that does both in an output. Example: hello <name>!
+    @Test
+    @DisplayName("Bidirection I/O test. Hello <input_name>! Double-stack implementation")
+    public void testHelloName() throws UnsupportedEncodingException {
+        String code = "; Reads in a name, prints 'Hello <name>!'\r\n"
+                + "         LOAD SP, 500    ; Move SP far into memory \r\n"
+                + "         LOAD RP, 900    ; Move RP far into memory \r\n"
+                + "READ:    WRDIN AX        ; Get the next letter into AX \r\n"
+                + "         JZ READ_DONE    ; If there wasn't a letter, jump to READ_DONE\r\n"
+                + "         PUSH SP, AX     ; Push the letter onto SP \r\n"
+                + "         INC BX, BX      ; Update our counter in BX\r\n"
+                + "         JMP READ        ; Jump back to read another character \r\n"
+
+
+                + "; All of the letters are on SP stack. BX has how many letters we read in\r\n"
+                + "; We want to move the letters off the SP stack onto the RP stack. \r\n"
+                + "READ_DONE:   MOV DX, BX  ; Save the number of letters (BX) into DX for later\r\n"
+                + "SHUF:        POP CX, SP  ; Pop top of SP in CX\r\n"
+                + "             PUSH RP, CX ; Push CX onto RP stack \r\n"
+                + "             DEC BX, BX  ; Decrement our BX counter\r\n"
+                + "             JNZ SHUF    ; If that wasn't the last letter, repeat SHUF \r\n"
+
+
+                + "; Now all of the letters have been pushed onto RP in reverse order, and DX is our counter \r\n"
+                + "; Start by writing 'Hello ' out \r\n"
+                + "     LOAD AX, 0x48   ; AX = H\r\n"
+                + "     WRDOUT AX       ; Write AX \r\n"
+                + "     LOAD AX, 0x65   ; AX = e\r\n"
+                + "     WRDOUT AX       ; Write AX \r\n"
+                + "     LOAD AX, 0x6C   ; AX = l\r\n"
+                + "     WRDOUT AX       ; Write AX \r\n"
+                + "     LOAD AX, 0x6C   ; AX = l\r\n"
+                + "     WRDOUT AX       ; Write AX \r\n"
+                + "     LOAD AX, 0x6F   ; AX = o\r\n"
+                + "     WRDOUT AX       ; Write AX \r\n"
+                + "     LOAD AX, 0x20   ; AX = ' '\r\n"
+                + "     WRDOUT AX       ; Write AX \r\n"
+
+                + "; Write the name by popping all elements of RP, decrementing DX until 0 \r\n"
+                + "PRINT:   POP AX, RP  ; Get next letter off RP stack into AX\r\n"
+                + "         WRDOUT AX   ; Write AX \r\n"
+                + "         DEC DX, DX  ; Decrement our DX counter\r\n"
+                + "         JNZ PRINT   ; If that wasn't the last letter, repeat PRINT \r\n"
+
+                + "; All the input letters have been written back out, finish with exclaimation point! \r\n"
+                + "     LOAD AX, 0x21   ; AX = '!'\r\n"
+                + "     WRDOUT AX       ; Write AX \r\n"
+                + "     HALT            ; DONE\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        JavaSimulatedIODevice ioDevice = new JavaSimulatedIODevice(new ByteArrayInputStream("Jake".getBytes(ENCODING)),
+                new PrintStream(baos));
+
+        computer.setIoDevice(ioDevice);
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check output
+        String output = baos.toString();
+        assertEquals("Hello Jake!", output, "The output should be the message, including input name");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertTrue(computer.getZeroFlag(), "The zero flag should be set since that was the last ALU operation");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+
+    }
 }
