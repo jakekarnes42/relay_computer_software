@@ -1,28 +1,46 @@
 package org.karnes.homebrew.emulator;
 
-import java.util.Scanner;
+import java.io.*;
+import java.nio.charset.Charset;
 
 public class JavaSimulatedIODevice implements IODevice {
-    Scanner in;
+    InputStreamReader in;
+    OutputStreamWriter out;
 
     public JavaSimulatedIODevice() {
-        in = new Scanner(System.in);
+        this(System.in, System.out);
+    }
+
+    public JavaSimulatedIODevice(InputStream in, PrintStream out) {
+        this.in = new InputStreamReader(in, Charset.forName("UTF-16"));
+        this.out = new OutputStreamWriter(out);
     }
 
     public boolean hasWord() {
-        return in.hasNextShort();
+        try {
+            return in.ready();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public short getWord() {
-        return in.nextShort();
+        try {
+            return (short) in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public void sendWord(short outputShort) {
-        System.out.println(outputShort);
+        try {
+            out.write(outputShort);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        in.close();
-    }
 }

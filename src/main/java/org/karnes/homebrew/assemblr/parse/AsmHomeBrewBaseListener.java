@@ -112,13 +112,25 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRetOperation(AsmHomeBrewParser.RetOperationContext ctx) { }
+	@Override public void enterReturnOperation(AsmHomeBrewParser.ReturnOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRetOperation(AsmHomeBrewParser.RetOperationContext ctx) { }
+	@Override public void exitReturnOperation(AsmHomeBrewParser.ReturnOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClearOperation(AsmHomeBrewParser.ClearOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClearOperation(AsmHomeBrewParser.ClearOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -431,18 +443,6 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitComment(AsmHomeBrewParser.CommentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterOpcode(AsmHomeBrewParser.OpcodeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOpcode(AsmHomeBrewParser.OpcodeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

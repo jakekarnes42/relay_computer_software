@@ -47,7 +47,20 @@ public class MachineCodeTranslator extends DirectiveExecutor {
     }
 
     @Override
-    public Void visitRetOperation(AsmHomeBrewParser.RetOperationContext ctx) {
+    public Void visitClearOperation(AsmHomeBrewParser.ClearOperationContext ctx) {
+        //Get instruction
+        short instruction = (short) (getOpcodeMask("CLR") | getMidRegisterMask(ctx.register()) | getLastRegisterMask(ctx.register()));
+
+        //Store instruction into memory
+        memory[counter] = instruction;
+        //Increment our counter.
+        counter++;
+        //No need to continue descent
+        return null;
+    }
+
+    @Override
+    public Void visitReturnOperation(AsmHomeBrewParser.ReturnOperationContext ctx) {
         //Get instruction
         short instruction = (short) (getOpcodeMask("RET") | getStackMask(ctx.stackRegister()) | getLastRegisterMask("PC"));
 

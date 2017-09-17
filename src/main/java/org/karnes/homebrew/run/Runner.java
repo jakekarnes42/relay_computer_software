@@ -3,9 +3,6 @@ package org.karnes.homebrew.run;
 import org.karnes.homebrew.assemblr.Assembler;
 import org.karnes.homebrew.emulator.RelayComputer;
 
-/**
- * Created by jake on 4/24/17.
- */
 public class Runner {
 
     public static void main(String[] args) {

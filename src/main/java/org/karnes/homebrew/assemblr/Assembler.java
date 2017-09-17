@@ -55,7 +55,7 @@ public class Assembler {
 
         //Error if invalid syntax found
         if (!errorListener.getErrors().isEmpty()) {
-            System.exit(1);
+            throw new IllegalStateException("Found errors while parsing text. Errors: " + errorListener.getErrors());
         }
 
         return parseTree;

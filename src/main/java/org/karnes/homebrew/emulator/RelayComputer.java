@@ -1,5 +1,7 @@
 package org.karnes.homebrew.emulator;
 
+import java.math.BigInteger;
+
 import static org.karnes.homebrew.emulator.StackReg.STACK_RP;
 import static org.karnes.homebrew.emulator.StackReg.STACK_SP;
 
@@ -115,6 +117,7 @@ public class RelayComputer {
                 break;
             case HALT:
             case MOV:
+            case CLR:
                 executeMOVInstruction();
                 break;
             case INC:
@@ -188,6 +191,7 @@ public class RelayComputer {
     /*
      * NO-OP. Do nothing.
      */
+    @SuppressWarnings("EmptyMethod")
     private void executeNOPInstruction() {
         return; //Intentionally empty
     }
@@ -9000,52 +9004,23 @@ public class RelayComputer {
      * Conditional Jump: JMP to address depending on condition register
      */
     private void executeConditionalJumpInstruction() {
-        switch (INST) {
-            case 0b0000_1000_000_0_0001: //JNEG
-                if (sign) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_0_0010: //JZ
-                if (zero) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_0_0100: //JC
-                if (carry) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_0_1000: //JO
-                if (overflow) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_1_0001: //JNNEG
-                if (!sign) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_1_0010: //JNZ
-                if (!zero) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_1_0100: //JNC
-                if (!carry) {
-                    PC = load();
-                }
-                break;
-            case 0b0000_1000_000_1_1000: //JNO
-                if (!overflow) {
-                    PC = load();
-                }
-                break;
+        BigInteger instruction = BigInteger.valueOf(INST);
 
-            default:
-                unknownInstruction(INST);
-                break;
+        boolean negateBit = instruction.testBit(4);
+        boolean zeroBit = instruction.testBit(3);
+        boolean signBit = instruction.testBit(2);
+        boolean overflowBit = instruction.testBit(1);
+        boolean carryBit = instruction.testBit(0);
+
+        //JMP ≡ (n) ⊕ ( (z ∧ zero_reg) ∨ (s ∧ sign_reg) ∨ (o ∧ overflow_reg) ∨ (c ∧ carry_reg) )
+        boolean shouldJump = (negateBit ^ ((zeroBit && zero) || (signBit && sign) || (overflowBit && overflow) || (carryBit && carry)));
+
+        if (shouldJump) {
+            PC = load();
+        } else {
+            PC++;
         }
+
     }
 
     /*
@@ -9604,7 +9579,6 @@ public class RelayComputer {
      */
     private void executeWRDINInstruction() {
         switch (INST) {
-
             case (short) 0b1000_0000_0000_0_000: //WRDIN AX
                 AX = wordIn();
                 break;
@@ -9682,15 +9656,15 @@ public class RelayComputer {
 
     private short aluIncrement(short inputRegister) {
         TMP1X = inputRegister;
-        int output = TMP1X + 1;
-        updateConditionCodes(output);
+        int output = ((char) TMP1X) + 1;
+        updateConditionCodes(inputRegister, (short) 1, output);
         return (short) output;
     }
 
     private short aluDecrement(short inputRegister) {
         TMP1X = inputRegister;
-        int output = TMP1X - 1;
-        updateConditionCodes(output);
+        int output = ((char) TMP1X) - 1;
+        updateConditionCodes(inputRegister, (short) -1, output);
         return (short) output;
     }
 
@@ -9717,8 +9691,8 @@ public class RelayComputer {
     private short aluAdd(short inputRegister, short inputRegister2) {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
-        int output = TMP1X + TMP2X;
-        updateConditionCodes(output);
+        int output = ((char) TMP1X) + ((char) TMP2X);
+        updateConditionCodes(TMP1X, TMP2X, output);
         return (short) output;
     }
 
@@ -9726,7 +9700,10 @@ public class RelayComputer {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
         int output = TMP1X & TMP2X;
-        updateConditionCodes(output);
+        carry = false;
+        overflow = false;
+        zero = output == 0;
+        sign = output < 0;
         return (short) output;
     }
 
@@ -9734,7 +9711,10 @@ public class RelayComputer {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
         int output = TMP1X | TMP2X;
-        updateConditionCodes(output);
+        carry = false;
+        overflow = false;
+        zero = output == 0;
+        sign = output < 0;
         return (short) output;
     }
 
@@ -9742,23 +9722,38 @@ public class RelayComputer {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
         int output = TMP1X ^ TMP2X;
-        updateConditionCodes(output);
+        carry = false;
+        overflow = false;
+        zero = output == 0;
+        sign = output < 0;
         return (short) output;
     }
 
     private short compareSubtract(short inputRegister, short inputRegister2) {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
-        int output = TMP1X - TMP2X;
-        updateConditionCodes(output);
+
+        //Subtraction computed in same way as ALU
+        int output = ((char) TMP1X) + (~((char) TMP2X)) + 1;
+
+        updateConditionCodes(inputRegister, inputRegister2, output);
         return (short) output;
     }
 
-    private void updateConditionCodes(int aluOutput) {
-        carry = aluOutput > Character.MAX_VALUE;
-        overflow = aluOutput > Short.MAX_VALUE || aluOutput < Short.MIN_VALUE;
+    private void updateConditionCodes(short input1, short input2, int aluOutput) {
+        //Carry when 17th bit is set (too large for 16 bit num)
+        BigInteger output = BigInteger.valueOf(aluOutput);
+        carry = output.testBit(16); //Use 16 because of zero-indexing
+
+        //Overflow when output sign doesn't match input signs
+        overflow = (((short) aluOutput) < 0 && (input1 >= 0 && input2 >= 0))
+                || (((short) aluOutput) >= 0 && (input1 < 0 && input2 < 0));
+
+        //Zero when output would be truncated to zero
         zero = ((short) aluOutput) == 0;
-        sign = ((short) aluOutput < 0);
+
+        //Sign when highest bit (16) is 1
+        sign = output.testBit(15); //Use 15 because of zero-indexing
     }
 
     private short load() {
@@ -9767,7 +9762,7 @@ public class RelayComputer {
         return TMP1X;
     }
 
-    private void store(short sourceRegister, short destinationRegister) {
+    private void store(short destinationRegister, short sourceRegister) {
         mainMemory[(char) destinationRegister] = sourceRegister; //Put the value of source into mem pointed to by dest
     }
 
@@ -9841,19 +9836,19 @@ public class RelayComputer {
         ioDevice.sendWord(sourceRegister);
     }
 
-    public boolean isZero() {
+    public boolean getZeroFlag() {
         return zero;
     }
 
-    public boolean isCarry() {
+    public boolean getCarryFlag() {
         return carry;
     }
 
-    public boolean isSign() {
+    public boolean getSignFlag() {
         return sign;
     }
 
-    public boolean isOverflow() {
+    public boolean getOverflowFlag() {
         return overflow;
     }
 
@@ -9911,6 +9906,10 @@ public class RelayComputer {
 
     public IODevice getIoDevice() {
         return ioDevice;
+    }
+
+    public void setIoDevice(IODevice ioDevice) {
+        this.ioDevice = ioDevice;
     }
 
     public boolean isHalted() {
