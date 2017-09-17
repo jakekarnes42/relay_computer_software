@@ -46,13 +46,15 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
     @Override
     public Void visitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx) {
-        //Get the value
-        char value = getValue(ctx.value());
-        //Store it
-        memory[counter] = (short) value;
+        for (AsmHomeBrewParser.ValueContext valueContext : ctx.value()) {
+            //Get the value
+            char value = getValue(valueContext);
+            //Store it
+            memory[counter] = (short) value;
 
-        //Increment our counter.
-        counter += 2;
+            //Increment our counter.
+            counter++;
+        }
         return null;
     }
 
@@ -60,6 +62,8 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
     public Void visitJsExpression(AsmHomeBrewParser.JsExpressionContext ctx) {
         try {
             String jsExpr = ctx.getText();
+            //Inject our code pointer into the $ variable within JS
+            jsExpr = "$ = " + (int) counter + "; " + jsExpr;
             Object result = engine.eval(jsExpr);
             //Save our result
             if (result == null) {

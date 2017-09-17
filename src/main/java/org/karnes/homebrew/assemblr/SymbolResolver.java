@@ -9,7 +9,6 @@ import java.util.Map;
  *
  * All one-word instructions can have the same dummy value in memory. We really need to make sure the multi-word instructions are added in.
  *
- * This is good enough for now while there aren't assembler directives.
  */
 public class SymbolResolver extends DirectiveExecutor {
 
@@ -120,6 +119,16 @@ public class SymbolResolver extends DirectiveExecutor {
     public Void visitTernaryOperation(AsmHomeBrewParser.TernaryOperationContext ctx) {
         //Takes one word
         counter++;
+
+        //Don't continue descent
+        return null;
+    }
+
+    @Override
+    public Void visitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx) {
+        //Calculate how many words are declared.
+        int numWords = ctx.value().size();
+        counter += numWords;
 
         //Don't continue descent
         return null;

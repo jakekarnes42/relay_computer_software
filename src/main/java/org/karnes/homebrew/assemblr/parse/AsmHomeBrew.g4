@@ -178,7 +178,7 @@ assemblerOrgDirective
     ;
 
 assemblerWordDeclaration
-    : DW value
+    : DW (','? value)+
     ;
 
 jsExpression
