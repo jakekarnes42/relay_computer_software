@@ -1,5 +1,5 @@
-// Generated from /home/jake/IdeaProjects/relay/src/main/java/org/karnes/homebrew/assemblr/parse/AsmHomeBrew.g4 by ANTLR 4.7
-package org.karnes.homebrew.assemblr.parse;
+// Generated from /home/jake/IdeaProjects/relay/src/main/java/org/karnes/homebrew/assemblr/parse/asm/AsmHomeBrew.g4 by ANTLR 4.7
+package org.karnes.homebrew.assemblr.parse.asm;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -202,6 +202,12 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#assemblerStringDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssemblerStringDeclaration(AsmHomeBrewParser.AssemblerStringDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#jsExpression}.
 	 * @param ctx the parse tree

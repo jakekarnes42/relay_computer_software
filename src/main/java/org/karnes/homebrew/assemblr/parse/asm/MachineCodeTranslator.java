@@ -1,7 +1,6 @@
-package org.karnes.homebrew.assemblr;
+package org.karnes.homebrew.assemblr.parse.asm;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.karnes.homebrew.assemblr.parse.AsmHomeBrewParser;
 import org.karnes.homebrew.emulator.InstructionOpcode;
 import org.karnes.homebrew.emulator.Register;
 

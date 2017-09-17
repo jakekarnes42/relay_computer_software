@@ -1,6 +1,4 @@
-package org.karnes.homebrew.assemblr;
-
-import org.karnes.homebrew.assemblr.parse.AsmHomeBrewParser;
+package org.karnes.homebrew.assemblr.parse.asm;
 
 import java.util.Map;
 
@@ -129,6 +127,16 @@ public class SymbolResolver extends DirectiveExecutor {
         //Calculate how many words are declared.
         int numWords = ctx.value().size();
         counter += numWords;
+
+        //Don't continue descent
+        return null;
+    }
+
+    @Override
+    public Void visitAssemblerStringDeclaration(AsmHomeBrewParser.AssemblerStringDeclarationContext ctx) {
+        //Calculate how many letters are declared.
+        int numLetters = ctx.STRING().getText().length();
+        counter += numLetters;
 
         //Don't continue descent
         return null;

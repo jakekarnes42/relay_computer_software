@@ -143,12 +143,114 @@ public class IOInstructionTest {
         assertFalse(computer.getSignFlag(), "The sign flag should not be set");
     }
 
+    @Test
+    @DisplayName("Simple WRDOUT: writing 5 characters with JS expressions")
+    public void testSimpleWordOutJS() throws UnsupportedEncodingException {
+
+        String code = " LOAD AX, {'J'}  ; AX = J\r\n"
+                + "     LOAD BX, {'a'}  ; BX = a\r\n"
+                + "     LOAD CX, {'k'}  ; CX = k\r\n"
+                + "     LOAD DX, {'e'}  ; DX = e\r\n"
+                + "     LOAD EX, {'!'}  ; EX = !\r\n"
+                + "     WRDOUT AX       ; Write AX \r\n"
+                + "     WRDOUT BX       ; Write BX \r\n"
+                + "     WRDOUT CX       ; Write CX \r\n"
+                + "     WRDOUT DX       ; Write DX \r\n"
+                + "     WRDOUT EX       ; Write EX \r\n"
+                + "     HALT            ; DONE\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        JavaSimulatedIODevice ioDevice = new JavaSimulatedIODevice(new ByteArrayInputStream("".getBytes(ENCODING)),
+                new PrintStream(baos));
+
+        computer.setIoDevice(ioDevice);
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals((short) 'J', computer.getAX(), "AX should have the first character");
+        assertEquals((short) 'a', computer.getBX(), "BX should have the second character");
+        assertEquals((short) 'k', computer.getCX(), "CX should have the third character");
+        assertEquals((short) 'e', computer.getDX(), "DX should have the fourth character");
+        assertEquals((short) '!', computer.getEX(), "EX should have the fifth character");
+
+        //Check output
+        String output = baos.toString();
+        assertEquals("Jake!", output, "The output should match the characters that were sent");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
+    @Test
+    @DisplayName("Simple WRDOUT: writing 5 characters with a stack")
+    public void testSimpleWordOutStack() throws UnsupportedEncodingException {
+        String code = " {STR_LOC = 1000}    ; Constant of where we'll write the characters\r\n"
+                + "     ORG {STR_LOC}       ; Move code pointer to where we want save characters\r\n"
+                + "     DS \"!ekaJ\"        ; Write string to memory backwards for stack compatibility\r\n"
+                + "     ORG {0}             ; Move code pointer back to initial start location\r\n"
+                + "     LOAD SP, {STR_LOC+5}; Point stack pointer at memory location, at the last letter\r\n"
+
+                //Print the String
+                + "     POP AX, SP  ; AX = J\r\n"
+                + "     POP BX, SP  ; BX = a\r\n"
+                + "     POP CX, SP  ; CX = k\r\n"
+                + "     POP DX, SP  ; DX = e\r\n"
+                + "     POP EX, SP  ; EX = !\r\n"
+                + "     WRDOUT AX   ; Write AX \r\n"
+                + "     WRDOUT BX   ; Write BX \r\n"
+                + "     WRDOUT CX   ; Write CX \r\n"
+                + "     WRDOUT DX   ; Write DX \r\n"
+                + "     WRDOUT EX   ; Write EX \r\n"
+                + "     HALT        ; DONE\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        JavaSimulatedIODevice ioDevice = new JavaSimulatedIODevice(new ByteArrayInputStream("".getBytes(ENCODING)),
+                new PrintStream(baos));
+
+        computer.setIoDevice(ioDevice);
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals((short) 'J', computer.getAX(), "AX should have the first character");
+        assertEquals((short) 'a', computer.getBX(), "BX should have the second character");
+        assertEquals((short) 'k', computer.getCX(), "CX should have the third character");
+        assertEquals((short) 'e', computer.getDX(), "DX should have the fourth character");
+        assertEquals((short) '!', computer.getEX(), "EX should have the fifth character");
+
+        //Check output
+        String output = baos.toString();
+        assertEquals("Jake!", output, "The output should match the characters that were sent");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
 
     @Test
     @DisplayName("Bidirection I/O test. Hello <input_name>! Double-stack implementation")
     public void testHelloName() throws UnsupportedEncodingException {
         String name = "Jake";
-        
+
         String code = "; Reads in a name, prints 'Hello <name>!'\r\n"
                 + "         LOAD SP, 500    ; Move SP far into memory \r\n"
                 + "         LOAD RP, 900    ; Move RP far into memory \r\n"

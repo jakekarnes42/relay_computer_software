@@ -1,7 +1,7 @@
-package org.karnes.homebrew.assemblr;
+package org.karnes.homebrew.assemblr.parse.asm;
 
-import org.karnes.homebrew.assemblr.parse.AsmHomeBrewBaseVisitor;
-import org.karnes.homebrew.assemblr.parse.AsmHomeBrewParser;
+import org.karnes.homebrew.assemblr.parse.asm.AsmHomeBrewBaseVisitor;
+import org.karnes.homebrew.assemblr.parse.asm.AsmHomeBrewParser;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -46,15 +46,21 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
     @Override
     public Void visitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx) {
-        for (AsmHomeBrewParser.ValueContext valueContext : ctx.value()) {
-            //Get the value
-            char value = getValue(valueContext);
-            //Store it
-            memory[counter] = (short) value;
+        ctx.value().stream() //Stream each word
+                .map(this::getValue) //Map to value which we can actually store in mem
+                .forEach(this::storeValueInMem); //Store each value into mem
+        return null;
+    }
 
-            //Increment our counter.
-            counter++;
-        }
+
+    @Override
+    public Void visitAssemblerStringDeclaration(AsmHomeBrewParser.AssemblerStringDeclarationContext ctx) {
+        //Get the string
+        String strValue = ctx.STRING().getText();
+
+        //Store each character in the string
+        strValue.chars().forEach(c -> storeValueInMem((char) c));
+
         return null;
     }
 
@@ -65,11 +71,17 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
             //Inject our code pointer into the $ variable within JS
             jsExpr = "$ = " + (int) counter + "; " + jsExpr;
             Object result = engine.eval(jsExpr);
+
             //Save our result
             if (result == null) {
                 //Do nothing?
             } else if (result instanceof String) {
-                lastJSResult = (char) (Integer.parseUnsignedInt(result.toString()));
+                String resultStr = (String) result;
+                if (resultStr.length() == 1) {
+                    lastJSResult = resultStr.charAt(0);
+                } else {
+                    lastJSResult = (char) (Integer.parseUnsignedInt(resultStr));
+                }
             } else if (result instanceof Double) {
                 lastJSResult = (char) ((Double) result).intValue();
             } else if (result instanceof Integer) {
@@ -101,4 +113,13 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
             return lastJSResult;
         }
     }
+
+    private void storeValueInMem(char value) {
+        //Store it
+        memory[counter] = (short) value;
+
+        //Increment our counter.
+        counter++;
+    }
+
 }

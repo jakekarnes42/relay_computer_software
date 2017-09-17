@@ -1,0 +1,11 @@
+T__0=1
+T__1=2
+MACRO=3
+ENDM=4
+NAME=5
+ANY_TEXT=6
+COMMENT=7
+EOL=8
+WS=9
+','=1
+'$'=2

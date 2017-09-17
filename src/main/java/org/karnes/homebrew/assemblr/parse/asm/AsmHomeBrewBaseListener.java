@@ -1,5 +1,5 @@
-// Generated from /home/jake/IdeaProjects/relay/src/main/java/org/karnes/homebrew/assemblr/parse/AsmHomeBrew.g4 by ANTLR 4.7
-package org.karnes.homebrew.assemblr.parse;
+// Generated from /home/jake/IdeaProjects/relay/src/main/java/org/karnes/homebrew/assemblr/parse/asm/AsmHomeBrew.g4 by ANTLR 4.7
+package org.karnes.homebrew.assemblr.parse.asm;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -395,6 +395,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssemblerStringDeclaration(AsmHomeBrewParser.AssemblerStringDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssemblerStringDeclaration(AsmHomeBrewParser.AssemblerStringDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

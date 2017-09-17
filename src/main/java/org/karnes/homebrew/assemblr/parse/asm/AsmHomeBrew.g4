@@ -171,6 +171,7 @@ assemblerDirective
    : jsExpression
    | assemblerOrgDirective
    | assemblerWordDeclaration
+   | assemblerStringDeclaration
    ;
 
 assemblerOrgDirective
@@ -179,6 +180,10 @@ assemblerOrgDirective
 
 assemblerWordDeclaration
     : DW (','? value)+
+    ;
+
+assemblerStringDeclaration
+    : DS STRING
     ;
 
 jsExpression
@@ -366,6 +371,8 @@ HALT: H A L T ;
 
 // Assembler directive ops
 ORG: O R G ;
+DW: D W ;
+DS: D S ;
 
 /*
  * Registers
@@ -401,12 +408,9 @@ PC
    : P C
    ;
 
-DW
-   : D W
-   ;
 
 NAME
-   : [a-zA-Z] [a-zA-Z0-9_]*
+   : [@#%a-zA-Z] [a-zA-Z0-9_]*
    ;
 NUMBER
    : DECIMAL
