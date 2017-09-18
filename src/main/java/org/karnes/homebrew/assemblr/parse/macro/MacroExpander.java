@@ -8,20 +8,24 @@ import java.util.List;
 public class MacroExpander {
 
 
-    public String expandMacros(String text) {
+    public String expandMacros(String completeSource) {
 
         MacroCollector macroCollector = new MacroCollector();
 
-        List<ParsedMacro> parsedMacros = macroCollector.findMacros(text);
+        //Parse the macro definitions
+        macroCollector.findMacros(completeSource);
+        List<ParsedMacro> parsedMacros = macroCollector.getMacroList();
+        List<String> nonMacroLines = macroCollector.getNonMacroLines();
 
-        String expandedText = expandTextWithMacros(text, parsedMacros);
+        String expandedText = expandTextWithMacros(nonMacroLines, parsedMacros);
 
-        return expandedText;
+        //TODO: should return expandedText
+        return completeSource;
     }
 
-    private String expandTextWithMacros(String text, List<ParsedMacro> parsedMacros) {
-        //TODO: complete this.
-        return text;
+    private String expandTextWithMacros(List<String> text, List<ParsedMacro> parsedMacros) {
+        //TODO: Should actually expand macros
+        return null;
     }
 
 

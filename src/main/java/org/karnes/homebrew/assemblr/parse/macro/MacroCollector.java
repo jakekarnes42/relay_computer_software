@@ -1,93 +1,146 @@
 package org.karnes.homebrew.assemblr.parse.macro;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.karnes.homebrew.assemblr.DescriptiveErrorListener;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class MacroCollector extends MacroGrammarBaseVisitor {
+public class MacroCollector {
 
-    List<ParsedMacro> macroList = new ArrayList<>();
+    Pattern macroRegex = Pattern.compile("^\\s*MACRO\\s+" + //Macro keyword
+            "(\\$\\w+)\\s+" + //Macro name Group 1
+            "([@#%\\w]+)?" + //Optional Param 1 Group 2
+            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 4
+            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 6
+            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 8
+            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 10
+            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 12
+            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 14
+            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 16
+            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 18
+            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 20
+            "(\\s*;.+)?"); //Optional comment, last group
+
+    Pattern endmRegex = Pattern.compile("\\s*ENDM\\s*(;.+)?");
 
     /**
-     * The current macro being parsed. Null if not currently in a macro
+     * The macros parsed from the source code.
      */
-    ParsedMacro currentMacro = null;
+    private List<ParsedMacro> macroList = new ArrayList<>();
+
+    /**
+     * The lines in the source code outside of macros.
+     */
+    private List<String> nonMacroLines = new ArrayList<>();
+
+    /**
+     * The current macro being parsed. Null if not currently in a macro.
+     */
+    private ParsedMacro currentMacro = null;
 
 
-    public List<ParsedMacro> findMacros(String text) {
-        ParseTree parseTree = parse(text);
+    public void findMacros(String text) {
 
-        //Populates macroList during descent
-        visit(parseTree);
+        try (Scanner codeScanner = new Scanner(text)) {
+            while (codeScanner.hasNextLine()) {
+                String line = codeScanner.nextLine();
 
+                //Check if it's a new macro definition
+                Matcher macroRegexMatcher = macroRegex.matcher(line);
+                if (macroRegexMatcher.matches()) {
+                    parseNewMacroDefinition(macroRegexMatcher);
+                    continue;
+                }
+
+                //Check if it's a ending a macro
+                Matcher endmRegexMatcher = endmRegex.matcher(line);
+                if (endmRegexMatcher.matches()) {
+                    parseENDM(endmRegexMatcher);
+                    continue;
+                }
+
+                handleOtherLine(line);
+
+            }
+        }
+
+
+        //Check that we didn't end inside a macro
+        if (currentMacro != null) {
+            throw new IllegalStateException("Finished parsing while still in a macro.");
+        }
+
+    }
+
+    private void parseNewMacroDefinition(Matcher macroRegexMatcher) {
+        //Check that we aren't already in a macro
+        if (currentMacro != null) {
+            throw new IllegalStateException("Nested macro defintions are not allowed");
+        }
+
+        String macroName = macroRegexMatcher.group(1);
+
+        //Set up list for our parameters
+        List<String> paramNames = new ArrayList<>();
+
+        //Check if there are any parameters
+        int groupCount = macroRegexMatcher.groupCount();
+        if (groupCount > 1) {
+            //Yes, there are parameters. Get the first
+            String param1 = macroRegexMatcher.group(2);
+            paramNames.add(param1);
+
+            //If there are any other params, we'll add them with this loop.
+            for (int i = 4; i <= groupCount; i += 2) {
+                String param = macroRegexMatcher.group(i);
+                paramNames.add(param);
+            }
+        }
+
+        //Create the new macro and track it.
+        currentMacro = new ParsedMacro(macroName, paramNames);
+
+    }
+
+    private void parseENDM(Matcher endmRegexMatcher) {
+        //Check that we didn't end outside a macro
+        if (currentMacro == null) {
+            throw new IllegalStateException("Found ENDM keyword outside of macro. Unable to complete a macro that hasn't started..");
+        }
+
+        //Our macro is complete. Add it to the list and clear the tracking
+        macroList.add(currentMacro);
+        currentMacro = null;
+    }
+
+
+    private void handleOtherLine(String line) {
+        if (currentMacro == null) {
+            nonMacroLines.add(line);
+        } else {
+            currentMacro.addLine(line);
+        }
+    }
+
+    /**
+     * The macros parsed from the input source code.
+     * This is only considered valid after {@link #findMacros(String)} has been called.
+     *
+     * @return the parsed macros.
+     */
+    public List<ParsedMacro> getMacroList() {
         return macroList;
     }
 
 
-    @Override
-    public Object visitStartMacro(MacroGrammarParser.StartMacroContext ctx) {
-        //Get properties from this macro
-        String macroName = ctx.macroName().getText();
-        List<String> paramNames = ctx.param().stream().map(p -> p.getText()).collect(Collectors.toList());
-
-        //Capture the macro so we can add lines to it.
-        currentMacro = new ParsedMacro(macroName, paramNames);
-
-        return null;
-    }
-
-    @Override
-    public Object visitEndMacro(MacroGrammarParser.EndMacroContext ctx) {
-        if (currentMacro == null) {
-            throw new IllegalStateException("Found ENDM outside of a macro.");
-        }
-
-        //Add the macro to our running list.
-        macroList.add(currentMacro);
-
-        //Clear the current placeholder for the next macro to come
-        currentMacro = null;
-
-        return null;
-    }
-
-    @Override
-    public Object visitOther(MacroGrammarParser.OtherContext ctx) {
-        if (currentMacro == null) {
-            //Currently outside a macro, don't care
-            return null;
-        }
-
-        //Get this line and add it to our current macro
-        String lineText = ctx.getText();
-        currentMacro.addLine(lineText);
-
-        //No need to continue further.
-        return null;
-    }
-
-    private ParseTree parse(String text) {
-        //Get the parse tree from the text.
-        CharStream input = CharStreams.fromString(text);
-        DescriptiveErrorListener errorListener = new DescriptiveErrorListener();
-        MacroGrammarLexer lexer = new MacroGrammarLexer(input);
-        lexer.addErrorListener(errorListener);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        MacroGrammarParser parser = new MacroGrammarParser(tokens);
-        parser.addErrorListener(errorListener);
-        ParseTree parseTree = parser.program();
-
-        //Error if invalid syntax found
-        if (!errorListener.getErrors().isEmpty()) {
-            throw new IllegalStateException("Found errors while parsing macro text. Errors: " + errorListener.getErrors());
-        }
-
-        return parseTree;
+    /**
+     * The source code lines outside of the macros.
+     * This is only considered valid after {@link #findMacros(String)} has been called.
+     *
+     * @return the rest of the source code, excluding macro definitions
+     */
+    public List<String> getNonMacroLines() {
+        return nonMacroLines;
     }
 }
