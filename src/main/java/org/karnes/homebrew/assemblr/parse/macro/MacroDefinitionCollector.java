@@ -6,20 +6,20 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MacroCollector {
+public class MacroDefinitionCollector {
 
     Pattern macroRegex = Pattern.compile("^\\s*MACRO\\s+" + //Macro keyword
             "(\\$\\w+)\\s+" + //Macro name Group 1
-            "([@#%\\w]+)?" + //Optional Param 1 Group 2
-            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 4
-            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 6
-            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 8
-            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 10
-            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 12
-            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 14
-            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 16
-            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 18
-            "(\\s*,\\s*([@#%\\w]+))?" + //Optional Param 2 Group 20
+            "(@\\w+)?" + //Optional Param 1 Group 2
+            "(\\s*,\\s*(@\\w+))?" + //Optional Param 2 Group 4
+            "(\\s*,\\s*(@\\w+))?" + //Optional Param 2 Group 6
+            "(\\s*,\\s*(@\\w+))?" + //Optional Param 2 Group 8
+            "(\\s*,\\s*(@\\w+))?" + //Optional Param 2 Group 10
+            "(\\s*,\\s*(@\\w+))?" + //Optional Param 2 Group 12
+            "(\\s*,\\s*(@\\w+))?" + //Optional Param 2 Group 14
+            "(\\s*,\\s*(@\\w+))?" + //Optional Param 2 Group 16
+            "(\\s*,\\s*(@\\w+))?" + //Optional Param 2 Group 18
+            "(\\s*,\\s*(@\\w+))?" + //Optional Param 2 Group 20
             "(\\s*;.+)?"); //Optional comment, last group
 
     Pattern endmRegex = Pattern.compile("\\s*ENDM\\s*(;.+)?");
@@ -94,7 +94,9 @@ public class MacroCollector {
             //If there are any other params, we'll add them with this loop.
             for (int i = 4; i <= groupCount; i += 2) {
                 String param = macroRegexMatcher.group(i);
-                paramNames.add(param);
+                if (param != null) {
+                    paramNames.add(param);
+                }
             }
         }
 
@@ -116,10 +118,11 @@ public class MacroCollector {
 
 
     private void handleOtherLine(String line) {
+        String lineWithEOL = line + "\r\n";
         if (currentMacro == null) {
-            nonMacroLines.add(line);
+            nonMacroLines.add(lineWithEOL);
         } else {
-            currentMacro.addLine(line);
+            currentMacro.addLine(lineWithEOL);
         }
     }
 

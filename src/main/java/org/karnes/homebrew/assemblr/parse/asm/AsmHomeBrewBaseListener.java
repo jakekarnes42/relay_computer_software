@@ -100,18 +100,6 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIoOperation(AsmHomeBrewParser.IoOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIoOperation(AsmHomeBrewParser.IoOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterReturnOperation(AsmHomeBrewParser.ReturnOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -136,6 +124,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterIoOperation(AsmHomeBrewParser.IoOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIoOperation(AsmHomeBrewParser.IoOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIoOpcode(AsmHomeBrewParser.IoOpcodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -143,6 +143,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIoOpcode(AsmHomeBrewParser.IoOpcodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOneArgOpcode(AsmHomeBrewParser.OneArgOpcodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOneArgOpcode(AsmHomeBrewParser.OneArgOpcodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -280,6 +292,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterStackOpcode(AsmHomeBrewParser.StackOpcodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStackOpcode(AsmHomeBrewParser.StackOpcodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterTernaryOperation(AsmHomeBrewParser.TernaryOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -412,6 +436,30 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMacro(AsmHomeBrewParser.MacroContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMacro(AsmHomeBrewParser.MacroContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMacroParamValue(AsmHomeBrewParser.MacroParamValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMacroParamValue(AsmHomeBrewParser.MacroParamValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterJsExpression(AsmHomeBrewParser.JsExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -436,6 +484,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMacroName(AsmHomeBrewParser.MacroNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMacroName(AsmHomeBrewParser.MacroNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNumber(AsmHomeBrewParser.NumberContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -455,6 +515,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitComment(AsmHomeBrewParser.CommentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterString(AsmHomeBrewParser.StringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitString(AsmHomeBrewParser.StringContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

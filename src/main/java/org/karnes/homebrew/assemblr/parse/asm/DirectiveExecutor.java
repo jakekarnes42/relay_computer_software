@@ -1,8 +1,5 @@
 package org.karnes.homebrew.assemblr.parse.asm;
 
-import org.karnes.homebrew.assemblr.parse.asm.AsmHomeBrewBaseVisitor;
-import org.karnes.homebrew.assemblr.parse.asm.AsmHomeBrewParser;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.util.HashMap;
@@ -25,6 +22,11 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
     protected char lastJSResult = 0;
 
     protected char counter = 0;
+
+    @Override
+    public Void visitMacro(AsmHomeBrewParser.MacroContext ctx) {
+        throw new IllegalStateException("Found un-expanded macro. This macro likely was not defined: " + ctx.macroName().getText());
+    }
 
     @Override
     public Void visitAssemblerOrgDirective(AsmHomeBrewParser.AssemblerOrgDirectiveContext ctx) {

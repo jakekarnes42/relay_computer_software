@@ -8,6 +8,7 @@ line
    : comment
    | instruction
    | assemblerDirective comment?
+   | macro comment?
    ;
 
 instruction
@@ -37,10 +38,6 @@ unaryOperation
    | clearOperation
    ;
 
-ioOperation
-   : ioOpcode register
-   ;
-
 returnOperation
    : RET stackRegister
    ;
@@ -49,10 +46,22 @@ clearOperation
    : CLR register
    ;
 
+ioOperation
+   : ioOpcode register
+   ;
+
+
 ioOpcode
-    : WRDIN
-    | WRDOUT
-    ;
+   : WRDIN
+   | WRDOUT
+   ;
+
+oneArgOpcode
+   : RET
+   | CLR
+   | WRDIN
+   | WRDOUT
+   ;
 
 jumpOperation
    : jumpOpcode value
@@ -116,6 +125,12 @@ popOperation
 
 callOperation
    : CALL stackRegister ',' value
+   ;
+
+stackOpcode
+   : PUSH
+   | POP
+   | CALL
    ;
 
 
@@ -186,14 +201,29 @@ assemblerStringDeclaration
     : DS STRING
     ;
 
+
+macro
+    : macroName (','? macroParamValue)+
+    ;
+
+macroParamValue
+    : aluTernaryOpcode | stackOpcode | binaryRegValOpCode| binaryRegRegOpCode | jumpOpcode | ioOpcode | oneArgOpcode | noArgOperation
+    | register
+    | string
+    | value
+    ;
+
 jsExpression
     : JAVASCRIPT
     ;
 
-
 name
    : NAME
    ;
+
+macroName
+    : MACRO_NAME
+    ;
 
 number
    : NUMBER
@@ -201,6 +231,10 @@ number
 
 comment
    : COMMENT
+   ;
+
+string
+   : STRING
    ;
 
 fragment A
@@ -410,8 +444,13 @@ PC
 
 
 NAME
-   : [@#%a-zA-Z] [a-zA-Z0-9_]*
+   : [a-zA-Z] [a-zA-Z0-9_]*
    ;
+
+MACRO_NAME
+   : '$' [a-zA-Z0-9_]+
+   ;
+
 NUMBER
    : DECIMAL
    | HEX

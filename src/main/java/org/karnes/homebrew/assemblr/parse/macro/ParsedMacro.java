@@ -30,6 +30,10 @@ public class ParsedMacro {
         return lines;
     }
 
+    public void setLines(List<String> lines) {
+        this.lines = lines;
+    }
+
     @Override
     public String toString() {
         return "ParsedMacro{" +
