@@ -9773,23 +9773,22 @@ public class RelayComputer {
 
     private void push(StackReg stackRegister, short sourceRegister) {
         if (stackRegister == STACK_SP) {
-            SP++; //Increment the stack pointer to the new TOS
+            SP--; //Decrement the stack pointer to the new TOS
             mainMemory[(char) SP] = sourceRegister; //Insert value at TOS
         } else {
-            RP++; //Increment the stack pointer to the new TOS
+            RP--; //Decrement the stack pointer to the new TOS
             mainMemory[(char) RP] = sourceRegister; //Insert value at TOS
-
         }
     }
 
     private short pop(StackReg stackRegister) {
         if (stackRegister == STACK_SP) {
             short value = mainMemory[(char) SP];//Get value at TOS
-            SP--; //Decrement the stack pointer to the new TOS
+            SP++; //Increment the stack pointer to the new TOS
             return value;
         } else {
             short value = mainMemory[(char) RP];//Get value at TOS
-            RP--; //Decrement the stack pointer to the new TOS
+            RP++; //Decrement the stack pointer to the new TOS
             return value;
         }
     }
@@ -9798,25 +9797,13 @@ public class RelayComputer {
         TMP1X = mainMemory[(char) PC]; //Get the value in mem following instruction
         PC++; //Increment PC to next mem addr
 
-        if (stackRegister == STACK_SP) {
-            SP++; //Increment the stack pointer to the new TOS
-            mainMemory[(char) SP] = PC; //Insert PC value at TOS
-        } else {
-            RP++; //Increment the stack pointer to the new TOS
-            mainMemory[(char) RP] = PC; //Insert PC value at TOS
-        }
+        push(stackRegister, PC);
 
         PC = TMP1X; //MOV the value into PC to jump
     }
 
     private void call(StackReg stackRegister, short sourceRegister) {
-        if (stackRegister == STACK_SP) {
-            SP++; //Increment the stack pointer to the new TOS
-            mainMemory[(char) SP] = PC; //Insert PC value at TOS
-        } else {
-            RP++; //Increment the stack pointer to the new TOS
-            mainMemory[(char) RP] = PC; //Insert PC value at TOS
-        }
+        push(stackRegister, PC);
 
         PC = sourceRegister; //MOV the value of the source into PC to jump
     }

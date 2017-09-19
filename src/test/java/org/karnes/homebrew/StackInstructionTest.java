@@ -38,13 +38,13 @@ public class StackInstructionTest {
         //Check SP stack
         assertEquals(value1, computer.getAX(), "AX should have the loaded value");
         assertEquals(0, RAM[value2], "SP's old value in memory should be blank");
-        assertEquals(value2 + 1, computer.getSP(), "SP should be incremented");
+        assertEquals(value2 - 1, computer.getSP(), "SP should be decremented");
         assertEquals(value1, RAM[computer.getSP()], "SP should point to AX's value");
 
         //Check RP stack
         assertEquals(value3, computer.getBX(), "BX should have the loaded value");
         assertEquals(0, RAM[value4], "RP's old value in memory should be blank");
-        assertEquals(value4 + 1, computer.getRP(), "RP should be incremented");
+        assertEquals(value4 - 1, computer.getRP(), "RP should be decremented");
         assertEquals(value3, RAM[computer.getRP()], "RP should point to BX's value");
 
 
@@ -58,21 +58,23 @@ public class StackInstructionTest {
     @Test
     @DisplayName("Multiple PUSH")
     public void testMultiplePUSH() {
+        short SPstart = 1000;
+        short RPstart = 2000;
+
         short value1 = 1000;
         short value2 = 2000;
         short value3 = 3000;
         short value4 = 4000;
         short value5 = 5000;
-        short value6 = 6000;
-        short value7 = 7000;
 
-        String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
+
+        String code = " LOAD SP, " + SPstart + "; Get SP far into memory\r\n"
+                + "     LOAD RP, " + RPstart + "; Get RP far into memory\r\n"
+                + "     LOAD AX, " + value1 + " ; AX = value1\r\n"
                 + "     LOAD BX, " + value2 + " ; BX = value2\r\n"
                 + "     LOAD CX, " + value3 + " ; CX = value3\r\n"
                 + "     LOAD DX, " + value4 + " ; DX = value4\r\n"
                 + "     LOAD EX, " + value5 + " ; EX = value5\r\n"
-                + "     LOAD SP, " + value6 + " ; SP = value6\r\n"
-                + "     LOAD RP, " + value7 + " ; RP = value7\r\n"
                 + "     PUSH SP, AX             ; Push AX onto SP\r\n"
                 + "     PUSH SP, BX             ; Push BX onto SP\r\n"
                 + "     PUSH SP, CX             ; Push CX onto SP\r\n"
@@ -96,15 +98,15 @@ public class StackInstructionTest {
 
         //Check SP stack
         assertEquals(value1, computer.getAX(), "AX should have the loaded value");
-        assertEquals(0, RAM[value6], "SP's old value in memory should be blank");
-        assertEquals(value6 + 5, computer.getSP(), "SP should be incremented 5 times");
-        assertEquals(value1, RAM[value6 + 1], "SP BOS should point to AX's value");
+        assertEquals(0, RAM[SPstart], "SP's old value in memory should be blank");
+        assertEquals(SPstart - 5, computer.getSP(), "SP should be decremented 5 times");
+        assertEquals(value1, RAM[SPstart - 1], "SP BOS should point to AX's value");
         assertEquals(value5, RAM[computer.getSP()], "SP TOS should point to EX's value");
 
         //Check RP stack
-        assertEquals(0, RAM[value7], "RP's old value in memory should be blank");
-        assertEquals(value7 + 5, computer.getRP(), "RP should be incremented 5 times");
-        assertEquals(value1, RAM[value7 + 1], "RP BOS should point to AX's value");
+        assertEquals(0, RAM[RPstart], "RP's old value in memory should be blank");
+        assertEquals(RPstart - 5, computer.getRP(), "RP should be decremented 5 times");
+        assertEquals(value1, RAM[RPstart - 1], "RP BOS should point to AX's value");
         assertEquals(value5, RAM[computer.getRP()], "SP TOS should point to EX's value");
 
 
@@ -395,6 +397,7 @@ public class StackInstructionTest {
         assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
         assertFalse(computer.getSignFlag(), "The sign flag should not be set");
     }
+
     @Test
     @DisplayName("Nested CALL and RET instruction combination with both pointers")
     public void testNestedCALLandRETBoth() {
