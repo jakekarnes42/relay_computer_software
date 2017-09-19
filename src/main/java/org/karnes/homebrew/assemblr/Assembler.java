@@ -4,8 +4,11 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.karnes.homebrew.assemblr.parse.AsmHomeBrewLexer;
-import org.karnes.homebrew.assemblr.parse.AsmHomeBrewParser;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewLexer;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
+import org.karnes.homebrew.assemblr.parse.asm.MachineCodeTranslator;
+import org.karnes.homebrew.assemblr.parse.asm.SymbolResolver;
+import org.karnes.homebrew.assemblr.parse.macro.MacroExpander;
 
 import java.util.Map;
 
@@ -14,7 +17,7 @@ public class Assembler {
 
     public short[] assemble(String text) {
         //Expand Macros
-        //text = expandMacros(text);
+        text = expandMacros(text);
 
         //Get the parse tree
         ParseTree parseTree = parse(text);
@@ -24,6 +27,12 @@ public class Assembler {
 
 
         return convertToMachineCode(parseTree, symbolTable);
+    }
+
+    private String expandMacros(String text) {
+        MacroExpander expander = new MacroExpander();
+        String expandedText = expander.expandMacros(text);
+        return expandedText;
     }
 
     private Map<String, Character> resolveSymbols(ParseTree parseTree) {

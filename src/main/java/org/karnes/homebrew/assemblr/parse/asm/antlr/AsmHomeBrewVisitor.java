@@ -1,5 +1,5 @@
-// Generated from /home/jake/IdeaProjects/relay/src/main/java/org/karnes/homebrew/assemblr/parse/AsmHomeBrew.g4 by ANTLR 4.7
-package org.karnes.homebrew.assemblr.parse;
+// Generated from /home/jake/IdeaProjects/relay/src/main/java/org/karnes/homebrew/assemblr/parse/asm/antlr/AsmHomeBrew.g4 by ANTLR 4.7
+package org.karnes.homebrew.assemblr.parse.asm.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -53,12 +53,6 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUnaryOperation(AsmHomeBrewParser.UnaryOperationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link AsmHomeBrewParser#ioOperation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIoOperation(AsmHomeBrewParser.IoOperationContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#returnOperation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -71,11 +65,23 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitClearOperation(AsmHomeBrewParser.ClearOperationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#ioOperation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIoOperation(AsmHomeBrewParser.IoOperationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#ioOpcode}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitIoOpcode(AsmHomeBrewParser.IoOpcodeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#oneArgOpcode}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOneArgOpcode(AsmHomeBrewParser.OneArgOpcodeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#jumpOperation}.
 	 * @param ctx the parse tree
@@ -143,6 +149,12 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCallOperation(AsmHomeBrewParser.CallOperationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#stackOpcode}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStackOpcode(AsmHomeBrewParser.StackOpcodeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#ternaryOperation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -203,6 +215,24 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#assemblerStringDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssemblerStringDeclaration(AsmHomeBrewParser.AssemblerStringDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#macro}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMacro(AsmHomeBrewParser.MacroContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#macroParamValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMacroParamValue(AsmHomeBrewParser.MacroParamValueContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#jsExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -215,6 +245,12 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitName(AsmHomeBrewParser.NameContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#macroName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMacroName(AsmHomeBrewParser.MacroNameContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#number}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -226,4 +262,10 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitComment(AsmHomeBrewParser.CommentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#string}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitString(AsmHomeBrewParser.StringContext ctx);
 }

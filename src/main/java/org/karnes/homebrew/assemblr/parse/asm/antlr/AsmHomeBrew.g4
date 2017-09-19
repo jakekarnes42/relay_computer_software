@@ -8,6 +8,7 @@ line
    : comment
    | instruction
    | assemblerDirective comment?
+   | macro comment?
    ;
 
 instruction
@@ -37,10 +38,6 @@ unaryOperation
    | clearOperation
    ;
 
-ioOperation
-   : ioOpcode register
-   ;
-
 returnOperation
    : RET stackRegister
    ;
@@ -49,10 +46,22 @@ clearOperation
    : CLR register
    ;
 
+ioOperation
+   : ioOpcode register
+   ;
+
+
 ioOpcode
-    : WRDIN
-    | WRDOUT
-    ;
+   : WRDIN
+   | WRDOUT
+   ;
+
+oneArgOpcode
+   : RET
+   | CLR
+   | WRDIN
+   | WRDOUT
+   ;
 
 jumpOperation
    : jumpOpcode value
@@ -118,6 +127,12 @@ callOperation
    : CALL stackRegister ',' value
    ;
 
+stackOpcode
+   : PUSH
+   | POP
+   | CALL
+   ;
+
 
 ternaryOperation
     : aluTernaryOperation
@@ -171,6 +186,7 @@ assemblerDirective
    : jsExpression
    | assemblerOrgDirective
    | assemblerWordDeclaration
+   | assemblerStringDeclaration
    ;
 
 assemblerOrgDirective
@@ -178,17 +194,46 @@ assemblerOrgDirective
     ;
 
 assemblerWordDeclaration
-    : DW value
+    : DW (','? value)+
+    ;
+
+assemblerStringDeclaration
+    : DS STRING
+    ;
+
+
+macro
+    : macroName
+    | macroName macroParamValue
+    | macroName macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    ;
+
+macroParamValue
+    : aluTernaryOpcode | stackOpcode | binaryRegValOpCode| binaryRegRegOpCode | jumpOpcode | ioOpcode | oneArgOpcode | noArgOperation
+    | register
+    | string
+    | value
     ;
 
 jsExpression
     : JAVASCRIPT
     ;
 
-
 name
    : NAME
    ;
+
+macroName
+    : MACRO_NAME
+    ;
 
 number
    : NUMBER
@@ -196,6 +241,10 @@ number
 
 comment
    : COMMENT
+   ;
+
+string
+   : STRING
    ;
 
 fragment A
@@ -366,6 +415,8 @@ HALT: H A L T ;
 
 // Assembler directive ops
 ORG: O R G ;
+DW: D W ;
+DS: D S ;
 
 /*
  * Registers
@@ -401,13 +452,15 @@ PC
    : P C
    ;
 
-DW
-   : D W
-   ;
 
 NAME
    : [a-zA-Z] [a-zA-Z0-9_]*
    ;
+
+MACRO_NAME
+   : '$' [a-zA-Z0-9_]+
+   ;
+
 NUMBER
    : DECIMAL
    | HEX

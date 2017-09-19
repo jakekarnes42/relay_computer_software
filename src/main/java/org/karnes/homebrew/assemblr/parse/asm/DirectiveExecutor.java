@@ -1,7 +1,7 @@
-package org.karnes.homebrew.assemblr;
+package org.karnes.homebrew.assemblr.parse.asm;
 
-import org.karnes.homebrew.assemblr.parse.AsmHomeBrewBaseVisitor;
-import org.karnes.homebrew.assemblr.parse.AsmHomeBrewParser;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewBaseVisitor;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -10,7 +10,9 @@ import java.util.Map;
 
 import static org.karnes.homebrew.Util.literalToChar;
 
-
+/**
+ * Parent class which executes the assembler directives. Subclasses can re-use this functionality so they don't need to handle it themselves
+ */
 public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
     protected Map<String, Character> symbolTable = new HashMap<>();
@@ -24,18 +26,22 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
     protected char lastJSResult = 0;
 
-    protected char counter = 0;
+    protected char codePointer = 0;
+
+    @Override
+    public Void visitMacro(AsmHomeBrewParser.MacroContext ctx) {
+        throw new IllegalStateException("Found un-expanded macro. This macro likely was not defined: " + ctx.macroName().getText());
+    }
 
     @Override
     public Void visitAssemblerOrgDirective(AsmHomeBrewParser.AssemblerOrgDirectiveContext ctx) {
-        //Move the counter to the specified location.
-
+        //Move the codePointer to the specified location.
         try {
             //Evaluate JS
             visitJsExpression(ctx.jsExpression());
 
-            //Update counter to whatever our result was
-            counter = lastJSResult;
+            //Update codePointer to whatever our result was
+            codePointer = lastJSResult;
         } catch (Exception exc) {
             throw new IllegalStateException("Cannot handle ORG directive execution.", exc);
         }
@@ -46,13 +52,21 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
     @Override
     public Void visitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx) {
-        //Get the value
-        char value = getValue(ctx.value());
-        //Store it
-        memory[counter] = (short) value;
+        ctx.value().stream() //Stream each word
+                .map(this::getValue) //Map to value which we can actually store in mem
+                .forEach(this::storeValueInMem); //Store each value into mem
+        return null;
+    }
 
-        //Increment our counter.
-        counter += 2;
+
+    @Override
+    public Void visitAssemblerStringDeclaration(AsmHomeBrewParser.AssemblerStringDeclarationContext ctx) {
+        //Get the string
+        String strValue = ctx.STRING().getText();
+
+        //Store each character in the string
+        strValue.chars().forEach(c -> storeValueInMem((char) c));
+
         return null;
     }
 
@@ -60,12 +74,20 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
     public Void visitJsExpression(AsmHomeBrewParser.JsExpressionContext ctx) {
         try {
             String jsExpr = ctx.getText();
+            //Inject our code pointer into the $ variable within JS
+            jsExpr = "$ = " + (int) codePointer + "; " + jsExpr;
             Object result = engine.eval(jsExpr);
+
             //Save our result
             if (result == null) {
                 //Do nothing?
             } else if (result instanceof String) {
-                lastJSResult = (char) (Integer.parseUnsignedInt(result.toString()));
+                String resultStr = (String) result;
+                if (resultStr.length() == 1) {
+                    lastJSResult = resultStr.charAt(0);
+                } else {
+                    lastJSResult = (char) (Integer.parseUnsignedInt(resultStr));
+                }
             } else if (result instanceof Double) {
                 lastJSResult = (char) ((Double) result).intValue();
             } else if (result instanceof Integer) {
@@ -97,4 +119,13 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
             return lastJSResult;
         }
     }
+
+    private void storeValueInMem(char value) {
+        //Store it
+        memory[codePointer] = (short) value;
+
+        //Increment our codePointer.
+        codePointer++;
+    }
+
 }
