@@ -1,5 +1,5 @@
-// Generated from /home/jake/IdeaProjects/relay/src/main/java/org/karnes/homebrew/assemblr/parse/asm/AsmHomeBrew.g4 by ANTLR 4.7
-package org.karnes.homebrew.assemblr.parse.asm;
+// Generated from /home/jake/IdeaProjects/relay/src/main/java/org/karnes/homebrew/assemblr/parse/asm/antlr/AsmHomeBrew.g4 by ANTLR 4.7
+package org.karnes.homebrew.assemblr.parse.asm.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**

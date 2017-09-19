@@ -1,5 +1,8 @@
 package org.karnes.homebrew.assemblr.parse.asm;
 
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewBaseVisitor;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.util.HashMap;
@@ -7,7 +10,9 @@ import java.util.Map;
 
 import static org.karnes.homebrew.Util.literalToChar;
 
-
+/**
+ * Parent class which executes the assembler directives. Subclasses can re-use this functionality so they don't need to handle it themselves
+ */
 public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
     protected Map<String, Character> symbolTable = new HashMap<>();
@@ -21,7 +26,7 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
     protected char lastJSResult = 0;
 
-    protected char counter = 0;
+    protected char codePointer = 0;
 
     @Override
     public Void visitMacro(AsmHomeBrewParser.MacroContext ctx) {
@@ -30,14 +35,13 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
     @Override
     public Void visitAssemblerOrgDirective(AsmHomeBrewParser.AssemblerOrgDirectiveContext ctx) {
-        //Move the counter to the specified location.
-
+        //Move the codePointer to the specified location.
         try {
             //Evaluate JS
             visitJsExpression(ctx.jsExpression());
 
-            //Update counter to whatever our result was
-            counter = lastJSResult;
+            //Update codePointer to whatever our result was
+            codePointer = lastJSResult;
         } catch (Exception exc) {
             throw new IllegalStateException("Cannot handle ORG directive execution.", exc);
         }
@@ -71,7 +75,7 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
         try {
             String jsExpr = ctx.getText();
             //Inject our code pointer into the $ variable within JS
-            jsExpr = "$ = " + (int) counter + "; " + jsExpr;
+            jsExpr = "$ = " + (int) codePointer + "; " + jsExpr;
             Object result = engine.eval(jsExpr);
 
             //Save our result
@@ -118,10 +122,10 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
     private void storeValueInMem(char value) {
         //Store it
-        memory[counter] = (short) value;
+        memory[codePointer] = (short) value;
 
-        //Increment our counter.
-        counter++;
+        //Increment our codePointer.
+        codePointer++;
     }
 
 }

@@ -5,9 +5,9 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.karnes.homebrew.assemblr.DescriptiveErrorListener;
-import org.karnes.homebrew.assemblr.parse.asm.AsmHomeBrewBaseVisitor;
-import org.karnes.homebrew.assemblr.parse.asm.AsmHomeBrewLexer;
-import org.karnes.homebrew.assemblr.parse.asm.AsmHomeBrewParser;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewBaseVisitor;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewLexer;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
 
 import java.util.List;
 import java.util.stream.Collectors;

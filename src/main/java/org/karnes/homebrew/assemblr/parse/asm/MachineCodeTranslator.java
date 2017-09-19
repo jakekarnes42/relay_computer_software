@@ -1,12 +1,13 @@
 package org.karnes.homebrew.assemblr.parse.asm;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
 import org.karnes.homebrew.emulator.InstructionOpcode;
 import org.karnes.homebrew.emulator.Register;
 
 import java.util.Map;
 
-/*
+/**
  * This class translates the assembly-language instructions into machine code.
  */
 public class MachineCodeTranslator extends DirectiveExecutor {
@@ -23,9 +24,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = getOpcodeMask(ctx);
 
         //Store instruction into memory
-        memory[counter] = instruction;
-        //Increment our counter.
-        counter++;
+        memory[codePointer] = instruction;
+        //Increment our codePointer.
+        codePointer++;
         //No need to continue descent
         return null;
     }
@@ -38,9 +39,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = (short) (getOpcodeMask(ctx.ioOpcode()) | getLastRegisterMask(ctx.register()));
 
         //Store instruction into memory
-        memory[counter] = instruction;
-        //Increment our counter.
-        counter++;
+        memory[codePointer] = instruction;
+        //Increment our codePointer.
+        codePointer++;
         //No need to continue descent
         return null;
     }
@@ -51,9 +52,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = (short) (getOpcodeMask("CLR") | getMidRegisterMask(ctx.register()) | getLastRegisterMask(ctx.register()));
 
         //Store instruction into memory
-        memory[counter] = instruction;
-        //Increment our counter.
-        counter++;
+        memory[codePointer] = instruction;
+        //Increment our codePointer.
+        codePointer++;
         //No need to continue descent
         return null;
     }
@@ -64,9 +65,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = (short) (getOpcodeMask("RET") | getStackMask(ctx.stackRegister()) | getLastRegisterMask("PC"));
 
         //Store instruction into memory
-        memory[counter] = instruction;
-        //Increment our counter.
-        counter++;
+        memory[codePointer] = instruction;
+        //Increment our codePointer.
+        codePointer++;
         //No need to continue descent
         return null;
     }
@@ -77,16 +78,16 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = getOpcodeMask(ctx.jumpOpcode());
 
         //Store instruction into memory
-        memory[counter] = instruction;
+        memory[codePointer] = instruction;
 
         //Get memory target
         char memoryTarget = getValue(ctx.value());
 
         //Store memory target into memory
-        memory[counter + 1] = (short) memoryTarget;
+        memory[codePointer + 1] = (short) memoryTarget;
 
-        //Increment our counter.
-        counter += 2;
+        //Increment our codePointer.
+        codePointer += 2;
         //No need to continue descent
         return null;
     }
@@ -98,9 +99,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = (short) (getOpcodeMask(ctx.binaryRegRegOpCode()) | getMidRegisterMask(ctx.register(0)) | getLastRegisterMask(ctx.register(1)));
 
         //Store instruction into memory
-        memory[counter] = instruction;
-        //Increment our counter.
-        counter++;
+        memory[codePointer] = instruction;
+        //Increment our codePointer.
+        codePointer++;
         //No need to continue descent
         return null;
     }
@@ -111,16 +112,16 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = (short) (getOpcodeMask(ctx.binaryRegValOpCode()) | getLastRegisterMask(ctx.register()));
 
         //Store instruction into memory
-        memory[counter] = instruction;
+        memory[codePointer] = instruction;
 
         //Get memory target
         char memoryTarget = getValue(ctx.value());
 
         //Store memory target into memory
-        memory[counter + 1] = (short) memoryTarget;
+        memory[codePointer + 1] = (short) memoryTarget;
 
-        //Increment our counter.
-        counter += 2;
+        //Increment our codePointer.
+        codePointer += 2;
         //No need to continue descent
         return null;
     }
@@ -130,9 +131,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = (short) (getOpcodeMask("PUSH") | getStackMask(ctx.stackRegister()) | getLastRegisterMask(ctx.register()));
 
         //Store instruction into memory
-        memory[counter] = instruction;
-        //Increment our counter.
-        counter++;
+        memory[codePointer] = instruction;
+        //Increment our codePointer.
+        codePointer++;
         //No need to continue descent
         return null;
     }
@@ -142,9 +143,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = (short) (getOpcodeMask("POP") | getStackMask(ctx.stackRegister()) | getLastRegisterMask(ctx.register()));
 
         //Store instruction into memory
-        memory[counter] = instruction;
-        //Increment our counter.
-        counter++;
+        memory[codePointer] = instruction;
+        //Increment our codePointer.
+        codePointer++;
         //No need to continue descent
         return null;
     }
@@ -156,16 +157,16 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = (short) (getOpcodeMask("CALL") | getStackMask(ctx.stackRegister()));
 
         //Store instruction into memory
-        memory[counter] = instruction;
+        memory[codePointer] = instruction;
 
         //Get memory target
         char memoryTarget = getValue(ctx.value());
 
         //Store memory target into memory
-        memory[counter + 1] = (short) memoryTarget;
+        memory[codePointer + 1] = (short) memoryTarget;
 
-        //Increment our counter.
-        counter += 2;
+        //Increment our codePointer.
+        codePointer += 2;
         //No need to continue descent
         return null;
     }
@@ -178,9 +179,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         short instruction = (short) (getOpcodeMask(ctx.aluTernaryOpcode()) | getFirstRegisterMask(ctx.register(0)) | getMidRegisterMask(ctx.register(1)) | getLastRegisterMask(ctx.register(2)));
 
         //Store instruction into memory
-        memory[counter] = instruction;
-        //Increment our counter.
-        counter++;
+        memory[codePointer] = instruction;
+        //Increment our codePointer.
+        codePointer++;
         //No need to continue descent
         return null;
     }

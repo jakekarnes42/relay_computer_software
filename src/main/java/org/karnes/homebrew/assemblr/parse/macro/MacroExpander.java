@@ -13,12 +13,13 @@ public class MacroExpander {
 
     public String expandMacros(String completeSource) {
 
-        MacroDefinitionCollector macroDefinitionCollector = new MacroDefinitionCollector();
+        MacroDefinitionFinder macroDefinitionFinder = new MacroDefinitionFinder();
 
         //Parse the macro definitions
-        macroDefinitionCollector.findMacros(completeSource);
-        List<ParsedMacro> parsedMacros = macroDefinitionCollector.getMacroList();
-        List<String> nonMacroLines = macroDefinitionCollector.getNonMacroLines();
+        macroDefinitionFinder.findMacros(completeSource);
+
+        List<ParsedMacro> parsedMacros = macroDefinitionFinder.getMacroList();
+        List<String> nonMacroLines = macroDefinitionFinder.getNonMacroLines();
 
         List<String> expandedTextLines = expandTextWithMacros(nonMacroLines, parsedMacros);
 

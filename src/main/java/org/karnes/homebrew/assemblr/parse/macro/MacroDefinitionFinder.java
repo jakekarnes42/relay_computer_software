@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MacroDefinitionCollector {
+public class MacroDefinitionFinder {
 
     Pattern macroRegex = Pattern.compile("^\\s*MACRO\\s+" + //Macro keyword
             "(\\$\\w+)\\s+" + //Macro name Group 1
@@ -56,10 +56,11 @@ public class MacroDefinitionCollector {
                 //Check if it's a ending a macro
                 Matcher endmRegexMatcher = endmRegex.matcher(line);
                 if (endmRegexMatcher.matches()) {
-                    parseENDM(endmRegexMatcher);
+                    parseENDM();
                     continue;
                 }
 
+                //Handle a non-macro-specific line
                 handleOtherLine(line);
 
             }
@@ -68,7 +69,7 @@ public class MacroDefinitionCollector {
 
         //Check that we didn't end inside a macro
         if (currentMacro != null) {
-            throw new IllegalStateException("Finished parsing while still in a macro.");
+            throw new IllegalStateException("Finished parsing while still in a macro. Likely missing ENDM statement.");
         }
 
     }
@@ -87,15 +88,27 @@ public class MacroDefinitionCollector {
         //Check if there are any parameters
         int groupCount = macroRegexMatcher.groupCount();
         if (groupCount > 1) {
-            //Yes, there are parameters. Get the first
+            //Yes, there are parameters. Get the first, if it's there.
             String param1 = macroRegexMatcher.group(2);
-            paramNames.add(param1);
+            if (param1 != null) {
+                paramNames.add(param1);
+            }
 
             //If there are any other params, we'll add them with this loop.
             for (int i = 4; i <= groupCount; i += 2) {
                 String param = macroRegexMatcher.group(i);
                 if (param != null) {
-                    paramNames.add(param);
+
+                    //Check if we already have a param with the same name.
+                    if (paramNames.contains(param)) {
+                        // No duplicate names allowed in macro definition
+                        throw new IllegalArgumentException("Macro " + macroName +
+                                " has two or more parameters with the same name: " + param);
+                    } else {
+                        paramNames.add(param);
+                    }
+
+
                 }
             }
         }
@@ -105,7 +118,7 @@ public class MacroDefinitionCollector {
 
     }
 
-    private void parseENDM(Matcher endmRegexMatcher) {
+    private void parseENDM() {
         //Check that we didn't end outside a macro
         if (currentMacro == null) {
             throw new IllegalStateException("Found ENDM keyword outside of macro. Unable to complete a macro that hasn't started..");
@@ -118,6 +131,7 @@ public class MacroDefinitionCollector {
 
 
     private void handleOtherLine(String line) {
+        //We need to re-add the EOL so that text looks correct, and future parsing works.
         String lineWithEOL = line + "\r\n";
         if (currentMacro == null) {
             nonMacroLines.add(lineWithEOL);
@@ -125,6 +139,7 @@ public class MacroDefinitionCollector {
             currentMacro.addLine(lineWithEOL);
         }
     }
+
 
     /**
      * The macros parsed from the input source code.

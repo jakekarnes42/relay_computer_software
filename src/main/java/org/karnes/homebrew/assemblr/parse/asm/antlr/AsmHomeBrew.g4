@@ -203,7 +203,17 @@ assemblerStringDeclaration
 
 
 macro
-    : macroName (','? macroParamValue)+
+    : macroName
+    | macroName macroParamValue
+    | macroName macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
+    | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
     ;
 
 macroParamValue
