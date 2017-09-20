@@ -549,3 +549,118 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
     FETCH AX , EX   ; Fetch next word pointed to by IP (EX), into WP (AX)
     INC EX , EX     ; Increment IP (EX) to point to next word in word list
     MOV PC, AX          ; Jump to the next word, through WP (AX)
+
+;;Logical Words
+
+
+;; The only primitive word which generates flags is '0<', which examines the top item on the data stack for its negativeness.
+;; If it is negative, '0<' will return a -1 for true. If it is 0 or positive, '0<' will return a 0 for false.
+
+;   0<		( n -- t )
+;		Return true if n is negative.
+
+	{_CODE	= $}				        ;; save code pointer
+	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "0<"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
+    ORG	{_NAME}					        ;; set name pointer
+	ZLESS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
+	DW {2}                           ;; Name length
+	DS "0<"			                ;; name string
+    ORG	{_CODE}					        ;; restore code pointer
+		POP	AX, SP          ; Pop value (n) at TOS data stack (SP) into AX
+		OR AX, AX, AX       ; Or value with itself to check the sign
+		JNEG ZLESS1         ; Test if it's negative
+		LOAD BX,0           ; It is not negative (i.e. AX is 0 or positive) Load 0 into BX
+		JMP ZLESS2          ; JMP to pushing onto the data stack
+ZLESS1: LOAD BX, -1         ; It is negative, load -1 into BX
+ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP)
+    FETCH AX , EX   ; Fetch next word pointed to by IP (EX), into WP (AX)
+    INC EX , EX     ; Increment IP (EX) to point to next word in word list
+    MOV PC, AX          ; Jump to the next word, through WP (AX)
+
+
+;   AND		( w w -- w )
+;		Bitwise AND.
+
+	{_CODE	= $}				        ;; save code pointer
+	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "AND"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
+    ORG	{_NAME}					        ;; set name pointer
+	ANDD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
+	DW {3}                           ;; Name length
+	DS "AND"			                ;; name string
+    ORG	{_CODE}					        ;; restore code pointer
+		POP	BX, SP          ;Pop TOS of data stack into BX
+		POP	AX, SP          ;Pop next TOS of data stack into AX
+		AND	BX, BX,AX       ; AND the elements, store result into BX
+		PUSH SP,	BX          ; Push result of logical AND onto data stack
+    FETCH AX , EX   ; Fetch next word pointed to by IP (EX), into WP (AX)
+    INC EX , EX     ; Increment IP (EX) to point to next word in word list
+    MOV PC, AX          ; Jump to the next word, through WP (AX)
+
+;   OR		( w w -- w )
+;		Bitwise inclusive OR.
+
+	{_CODE	= $}				        ;; save code pointer
+	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "OR"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
+    ORG	{_NAME}					        ;; set name pointer
+	ORR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
+	DW {2}                           ;; Name length
+	DS "OR"			                ;; name string
+    ORG	{_CODE}					        ;; restore code pointer
+		POP	BX, SP          ;Pop TOS of data stack into BX
+        POP	AX, SP          ;Pop next TOS of data stack into AX
+        OR	BX, BX,AX       ; OR the elements, store result into BX
+        PUSH SP,	BX          ; Push result of logical OR onto data stack
+    FETCH AX , EX   ; Fetch next word pointed to by IP (EX), into WP (AX)
+    INC EX , EX     ; Increment IP (EX) to point to next word in word list
+    MOV PC, AX          ; Jump to the next word, through WP (AX)
+
+;   XOR		( w w -- w )
+;		Bitwise exclusive OR.
+
+	{_CODE	= $}				        ;; save code pointer
+	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "XOR"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
+    ORG	{_NAME}					        ;; set name pointer
+	XORR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
+	DW {3}                           ;; Name length
+	DS "XOR"			                ;; name string
+    ORG	{_CODE}					        ;; restore code pointer
+		POP	BX, SP          ;Pop TOS of data stack into BX
+        POP	AX, SP          ;Pop next TOS of data stack into AX
+        XOR	BX, BX,AX       ; XOR the elements, store result into BX
+        PUSH SP,	BX          ; Push result of logical XOR onto data stack
+    FETCH AX , EX   ; Fetch next word pointed to by IP (EX), into WP (AX)
+    INC EX , EX     ; Increment IP (EX) to point to next word in word list
+    MOV PC, AX          ; Jump to the next word, through WP (AX)
+
+;; Primitive Arithmetic
+
+;; UM+ adds two unsigned number on the top of the data stack and returns to the data stack the sum of these
+;; two numbers and the carry as one number on top of the sum.
+
+;   UM+		( w w -- w cy )
+;		Add two numbers, return the sum and carry flag.
+
+	{_CODE	= $}				        ;; save code pointer
+	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "UM+"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
+    ORG	{_NAME}					        ;; set name pointer
+	UPLUS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
+	DW {3}                           ;; Name length
+	DS "UM+"			                ;; name string
+    ORG	{_CODE}					        ;; restore code pointer
+		POP	BX, SP          ;Pop TOS of data stack into BX
+        POP	AX, SP          ;Pop next TOS of data stack into AX
+        ADD	BX, BX, AX       ; ADD the elements, store result into BX
+        JC UPLUS1           ; Test if we carried
+        LOAD CX,1           ; The addition carried (i.e. CF is 1) Load 1 into CX
+        JMP UPLUS2          ; JMP to pushing onto the data stack
+        UPLUS1: LOAD CX, 0  ; It did not carry, load 0 into BX
+        UPLUS2:	PUSH SP, BX ; Push BX value (the sum) onto data stack (SP)
+        PUSH SP, CX         ; Push CX value (the carry flag - either 1 or 0) onto data stack (SP)
+    FETCH AX , EX   ; Fetch next word pointed to by IP (EX), into WP (AX)
+    INC EX , EX     ; Increment IP (EX) to point to next word in word list
+    MOV PC, AX          ; Jump to the next word, through WP (AX)

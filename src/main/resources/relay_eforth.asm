@@ -362,3 +362,73 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
         PUSH SP, BX         ; Push w2 (BX) onto data stack (SP)
         PUSH SP, CX         ; Push w1 (CX) onto data stack (SP)
 		$NEXT
+
+;;Logical Words
+
+
+;; The only primitive word which generates flags is '0<', which examines the top item on the data stack for its negativeness.
+;; If it is negative, '0<' will return a -1 for true. If it is 0 or positive, '0<' will return a 0 for false.
+
+;   0<		( n -- t )
+;		Return true if n is negative.
+
+		$CODE	2,"0<",ZLESS
+		POP	AX, SP          ; Pop value (n) at TOS data stack (SP) into AX
+		OR AX, AX, AX       ; Or value with itself to check the sign
+		JNEG ZLESS1         ; Test if it's negative
+		LOAD BX,0           ; It is not negative (i.e. AX is 0 or positive) Load 0 into BX
+		JMP ZLESS2          ; JMP to pushing onto the data stack
+ZLESS1: LOAD BX, -1         ; It is negative, load -1 into BX
+ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP)
+		$NEXT
+
+
+;   AND		( w w -- w )
+;		Bitwise AND.
+
+		$CODE	3,"AND",ANDD
+		POP	BX, SP          ;Pop TOS of data stack into BX
+		POP	AX, SP          ;Pop next TOS of data stack into AX
+		AND	BX, BX,AX       ; AND the elements, store result into BX
+		PUSH SP,	BX          ; Push result of logical AND onto data stack
+		$NEXT
+
+;   OR		( w w -- w )
+;		Bitwise inclusive OR.
+
+		$CODE	2,"OR",ORR
+		POP	BX, SP          ;Pop TOS of data stack into BX
+        POP	AX, SP          ;Pop next TOS of data stack into AX
+        OR	BX, BX,AX       ; OR the elements, store result into BX
+        PUSH SP,	BX          ; Push result of logical OR onto data stack
+		$NEXT
+
+;   XOR		( w w -- w )
+;		Bitwise exclusive OR.
+
+		$CODE	3,"XOR",XORR
+		POP	BX, SP          ;Pop TOS of data stack into BX
+        POP	AX, SP          ;Pop next TOS of data stack into AX
+        XOR	BX, BX,AX       ; XOR the elements, store result into BX
+        PUSH SP,	BX          ; Push result of logical XOR onto data stack
+		$NEXT
+
+;; Primitive Arithmetic
+
+;; UM+ adds two unsigned number on the top of the data stack and returns to the data stack the sum of these
+;; two numbers and the carry as one number on top of the sum.
+
+;   UM+		( w w -- w cy )
+;		Add two numbers, return the sum and carry flag.
+
+		$CODE	3,"UM+",UPLUS
+		POP	BX, SP          ;Pop TOS of data stack into BX
+        POP	AX, SP          ;Pop next TOS of data stack into AX
+        ADD	BX, BX, AX       ; ADD the elements, store result into BX
+        JC UPLUS1           ; Test if we carried
+        LOAD CX,1           ; The addition carried (i.e. CF is 1) Load 1 into CX
+        JMP UPLUS2          ; JMP to pushing onto the data stack
+        UPLUS1: LOAD CX, 0  ; It did not carry, load 0 into BX
+        UPLUS2:	PUSH SP, BX ; Push BX value (the sum) onto data stack (SP)
+        PUSH SP, CX         ; Push CX value (the carry flag - either 1 or 0) onto data stack (SP)
+        $NEXT
