@@ -194,11 +194,11 @@ assemblerOrgDirective
     ;
 
 assemblerWordDeclaration
-    : DW (','? value)+
+    : lbl? DW (','? value)+
     ;
 
 assemblerStringDeclaration
-    : DS STRING
+    : lbl? DS STRING
     ;
 
 

@@ -26,6 +26,14 @@ public class SymbolResolver extends DirectiveExecutor {
     }
 
     @Override
+    public Void visitLbl(AsmHomeBrewParser.LblContext ctx) {
+        //Store the label and the current codePointer to our symbol table.
+        String labelText = ctx.label().getText();
+        symbolTable.put(labelText, codePointer);
+        return null;
+    }
+
+    @Override
     public Void visitNoArgOperation(AsmHomeBrewParser.NoArgOperationContext ctx) {
         //Takes one word
         codePointer++;
@@ -126,6 +134,14 @@ public class SymbolResolver extends DirectiveExecutor {
 
     @Override
     public Void visitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx) {
+        //Check if this declared word(s) is/are labelled
+        if (ctx.lbl() != null) {
+            //Store the label and the current codePointer to our symbol table.
+            String labelText = ctx.lbl().label().getText();
+            symbolTable.put(labelText, codePointer);
+        }
+
+
         //Calculate how many words are declared.
         int numWords = ctx.value().size();
         codePointer += numWords;
@@ -136,6 +152,14 @@ public class SymbolResolver extends DirectiveExecutor {
 
     @Override
     public Void visitAssemblerStringDeclaration(AsmHomeBrewParser.AssemblerStringDeclarationContext ctx) {
+        //Check if this declared string is labelled
+        if (ctx.lbl() != null) {
+            //Store the label and the current codePointer to our symbol table.
+            String labelText = ctx.lbl().label().getText();
+            symbolTable.put(labelText, codePointer);
+        }
+
+
         //Calculate how many letters are declared.
         int numLetters = ctx.STRING().getText().length();
         codePointer += numLetters;

@@ -59,6 +59,32 @@ public class DirectiveTest {
     }
 
     @Test
+    @DisplayName("Test declaring a word, and labelling that word")
+    public void testDeclareWordWithLabel() {
+        String code = ";Let's play with directives!\r\n"
+                + " ORG {100}                               ; Move code pointer into mem\r\n"
+                + " SECRET: DW 0x2100, 0xF0F0, 0xFFFF       ; Write hex words for LOAD AX, F0F0 and then HALT\r\n"
+                + " ORG {0}                                 ; Move code pointer back to 0\r\n"
+                + " JMP SECRET           ; First instruction is to jump to SECRET\r\n"
+                + "\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        //Check RAM
+        assertEquals((short) 0x2107, RAM[0], "Instruction should be an unconditional JMP");
+        assertEquals((short) 100, RAM[1], "Target of unconditional JMP should be the SECRET label at 100");
+
+
+        assertEquals((short) 0x2100, RAM[100], "Declare Word should set the hex short into memory");
+        assertEquals((short) 0xF0F0, RAM[101], "Declare Word should set the hex short into memory");
+        assertEquals((short) 0xFFFF, RAM[102], "Declare Word should set the hex short into memory");
+
+
+    }
+
+    @Test
     @DisplayName("Test declaring a word directly with JS values")
     public void testDeclareWordJS() {
         String code = ";Let's play with directives!\r\n"
