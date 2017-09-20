@@ -527,6 +527,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitString(AsmHomeBrewParser.StringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParenString(AsmHomeBrewParser.ParenStringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParenString(AsmHomeBrewParser.ParenStringContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

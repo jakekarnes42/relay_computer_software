@@ -268,4 +268,10 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitString(AsmHomeBrewParser.StringContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#parenString}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenString(AsmHomeBrewParser.ParenStringContext ctx);
 }

@@ -220,6 +220,7 @@ macroParamValue
     : aluTernaryOpcode | stackOpcode | binaryRegValOpCode| binaryRegRegOpCode | jumpOpcode | ioOpcode | oneArgOpcode | noArgOperation
     | register
     | string
+    | parenString
     | value
     ;
 
@@ -245,6 +246,10 @@ comment
 
 string
    : STRING
+   ;
+
+parenString
+   : PAREN_STRING
    ;
 
 fragment A
@@ -475,8 +480,13 @@ COMMENT
    : ';' ~ [\r\n]* -> skip
    ;
 STRING
-   : '"' ~ ["]* '"'
+   : '"' ~ [\r\n]* '"'
    ;
+
+PAREN_STRING
+   : '(' ~ [\r\n]* ')'
+   ;
+
 JAVASCRIPT
     : '{' .*? '}'
     ;

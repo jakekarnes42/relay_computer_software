@@ -437,4 +437,14 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitString(AsmHomeBrewParser.StringContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#parenString}.
+	 * @param ctx the parse tree
+	 */
+	void enterParenString(AsmHomeBrewParser.ParenStringContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#parenString}.
+	 * @param ctx the parse tree
+	 */
+	void exitParenString(AsmHomeBrewParser.ParenStringContext ctx);
 }
