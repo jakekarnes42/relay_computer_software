@@ -453,4 +453,97 @@ public class StackInstructionTest {
         assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
         assertFalse(computer.getSignFlag(), "The sign flag should not be set");
     }
+
+    @Test
+    @DisplayName("Copy value from TOS of one stack to the other")
+    public void testTOScopy() {
+        short value1 = 1000;
+        short value2 = 2000;
+        short value3 = 3000;
+        short value4 = 4000;
+
+
+        String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
+                + "     LOAD SP, " + value2 + " ; Move the SP pointer far into memory\r\n"
+                + "     PUSH SP, AX             ; Push AX onto SP\r\n"
+                + "     LOAD BX, " + value3 + " ; BX = value3\r\n"
+                + "     LOAD RP, " + value4 + " ; Move the RP pointer far into memory\r\n"
+                + "     PUSH RP, BX             ; Push BX onto RP\r\n"
+
+                //Let's copy TOS SP to TOS RP
+                + "     FETCH CX, SP            ; Fetch (not pop) value at TOS SP\r\n"
+                + "     PUSH RP, CX            ; Push value onto TOS RP\r\n"
+                + "     HALT                    ; DONE\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check SP stack
+        assertEquals(value1, computer.getAX(), "AX should have the loaded value");
+        assertEquals(0, RAM[value2], "SP's old value in memory should be blank");
+        assertEquals(value2 - 1, computer.getSP(), "SP should be decremented");
+        assertEquals(value1, RAM[computer.getSP()], "SP should point to AX's value");
+
+        //Check copy
+        assertEquals(value1, computer.getCX(), "CX should have the copied value");
+
+        //Check RP stack
+        assertEquals(value3, computer.getBX(), "BX should have the loaded value");
+        assertEquals(0, RAM[value4], "RP's old value in memory should be blank");
+        assertEquals(value4 - 2, computer.getRP(), "RP should be decremented twice, since we pushed twice");
+        assertEquals(value1, RAM[computer.getRP()], "RP should point to AX's value (the copy)");
+
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
+    @Test
+    @DisplayName("Duplicate value from TOS")
+    public void testTOSduplicate() {
+        short value1 = 1000;
+        short value2 = 2000;
+        short value3 = 3000;
+        short value4 = 4000;
+
+
+        String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
+                + "     LOAD SP, " + value2 + " ; Move the SP pointer far into memory\r\n"
+                + "     PUSH SP, AX             ; Push AX onto SP\r\n"
+                + "     FETCH BX, SP            ; BX = TOS SP = AX\r\n"
+                + "     PUSH SP, BX             ; Push BX onto SP\r\n"
+                + "     HALT                    ; DONE\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check SP stack
+        assertEquals(value1, computer.getAX(), "AX should have the loaded value");
+        assertEquals(0, RAM[value2], "SP's old value in memory should be blank");
+        assertEquals(computer.getAX(), computer.getBX(), "BX should have AX's value");
+        assertEquals(value2 - 2, computer.getSP(), "SP should be decremented twice, since we pushed twice");
+        assertEquals(computer.getBX(), RAM[computer.getSP()], "TOS SP should point to BX's value (the duplicate)");
+        assertEquals(computer.getAX(), RAM[computer.getSP() + 1], "TOS-1 SP should point to AX's value (the original)");
+
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
 }

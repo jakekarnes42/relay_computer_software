@@ -197,6 +197,60 @@ public class MacroTest {
     }
 
     @Test
+    @DisplayName("Test macros nested inside each other, which share a parameter")
+    public void testNestedMacroPassThroughParam() {
+        String code = ";Let's play with macros!\r\n"
+                //Start by declaring character printing macro and its parameters
+                + "MACRO $PNT_CHR @RG , @CHAR         ; Macro to print @CHAR through register @RG\r\n"
+                + "     LOAD @RG , @CHAR            ; Load @CHAR into @RG\r\n"
+                + "     WRDOUT @RG                 ; Print through that reg\r\n"
+                + "     ENDM                      ; End of $PNT_CHR\r\n"
+
+                //Start by declaring word printing macro and its parameters
+                + "MACRO $PNT_5 @RG, @1 , @2, @3, @4, @5 ; Macro to print 5 characters through all @RG\r\n"
+                + "     $PNT_CHR @RG , @1            ; Print @1\r\n"
+                + "     $PNT_CHR @RG , @2            ; Print @2\r\n"
+                + "     $PNT_CHR @RG , @3            ; Print @3\r\n"
+                + "     $PNT_CHR @RG , @4            ; Print @4\r\n"
+                + "     $PNT_CHR @RG , @5            ; Print @5\r\n"
+                + "     ENDM                        ; End of $PNT_5\r\n"
+
+
+                // Now let's use that macro to print Hello!
+                + "$PNT_5 AX, {'H'} , {'E'}, {'L'}, {'L'}, {'O'}   ; Print 'HELLO'\r\n"
+
+                + " HALT                ; DONE\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        JavaSimulatedIODevice ioDevice = new JavaSimulatedIODevice(new ByteArrayInputStream("".getBytes()),
+                new PrintStream(baos));
+
+        computer.setIoDevice(ioDevice);
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals((short) 'O', computer.getAX(), "EX should have the fifth character");
+
+        //Check output
+        String output = baos.toString();
+        assertEquals("HELLO", output, "The output should match the characters that were sent");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
+
+    @Test
     @DisplayName("Test macros nested inside each other")
     public void testNestedMacro() {
         String code = ";Let's play with macros!\r\n"

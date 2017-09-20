@@ -211,5 +211,107 @@ public class DirectiveTest {
         assertEquals((short) 42, computer.getAX(), "AX should have the constant's value (42)");
     }
 
+    @Test
+    @DisplayName("Declaring a multi-letter String, that looks like a register")
+    public void testDSRegString() {
+        String testStr = "AX";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
+
+    @Test
+    @DisplayName("Declaring a multi-letter String")
+    public void testDSMultiLetter() {
+        String testStr = "Test123";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
+
+    @Test
+    @DisplayName("Declaring a one letter String")
+    public void testDS1Letter() {
+        String testStr = "!";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
+
+    @Test
+    @DisplayName("Declaring a one letter String")
+    public void testDS1Letter2() {
+        String testStr = "@";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
+
+
+    @Test
+    @DisplayName("Declaring a one letter String")
+    public void testDS1Letter3() {
+        String testStr = "1";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
+
+    @Test
+    @DisplayName("Declaring a one letter String")
+    public void testDS1Letter4() {
+        String testStr = "A";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
 
 }

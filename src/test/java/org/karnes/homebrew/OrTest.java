@@ -94,6 +94,32 @@ public class OrTest {
     }
 
     @Test
+    @DisplayName("Double register by oring register to itself, and store into self")
+    public void testSelfOrSameRegZero() {
+        short value1 = 0;
+        String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
+                + "     OR AX, AX, AX           ; AX = AX | AX\r\n"
+                + "     HALT                    ; DONE\r\n";
+
+        Assembler assembler = new Assembler();
+
+        short[] RAM = assembler.assemble(code);
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals(value1, computer.getAX(), "AX should have its original value");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertTrue(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
+    @Test
     @DisplayName("Oring offset alternating bit patterns")
     public void testAlternatingOr1() {
         short value1 = 0b0101_0101_0101_0101;

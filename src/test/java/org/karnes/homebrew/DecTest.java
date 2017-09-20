@@ -122,7 +122,7 @@ public class DecTest {
 
     @Test
     @DisplayName("Zero DEC")
-    public void testCarryInc() {
+    public void testZeroDec() {
         int value = 0;
         String code = "     LOAD AX, " + value + "  ; AX = value\r\n"
                 + "         DEC BX, AX              ; BX = AX - 1\r\n"
