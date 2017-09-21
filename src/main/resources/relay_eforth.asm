@@ -55,10 +55,11 @@
 ; _NAME needs to grow "downwards" (towards zero). _CODE needs to grow upwards (away from zero to bigger numbers)
 
 MACRO $CODE	@LEX,@NAME,@LABEL           ;	Compile a code definition header.
+@LABEL:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (@LEX + 3)}	    ;; new header. We need to move it in front of @NAME's length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	@LABEL: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {@LEX}                           ;; Name length
 	DS @NAME			                ;; name string
