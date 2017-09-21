@@ -17,9 +17,8 @@ public class ForthAssemblerTest {
 
 
     @Test
-    @DisplayName("Simulate the ?RX primitive word")
+    @DisplayName("Test assembly!")
     public void testAssembly() throws IOException {
-        short stackStart = 1000;
 
         String code = Files.readAllLines(Paths.get("src", "main", "resources", "relay_eforth.asm")).stream()
                 .map(line -> line + "\r\n").collect(Collectors.joining());
