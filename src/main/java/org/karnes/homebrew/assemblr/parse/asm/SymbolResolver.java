@@ -161,7 +161,13 @@ public class SymbolResolver extends DirectiveExecutor {
 
 
         //Calculate how many letters are declared.
-        int numLetters = ctx.STRING().getText().length();
+        //Get the string
+        String strValue = ctx.STRING().getText();
+
+        //Substring to get rid of surrounding quotes
+        strValue = strValue.substring(1, strValue.length()-1);
+
+        int numLetters = strValue.length();
         codePointer += numLetters;
 
         //Don't continue descent
