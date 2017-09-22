@@ -23,9 +23,9 @@ public class ForthAssemblerTest {
         String code = Files.readAllLines(Paths.get("src", "main", "resources", "relay_eforth.asm")).stream()
                 .map(line -> line + "\r\n").collect(Collectors.joining());
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         assertTrue(true, "Yay! We assembled the code");
     }

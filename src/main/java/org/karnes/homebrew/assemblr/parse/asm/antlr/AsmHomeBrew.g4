@@ -6,10 +6,15 @@ program
 
 line
    : comment
+   | labelOnlyLine
    | instruction
    | assemblerDirective comment?
    | macro comment?
    ;
+
+labelOnlyLine
+    : lbl
+    ;
 
 instruction
    : lbl? operation comment?

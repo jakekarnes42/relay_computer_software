@@ -30,9 +30,9 @@ public class MemoryInstructionTest {
                 + "     LOAD RP, " + value7 + " ; RP = value7\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -66,9 +66,9 @@ public class MemoryInstructionTest {
                 + "     LABEL7: LOAD RP, LABEL7  ; RP = LABEL7_ADDR\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -114,9 +114,9 @@ public class MemoryInstructionTest {
                 + "         LOAD PC, DONE ; Jump to HALT instruction\r\n";
 
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -166,9 +166,9 @@ public class MemoryInstructionTest {
                 + "     STORE RP, AX            ; Store AX into mem[RP]\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -211,9 +211,9 @@ public class MemoryInstructionTest {
                 + "     FETCH CX, AX            ; Store mem[AX] into CX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);

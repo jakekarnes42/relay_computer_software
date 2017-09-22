@@ -1,10 +1,9 @@
 package org.karnes.homebrew.emulator;
 
 import java.io.*;
-import java.nio.charset.Charset;
 
 public class JavaSimulatedIODevice implements IODevice {
-    InputStreamReader in;
+    Reader in;
     OutputStreamWriter out;
 
     public JavaSimulatedIODevice() {
@@ -12,7 +11,7 @@ public class JavaSimulatedIODevice implements IODevice {
     }
 
     public JavaSimulatedIODevice(InputStream in, PrintStream out) {
-        this.in = new InputStreamReader(in, Charset.forName("UTF-16"));
+        this.in = new InputStreamReader(in);
         this.out = new OutputStreamWriter(out);
     }
 
@@ -27,7 +26,9 @@ public class JavaSimulatedIODevice implements IODevice {
 
     public short getWord() {
         try {
-            return (short) in.read();
+            int read = in.read();
+            char readChar = (char) read;
+            return (short) readChar;
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -27,9 +27,9 @@ public class StackInstructionTest {
                 + "     PUSH RP, BX             ; Push BX onto RP\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -88,9 +88,9 @@ public class StackInstructionTest {
                 + "     HALT                    ; DONE\r\n";
 
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -136,9 +136,9 @@ public class StackInstructionTest {
                 + "     POP DX, RP              ; Pop off RP into DX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -205,9 +205,9 @@ public class StackInstructionTest {
                 + "     HALT                    ; DONE\r\n";
 
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -270,9 +270,9 @@ public class StackInstructionTest {
                 + "         RET SP          ; return        \r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -320,9 +320,9 @@ public class StackInstructionTest {
                 + "             RET RP                    ; DONE\r\n";
 
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -376,9 +376,9 @@ public class StackInstructionTest {
                 + "             RET SP                    ; DONE\r\n";
 
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -432,9 +432,9 @@ public class StackInstructionTest {
                 + "             RET SP                    ; DONE\r\n";
 
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -475,9 +475,9 @@ public class StackInstructionTest {
                 + "     PUSH RP, CX            ; Push value onto TOS RP\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -522,9 +522,9 @@ public class StackInstructionTest {
                 + "     PUSH SP, BX             ; Push BX onto SP\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);

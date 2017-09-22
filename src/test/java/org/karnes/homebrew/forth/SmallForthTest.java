@@ -36,9 +36,9 @@ public class SmallForthTest {
 
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 

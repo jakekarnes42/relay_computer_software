@@ -4,29 +4,37 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewLexer;
-import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
 import org.karnes.homebrew.assemblr.parse.asm.MachineCodeTranslator;
 import org.karnes.homebrew.assemblr.parse.asm.SymbolResolver;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewLexer;
+import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
 import org.karnes.homebrew.assemblr.parse.macro.MacroExpander;
 
 import java.util.Map;
 
 public class Assembler {
 
+    private String originalCode;
+    private String expandedCodeWithMacros;
+    private Map<String, Character> symbolTable;
+    private short[] binaryOutput;
 
-    public short[] assemble(String text) {
+    public Assembler(String originalCode) {
+        this.originalCode = originalCode;
+    }
+
+    public short[] assemble() {
         //Expand Macros
-        text = expandMacros(text);
+        expandedCodeWithMacros = expandMacros(originalCode);
 
         //Get the parse tree
-        ParseTree parseTree = parse(text);
+        ParseTree parseTree = parse(expandedCodeWithMacros);
 
         //Symbol resolution
-        Map<String, Character> symbolTable = resolveSymbols(parseTree);
+        symbolTable = resolveSymbols(parseTree);
 
-
-        return convertToMachineCode(parseTree, symbolTable);
+        binaryOutput = convertToMachineCode(parseTree, symbolTable);
+        return binaryOutput;
     }
 
     private String expandMacros(String text) {
@@ -70,5 +78,19 @@ public class Assembler {
         return parseTree;
     }
 
+    public String getOriginalCode() {
+        return originalCode;
+    }
 
+    public String getExpandedCodeWithMacros() {
+        return expandedCodeWithMacros;
+    }
+
+    public Map<String, Character> getSymbolTable() {
+        return symbolTable;
+    }
+
+    public short[] getBinaryOutput() {
+        return binaryOutput;
+    }
 }

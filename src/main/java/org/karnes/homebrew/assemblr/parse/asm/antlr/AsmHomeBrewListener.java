@@ -28,6 +28,16 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 */
 	void exitLine(AsmHomeBrewParser.LineContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#labelOnlyLine}.
+	 * @param ctx the parse tree
+	 */
+	void enterLabelOnlyLine(AsmHomeBrewParser.LabelOnlyLineContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#labelOnlyLine}.
+	 * @param ctx the parse tree
+	 */
+	void exitLabelOnlyLine(AsmHomeBrewParser.LabelOnlyLineContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#instruction}.
 	 * @param ctx the parse tree
 	 */

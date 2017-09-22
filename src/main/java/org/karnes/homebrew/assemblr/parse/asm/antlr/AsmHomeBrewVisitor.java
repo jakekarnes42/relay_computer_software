@@ -23,6 +23,12 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLine(AsmHomeBrewParser.LineContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#labelOnlyLine}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLabelOnlyLine(AsmHomeBrewParser.LabelOnlyLineContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#instruction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

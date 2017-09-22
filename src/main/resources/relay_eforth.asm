@@ -36,7 +36,7 @@
 {RPP = EM-8*CELLL}	    	;start of return stack (RP0)
 {TIBB = RPP-RTS}			;terminal input buffer (TIB)
 {SPP = TIBB-8*CELLL}		;start of data stack (SP0)
-{UPP = EM-256*CELLL}		;start of user area (UP0)
+{UPP = SPP-256*CELLL}		;start of user area (UP0)
 {NAMEE = UPP-8*CELLL}		;name dictionary
 {CODEE = COLDD+US}  		;code dictionary
 
@@ -59,7 +59,7 @@ MACRO $CODE	@LEX,@NAME,@LABEL           ;	Compile a code definition header.
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (@LEX + 3)}	    ;; new header. We need to move it in front of @NAME's length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {@LEX}                           ;; Name length
 	DS @NAME			                ;; name string
@@ -428,12 +428,12 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 		$CODE	3,"UM+",UPLUS
 		POP	BX, SP          ;Pop TOS of data stack into BX
         POP	AX, SP          ;Pop next TOS of data stack into AX
-        ADD	BX, BX, AX       ; ADD the elements, store result into BX
-        JC UPLUS1           ; Test if we carried
+        ADD	AX, BX, AX      ; ADD the elements, store result into AX
+        JNC UPLUS1          ; Test if we carried or not
         LOAD CX,1           ; The addition carried (i.e. CF is 1) Load 1 into CX
         JMP UPLUS2          ; JMP to pushing onto the data stack
         UPLUS1: LOAD CX, 0  ; It did not carry, load 0 into BX
-        UPLUS2:	PUSH SP, BX ; Push BX value (the sum) onto data stack (SP)
+        UPLUS2:	PUSH SP, AX ; Push AX value (the sum) onto data stack (SP)
         PUSH SP, CX         ; Push CX value (the carry flag - either 1 or 0) onto data stack (SP)
         $NEXT
 
@@ -457,7 +457,9 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;		Run time routine for user variables.
 
 		$COLON	(COMPO+6),"doUSER",DOUSE
-		DW	RFROM,AT,UP,AT,PLUS,EXIT
+		DW	RFROM,AT            ;Gets offset from the return stack
+		DW  UP,AT               ;Loads UP (start of user area) from mem
+		DW  PLUS,EXIT           ;Adds both and returns address of requested user variable.
 
 ;   SP0		( -- a )
 ;		Pointer to bottom of the data stack.
@@ -1306,7 +1308,7 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;		Parse a word from input stream and copy it to name dictionary.
 
 		$COLON	5,"TOKEN",TOKEN
-		DW	BLANK,PARSE,DOLIT,31,MIN
+		DW	BLANK,PARSE,DOLIT,15,MIN
 		DW	NP,AT,OVER,SUBB,CELLM
 		DW	PACKS,EXIT
 
@@ -2027,7 +2029,7 @@ COLD1:		DW	DOLIT,UZERO,DOLIT,{UPP}
 
 ;===============================================================
 
-{LASTN	=	_NAME+4}			;last name address
+{LASTN	=	_NAME+2}			;last name address
 
 {NTOP	=	_NAME-0}			;next available memory in name dictionary
 {CTOP	=	$+0}			;next available memory in code dictionary

@@ -19,9 +19,9 @@ public class OrTest {
                 + "     OR CX, BX, AX           ; CX = AX | BX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -47,9 +47,9 @@ public class OrTest {
                 + "     OR CX, AX, AX           ; CX = AX + AX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -75,9 +75,9 @@ public class OrTest {
                 + "     OR AX, AX, AX           ; AX = AX | AX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -101,9 +101,9 @@ public class OrTest {
                 + "     OR AX, AX, AX           ; AX = AX | AX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -120,6 +120,132 @@ public class OrTest {
     }
 
     @Test
+    @DisplayName("Double register by oring register to itself, and store into self")
+    public void testSelfOrSameRegNegative() {
+        short value1 = -1;
+        String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
+                + "     OR AX, AX, AX           ; AX = AX | AX\r\n"
+                + "     HALT                    ; DONE\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals(value1, computer.getAX(), "AX should have its original value");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertTrue(computer.getSignFlag(), "The sign flag should be set");
+    }
+
+    @Test
+    @DisplayName("Double register by oring register to itself, and store into self, and Jump")
+    public void testSelfOrWithJumpPos() {
+        short value1 = 100;
+        String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
+                + "     OR AX, AX, AX           ; AX = AX | AX\r\n"
+                + "     JNEG ZLESS1         ; Test if it's negative\r\n"
+                + "     LOAD BX,0           ; It is not negative (i.e. AX is 0 or positive) Load 0 into BX\r\n"
+                + "     JMP ZLESS2          ; JMP to pushing onto the data stack\r\n"
+                + "     ZLESS1: LOAD BX, -1         ; It is negative, load -1 into BX\r\n"
+                + "     ZLESS2:\tMOV CX, BX         ; Copy BX value (either -1 or 0) into CX\r\n"
+                + "     HALT                    ; DONE\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals(value1, computer.getAX(), "AX should have its original value");
+        assertEquals(0, computer.getBX(), "BX should have 0 since AX is non-negative");
+        assertEquals(computer.getBX(), computer.getCX(), "CX should have BX's value");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
+    @Test
+    @DisplayName("Double register by oring register to itself, and store into self, and Jump")
+    public void testSelfOrWithJumpZero() {
+        short value1 = 0;
+        String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
+                + "     OR AX, AX, AX           ; AX = AX | AX\r\n"
+                + "     JNEG ZLESS1         ; Test if it's negative\r\n"
+                + "     LOAD BX,0           ; It is not negative (i.e. AX is 0 or positive) Load 0 into BX\r\n"
+                + "     JMP ZLESS2          ; JMP to pushing onto the data stack\r\n"
+                + "     ZLESS1: LOAD BX, -1         ; It is negative, load -1 into BX\r\n"
+                + "     ZLESS2:\tMOV CX, BX         ; Copy BX value (either -1 or 0) into CX\r\n"
+                + "     HALT                    ; DONE\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals(value1, computer.getAX(), "AX should have its original value");
+        assertEquals(0, computer.getBX(), "BX should have 0 since AX is non-negative");
+        assertEquals(computer.getBX(), computer.getCX(), "CX should have BX's value");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertTrue(computer.getZeroFlag(), "The zero flag should be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
+    @Test
+    @DisplayName("Double register by oring register to itself, and store into self, and Jump")
+    public void testSelfOrWithJumpNegative() {
+        short value1 = -1;
+        String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
+                + "     OR AX, AX, AX           ; AX = AX | AX\r\n"
+                + "     JNEG ZLESS1         ; Test if it's negative\r\n"
+                + "     LOAD BX,0           ; It is not negative (i.e. AX is 0 or positive) Load 0 into BX\r\n"
+                + "     JMP ZLESS2          ; JMP to pushing onto the data stack\r\n"
+                + "     ZLESS1: LOAD BX, -1         ; It is negative, load -1 into BX\r\n"
+                + "     ZLESS2:\tMOV CX, BX         ; Copy BX value (either -1 or 0) into CX\r\n"
+                + "     HALT                    ; DONE\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals(value1, computer.getAX(), "AX should have its original value");
+        assertEquals(-1, computer.getBX(), "BX should have -1 since AX is negative");
+        assertEquals(computer.getBX(), computer.getCX(), "CX should have BX's value");
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertTrue(computer.getSignFlag(), "The sign flag should be set");
+    }
+
+
+    @Test
     @DisplayName("Oring offset alternating bit patterns")
     public void testAlternatingOr1() {
         short value1 = 0b0101_0101_0101_0101;
@@ -129,9 +255,9 @@ public class OrTest {
                 + "     OR CX, BX, AX           ; CX = AX | BX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -160,9 +286,9 @@ public class OrTest {
                 + "     OR CX, BX, AX           ; CX = AX | BX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -191,9 +317,9 @@ public class OrTest {
                 + "     OR CX, BX, AX           ; CX = AX | BX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -221,9 +347,9 @@ public class OrTest {
                 + "     OR CX, BX, AX           ; CX = AX | BX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -251,9 +377,9 @@ public class OrTest {
                 + "     OR CX, BX, AX           ; CX = AX | BX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -282,9 +408,9 @@ public class OrTest {
                 + "     OR CX, BX, AX           ; CX = AX | BX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);

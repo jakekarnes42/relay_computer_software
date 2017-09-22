@@ -128,9 +128,9 @@ public class MacroTest {
 
                 + " HALT                ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -175,9 +175,9 @@ public class MacroTest {
 
                 + "HALT                ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -221,9 +221,9 @@ public class MacroTest {
 
                 + " HALT                ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -275,9 +275,9 @@ public class MacroTest {
 
                 + " HALT                ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -334,8 +334,8 @@ public class MacroTest {
                 + " HALT                ; DONE\r\n";
 
         assertThrows(IllegalStateException.class, () -> {
-            Assembler assembler = new Assembler();
-            short[] RAM = assembler.assemble(code);
+            Assembler assembler = new Assembler(code);
+            short[] RAM = assembler.assemble();
         });
     }
 
@@ -356,8 +356,8 @@ public class MacroTest {
                 + " HALT                ; DONE\r\n";
 
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            Assembler assembler = new Assembler();
-            short[] RAM = assembler.assemble(code);
+            Assembler assembler = new Assembler(code);
+            short[] RAM = assembler.assemble();
         });
 
         assertTrue(exception.getMessage().contains("$PNT_CHR"),
@@ -392,8 +392,8 @@ public class MacroTest {
 
 
         Throwable exception = assertThrows(IllegalStateException.class, () -> {
-            Assembler assembler = new Assembler();
-            short[] RAM = assembler.assemble(code);
+            Assembler assembler = new Assembler(code);
+            short[] RAM = assembler.assemble();
         });
 
         assertTrue(exception.getMessage().contains("$PNT_6"),
@@ -422,8 +422,8 @@ public class MacroTest {
                 + " HALT                ; DONE\r\n";
 
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            Assembler assembler = new Assembler();
-            short[] RAM = assembler.assemble(code);
+            Assembler assembler = new Assembler(code);
+            short[] RAM = assembler.assemble();
         });
 
         assertTrue(exception.getMessage().contains("ENDM"),

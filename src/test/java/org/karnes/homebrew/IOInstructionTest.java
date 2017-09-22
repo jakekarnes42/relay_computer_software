@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IOInstructionTest {
-    private final static String ENCODING = StandardCharsets.UTF_16.name();
+    private final static String ENCODING = StandardCharsets.UTF_8.name();
 
     @Test
     @DisplayName("Test basic functionality of I/O simulation ")
@@ -65,9 +65,9 @@ public class IOInstructionTest {
                 + "     WRDIN SP    ; SP should be zero since there's no more input\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -111,9 +111,9 @@ public class IOInstructionTest {
                 + "     WRDOUT EX       ; Write EX \r\n"
                 + "     HALT            ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -159,9 +159,9 @@ public class IOInstructionTest {
                 + "     WRDOUT EX       ; Write EX \r\n"
                 + "     HALT            ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -213,9 +213,9 @@ public class IOInstructionTest {
                 + "     WRDOUT EX   ; Write EX \r\n"
                 + "     HALT        ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -296,9 +296,9 @@ public class IOInstructionTest {
                 + "     WRDOUT AX       ; Write AX \r\n"
                 + "     HALT            ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -368,9 +368,9 @@ public class IOInstructionTest {
                 + "     WRDOUT AX       ; Write AX \r\n"
                 + "     HALT            ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 

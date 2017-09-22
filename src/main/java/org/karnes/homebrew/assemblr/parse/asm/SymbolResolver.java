@@ -12,18 +12,6 @@ import java.util.Map;
  */
 public class SymbolResolver extends DirectiveExecutor {
 
-    @Override
-    public Void visitInstruction(AsmHomeBrewParser.InstructionContext ctx) {
-        //Check if this instruction is labelled
-        if (ctx.lbl() != null) {
-            //Store the label and the current codePointer to our symbol table.
-            String labelText = ctx.lbl().label().getText();
-            symbolTable.put(labelText, codePointer);
-        }
-
-        //Continue descent
-        return super.visitInstruction(ctx);
-    }
 
     @Override
     public Void visitLbl(AsmHomeBrewParser.LblContext ctx) {

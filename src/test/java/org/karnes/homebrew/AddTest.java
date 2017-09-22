@@ -19,9 +19,9 @@ public class AddTest {
                 + "     ADD CX, BX, AX          ; CX = AX + BX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -47,9 +47,9 @@ public class AddTest {
                 + "     ADD CX, AX, AX          ; CX = AX + AX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -75,9 +75,9 @@ public class AddTest {
                 + "     ADD AX, AX, AX          ; AX = AX + AX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -105,9 +105,9 @@ public class AddTest {
                 + "     ADD CX, BX, AX          ; CX = AX + BX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -126,19 +126,20 @@ public class AddTest {
         assertTrue(computer.getSignFlag(), "The sign flag should not be set");
     }
 
+
     @Test
-    @DisplayName("ADD with carry")
-    public void testAddCarry() {
-        short value1 = (short) Character.MAX_VALUE;
+    @DisplayName("ADD zero and a number")
+    public void testAddZeroNum() {
+        short value1 = 0;
         short value2 = 1;
         String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
                 + "     LOAD BX, " + value2 + " ; BX = value2\r\n"
                 + "     ADD CX, BX, AX          ; CX = AX + BX\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -147,11 +148,74 @@ public class AddTest {
         //Check registers
         assertEquals(value1, computer.getAX(), "AX should have its original value");
         assertEquals(value2, computer.getBX(), "BX should have its original value");
-        assertEquals(0, computer.getCX(), "CX should have AX + BX, when viewed as unsigned value");
+        assertEquals(value1 + value2, computer.getCX(), "CX should have AX + BX, when viewed as unsigned value");
 
 
         //Check condition registers
-        assertTrue(computer.getCarryFlag(), "The carry flag should be set");
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
+    @Test
+    @DisplayName("ADD zero and a number")
+    public void testAddNumZero() {
+        short value1 = 1;
+        short value2 = 0;
+        String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
+                + "     LOAD BX, " + value2 + " ; BX = value2\r\n"
+                + "     ADD CX, BX, AX          ; CX = AX + BX\r\n"
+                + "     HALT                    ; DONE\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals(value1, computer.getAX(), "AX should have its original value");
+        assertEquals(value2, computer.getBX(), "BX should have its original value");
+        assertEquals(value1 + value2, computer.getCX(), "CX should have AX + BX, when viewed as unsigned value");
+
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
+        assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
+        assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
+        assertFalse(computer.getSignFlag(), "The sign flag should not be set");
+    }
+
+
+    @Test
+    @DisplayName("ADD zero and zero")
+    public void testAddZeroZero() {
+        short value1 = 0;
+        short value2 = 0;
+        String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
+                + "     LOAD BX, " + value2 + " ; BX = value2\r\n"
+                + "     ADD CX, BX, AX          ; CX = AX + BX\r\n"
+                + "     HALT                    ; DONE\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+        computer.start();
+
+        //Check registers
+        assertEquals(value1, computer.getAX(), "AX should have its original value");
+        assertEquals(value2, computer.getBX(), "BX should have its original value");
+        assertEquals(value1 + value2, computer.getCX(), "CX should have AX + BX, when viewed as unsigned value");
+
+
+        //Check condition registers
+        assertFalse(computer.getCarryFlag(), "The carry flag should not be set");
         assertFalse(computer.getOverflowFlag(), "The overflow flag should not be set");
         assertTrue(computer.getZeroFlag(), "The zero flag should be set");
         assertFalse(computer.getSignFlag(), "The sign flag should not be set");
