@@ -1242,7 +1242,7 @@ DOT1:		DW	STR,SPACE,TYPEE,EXIT	;yes, display signed
 ;   parse	( b u c -- b u delta ; <string> )
 ;		Scan string delimited by c. Return found string and its offset.
 
-		$COLON	5,""parse"",PARS
+		$COLON	5,"parse",PARS
 		DW	TEMP,STOR,OVER,TOR,DUPP
 		DW	QBRAN,PARS8
 		DW	DOLIT,1,SUBB,TEMP,AT,BLANK,EQUAL
@@ -1275,7 +1275,7 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;   PARSE	( c -- b u ; <string> )
 ;		Scan input stream and return counted string delimited by c.
 
-		$COLON	5,""PARSE"",PARSE
+		$COLON	5,"PARSE",PARSE
 		DW	TOR,TIB,INN,AT,PLUS	;current input buffer pointer
 		DW	NTIB,AT,INN,AT,SUBB	;remaining count
 		DW	RFROM,PARS,INN,PSTOR,EXIT
@@ -1283,7 +1283,7 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;   .(		( -- )
 ;		Output following string up to next ) .
 
-		$COLON	(IMEDD+2),".("",DOTPR
+		$COLON	(IMEDD+2),".(",DOTPR
 		DW	DOLIT,{')'},PARSE,TYPEE,EXIT
 
 ;   (		( -- )
@@ -2029,7 +2029,7 @@ COLD1:		DW	DOLIT,UZERO,DOLIT,{UPP}
 
 ;===============================================================
 
-{LASTN	=	_NAME+2}			;last name address
+{LASTN	=	_NAME+CELLL*2}			;last name address
 
 {NTOP	=	_NAME-0}			;next available memory in name dictionary
 {CTOP	=	$+0}			;next available memory in code dictionary

@@ -27,7 +27,7 @@ public class Runner {
             RelayComputer computer = new ForthRelayComputer(assembler.getSymbolTable());
 
             //Set up input
-            String input = "WORDS\r";
+            String input = "2 2 +\r-2 -\r7 *\r.\r";
             ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
 
             JavaSimulatedIODevice ioDevice = new JavaSimulatedIODevice(inputStream, System.out);
