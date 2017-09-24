@@ -6,6 +6,13 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Identifies assembly macros using a regular-expression-based parser. Several attempts were made to use ANTLR for this,
+ * but they were unsuccessful.
+ * <br>
+ * When finding a macro definition, we need to find its parameters, and its body (the lines inside the macro itself). We
+ * also need to identify which lines do not belong to a macro, but are part of the rest of the source code.
+ */
 public class MacroDefinitionFinder {
 
     Pattern macroRegex = Pattern.compile("^\\s*MACRO\\s+" + //Macro keyword

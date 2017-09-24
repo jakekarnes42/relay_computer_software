@@ -12,6 +12,12 @@ import org.karnes.homebrew.assemblr.parse.macro.MacroExpander;
 
 import java.util.Map;
 
+/**
+ * Assembles the source assembly code into a binary executable that can be loaded into the relay computer's ram.
+ * <br>
+ * The assembly process encompasses macro expansion, symbol resolution, and machine code translation.
+ *
+ */
 public class Assembler {
 
     private String originalCode;

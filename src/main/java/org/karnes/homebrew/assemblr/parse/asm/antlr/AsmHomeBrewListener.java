@@ -28,16 +28,6 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 */
 	void exitLine(AsmHomeBrewParser.LineContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#labelOnlyLine}.
-	 * @param ctx the parse tree
-	 */
-	void enterLabelOnlyLine(AsmHomeBrewParser.LabelOnlyLineContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#labelOnlyLine}.
-	 * @param ctx the parse tree
-	 */
-	void exitLabelOnlyLine(AsmHomeBrewParser.LabelOnlyLineContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#instruction}.
 	 * @param ctx the parse tree
 	 */
@@ -48,15 +38,15 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 */
 	void exitInstruction(AsmHomeBrewParser.InstructionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#lbl}.
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#labelDefinition}.
 	 * @param ctx the parse tree
 	 */
-	void enterLbl(AsmHomeBrewParser.LblContext ctx);
+	void enterLabelDefinition(AsmHomeBrewParser.LabelDefinitionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#lbl}.
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#labelDefinition}.
 	 * @param ctx the parse tree
 	 */
-	void exitLbl(AsmHomeBrewParser.LblContext ctx);
+	void exitLabelDefinition(AsmHomeBrewParser.LabelDefinitionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#operation}.
 	 * @param ctx the parse tree
@@ -127,16 +117,6 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIoOpcode(AsmHomeBrewParser.IoOpcodeContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AsmHomeBrewParser#oneArgOpcode}.
-	 * @param ctx the parse tree
-	 */
-	void enterOneArgOpcode(AsmHomeBrewParser.OneArgOpcodeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AsmHomeBrewParser#oneArgOpcode}.
-	 * @param ctx the parse tree
-	 */
-	void exitOneArgOpcode(AsmHomeBrewParser.OneArgOpcodeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#jumpOperation}.
 	 * @param ctx the parse tree
@@ -327,6 +307,16 @@ public interface AsmHomeBrewListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStackRegister(AsmHomeBrewParser.StackRegisterContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AsmHomeBrewParser#opcode}.
+	 * @param ctx the parse tree
+	 */
+	void enterOpcode(AsmHomeBrewParser.OpcodeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AsmHomeBrewParser#opcode}.
+	 * @param ctx the parse tree
+	 */
+	void exitOpcode(AsmHomeBrewParser.OpcodeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AsmHomeBrewParser#assemblerDirective}.
 	 * @param ctx the parse tree

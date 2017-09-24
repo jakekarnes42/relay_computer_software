@@ -14,12 +14,13 @@ public class SymbolResolver extends DirectiveExecutor {
 
 
     @Override
-    public Void visitLbl(AsmHomeBrewParser.LblContext ctx) {
+    public Void visitLabelDefinition(AsmHomeBrewParser.LabelDefinitionContext ctx) {
         //Store the label and the current codePointer to our symbol table.
         String labelText = ctx.label().getText();
         symbolTable.put(labelText, codePointer);
         return null;
     }
+
 
     @Override
     public Void visitNoArgOperation(AsmHomeBrewParser.NoArgOperationContext ctx) {
@@ -123,10 +124,9 @@ public class SymbolResolver extends DirectiveExecutor {
     @Override
     public Void visitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx) {
         //Check if this declared word(s) is/are labelled
-        if (ctx.lbl() != null) {
-            //Store the label and the current codePointer to our symbol table.
-            String labelText = ctx.lbl().label().getText();
-            symbolTable.put(labelText, codePointer);
+        if (ctx.labelDefinition() != null) {
+            //Handle the label
+            visitLabelDefinition(ctx.labelDefinition());
         }
 
 
@@ -141,10 +141,9 @@ public class SymbolResolver extends DirectiveExecutor {
     @Override
     public Void visitAssemblerStringDeclaration(AsmHomeBrewParser.AssemblerStringDeclarationContext ctx) {
         //Check if this declared string is labelled
-        if (ctx.lbl() != null) {
-            //Store the label and the current codePointer to our symbol table.
-            String labelText = ctx.lbl().label().getText();
-            symbolTable.put(labelText, codePointer);
+        if (ctx.labelDefinition() != null) {
+            //Handle the label
+            visitLabelDefinition(ctx.labelDefinition());
         }
 
 
@@ -153,7 +152,7 @@ public class SymbolResolver extends DirectiveExecutor {
         String strValue = ctx.STRING().getText();
 
         //Substring to get rid of surrounding quotes
-        strValue = strValue.substring(1, strValue.length()-1);
+        strValue = strValue.substring(1, strValue.length() - 1);
 
         int numLetters = strValue.length();
         codePointer += numLetters;

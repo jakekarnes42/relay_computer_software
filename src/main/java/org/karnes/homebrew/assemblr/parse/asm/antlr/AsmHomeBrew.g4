@@ -5,25 +5,24 @@ program
    ;
 
 line
-   : comment
-   | labelOnlyLine
-   | instruction
-   | assemblerDirective comment?
-   | macro comment?
+   : comment                        //Only a comment
+   | labelDefinition  comment?      //A label definition by itself on a line.
+   | instruction comment?           //Any of the instructions
+   | assemblerDirective comment?    //One of the assembler directives
+   | macro comment?                 //A reference to a macro (macro definitions handled elsewhere)
    ;
 
-labelOnlyLine
-    : lbl
-    ;
-
+//One of the instructions to be translated into binary to execute.
 instruction
-   : lbl? operation comment?
+   : labelDefinition? operation comment?
    ;
 
-lbl
+//A label definition that the symbol resolver will need to recognize
+labelDefinition
    : label ':'
    ;
 
+//One of the valid operations in the ISA
 operation
    : noArgOperation
    | unaryOperation
@@ -31,11 +30,13 @@ operation
    | ternaryOperation
    ;
 
+//No additional arguments needed.
 noArgOperation
    : NOP
    | HALT
    ;
 
+//One argument needed
 unaryOperation
    : ioOperation
    | returnOperation
@@ -55,16 +56,8 @@ ioOperation
    : ioOpcode register
    ;
 
-
 ioOpcode
    : WRDIN
-   | WRDOUT
-   ;
-
-oneArgOpcode
-   : RET
-   | CLR
-   | WRDIN
    | WRDOUT
    ;
 
@@ -84,13 +77,12 @@ jumpOpcode
    | JNO
    ;
 
-
+// Two arguments needed
 binaryOperation
    : binaryRegRegOperation
    | binaryRegValOperation
    | stackOperation
    ;
-
 
 binaryRegRegOperation
     : binaryRegRegOpCode register ',' register
@@ -139,6 +131,7 @@ stackOpcode
    ;
 
 
+// Three arguments needed
 ternaryOperation
     : aluTernaryOperation
     ;
@@ -157,19 +150,19 @@ aluTernaryOpcode
    | SUB
    ;
 
-
-
+// A value should result in a 16-bit value when resolved as a symbol or computed by the assembler.
 value
    : label
    | number
    | jsExpression
    ;
 
+// Not just any name, but one specifically that should get picked up by the symbol resolver.
 label
    : name
    ;
 
-
+//All of the valid registers.
 register
    : AX
    | BX
@@ -181,11 +174,48 @@ register
    | PC
    ;
 
-
+//All of the stack registers.
 stackRegister
    : SP
    | RP
    ;
+
+//All of the valid opcodes.
+opcode
+   : MOV
+   | CLR
+   | ADD
+   | INC
+   | DEC
+   | AND
+   | OR
+   | XOR
+   | NOT
+   | ROL
+   | CMP
+   | SUB
+   | LOAD
+   | FETCH
+   | STORE
+   | PUSH
+   | POP
+   | RET
+   | CALL
+   | WRDIN
+   | WRDOUT
+   | JMP
+   | JZ
+   | JNZ
+   | JNEG
+   | JNNEG
+   | JC
+   | JNC
+   | JO
+   | JNO
+   | NOP
+   | HALT
+   ;
+
 
 assemblerDirective
    : jsExpression
@@ -199,14 +229,17 @@ assemblerOrgDirective
     ;
 
 assemblerWordDeclaration
-    : lbl? DW (','? value)+
+    : labelDefinition? DW (','? value)+
     ;
 
 assemblerStringDeclaration
-    : lbl? DS STRING
+    : labelDefinition? DS STRING
     ;
 
-
+/*
+ * A macro reference. This is where a macro should be expanded into. This is NOT the definition of a new macro. That is handled outsied the ANTLR grammar
+ * Up to 10 parameters are accepted. Needed to list them explictly because ANTLR doesn't have the notion of {10} like regex.
+ */
 macro
     : macroName
     | macroName macroParamValue
@@ -221,8 +254,9 @@ macro
     | macroName macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue ',' macroParamValue
     ;
 
+//The acceptable parameters into a macro.
 macroParamValue
-    : aluTernaryOpcode | stackOpcode | binaryRegValOpCode| binaryRegRegOpCode | jumpOpcode | ioOpcode | oneArgOpcode | noArgOperation
+    : opcode
     | register
     | string
     | parenString
@@ -256,6 +290,8 @@ string
 parenString
    : PAREN_STRING
    ;
+
+
 
 fragment A
    : ('a' | 'A')
@@ -387,9 +423,8 @@ fragment Z
    ;
 
 /*
-* opcodes
+* opcodes defined
 */
-
 MOV: M O V ;
 CLR: C L R ;
 ADD: A D D ;

@@ -3,6 +3,9 @@ package org.karnes.homebrew.assemblr.parse.macro;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data holder for a macro that has been analyzed into its components. This may hold data for a macro definition or a reference.
+ */
 public class ParsedMacro {
     private String name;
     private List<String> paramNames;
