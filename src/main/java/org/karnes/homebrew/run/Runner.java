@@ -30,7 +30,7 @@ public class Runner {
 
     public static short[] loadBinaryExecutable(Path binaryPath) {
         //Chosen because this is the max memory in the relay computer. If the binary is bigger than this, we can't even load it.
-        int maxBinary = 64_000;
+        int maxBinary = Character.MAX_VALUE;
         int count = 0;
         short[] buffer = new short[maxBinary];
 
