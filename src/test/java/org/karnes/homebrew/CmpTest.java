@@ -1,4 +1,4 @@
-package org.karnes.homebrew;
+package temp;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,7 @@ import org.karnes.homebrew.emulator.RelayComputer;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CmpTest {
+
 
     @Test
     @DisplayName("Test comparison. A=C-B. B is less than C.")

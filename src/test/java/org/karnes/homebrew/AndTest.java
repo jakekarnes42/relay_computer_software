@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AndTest {
 
+
     @Test
     @DisplayName("Simple AND")
     public void testSimpleAnd() {

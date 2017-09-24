@@ -70,7 +70,6 @@ public class SmallForthTest {
         assertEquals(stackStart - 1, computer.getSP(), "The stack pointer should be decremented by 1, since we pushed one element.");
         assertEquals(0, computer.getMainMemory()[stackStart - 1], "The BOS for SP should be the false flag.");
 
-
     }
 
 

@@ -27,7 +27,8 @@ public class Runner {
             RelayComputer computer = new ForthRelayComputer(assembler.getSymbolTable());
 
             //Set up input
-            String input = "2 2 +\r-2 -\r7 *\r.\r";
+//            String input = "2 2 +\r-2 -\r7 *\r.\rBYE\r";
+            String input = "WORDS\rBYE\r";
             ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
 
             JavaSimulatedIODevice ioDevice = new JavaSimulatedIODevice(inputStream, System.out);
@@ -36,9 +37,9 @@ public class Runner {
             computer.setIoDevice(ioDevice);
             computer.setMainMemory(RAM);
             computer.start();
-            System.out.println("AX = " + (int) computer.getAX());
-            System.out.println("BX = " + (int) computer.getBX());
-            System.out.println("CX = " + (int) computer.getCX());
+//            System.out.println("AX = " + (int) computer.getAX());
+//            System.out.println("BX = " + (int) computer.getBX());
+//            System.out.println("CX = " + (int) computer.getCX());
         } catch (Exception e) {
             System.err.println("Error: " + e.toString());
             e.printStackTrace();

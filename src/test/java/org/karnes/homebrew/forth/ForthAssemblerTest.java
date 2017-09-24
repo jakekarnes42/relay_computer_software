@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ForthAssemblerTest {
     private final static String ENCODING = StandardCharsets.UTF_16.name();
 
-
     @Test
     @DisplayName("Test assembly!")
     public void testAssembly() throws IOException {

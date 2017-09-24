@@ -188,7 +188,7 @@ public class AddTest {
         assertFalse(computer.getZeroFlag(), "The zero flag should not be set");
         assertFalse(computer.getSignFlag(), "The sign flag should not be set");
     }
-
+    
 
     @Test
     @DisplayName("ADD zero and zero")

@@ -1,4 +1,4 @@
-package org.karnes.homebrew;
+package temp;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -146,4 +146,5 @@ public class NotTest {
         assertTrue(computer.getZeroFlag(), "The zero flag should be set, since the input is all ones, and we're flipping the bits.");
         assertFalse(computer.getSignFlag(), "The sign flag should not be set, since the highest bit is zero");
     }
+
 }

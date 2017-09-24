@@ -36,7 +36,7 @@
 {RPP = EM-8*CELLL}	    	;start of return stack (RP0)
 {TIBB = RPP-RTS}			;terminal input buffer (TIB)
 {SPP = TIBB-8*CELLL}		;start of data stack (SP0)
-{UPP = EM-256*CELLL}		;start of user area (UP0)
+{UPP = SPP-256*CELLL}		;start of user area (UP0)
 {NAMEE = UPP-8*CELLL}		;name dictionary
 {CODEE = COLDD+US}  		;code dictionary
 
@@ -81,10 +81,11 @@ ORG	{CODEE}					;start code dictionary
 ;   BYE		( -- )
 ;		Exit eForth.
 
+BYE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "BYE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	BYE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "BYE"			                ;; name string
@@ -99,10 +100,11 @@ ORG	{CODEE}					;start code dictionary
 ;   ?RX		( -- c T | F )
 ;		Return input character and true, or a false if no input.
 
+QRX:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "?RX"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	QRX: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "?RX"			                ;; name string
@@ -123,10 +125,11 @@ QRX1:	PUSH SP, BX         ; BX contains our flag (true or false depending on if 
 ;   TX!		( c -- )
 ;		Send character c to the output device.
 
+TXSTO:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "TX!"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TXSTO: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "TX!"			                ;; name string
@@ -145,10 +148,11 @@ TX1:	WRDOUT BX           ; Send character to output.
 ;   !IO		( -- )
 ;		Initialize the serial I/O devices.
 
+STOIO:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "!IO"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	STOIO: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "!IO"			                ;; name string
@@ -168,10 +172,11 @@ TX1:	WRDOUT BX           ; Send character to output.
 ;   doLIT	( -- w )
 ;		Push an inline literal.
 
+DOLIT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+5) + 3)}	    ;; new header. We need to move it in front of "doLIT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOLIT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+5)}                           ;; Name length
 	DS "doLIT"			                ;; name string
@@ -187,10 +192,11 @@ TX1:	WRDOUT BX           ; Send character to output.
 ;   doLIST	( a -- )
 ;		Process colon list.
 
+DOLST:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+6) + 3)}	    ;; new header. We need to move it in front of "doLIST"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOLST: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+6)}                           ;; Name length
 	DS "doLIST"			                ;; name string
@@ -204,10 +210,11 @@ TX1:	WRDOUT BX           ; Send character to output.
 ;   EXIT	( -- )
 ;		Terminate a colon definition.
 
+EXIT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "EXIT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	EXIT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "EXIT"			                ;; name string
@@ -223,10 +230,11 @@ TX1:	WRDOUT BX           ; Send character to output.
 ;   EXECUTE	( ca -- )
 ;		Execute the word at ca.
 
+EXECU:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "EXECUTE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	EXECU: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "EXECUTE"			                ;; name string
@@ -242,10 +250,11 @@ TX1:	WRDOUT BX           ; Send character to output.
 ;		: next ( -- ) \ hilevel model
 ;		  r> r> dup if 1 - >r @ >r exit then drop cell+ >r ;
 
+DONXT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+4) + 3)}	    ;; new header. We need to move it in front of "next"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DONXT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+4)}                           ;; Name length
 	DS "next"			                ;; name string
@@ -268,10 +277,11 @@ NEXT1:	INC	RP,RP   		;yes, pop (drop) the index by simply incrementing the retur
 ;   ?branch	( f -- )
 ;		Branch if flag is zero.
 
+QBRAN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+7) + 3)}	    ;; new header. We need to move it in front of "?branch"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	QBRAN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+7)}                           ;; Name length
 	DS "?branch"			                ;; name string
@@ -292,10 +302,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   branch	( -- )
 ;		Branch to an inline address.
 
+BRAN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+6) + 3)}	    ;; new header. We need to move it in front of "branch"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	BRAN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+6)}                           ;; Name length
 	DS "branch"			                ;; name string
@@ -310,10 +321,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   !		( w a -- )
 ;		Pop the data stack to memory.
 
+STOR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "!"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	STOR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "!"			                ;; name string
@@ -328,10 +340,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   @		( a -- w )
 ;		Push memory location to the data stack.
 
+AT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "@"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	AT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "@"			                ;; name string
@@ -351,10 +364,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   RP@		( -- a )
 ;		Push the current RP to the data stack.
 
+RPAT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "RP@"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	RPAT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "RP@"			                ;; name string
@@ -370,10 +384,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   RP!		( a -- )
 ;		Set the return stack pointer.
 
+RPSTO:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+3) + 3)}	    ;; new header. We need to move it in front of "RP!"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	RPSTO: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+3)}                           ;; Name length
 	DS "RP!"			                ;; name string
@@ -388,10 +403,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   R>		( -- w )
 ;		Pop the return stack to the data stack.
 
+RFROM:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "R>"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	RFROM: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "R>"			                ;; name string
@@ -407,10 +423,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   >R		( w -- )
 ;		Push the data stack to the return stack.
 
+TOR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+2) + 3)}	    ;; new header. We need to move it in front of ">R"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TOR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+2)}                           ;; Name length
 	DS ">R"			                ;; name string
@@ -426,10 +443,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   R@		( -- w )
 ;		Copy top of return stack to the data stack.
 
+RAT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "R@"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	RAT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "R@"			                ;; name string
@@ -447,10 +465,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   SP!		( a -- )
 ;		Set the data stack pointer.
 
+SPSTO:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "SP!"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SPSTO: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "SP!"			                ;; name string
@@ -465,10 +484,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   SP@		( -- a )
 ;		Push the current data stack pointer.
 
+SPAT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "SP@"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SPAT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "SP@"			                ;; name string
@@ -481,10 +501,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   DROP	( w -- )
 ;		Discard top stack item.
 
+DROP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "DROP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DROP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "DROP"			                ;; name string
@@ -497,10 +518,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   DUP		( w -- w w )
 ;		Duplicate the top stack item.
 
+DUPP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "DUP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DUPP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "DUP"			                ;; name string
@@ -514,10 +536,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   SWAP	( w1 w2 -- w2 w1 )
 ;		Exchange top two stack items.
 
+SWAP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "SWAP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SWAP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "SWAP"			                ;; name string
@@ -533,10 +556,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   OVER	( w1 w2 -- w1 w2 w1 )
 ;		Copy second stack item to top.
 
+OVER:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "OVER"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	OVER: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "OVER"			                ;; name string
@@ -558,10 +582,11 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 ;   0<		( n -- t )
 ;		Return true if n is negative.
 
+ZLESS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "0<"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ZLESS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "0<"			                ;; name string
@@ -581,10 +606,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   AND		( w w -- w )
 ;		Bitwise AND.
 
+ANDD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "AND"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ANDD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "AND"			                ;; name string
@@ -600,10 +626,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   OR		( w w -- w )
 ;		Bitwise inclusive OR.
 
+ORR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "OR"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ORR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "OR"			                ;; name string
@@ -619,10 +646,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   XOR		( w w -- w )
 ;		Bitwise exclusive OR.
 
+XORR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "XOR"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	XORR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "XOR"			                ;; name string
@@ -643,22 +671,23 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   UM+		( w w -- w cy )
 ;		Add two numbers, return the sum and carry flag.
 
+UPLUS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "UM+"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	UPLUS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "UM+"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
 		POP	BX, SP          ;Pop TOS of data stack into BX
         POP	AX, SP          ;Pop next TOS of data stack into AX
-        ADD	BX, BX, AX       ; ADD the elements, store result into BX
-        JC UPLUS1           ; Test if we carried
+        ADD	AX, BX, AX      ; ADD the elements, store result into AX
+        JNC UPLUS1          ; Test if we carried or not
         LOAD CX,1           ; The addition carried (i.e. CF is 1) Load 1 into CX
         JMP UPLUS2          ; JMP to pushing onto the data stack
         UPLUS1: LOAD CX, 0  ; It did not carry, load 0 into BX
-        UPLUS2:	PUSH SP, BX ; Push BX value (the sum) onto data stack (SP)
+        UPLUS2:	PUSH SP, AX ; Push AX value (the sum) onto data stack (SP)
         PUSH SP, CX         ; Push CX value (the carry flag - either 1 or 0) onto data stack (SP)
     FETCH AX , EX   ; Fetch next word pointed to by IP (EX), into WP (AX)
     INC EX , EX     ; Increment IP (EX) to point to next word in word list
@@ -670,10 +699,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   doVAR	( -- a )
 ;		Run time routine for VARIABLE and CREATE.
 
+DOVAR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+5) + 3)}	    ;; new header. We need to move it in front of "doVAR"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOVAR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+5)}                           ;; Name length
 	DS "doVAR"			                ;; name string
@@ -684,10 +714,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   UP		( -- a )
 ;		Pointer to the user area.
 
+UP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "UP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	UP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "UP"			                ;; name string
@@ -699,24 +730,28 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   doUSER	( -- a )
 ;		Run time routine for user variables.
 
+DOUSE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+6) + 3)}	    ;; new header. We need to move it in front of "doUSER"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOUSE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+6)}                           ;; Name length
 	DS "doUSER"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
-		DW	RFROM,AT,UP,AT,PLUS,EXIT
+		DW	RFROM,AT            ;Gets offset from the return stack
+		DW  UP,AT               ;Loads UP (start of user area) from mem
+		DW  PLUS,EXIT           ;Adds both and returns address of requested user variable.
 
 ;   SP0		( -- a )
 ;		Pointer to bottom of the data stack.
 
+SZERO:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "SP0"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SZERO: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "SP0"			                ;; name string
@@ -728,10 +763,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   RP0		( -- a )
 ;		Pointer to bottom of the return stack.
 
+RZERO:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "RP0"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	RZERO: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "RP0"			                ;; name string
@@ -743,10 +779,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   '?KEY	( -- a )
 ;		Execution vector of ?KEY.
 
+TQKEY:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "'?KEY"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TQKEY: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "'?KEY"			                ;; name string
@@ -758,10 +795,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   'EMIT	( -- a )
 ;		Execution vector of EMIT.
 
+TEMIT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "'EMIT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TEMIT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "'EMIT"			                ;; name string
@@ -773,10 +811,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   'EXPECT	( -- a )
 ;		Execution vector of EXPECT.
 
+TEXPE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "'EXPECT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TEXPE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "'EXPECT"			                ;; name string
@@ -788,10 +827,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   'TAP	( -- a )
 ;		Execution vector of TAP.
 
+TTAP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "'TAP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TTAP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "'TAP"			                ;; name string
@@ -803,10 +843,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   'ECHO	( -- a )
 ;		Execution vector of ECHO.
 
+TECHO:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "'ECHO"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TECHO: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "'ECHO"			                ;; name string
@@ -818,10 +859,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   'PROMPT	( -- a )
 ;		Execution vector of PROMPT.
 
+TPROM:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "'PROMPT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TPROM: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "'PROMPT"			                ;; name string
@@ -833,10 +875,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   BASE	( -- a )
 ;		Storage of the radix base for numeric I/O.
 
+BASE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "BASE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	BASE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "BASE"			                ;; name string
@@ -848,10 +891,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   tmp		( -- a )
 ;		A temporary storage location used in parse and find.
 
+TEMP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+3) + 3)}	    ;; new header. We need to move it in front of "tmp"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TEMP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+3)}                           ;; Name length
 	DS "tmp"			                ;; name string
@@ -863,10 +907,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   SPAN	( -- a )
 ;		Hold character count received by EXPECT.
 
+SPAN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "SPAN"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SPAN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "SPAN"			                ;; name string
@@ -878,10 +923,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   >IN		( -- a )
 ;		Hold the character pointer while parsing input STORam.
 
+INN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of ">IN"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	INN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS ">IN"			                ;; name string
@@ -893,10 +939,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   #TIB	( -- a )
 ;		Hold the current count and address of the terminal input buffer.
 
+NTIB:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "#TIB"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	NTIB: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "#TIB"			                ;; name string
@@ -909,10 +956,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   CSP		( -- a )
 ;		Hold the stack pointer for error checking.
 
+CSP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "CSP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CSP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "CSP"			                ;; name string
@@ -924,10 +972,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   'EVAL	( -- a )
 ;		Execution vector of EVAL.
 
+TEVAL:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "'EVAL"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TEVAL: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "'EVAL"			                ;; name string
@@ -939,10 +988,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   'NUMBER	( -- a )
 ;		Execution vector of NUMBER?.
 
+TNUMB:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "'NUMBER"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TNUMB: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "'NUMBER"			                ;; name string
@@ -954,10 +1004,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   HLD		( -- a )
 ;		Hold a pointer in building a numeric output string.
 
+HLD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "HLD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	HLD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "HLD"			                ;; name string
@@ -969,10 +1020,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   HANDLER	( -- a )
 ;		Hold the return stack pointer for error handling.
 
+HANDL:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "HANDLER"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	HANDL: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "HANDLER"			                ;; name string
@@ -984,10 +1036,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   CONTEXT	( -- a )
 ;		A area to specify vocabulary search order.
 
+CNTXT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "CONTEXT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CNTXT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "CONTEXT"			                ;; name string
@@ -1000,10 +1053,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   CURRENT	( -- a )
 ;		Point to the vocabulary to be extended.
 
+CRRNT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "CURRENT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CRRNT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "CURRENT"			                ;; name string
@@ -1016,10 +1070,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   CP		( -- a )
 ;		Point to the top of the code dictionary.
 
+CP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "CP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "CP"			                ;; name string
@@ -1031,10 +1086,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   NP		( -- a )
 ;		Point to the bottom of the name dictionary.
 
+NP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "NP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	NP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "NP"			                ;; name string
@@ -1046,10 +1102,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   LAST	( -- a )
 ;		Point to the last name in the name dictionary.
 
+LAST:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "LAST"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	LAST: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "LAST"			                ;; name string
@@ -1063,10 +1120,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   doVOC	( -- )
 ;		Run time action of VOCABULARY's.
 
+DOVOC:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+5) + 3)}	    ;; new header. We need to move it in front of "doVOC"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOVOC: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+5)}                           ;; Name length
 	DS "doVOC"			                ;; name string
@@ -1077,10 +1135,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   FORTH	( -- )
 ;		Make FORTH the context vocabulary.
 
+FORTH:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "FORTH"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	FORTH: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "FORTH"			                ;; name string
@@ -1093,10 +1152,11 @@ ZLESS2:	PUSH SP, BX         ; Push BX value (either -1 or 0) onto data stack (SP
 ;   ?DUP	( w -- w w | 0 )
 ;		Dup tos if its is not zero.
 
+QDUP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "?DUP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	QDUP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "?DUP"			                ;; name string
@@ -1110,10 +1170,11 @@ QDUP1:		DW	EXIT
 ;   ROT		( w1 w2 w3 -- w2 w3 w1 )
 ;		Rot 3rd item to top.
 
+ROT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "ROT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ROT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "ROT"			                ;; name string
@@ -1124,10 +1185,11 @@ QDUP1:		DW	EXIT
 ;   2DROP	( w w -- )
 ;		Discard two items on stack.
 
+DDROP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "2DROP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DDROP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "2DROP"			                ;; name string
@@ -1138,10 +1200,11 @@ QDUP1:		DW	EXIT
 ;   2DUP	( w1 w2 -- w1 w2 w1 w2 )
 ;		Duplicate top two items.
 
+DDUP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "2DUP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DDUP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "2DUP"			                ;; name string
@@ -1152,10 +1215,11 @@ QDUP1:		DW	EXIT
 ;   +		( w w -- sum )
 ;		Add top two items.
 
+PLUS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "+"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	PLUS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "+"			                ;; name string
@@ -1173,10 +1237,11 @@ QDUP1:		DW	EXIT
 ;   NOT		( w -- w )
 ;		One's complement of tos.
 
+INVER:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "NOT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	INVER: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "NOT"			                ;; name string
@@ -1187,10 +1252,11 @@ QDUP1:		DW	EXIT
 ;   NEGATE	( n -- -n )
 ;		Two's complement of tos.
 
+NEGAT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (6 + 3)}	    ;; new header. We need to move it in front of "NEGATE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	NEGAT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {6}                           ;; Name length
 	DS "NEGATE"			                ;; name string
@@ -1201,10 +1267,11 @@ QDUP1:		DW	EXIT
 ;   DNEGATE	( d -- -d )
 ;		Two's complement of top double.
 
+DNEGA:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "DNEGATE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DNEGA: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "DNEGATE"			                ;; name string
@@ -1217,10 +1284,11 @@ QDUP1:		DW	EXIT
 ;   -		( n1 n2 -- n1-n2 )
 ;		Subtraction.
 
+SUBB:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "-"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SUBB: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "-"			                ;; name string
@@ -1231,10 +1299,11 @@ QDUP1:		DW	EXIT
 ;   ABS		( n -- n )
 ;		Return the absolute value of n.
 
+ABSS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "ABS"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ABSS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "ABS"			                ;; name string
@@ -1248,10 +1317,11 @@ ABS1:		DW	EXIT
 ;   =		( w w -- t )
 ;		Return true if top two are equal.
 
+EQUAL:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "="'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	EQUAL: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "="			                ;; name string
@@ -1265,10 +1335,11 @@ EQU1:		DW	DOLIT,-1,EXIT		;true flag
 ;   U<		( u u -- t )
 ;		Unsigned compare of top two items.
 
+ULESS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "U<"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ULESS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "U<"			                ;; name string
@@ -1282,10 +1353,11 @@ ULES1:		DW	SUBB,ZLESS,EXIT
 ;   <		( n1 n2 -- t )
 ;		Signed compare of top two items.
 
+LESS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "<"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	LESS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "<"			                ;; name string
@@ -1299,10 +1371,11 @@ LESS1:		DW	SUBB,ZLESS,EXIT
 ;   MAX		( n n -- n )
 ;		Return the greater of two top stack items.
 
+MAX:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "MAX"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	MAX: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "MAX"			                ;; name string
@@ -1316,10 +1389,11 @@ MAX1:		DW	DROP,EXIT
 ;   MIN		( n n -- n )
 ;		Return the smaller of top two stack items.
 
+MIN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "MIN"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	MIN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "MIN"			                ;; name string
@@ -1333,10 +1407,11 @@ MIN1:		DW	DROP,EXIT
 ;   WITHIN	( u ul uh -- t )
 ;		Return true if u is within the range of ul and uh.
 
+WITHI:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (6 + 3)}	    ;; new header. We need to move it in front of "WITHIN"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	WITHI: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {6}                           ;; Name length
 	DS "WITHIN"			                ;; name string
@@ -1350,10 +1425,11 @@ MIN1:		DW	DROP,EXIT
 ;   UM/MOD	( udl udh u -- ur uq )
 ;		Unsigned divide of a double by a single. Return mod and quotient.
 
+UMMOD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (6 + 3)}	    ;; new header. We need to move it in front of "UM/MOD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	UMMOD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {6}                           ;; Name length
 	DS "UM/MOD"			                ;; name string
@@ -1380,10 +1456,11 @@ UMM4:		DW	DROP,DDROP
 ;   M/MOD	( d n -- r q )
 ;		Signed floored divide of double by single. Return mod and quotient.
 
+MSMOD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "M/MOD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	MSMOD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "M/MOD"			                ;; name string
@@ -1403,10 +1480,11 @@ MMOD3:		DW	EXIT
 ;   /MOD	( n n -- r q )
 ;		Signed divide. Return mod and quotient.
 
+SLMOD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "/MOD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SLMOD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "/MOD"			                ;; name string
@@ -1417,10 +1495,11 @@ MMOD3:		DW	EXIT
 ;   MOD		( n n -- r )
 ;		Signed divide. Return mod only.
 
+MODD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "MOD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	MODD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "MOD"			                ;; name string
@@ -1431,10 +1510,11 @@ MMOD3:		DW	EXIT
 ;   /		( n n -- q )
 ;		Signed divide. Return quotient only.
 
+SLASH:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "/"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SLASH: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "/"			                ;; name string
@@ -1447,10 +1527,11 @@ MMOD3:		DW	EXIT
 ;   UM*		( u u -- ud )
 ;		Unsigned multiply. Return double product.
 
+UMSTA:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "UM*"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	UMSTA: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "UM*"			                ;; name string
@@ -1467,10 +1548,11 @@ UMST2:		DW	DONXT,UMST1
 ;   *		( n n -- n )
 ;		Signed multiply. Return single product.
 
+STAR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "*"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	STAR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "*"			                ;; name string
@@ -1481,10 +1563,11 @@ UMST2:		DW	DONXT,UMST1
 ;   M*		( n n -- d )
 ;		Signed multiply. Return double product.
 
+MSTAR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "M*"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	MSTAR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "M*"			                ;; name string
@@ -1500,10 +1583,11 @@ MSTA1:		DW	EXIT
 ;   */MOD	( n1 n2 n3 -- r q )
 ;		Multiply n1 and n2, then divide by n3. Return mod and quotient.
 
+SSMOD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "*/MOD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SSMOD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "*/MOD"			                ;; name string
@@ -1514,10 +1598,11 @@ MSTA1:		DW	EXIT
 ;   */		( n1 n2 n3 -- q )
 ;		Multiply n1 by n2, then divide by n3. Return quotient only.
 
+STASL:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "*/"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	STASL: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "*/"			                ;; name string
@@ -1531,10 +1616,11 @@ MSTA1:		DW	EXIT
 ;   CELL+	( a -- a )
 ;		Add cell size in byte to address.
 
+CELLP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "CELL+"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CELLP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "CELL+"			                ;; name string
@@ -1545,10 +1631,11 @@ MSTA1:		DW	EXIT
 ;   CELL-	( a -- a )
 ;		Subtract cell size in byte from address.
 
+CELLM:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "CELL-"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CELLM: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "CELL-"			                ;; name string
@@ -1559,40 +1646,43 @@ MSTA1:		DW	EXIT
 ;   CELLS	( n -- n )
 ;		Multiply tos by cell size in bytes.
 
+CELLS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "CELLS"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CELLS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "CELLS"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
-		DW	DUPP,DROP,EXIT              ;; I CHANGED THIS. I'M TRYING TO MAKE IT A NO-OP BECAUSE IT'S ALWAYS MULTIPLY BY 1
+		DW	EXIT              ;; I CHANGED THIS. I'M TRYING TO MAKE IT A NO-OP BECAUSE IT'S ALWAYS MULTIPLY BY 1
 
 
 ;   ALIGNED	( b -- a )
 ;		Align address to the cell boundary.
 
+ALGND:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "ALIGNED"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ALGND: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "ALIGNED"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
-		DW	DUPP,DROP,EXIT              ;; I CHANGED THIS. I'M TRYING TO MAKE IT A NO-OP BECAUSE IT'S ALWAYS ALIGNED
+		DW	EXIT              ;; I CHANGED THIS. I'M TRYING TO MAKE IT A NO-OP BECAUSE IT'S ALWAYS ALIGNED
 
 
 ;   BL		( -- 32 )
 ;		Return 32, the blank character.
 
+BLANK:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "BL"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	BLANK: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "BL"			                ;; name string
@@ -1603,10 +1693,11 @@ MSTA1:		DW	EXIT
 ;   >CHAR	( c -- c )
 ;		Filter non-printing characters.
 
+TCHAR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of ">CHAR"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TCHAR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS ">CHAR"			                ;; name string
@@ -1621,10 +1712,11 @@ TCHA1:		DW	EXIT
 ;   DEPTH	( -- n )
 ;		Return the depth of the data stack.
 
+DEPTH:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "DEPTH"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DEPTH: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "DEPTH"			                ;; name string
@@ -1636,10 +1728,11 @@ TCHA1:		DW	EXIT
 ;   PICK	( ... +n -- ... w )
 ;		Copy the nth stack item to tos.
 
+PICK:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "PICK"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	PICK: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "PICK"			                ;; name string
@@ -1653,10 +1746,11 @@ TCHA1:		DW	EXIT
 ;   +!		( n a -- )
 ;		Add n to the contents at address a.
 
+PSTOR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "+!"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	PSTOR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "+!"			                ;; name string
@@ -1668,10 +1762,11 @@ TCHA1:		DW	EXIT
 ;   2!		( d a -- )
 ;		Store the double integer to address a.
 
+DSTOR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "2!"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DSTOR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "2!"			                ;; name string
@@ -1683,10 +1778,11 @@ TCHA1:		DW	EXIT
 ;   2@		( a -- d )
 ;		Fetch double integer from address a.
 
+DAT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "2@"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DAT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "2@"			                ;; name string
@@ -1698,10 +1794,11 @@ TCHA1:		DW	EXIT
 ;   COUNT	( w -- w +n )
 ;		Return count word of a string and add 1 to word address.
 
+COUNT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "COUNT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	COUNT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "COUNT"			                ;; name string
@@ -1713,10 +1810,11 @@ TCHA1:		DW	EXIT
 ;   HERE	( -- a )
 ;		Return the top of the code dictionary.
 
+HERE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "HERE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	HERE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "HERE"			                ;; name string
@@ -1727,10 +1825,11 @@ TCHA1:		DW	EXIT
 ;   PAD		( -- a )
 ;		Return the address of a temporary buffer.
 
+PAD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "PAD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	PAD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "PAD"			                ;; name string
@@ -1741,10 +1840,11 @@ TCHA1:		DW	EXIT
 ;   TIB		( -- a )
 ;		Return the address of the terminal input buffer.
 
+TIB:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "TIB"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TIB: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "TIB"			                ;; name string
@@ -1755,10 +1855,11 @@ TCHA1:		DW	EXIT
 ;   @EXECUTE	( a -- )
 ;		Execute vector stored in address a.
 
+ATEXE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (8 + 3)}	    ;; new header. We need to move it in front of "@EXECUTE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ATEXE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {8}                           ;; Name length
 	DS "@EXECUTE"			                ;; name string
@@ -1772,10 +1873,11 @@ EXE1:		DW	EXIT			;do nothing if zero
 ;   CMOVE	( w1 w2 u -- )
 ;		Copy u bytes from b1 to b2.
 
+CMOVE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "CMOVE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CMOVE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "CMOVE"			                ;; name string
@@ -1793,10 +1895,11 @@ CMOV2:		DW	DONXT,CMOV1
 ;   FILL	( b u c -- )
 ;		Fill u bytes of character c to area beginning at b.
 
+FILL:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "FILL"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	FILL: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "FILL"			                ;; name string
@@ -1811,10 +1914,11 @@ FILL2:		DW	DONXT,FILL1
 ;   -TRAILING	( w u -- w u )
 ;		Adjust the count to eliminate trailing white space.
 
+DTRAI:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (9 + 3)}	    ;; new header. We need to move it in front of "-TRAILING"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DTRAI: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {9}                           ;; Name length
 	DS "-TRAILING"			                ;; name string
@@ -1831,10 +1935,11 @@ DTRA2:		DW	DONXT,DTRA1
 ;   PACK$	( w u a -- a )
 ;		Build a counted string with u characters from w. Null fill.
 
+PACKS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "PACK$"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	PACKS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "PACK$"			                ;; name string
@@ -1854,10 +1959,11 @@ DTRA2:		DW	DONXT,DTRA1
 ;   DIGIT	( u -- c )
 ;		Convert digit u to a character.
 
+DIGIT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "DIGIT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DIGIT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "DIGIT"			                ;; name string
@@ -1870,10 +1976,11 @@ DTRA2:		DW	DONXT,DTRA1
 ;   EXTRACT	( n base -- n c )
 ;		Extract the least significant digit from n.
 
+EXTRC:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "EXTRACT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	EXTRC: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "EXTRACT"			                ;; name string
@@ -1885,10 +1992,11 @@ DTRA2:		DW	DONXT,DTRA1
 ;   <#		( -- )
 ;		Initiate the numeric output process.
 
+BDIGS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "<#"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	BDIGS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "<#"			                ;; name string
@@ -1899,10 +2007,11 @@ DTRA2:		DW	DONXT,DTRA1
 ;   HOLD	( c -- )
 ;		Insert a character into the numeric output string.
 
+HOLD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "HOLD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	HOLD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "HOLD"			                ;; name string
@@ -1914,10 +2023,11 @@ DTRA2:		DW	DONXT,DTRA1
 ;   #		( u -- u )
 ;		Extract one digit from u and append the digit to output string.
 
+DIG:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "#"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DIG: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "#"			                ;; name string
@@ -1928,10 +2038,11 @@ DTRA2:		DW	DONXT,DTRA1
 ;   #S		( u -- 0 )
 ;		Convert u until all digits are added to the output string.
 
+DIGS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "#S"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DIGS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "#S"			                ;; name string
@@ -1945,10 +2056,11 @@ DIGS2:		DW	EXIT
 ;   SIGN	( n -- )
 ;		Add a minus sign to the numeric output string.
 
+SIGN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "SIGN"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SIGN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "SIGN"			                ;; name string
@@ -1962,10 +2074,11 @@ SIGN1:		DW	EXIT
 ;   #>		( w -- b u )
 ;		Prepare the output string to be TYPE'd.
 
+EDIGS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "#>"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	EDIGS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "#>"			                ;; name string
@@ -1977,10 +2090,11 @@ SIGN1:		DW	EXIT
 ;   str		( n -- b u )
 ;		Convert a signed integer to a numeric string.
 
+STR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "str"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	STR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "str"			                ;; name string
@@ -1993,10 +2107,11 @@ SIGN1:		DW	EXIT
 ;   HEX		( -- )
 ;		Use radix 16 as base for numeric conversions.
 
+HEX:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "HEX"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	HEX: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "HEX"			                ;; name string
@@ -2007,10 +2122,11 @@ SIGN1:		DW	EXIT
 ;   DECIMAL	( -- )
 ;		Use radix 10 as base for numeric conversions.
 
+DECIM:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "DECIMAL"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DECIM: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "DECIMAL"			                ;; name string
@@ -2024,10 +2140,11 @@ SIGN1:		DW	EXIT
 ;   DIGIT?	( c base -- u t )
 ;		Convert a character to its numeric value. A flag indicates success.
 
+DIGTQ:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (6 + 3)}	    ;; new header. We need to move it in front of "DIGIT?"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DIGTQ: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {6}                           ;; Name length
 	DS "DIGIT?"			                ;; name string
@@ -2043,10 +2160,11 @@ DGTQ1:		DW	DUPP,RFROM,ULESS,EXIT
 ;   NUMBER?	( a -- n T | a F )
 ;		Convert a number string to integer. Push a flag on tos.
 
+NUMBQ:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "NUMBER?"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	NUMBQ: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "NUMBER?"			                ;; name string
@@ -2082,10 +2200,11 @@ NUMQ6:		DW	RFROM,DDROP
 ;   ?KEY	( -- c T | F )
 ;		Return input character and true, or a false if no input.
 
+QKEY:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "?KEY"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	QKEY: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "?KEY"			                ;; name string
@@ -2096,10 +2215,11 @@ NUMQ6:		DW	RFROM,DDROP
 ;   KEY		( -- c )
 ;		Wait for and return an input character.
 
+KEY:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "KEY"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	KEY: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "KEY"			                ;; name string
@@ -2112,10 +2232,11 @@ KEY1:		DW	QKEY
 ;   EMIT	( c -- )
 ;		Send a character to the output device.
 
+EMIT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "EMIT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	EMIT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "EMIT"			                ;; name string
@@ -2126,10 +2247,11 @@ KEY1:		DW	QKEY
 ;   NUF?	( -- t )
 ;		Return false if no input, else pause and if CR return true.
 
+NUFQ:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "NUF?"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	NUFQ: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "NUF?"			                ;; name string
@@ -2143,10 +2265,11 @@ NUFQ1:		DW	EXIT
 ;   PACE	( -- )
 ;		Send a pace character for the file downloading process.
 
+PACE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "PACE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	PACE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "PACE"			                ;; name string
@@ -2157,10 +2280,11 @@ NUFQ1:		DW	EXIT
 ;   SPACE	( -- )
 ;		Send the blank character to the output device.
 
+SPACE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "SPACE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SPACE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "SPACE"			                ;; name string
@@ -2171,10 +2295,11 @@ NUFQ1:		DW	EXIT
 ;   SPACES	( +n -- )
 ;		Send n spaces to the output device.
 
+SPACS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (6 + 3)}	    ;; new header. We need to move it in front of "SPACES"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SPACS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {6}                           ;; Name length
 	DS "SPACES"			                ;; name string
@@ -2189,10 +2314,11 @@ CHAR2:		DW	DONXT,CHAR1
 ;   TYPE	( b u -- )
 ;		Output u characters from b.
 
+TYPEE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "TYPE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TYPEE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "TYPE"			                ;; name string
@@ -2208,10 +2334,11 @@ TYPE2:		DW	DONXT,TYPE1
 ;   CR		( -- )
 ;		Output a carriage return and a line feed.
 
+CR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "CR"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "CR"			                ;; name string
@@ -2223,10 +2350,11 @@ TYPE2:		DW	DONXT,TYPE1
 ;   do$		( -- a )
 ;		Return the address of a compiled string.
 
+DOSTR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+3) + 3)}	    ;; new header. We need to move it in front of "do$"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOSTR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+3)}                           ;; Name length
 	DS "do$"			                ;; name string
@@ -2238,10 +2366,11 @@ TYPE2:		DW	DONXT,TYPE1
 ;   $"|		( -- a )
 ;		Run time routine compiled by $". Return address of a compiled string.
 
+STRQP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+3) + 3)}	    ;; new header. We need to move it in front of "$"|"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	STRQP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+3)}                           ;; Name length
 	DS "$"|"			                ;; name string
@@ -2252,10 +2381,11 @@ TYPE2:		DW	DONXT,TYPE1
 ;   ."|		( -- )
 ;		Run time routine of ." . Output a compiled string.
 
+DOTQP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+3) + 3)}	    ;; new header. We need to move it in front of "."|"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOTQP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+3)}                           ;; Name length
 	DS "."|"			                ;; name string
@@ -2266,10 +2396,11 @@ TYPE2:		DW	DONXT,TYPE1
 ;   .R		( n +n -- )
 ;		Display an integer in a field of n columns, right justified.
 
+DOTR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of ".R"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOTR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS ".R"			                ;; name string
@@ -2281,10 +2412,11 @@ TYPE2:		DW	DONXT,TYPE1
 ;   U.R		( u +n -- )
 ;		Display an unsigned integer in n column, right justified.
 
+UDOTR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "U.R"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	UDOTR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "U.R"			                ;; name string
@@ -2297,10 +2429,11 @@ TYPE2:		DW	DONXT,TYPE1
 ;   U.		( u -- )
 ;		Display an unsigned integer in free format.
 
+UDOT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "U."'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	UDOT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "U."			                ;; name string
@@ -2312,10 +2445,11 @@ TYPE2:		DW	DONXT,TYPE1
 ;   .		( w -- )
 ;		Display an integer in free format, preceeded by a space.
 
+DOT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "."'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "."			                ;; name string
@@ -2329,10 +2463,11 @@ DOT1:		DW	STR,SPACE,TYPEE,EXIT	;yes, display signed
 ;   ?		( a -- )
 ;		Display the contents in a memory cell.
 
+QUEST:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "?"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	QUEST: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "?"			                ;; name string
@@ -2345,13 +2480,14 @@ DOT1:		DW	STR,SPACE,TYPEE,EXIT	;yes, display signed
 ;   parse	( b u c -- b u delta ; <string> )
 ;		Scan string delimited by c. Return found string and its offset.
 
+PARS:
 	{_CODE	= $}				        ;; save code pointer
-	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of ""parse""'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
+	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "parse"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	PARS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
-	DS ""parse""			                ;; name string
+	DS "parse"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
 		DW	TEMP,STOR,OVER,TOR,DUPP
@@ -2386,13 +2522,14 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;   PARSE	( c -- b u ; <string> )
 ;		Scan input stream and return counted string delimited by c.
 
+PARSE:
 	{_CODE	= $}				        ;; save code pointer
-	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of ""PARSE""'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
+	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "PARSE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	PARSE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
-	DS ""PARSE""			                ;; name string
+	DS "PARSE"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
 		DW	TOR,TIB,INN,AT,PLUS	;current input buffer pointer
@@ -2402,13 +2539,14 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;   .(		( -- )
 ;		Output following string up to next ) .
 
+DOTPR:
 	{_CODE	= $}				        ;; save code pointer
-	{_NAME	= _NAME - ((IMEDD+2) + 3)}	    ;; new header. We need to move it in front of ".(""'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
+	{_NAME	= _NAME - ((IMEDD+2) + 3)}	    ;; new header. We need to move it in front of ".("'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOTPR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+2)}                           ;; Name length
-	DS ".(""			                ;; name string
+	DS ".("			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
 		DW	DOLIT,{')'},PARSE,TYPEE,EXIT
@@ -2416,10 +2554,11 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;   (		( -- )
 ;		Ignore following string up to next ) . A comment.
 
+PAREN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+1) + 3)}	    ;; new header. We need to move it in front of "("'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	PAREN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+1)}                           ;; Name length
 	DS "("			                ;; name string
@@ -2430,10 +2569,11 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;   \		( -- )
 ;		Ignore following text till the end of line.
 
+BKSLA:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+1) + 3)}	    ;; new header. We need to move it in front of "\"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	BKSLA: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+1)}                           ;; Name length
 	DS "\"			                ;; name string
@@ -2444,10 +2584,11 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;   CHAR	( -- c )
 ;		Parse next word and return its first character.
 
+CHAR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "CHAR"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CHAR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "CHAR"			                ;; name string
@@ -2458,26 +2599,28 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;   TOKEN	( -- a ; <string> )
 ;		Parse a word from input stream and copy it to name dictionary.
 
+TOKEN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "TOKEN"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TOKEN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "TOKEN"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
-		DW	BLANK,PARSE,DOLIT,31,MIN
+		DW	BLANK,PARSE,DOLIT,15,MIN
 		DW	NP,AT,OVER,SUBB,CELLM
 		DW	PACKS,EXIT
 
 ;   WORD	( c -- a ; <string> )
 ;		Parse a word from input stream and copy it to code dictionary.
 
+WORDD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "WORD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	WORDD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "WORD"			                ;; name string
@@ -2490,10 +2633,11 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;   NAME>	( na -- ca )
 ;		Return a code address given a name address.
 
+NAMET:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "NAME>"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	NAMET: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "NAME>"			                ;; name string
@@ -2504,10 +2648,11 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;   SAME?	( a a u -- a a f \ -0+ )
 ;		Compare u cells in two strings. Return 0 if identical.
 
+SAMEQ:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "SAME?"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SAMEQ: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "SAME?"			                ;; name string
@@ -2526,10 +2671,11 @@ SAME2:		DW	DONXT,SAME1
 ;   find	( a va -- ca na | a F )
 ;		Search a vocabulary for a string. Return ca and na if succeeded.
 
+FIND:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "find"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	FIND: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "find"			                ;; name string
@@ -2558,10 +2704,11 @@ FIND5:		DW	RFROM,DROP,SWAP,DROP
 ;   NAME?	( a -- ca na | a F )
 ;		Search all context vocabularies for a string.
 
+NAMEQ:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "NAME?"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	NAMEQ: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "NAME?"			                ;; name string
@@ -2586,10 +2733,11 @@ NAMQ3:		DW	RFROM,DROP		;name not found
 ;   ^H		( bot eot cur -- bot eot cur )
 ;		Backup the cursor by one character.
 
+BKSP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "^H"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	BKSP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "^H"			                ;; name string
@@ -2605,10 +2753,11 @@ BACK1:		DW	EXIT
 ;   TAP		( bot eot cur c -- bot eot cur )
 ;		Accept and echo the key stroke and bump the cursor.
 
+TAP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "TAP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TAP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "TAP"			                ;; name string
@@ -2620,10 +2769,11 @@ BACK1:		DW	EXIT
 ;   kTAP	( bot eot cur c -- bot eot cur )
 ;		Process a key stroke, CR or backspace.
 
+KTAP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "kTAP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	KTAP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "kTAP"			                ;; name string
@@ -2640,10 +2790,11 @@ KTAP2:		DW	DROP,SWAP,DROP,DUPP,EXIT
 ;   accept	( b u -- b u )
 ;		Accept characters to input buffer. Return with actual count.
 
+ACCEP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (6 + 3)}	    ;; new header. We need to move it in front of "accept"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ACCEP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {6}                           ;; Name length
 	DS "accept"			                ;; name string
@@ -2665,10 +2816,11 @@ ACCP4:		DW	DROP,OVER,SUBB,EXIT
 ;   EXPECT	( b u -- )
 ;		Accept input stream and store count in SPAN.
 
+EXPEC:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (6 + 3)}	    ;; new header. We need to move it in front of "EXPECT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	EXPEC: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {6}                           ;; Name length
 	DS "EXPECT"			                ;; name string
@@ -2679,10 +2831,11 @@ ACCP4:		DW	DROP,OVER,SUBB,EXIT
 ;   QUERY	( -- )
 ;		Accept input stream to terminal input buffer.
 
+QUERY:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "QUERY"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	QUERY: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "QUERY"			                ;; name string
@@ -2696,10 +2849,11 @@ ACCP4:		DW	DROP,OVER,SUBB,EXIT
 ;   CATCH	( ca -- 0 | err# )
 ;		Execute word at ca and set up an error frame for it.
 
+CATCH:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "CATCH"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CATCH: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "CATCH"			                ;; name string
@@ -2713,10 +2867,11 @@ ACCP4:		DW	DROP,OVER,SUBB,EXIT
 ;   THROW	( err# -- err# )
 ;		Reset system to current local error frame an update error flag.
 
+THROW:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "THROW"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	THROW: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "THROW"			                ;; name string
@@ -2730,10 +2885,11 @@ ACCP4:		DW	DROP,OVER,SUBB,EXIT
 ;   NULL$	( -- a )
 ;		Return address of a null string with zero count.
 
+NULLS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "NULL$"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	NULLS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "NULL$"			                ;; name string
@@ -2746,10 +2902,11 @@ ACCP4:		DW	DROP,OVER,SUBB,EXIT
 ;   ABORT	( -- )
 ;		Reset data stack and jump to QUIT.
 
+ABORT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "ABORT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ABORT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "ABORT"			                ;; name string
@@ -2760,10 +2917,11 @@ ACCP4:		DW	DROP,OVER,SUBB,EXIT
 ;   abort"	( f -- )
 ;		Run time routine of ABORT" . Abort with a message.
 
+ABORQ:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+6) + 3)}	    ;; new header. We need to move it in front of "abort""'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ABORQ: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+6)}                           ;; Name length
 	DS "abort""			                ;; name string
@@ -2778,10 +2936,11 @@ ABOR1:		DW	DOSTR,DROP,EXIT		;drop error
 ;   $INTERPRET	( a -- )
 ;		Interpret a word. If failed, try to convert it to an integer.
 
+INTER:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (10 + 3)}	    ;; new header. We need to move it in front of "$INTERPRET"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	INTER: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {10}                           ;; Name length
 	DS "$INTERPRET"			                ;; name string
@@ -2801,10 +2960,11 @@ INTE2:		DW	THROW			;error
 ;   [		( -- )
 ;		Start the text interpreter.
 
+LBRAC:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+1) + 3)}	    ;; new header. We need to move it in front of "["'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	LBRAC: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+1)}                           ;; Name length
 	DS "["			                ;; name string
@@ -2815,10 +2975,11 @@ INTE2:		DW	THROW			;error
 ;   .OK		( -- )
 ;		Display "ok" only while interpreting.
 
+DOTOK:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of ".OK"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOTOK: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS ".OK"			                ;; name string
@@ -2833,10 +2994,11 @@ DOTO1:		DW	CR,EXIT
 ;   ?STACK	( -- )
 ;		Abort if the data stack underflows.
 
+QSTAC:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (6 + 3)}	    ;; new header. We need to move it in front of "?STACK"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	QSTAC: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {6}                           ;; Name length
 	DS "?STACK"			                ;; name string
@@ -2850,10 +3012,11 @@ DOTO1:		DW	CR,EXIT
 ;   EVAL	( -- )
 ;		Interpret the input stream.
 
+EVAL:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "EVAL"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	EVAL: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "EVAL"			                ;; name string
@@ -2870,10 +3033,11 @@ EVAL2:		DW	DROP,TPROM,ATEXE,EXIT	;prompt
 ;   PRESET	( -- )
 ;		Reset data stack pointer and the terminal input buffer.
 
+PRESE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (6 + 3)}	    ;; new header. We need to move it in front of "PRESET"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	PRESE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {6}                           ;; Name length
 	DS "PRESET"			                ;; name string
@@ -2885,10 +3049,11 @@ EVAL2:		DW	DROP,TPROM,ATEXE,EXIT	;prompt
 ;   xio		( a a a -- )
 ;		Reset the I/O vectors 'EXPECT, 'TAP, 'ECHO and 'PROMPT.
 
+XIO:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+3) + 3)}	    ;; new header. We need to move it in front of "xio"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	XIO: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+3)}                           ;; Name length
 	DS "xio"			                ;; name string
@@ -2900,10 +3065,11 @@ EVAL2:		DW	DROP,TPROM,ATEXE,EXIT	;prompt
 ;   FILE	( -- )
 ;		Select I/O vectors for file download.
 
+FILE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "FILE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	FILE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "FILE"			                ;; name string
@@ -2915,10 +3081,11 @@ EVAL2:		DW	DROP,TPROM,ATEXE,EXIT	;prompt
 ;   HAND	( -- )
 ;		Select I/O vectors for terminal interface.
 
+HAND:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "HAND"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	HAND: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "HAND"			                ;; name string
@@ -2930,10 +3097,11 @@ EVAL2:		DW	DROP,TPROM,ATEXE,EXIT	;prompt
 ;   I/O		( -- a )
 ;		Array to store default I/O vectors.
 
+ISLO:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "I/O"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ISLO: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "I/O"			                ;; name string
@@ -2945,10 +3113,11 @@ EVAL2:		DW	DROP,TPROM,ATEXE,EXIT	;prompt
 ;   CONSOLE	( -- )
 ;		Initiate terminal interface.
 
+CONSO:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "CONSOLE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CONSO: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "CONSOLE"			                ;; name string
@@ -2960,10 +3129,11 @@ EVAL2:		DW	DROP,TPROM,ATEXE,EXIT	;prompt
 ;   QUIT	( -- )
 ;		Reset return stack pointer and start text interpreter.
 
+QUIT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "QUIT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	QUIT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "QUIT"			                ;; name string
@@ -2991,10 +3161,11 @@ QUIT4:		DW	PRESE			;some cleanup
 ;   '		( -- ca )
 ;		Search context vocabularies for the next word in input stream.
 
+TICK:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "'"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TICK: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "'"			                ;; name string
@@ -3008,10 +3179,11 @@ TICK1:		DW	THROW			;no, error
 ;   ALLOT	( n -- )
 ;		Allocate n bytes to the code dictionary.
 
+ALLOT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "ALLOT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ALLOT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "ALLOT"			                ;; name string
@@ -3022,10 +3194,11 @@ TICK1:		DW	THROW			;no, error
 ;   ,		( w -- )
 ;		Compile an integer into the code dictionary.
 
+COMMA:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of ","'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	COMMA: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS ","			                ;; name string
@@ -3037,10 +3210,11 @@ TICK1:		DW	THROW			;no, error
 ;   [COMPILE]	( -- ; <string> )
 ;		Compile the next immediate word into code dictionary.
 
+BCOMP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+9) + 3)}	    ;; new header. We need to move it in front of "[COMPILE]"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	BCOMP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+9)}                           ;; Name length
 	DS "[COMPILE]"			                ;; name string
@@ -3051,10 +3225,11 @@ TICK1:		DW	THROW			;no, error
 ;   COMPILE	( -- )
 ;		Compile the next address in colon list to code dictionary.
 
+COMPI:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((COMPO+7) + 3)}	    ;; new header. We need to move it in front of "COMPILE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	COMPI: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(COMPO+7)}                           ;; Name length
 	DS "COMPILE"			                ;; name string
@@ -3066,10 +3241,11 @@ TICK1:		DW	THROW			;no, error
 ;   LITERAL	( w -- )
 ;		Compile tos to code dictionary as an integer literal.
 
+LITER:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+7) + 3)}	    ;; new header. We need to move it in front of "LITERAL"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	LITER: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+7)}                           ;; Name length
 	DS "LITERAL"			                ;; name string
@@ -3080,10 +3256,11 @@ TICK1:		DW	THROW			;no, error
 ;   $,"		( -- )
 ;		Compile a literal string up to next " .
 
+STRCQ:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "$,""'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	STRCQ: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "$,""			                ;; name string
@@ -3096,10 +3273,11 @@ TICK1:		DW	THROW			;no, error
 ;   RECURSE	( -- )
 ;		Make the current word available for compilation.
 
+RECUR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+7) + 3)}	    ;; new header. We need to move it in front of "RECURSE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	RECUR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+7)}                           ;; Name length
 	DS "RECURSE"			                ;; name string
@@ -3112,10 +3290,11 @@ TICK1:		DW	THROW			;no, error
 ;   FOR		( -- a )
 ;		Start a FOR-NEXT loop structure in a colon definition.
 
+FOR:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+3) + 3)}	    ;; new header. We need to move it in front of "FOR"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	FOR: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+3)}                           ;; Name length
 	DS "FOR"			                ;; name string
@@ -3126,10 +3305,11 @@ TICK1:		DW	THROW			;no, error
 ;   BEGIN	( -- a )
 ;		Start an infinite or indefinite loop structure.
 
+BEGIN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+5) + 3)}	    ;; new header. We need to move it in front of "BEGIN"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	BEGIN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+5)}                           ;; Name length
 	DS "BEGIN"			                ;; name string
@@ -3140,10 +3320,11 @@ TICK1:		DW	THROW			;no, error
 ;   NEXT	( a -- )
 ;		Terminate a FOR-NEXT loop structure.
 
+NEXT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+4) + 3)}	    ;; new header. We need to move it in front of "NEXT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	NEXT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+4)}                           ;; Name length
 	DS "NEXT"			                ;; name string
@@ -3154,10 +3335,11 @@ TICK1:		DW	THROW			;no, error
 ;   UNTIL	( a -- )
 ;		Terminate a BEGIN-UNTIL indefinite loop structure.
 
+UNTIL:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+5) + 3)}	    ;; new header. We need to move it in front of "UNTIL"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	UNTIL: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+5)}                           ;; Name length
 	DS "UNTIL"			                ;; name string
@@ -3168,10 +3350,11 @@ TICK1:		DW	THROW			;no, error
 ;   AGAIN	( a -- )
 ;		Terminate a BEGIN-AGAIN infinite loop structure.
 
+AGAIN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+5) + 3)}	    ;; new header. We need to move it in front of "AGAIN"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	AGAIN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+5)}                           ;; Name length
 	DS "AGAIN"			                ;; name string
@@ -3182,10 +3365,11 @@ TICK1:		DW	THROW			;no, error
 ;   IF		( -- A )
 ;		Begin a conditional branch structure.
 
+IFF:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+2) + 3)}	    ;; new header. We need to move it in front of "IF"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	IFF: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+2)}                           ;; Name length
 	DS "IF"			                ;; name string
@@ -3197,10 +3381,11 @@ TICK1:		DW	THROW			;no, error
 ;   AHEAD	( -- A )
 ;		Compile a forward branch instruction.
 
+AHEAD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+5) + 3)}	    ;; new header. We need to move it in front of "AHEAD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	AHEAD: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+5)}                           ;; Name length
 	DS "AHEAD"			                ;; name string
@@ -3211,10 +3396,11 @@ TICK1:		DW	THROW			;no, error
 ;   REPEAT	( A a -- )
 ;		Terminate a BEGIN-WHILE-REPEAT indefinite loop.
 
+REPEA:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+6) + 3)}	    ;; new header. We need to move it in front of "REPEAT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	REPEA: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+6)}                           ;; Name length
 	DS "REPEAT"			                ;; name string
@@ -3225,10 +3411,11 @@ TICK1:		DW	THROW			;no, error
 ;   THEN	( A -- )
 ;		Terminate a conditional branch structure.
 
+THENN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+4) + 3)}	    ;; new header. We need to move it in front of "THEN"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	THENN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+4)}                           ;; Name length
 	DS "THEN"			                ;; name string
@@ -3239,10 +3426,11 @@ TICK1:		DW	THROW			;no, error
 ;   AFT		( a -- a A )
 ;		Jump to THEN in a FOR-AFT-THEN-NEXT loop the first time through.
 
+AFT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+3) + 3)}	    ;; new header. We need to move it in front of "AFT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	AFT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+3)}                           ;; Name length
 	DS "AFT"			                ;; name string
@@ -3253,10 +3441,11 @@ TICK1:		DW	THROW			;no, error
 ;   ELSE	( A -- A )
 ;		Start the false clause in an IF-ELSE-THEN structure.
 
+ELSEE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+4) + 3)}	    ;; new header. We need to move it in front of "ELSE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ELSEE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+4)}                           ;; Name length
 	DS "ELSE"			                ;; name string
@@ -3267,10 +3456,11 @@ TICK1:		DW	THROW			;no, error
 ;   WHILE	( a -- A a )
 ;		Conditional branch out of a BEGIN-WHILE-REPEAT loop.
 
+WHILE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+5) + 3)}	    ;; new header. We need to move it in front of "WHILE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	WHILE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+5)}                           ;; Name length
 	DS "WHILE"			                ;; name string
@@ -3281,10 +3471,11 @@ TICK1:		DW	THROW			;no, error
 ;   ABORT"	( -- ; <string> )
 ;		Conditional abort with an error message.
 
+ABRTQ:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+6) + 3)}	    ;; new header. We need to move it in front of "ABORT""'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	ABRTQ: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+6)}                           ;; Name length
 	DS "ABORT""			                ;; name string
@@ -3295,10 +3486,11 @@ TICK1:		DW	THROW			;no, error
 ;   $"		( -- ; <string> )
 ;		Compile an inline string literal.
 
+STRQ:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+2) + 3)}	    ;; new header. We need to move it in front of "$""'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	STRQ: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+2)}                           ;; Name length
 	DS "$""			                ;; name string
@@ -3309,10 +3501,11 @@ TICK1:		DW	THROW			;no, error
 ;   ."		( -- ; <string> )
 ;		Compile an inline string literal to be typed out at run time.
 
+DOTQ:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+2) + 3)}	    ;; new header. We need to move it in front of ".""'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOTQ: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+2)}                           ;; Name length
 	DS ".""			                ;; name string
@@ -3325,10 +3518,11 @@ TICK1:		DW	THROW			;no, error
 ;   ?UNIQUE	( a -- a )
 ;		Display a warning message if the word already exists.
 
+UNIQU:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (7 + 3)}	    ;; new header. We need to move it in front of "?UNIQUE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	UNIQU: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {7}                           ;; Name length
 	DS "?UNIQUE"			                ;; name string
@@ -3344,10 +3538,11 @@ UNIQ1:		DW	DROP,EXIT
 ;   $,n		( na -- )
 ;		Build a new dictionary name using the string at na.
 
+SNAME:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "$,n"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SNAME: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "$,n"			                ;; name string
@@ -3371,10 +3566,11 @@ UNIQ1:		DW	DROP,EXIT
 ;   $COMPILE	( a -- )
 ;		Compile next word to code dictionary as a token or literal.
 
+SCOMP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (8 + 3)}	    ;; new header. We need to move it in front of "$COMPILE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SCOMP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {8}                           ;; Name length
 	DS "$COMPILE"			                ;; name string
@@ -3394,10 +3590,11 @@ SCOM3:		DW	THROW			;error
 ;   OVERT	( -- )
 ;		Link a new word into the current vocabulary.
 
+OVERT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "OVERT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	OVERT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "OVERT"			                ;; name string
@@ -3408,10 +3605,11 @@ SCOM3:		DW	THROW			;error
 ;   ;		( -- )
 ;		Terminate a colon definition.
 
+SEMIS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - ((IMEDD+COMPO+1) + 3)}	    ;; new header. We need to move it in front of ";"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SEMIS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {(IMEDD+COMPO+1)}                           ;; Name length
 	DS ";"			                ;; name string
@@ -3422,10 +3620,11 @@ SCOM3:		DW	THROW			;error
 ;   ]		( -- )
 ;		Start compiling the words in the input stream.
 
+RBRAC:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of "]"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	RBRAC: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS "]"			                ;; name string
@@ -3436,10 +3635,11 @@ SCOM3:		DW	THROW			;error
 ;   call,	( ca -- )
 ;		Assemble a call instruction to ca.
 
+CALLC:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "call,"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CALLC: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "call,"			                ;; name string
@@ -3451,10 +3651,11 @@ SCOM3:		DW	THROW			;error
 ;   :		( -- ; <string> )
 ;		Start a new colon definition using next word as its name.
 
+COLON:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (1 + 3)}	    ;; new header. We need to move it in front of ":"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	COLON: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {1}                           ;; Name length
 	DS ":"			                ;; name string
@@ -3466,10 +3667,11 @@ SCOM3:		DW	THROW			;error
 ;   IMMEDIATE	( -- )
 ;		Make the last compiled word an immediate word.
 
+IMMED:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (9 + 3)}	    ;; new header. We need to move it in front of "IMMEDIATE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	IMMED: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {9}                           ;; Name length
 	DS "IMMEDIATE"			                ;; name string
@@ -3483,10 +3685,11 @@ SCOM3:		DW	THROW			;error
 ;   USER	( u -- ; <string> )
 ;		Compile a new user variable.
 
+USER:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "USER"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	USER: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "USER"			                ;; name string
@@ -3499,10 +3702,11 @@ SCOM3:		DW	THROW			;error
 ;   CREATE	( -- ; <string> )
 ;		Compile a new array entry without allocating code space.
 
+CREAT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (6 + 3)}	    ;; new header. We need to move it in front of "CREATE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	CREAT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {6}                           ;; Name length
 	DS "CREATE"			                ;; name string
@@ -3515,10 +3719,11 @@ SCOM3:		DW	THROW			;error
 ;   VARIABLE	( -- ; <string> )
 ;		Compile a new variable initialized to 0.
 
+VARIA:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (8 + 3)}	    ;; new header. We need to move it in front of "VARIABLE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	VARIA: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {8}                           ;; Name length
 	DS "VARIABLE"			                ;; name string
@@ -3531,10 +3736,11 @@ SCOM3:		DW	THROW			;error
 ;   _TYPE	( b u -- )
 ;		Display a string. Filter non-printing characters.
 
+UTYPE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "_TYPE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	UTYPE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "_TYPE"			                ;; name string
@@ -3550,10 +3756,11 @@ UTYP2:		DW	DONXT,UTYP1		;loop till done
 ;   dm+		( a u -- a )
 ;		Dump u bytes from , leaving a+u on the stack.
 
+DMP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "dm+"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DMP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "dm+"			                ;; name string
@@ -3570,10 +3777,11 @@ PDUM2:		DW	DONXT,PDUM1		;loop till done
 ;   DUMP	( a u -- )
 ;		Dump u bytes from a, in a formatted manner.
 
+DUMP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "DUMP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DUMP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "DUMP"			                ;; name string
@@ -3596,10 +3804,11 @@ DUMP3:		DW	DROP,RFROM,BASE,STOR	;restore radix
 ;   .S		( ... -- ... )
 ;		Display the contents of the data stack.
 
+DOTS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of ".S"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOTS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS ".S"			                ;; name string
@@ -3617,10 +3826,11 @@ DOTS2:		DW	DONXT,DOTS1		;loop till done
 ;   !CSP	( -- )
 ;		Save stack pointer in CSP for error checking.
 
+STCSP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "!CSP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	STCSP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "!CSP"			                ;; name string
@@ -3631,10 +3841,11 @@ DOTS2:		DW	DONXT,DOTS1		;loop till done
 ;   ?CSP	( -- )
 ;		Abort if stack pointer differs from that saved in CSP.
 
+QCSP:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "?CSP"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	QCSP: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "?CSP"			                ;; name string
@@ -3648,10 +3859,11 @@ DOTS2:		DW	DONXT,DOTS1		;loop till done
 ;   >NAME	( ca -- na | F )
 ;		Convert code address to a name address.
 
+TNAME:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of ">NAME"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TNAME: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS ">NAME"			                ;; name string
@@ -3675,10 +3887,11 @@ TNAM4:		DW	DROP,DOLIT,0,EXIT	;false flag
 ;   .ID		( na -- )
 ;		Display the name at address.
 
+DOTID:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of ".ID"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DOTID: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS ".ID"			                ;; name string
@@ -3695,10 +3908,11 @@ TNAM4:		DW	DROP,DOLIT,0,EXIT	;false flag
 ;   SEE		( -- ; <string> )
 ;		A simple decompiler.
 
+SEE:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "SEE"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	SEE: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "SEE"			                ;; name string
@@ -3721,10 +3935,11 @@ SEE4:		DW	NUFQ			;user control
 ;   WORDS	( -- )
 ;		Display the names in the context vocabulary.
 
+WORDS:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "WORDS"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	WORDS: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "WORDS"			                ;; name string
@@ -3744,10 +3959,11 @@ WORS2:		DW	EXIT
 ;   VER		( -- n )
 ;		Return the version number of this implementation.
 
+VERSN:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (3 + 3)}	    ;; new header. We need to move it in front of "VER"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	VERSN: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {3}                           ;; Name length
 	DS "VER"			                ;; name string
@@ -3758,10 +3974,11 @@ WORS2:		DW	EXIT
 ;   hi		( -- )
 ;		Display the sign-on message of eForth.
 
+HI:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (2 + 3)}	    ;; new header. We need to move it in front of "hi"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	HI: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {2}                           ;; Name length
 	DS "hi"			                ;; name string
@@ -3779,10 +3996,11 @@ WORS2:		DW	EXIT
 ;   'BOOT	( -- a )
 ;		The application startup vector.
 
+TBOOT:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (5 + 3)}	    ;; new header. We need to move it in front of "'BOOT"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	TBOOT: DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {5}                           ;; Name length
 	DS "'BOOT"			                ;; name string
@@ -3794,15 +4012,16 @@ WORS2:		DW	EXIT
 ;   COLD	( -- )
 ;		The hilevel cold start sequence.
 
+COLD:
 	{_CODE	= $}				        ;; save code pointer
 	{_NAME	= _NAME - (4 + 3)}	    ;; new header. We need to move it in front of "COLD"'s length, and additional space for the 3 words we're declaring in front of it. Use subtraction since _NAME grows downwards
     ORG	{_NAME}					        ;; set name pointer
-	DW {_CODE},{_LINK}			;; token pointer and previous link? with assembly label
+	DW {_CODE},{_LINK}			        ;; token pointer and previous link?
 	{_LINK	= $}				        ;; Update _LINK so it points to a new name string
 	DW {4}                           ;; Name length
 	DS "COLD"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
-	COLD: CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
+	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
 COLD1:		DW	DOLIT,UZERO,DOLIT,{UPP}
 		DW	DOLIT,38,CMOVE	;initialize user area
 		DW	PRESE			;initialize stack and TIB
@@ -3814,7 +4033,7 @@ COLD1:		DW	DOLIT,UZERO,DOLIT,{UPP}
 
 ;===============================================================
 
-{LASTN	=	_NAME+4}			;last name address
+{LASTN	=	_NAME+CELLL*2}			;last name address
 
 {NTOP	=	_NAME-0}			;next available memory in name dictionary
 {CTOP	=	$+0}			;next available memory in code dictionary
