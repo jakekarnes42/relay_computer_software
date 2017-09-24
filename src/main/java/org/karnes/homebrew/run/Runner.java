@@ -15,11 +15,15 @@ import java.util.stream.Collectors;
 public class Runner {
 
     public static void main(String[] args) throws Exception {
-//        String input = "2 2 +\r-2 -\r7 *\r.\rBYE\r";
-//
-//        String output = runDOSeForth(input);
+        Path binaryPath = Paths.get(args[0]);
+        short[] RAM = loadBinaryExecutable(binaryPath);
 
-//        System.out.print(output);
+        //Create a new computer to run it
+        RelayComputer computer = new RelayComputer();
+        computer.setMainMemory(RAM);
+
+        //Run it.
+        computer.start();
 
 
     }
