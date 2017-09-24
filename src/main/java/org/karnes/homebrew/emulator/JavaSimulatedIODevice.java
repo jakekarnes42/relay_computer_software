@@ -2,6 +2,11 @@ package org.karnes.homebrew.emulator;
 
 import java.io.*;
 
+/**
+ * Helpful simulation of the simple I/O device.
+ * <br>
+ * This class will likely need to be updated to reflect the final hardware I/O design
+ */
 public class JavaSimulatedIODevice implements IODevice {
     Reader in;
     OutputStreamWriter out;

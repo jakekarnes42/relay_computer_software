@@ -5,7 +5,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * An emulator for the Relay-based computer
+ * An extension of the standard relay computer emulator {@link RelayComputer}, that is helpful when debugging Forth code execution.
+ *
+ * When the print lines are uncommented, this will print out the information akin to a stack trace, so it's easy to see which
+ * Forth words are calling other Forth words, and the values they receive/return.
  */
 public class ForthRelayComputer extends RelayComputer {
 

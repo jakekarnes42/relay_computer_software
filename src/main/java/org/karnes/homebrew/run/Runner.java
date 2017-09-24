@@ -12,6 +12,9 @@ import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * Contains the main-method for command line execution, and utility methods for executing code against the emulator.
+ */
 public class Runner {
 
     public static void main(String[] args) throws Exception {
@@ -28,6 +31,12 @@ public class Runner {
 
     }
 
+    /**
+     * Loads a binary executable from disk into a short[] that can be loaded into the emulator.
+     *
+     * @param binaryPath The path to the executable on disk
+     * @return a short[] that can be loaded into the emulator.
+     */
     public static short[] loadBinaryExecutable(Path binaryPath) {
         //Chosen because this is the max memory in the relay computer. If the binary is bigger than this, we can't even load it.
         int maxBinary = Character.MAX_VALUE;
@@ -60,9 +69,14 @@ public class Runner {
 
     }
 
+    /**
+     * Assembles source assembly code into a binary executable, and saves that binary to disk.
+     *
+     * @param assemblyPath The Path to source code. Ex: {@code Path assemblyPath = Paths.get("src", "main", "resources", "relay_eforth.asm");}
+     * @param outputPath   The Path to where the output binary file should be written. Ex: {@code Path outputPath = Paths.get("src", "main", "resources", "relay_eforth.bin");}
+     * @throws IOException if unable to create/save the executable binary.
+     */
     public static void createBinaryExecutable(Path assemblyPath, Path outputPath) throws IOException {
-        //Path assemblyPath = Paths.get("src", "main", "resources", "relay_eforth.asm");
-        //Path outputPath = Paths.get("src", "main", "resources", "relay_eforth.bin");
         String code = Files.readAllLines(assemblyPath).stream()
                 .map(line -> line + "\r\n").collect(Collectors.joining());
 
