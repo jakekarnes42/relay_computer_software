@@ -1308,7 +1308,7 @@ PARS8:		DW	OVER,RFROM,SUBB,EXIT
 ;		Parse a word from input stream and copy it to name dictionary.
 
 		$COLON	5,"TOKEN",TOKEN
-		DW	BLANK,PARSE,DOLIT,15,MIN
+		DW	BLANK,PARSE,DOLIT,31,MIN
 		DW	NP,AT,OVER,SUBB,CELLM
 		DW	PACKS,EXIT
 
@@ -1816,8 +1816,8 @@ SCOM3:		DW	THROW			;error
 ;		Assemble a call instruction to ca.
 
 		$COLON	5,"call,",CALLC
-		DW	DOLIT,0x4040,DOLST,COMMA,HERE	;Hard coding - in binary CALL SP, DOLST
-		DW	CELLP,SUBB,COMMA,EXIT
+		DW DOLIT,0x4040,COMMA,COMMA        ;Hard coding - in binary CALL SP, DOLST
+		DW EXIT	;
 
 ;   :		( -- ; <string> )
 ;		Start a new colon definition using next word as its name.

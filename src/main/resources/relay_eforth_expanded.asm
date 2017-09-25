@@ -2609,7 +2609,7 @@ TOKEN:
 	DS "TOKEN"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
-		DW	BLANK,PARSE,DOLIT,15,MIN
+		DW	BLANK,PARSE,DOLIT,31,MIN
 		DW	NP,AT,OVER,SUBB,CELLM
 		DW	PACKS,EXIT
 
@@ -3645,8 +3645,8 @@ CALLC:
 	DS "call,"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
-		DW	DOLIT,0x4040,DOLST,COMMA,HERE	;Hard coding - in binary CALL SP, DOLST
-		DW	CELLP,SUBB,COMMA,EXIT
+		DW DOLIT,0x4040,COMMA,COMMA        ;Hard coding - in binary CALL SP, DOLST
+		DW EXIT	;
 
 ;   :		( -- ; <string> )
 ;		Start a new colon definition using next word as its name.

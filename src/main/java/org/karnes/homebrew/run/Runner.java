@@ -18,17 +18,52 @@ import java.util.stream.Collectors;
 public class Runner {
 
     public static void main(String[] args) throws Exception {
-        Path binaryPath = Paths.get(args[0]);
-        short[] RAM = loadBinaryExecutable(binaryPath);
+//        Path binaryPath = Paths.get(args[0]);
+//        short[] RAM = loadBinaryExecutable(binaryPath);
+//
+//        //Create a new computer to run it
+//        RelayComputer computer = new RelayComputer();
+//        computer.setMainMemory(RAM);
+//
+//        //Run it.
+//        computer.start();
 
-        //Create a new computer to run it
-        RelayComputer computer = new RelayComputer();
-        computer.setMainMemory(RAM);
 
-        //Run it.
-        computer.start();
+//        String forthCode = ": HELLO CR .\" Hello, world!\" ;\r" +//Define the new HELLO word
+//                "HELLO\r" + //Run it
+//                "BYE\r"; //Exit
 
+//        String code = Files.readAllLines(assemblyPath).stream()
+//                .map(line -> line + "\r\n").collect(Collectors.joining());
+//
+//        Assembler assembler = new Assembler(code);
+//        short[] RAM = assembler.assemble();
+//        Map<String, Character> symbolTable = assembler.getSymbolTable();
+//
+//
+//        //Set up the canned I/O
+//        ByteArrayInputStream inputStream = new ByteArrayInputStream(forthCode.getBytes());
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        PrintStream printStream = new PrintStream(baos);
+//        JavaSimulatedIODevice ioDevice = new JavaSimulatedIODevice(inputStream, System.out);
+//
+//
+//        //Create a new computer to run it
+//        RelayComputer computer = new ForthRelayComputer(symbolTable);
+//        computer.setIoDevice(ioDevice);
+//        computer.setMainMemory(RAM);
+//
+//        //Run it.
+//        computer.start();
+//
+//        //Format the output. DOS only adds line feeds and eats the carriage returns
+//        String output = baos.toString() + "\r\n";
+//        output = output.replaceAll("\\r\\n", "\n");
+////        return output;
 
+//        Path assemblyPath = Paths.get("src", "main", "resources", "relay_eforth.asm");
+//        Path outputPath = Paths.get("src", "main", "resources", "relay_eforth.bin");
+//        createBinaryExecutable(assemblyPath, outputPath);
     }
 
     /**
