@@ -27,16 +27,17 @@
 
 ;; Memory allocation	0//code>--//--<name//up>--<sp//tib>--rp//em
 
-{EM	= 0x04000}	    		;top of memory - CAN PROBABLY CHANGE THIS
-{COLDD = 0}			;cold start vector - changed from 100 to 0 since we start at 0, unlike DOS
+{EM	= 64000}	    		;top of memory. The real end of memory is 65536, but this gives a bit of wiggle room in case we mess up the return stack.
+{COLDD = 0}			        ;cold start vector - changed from 100 to 0 since we start at 0, unlike DOS
 
-{US = 64*CELLL}     		;user area size in cells
-{RTS = 64*CELLL}	    	;return stack/TIB size
+{US = 1024*CELLL}     		;user area size in cells
+{RTS = 16384*CELLL}	    	;return stack/TIB size
+{DTS = 16384*CELLL}         ;data stack size
 
 {RPP = EM-8*CELLL}	    	;start of return stack (RP0)
 {TIBB = RPP-RTS}			;terminal input buffer (TIB)
 {SPP = TIBB-8*CELLL}		;start of data stack (SP0)
-{UPP = SPP-256*CELLL}		;start of user area (UP0)
+{UPP = SPP-DTS*CELLL}		;start of user area (UP0)
 {NAMEE = UPP-8*CELLL}		;name dictionary
 {CODEE = COLDD+US}  		;code dictionary
 
@@ -46,9 +47,6 @@
 {_NAME	= NAMEE}					;initialize name pointer
 {_CODE	= CODEE	}				;initialize code pointer
 {_USER	= 4*CELLL}				;first user variable offset
-
-
-
 
 
 
