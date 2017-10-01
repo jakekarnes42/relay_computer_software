@@ -115,6 +115,20 @@ public class AsmHomeBrewBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitAluBinaryOperation(AsmHomeBrewParser.AluBinaryOperationContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitAluBinaryOpcode(AsmHomeBrewParser.AluBinaryOpcodeContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitBinaryRegRegOperation(AsmHomeBrewParser.BinaryRegRegOperationContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -165,13 +179,6 @@ public class AsmHomeBrewBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitCallOperation(AsmHomeBrewParser.CallOperationContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitStackOpcode(AsmHomeBrewParser.StackOpcodeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

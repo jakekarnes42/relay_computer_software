@@ -63,7 +63,7 @@ public class IOInstructionTest {
                 + "     WRDIN DX    ; DX = l\r\n"
                 + "     WRDIN EX    ; EX = o\r\n"
                 + "     LOAD SP, 10 ; some value into SP so it's not starting as 0\r\n"
-                + "     WRDIN SP    ; SP should be zero since there's no more input\r\n"
+                + "     TIN         ; Zero flag should be set since there's no more input\r\n"
                 + "     HALT                    ; DONE\r\n";
 
         Assembler assembler = new Assembler(code);
@@ -85,7 +85,6 @@ public class IOInstructionTest {
         assertEquals((short) 'l', computer.getCX(), "CX should have the third character");
         assertEquals((short) 'l', computer.getDX(), "DX should have the fourth character");
         assertEquals((short) 'o', computer.getEX(), "EX should have the fifth character");
-        assertEquals(0, computer.getSP(), "SP should have 0 since there were no more characters");
 
 
         //Check condition registers
@@ -255,8 +254,9 @@ public class IOInstructionTest {
         String code = "; Reads in a name, prints 'Hello <name>!'\r\n"
                 + "         LOAD SP, 500    ; Move SP far into memory \r\n"
                 + "         LOAD RP, 900    ; Move RP far into memory \r\n"
-                + "READ:    WRDIN AX        ; Get the next letter into AX \r\n"
+                + "READ:    TIN             ; Test if we have any remaining letters\r\n"
                 + "         JZ READ_DONE    ; If there wasn't a letter, jump to READ_DONE\r\n"
+                + "         WRDIN AX        ; Get the next letter into AX \r\n"
                 + "         PUSH SP, AX     ; Push the letter onto SP \r\n"
                 + "         INC BX, BX      ; Update our counter in BX\r\n"
                 + "         JMP READ        ; Jump back to read another character \r\n"
@@ -332,8 +332,9 @@ public class IOInstructionTest {
                 + "         LOAD RP, 500    ; Point RP far into memory\r\n"
                 + "         LOAD CX, 500    ; Point CX far at top of RP stack\r\n"
 
-                + "READ:    WRDIN AX        ; Get the next letter into AX \r\n"
+                + "READ:    TIN             ; Check if there's any input\r\n"
                 + "         JZ READ_DONE    ; If there wasn't a letter, jump to READ_DONE\r\n"
+                + "         WRDIN AX        ; Get the next letter into AX \r\n"
                 + "         STORE CX, AX    ; Store the letter at memory address of CX \r\n"
                 + "         INC CX, CX      ; Increment CX to previous memory location\r\n"
                 + "         JMP READ        ; Jump back to read another character \r\n"

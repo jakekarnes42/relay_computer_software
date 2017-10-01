@@ -27,16 +27,17 @@
 
 ;; Memory allocation	0//code>--//--<name//up>--<sp//tib>--rp//em
 
-{EM	= 0x04000}	    		;top of memory - CAN PROBABLY CHANGE THIS
-{COLDD = 0}			;cold start vector - changed from 100 to 0 since we start at 0, unlike DOS
+{EM	= 64000}	    		;top of memory. The real end of memory is 65536, but this gives a bit of wiggle room in case we mess up the return stack.
+{COLDD = 0}			        ;cold start vector - changed from 100 to 0 since we start at 0, unlike DOS
 
-{US = 64*CELLL}     		;user area size in cells
-{RTS = 64*CELLL}	    	;return stack/TIB size
+{US = 1024*CELLL}     		;user area size in cells
+{RTS = 16384*CELLL}	    	;return stack/TIB size
+{DTS = 16384*CELLL}         ;data stack size
 
 {RPP = EM-8*CELLL}	    	;start of return stack (RP0)
 {TIBB = RPP-RTS}			;terminal input buffer (TIB)
 {SPP = TIBB-8*CELLL}		;start of data stack (SP0)
-{UPP = SPP-256*CELLL}		;start of user area (UP0)
+{UPP = SPP-DTS*CELLL}		;start of user area (UP0)
 {NAMEE = UPP-8*CELLL}		;name dictionary
 {CODEE = COLDD+US}  		;code dictionary
 
@@ -46,9 +47,6 @@
 {_NAME	= NAMEE}					;initialize name pointer
 {_CODE	= CODEE	}				;initialize code pointer
 {_USER	= 4*CELLL}				;first user variable offset
-
-
-
 
 
 
@@ -109,10 +107,11 @@ QRX:
 	DW {3}                           ;; Name length
 	DS "?RX"			                ;; name string
     ORG	{_CODE}					        ;; restore code pointer
-		WRDIN BX            ; Read a character into BX.
-	    ; If there's a character, it's in BX now. Otherwise, BX is 0, and the zero flag is set.
-	    JZ QRX1             ; Jump if we didn't get a character
-	    PUSH SP, BX         ; We got a character, so push character (in BX) onto data stack (SP)
+		LOAD BX , 0         ; Start with an initial 0 value in BX.
+		TIN                 ; Check if there's a character to be read
+		JZ QRX1             ; Jump if we didn't get a character
+		WRDIN BX            ; Get the input character into BX
+		PUSH SP, BX         ; Push character (in BX) onto data stack (SP)
 	    LOAD BX, -1         ; Load true flag (any non-zero value, in this case -1) into BX
 QRX1:	PUSH SP, BX         ; BX contains our flag (true or false depending on if character was read in), so we push it onto the data stack (SP)
     FETCH AX , EX   ; Fetch next word pointed to by IP (EX), into WP (AX)
@@ -593,7 +592,7 @@ ZLESS:
     ORG	{_CODE}					        ;; restore code pointer
 		POP	AX, SP          ; Pop value (n) at TOS data stack (SP) into AX
 		OR AX, AX, AX       ; Or value with itself to check the sign
-		JNEG ZLESS1         ; Test if it's negative
+		JS ZLESS1         ; Test if it's negative
 		LOAD BX,0           ; It is not negative (i.e. AX is 0 or positive) Load 0 into BX
 		JMP ZLESS2          ; JMP to pushing onto the data stack
 ZLESS1: LOAD BX, -1         ; It is negative, load -1 into BX

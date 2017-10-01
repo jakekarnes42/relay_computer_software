@@ -59,6 +59,15 @@ public class SymbolResolver extends DirectiveExecutor {
     }
 
     @Override
+    public Void visitAluBinaryOperation(AsmHomeBrewParser.AluBinaryOperationContext ctx) {
+        //Takes one word
+        codePointer++;
+
+        //Don't continue descent
+        return null;
+    }
+
+    @Override
     public Void visitBinaryRegRegOperation(AsmHomeBrewParser.BinaryRegRegOperationContext ctx) {
         //Takes one word
         codePointer++;

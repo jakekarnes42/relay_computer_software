@@ -7,4 +7,5 @@ public interface IODevice {
 
     void sendWord(short outputShort);
 
+    boolean canSendWord();
 }

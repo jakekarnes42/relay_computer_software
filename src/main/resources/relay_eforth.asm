@@ -125,10 +125,11 @@ ORG	{CODEE}					;start code dictionary
 ;		Return input character and true, or a false if no input.
 
 		$CODE	3,"?RX",QRX
-		WRDIN BX            ; Read a character into BX.
-	    ; If there's a character, it's in BX now. Otherwise, BX is 0, and the zero flag is set.
-	    JZ QRX1             ; Jump if we didn't get a character
-	    PUSH SP, BX         ; We got a character, so push character (in BX) onto data stack (SP)
+		LOAD BX , 0         ; Start with an initial 0 value in BX.
+		TIN                 ; Check if there's a character to be read
+		JZ QRX1             ; Jump if we didn't get a character
+		WRDIN BX            ; Get the input character into BX
+		PUSH SP, BX         ; Push character (in BX) onto data stack (SP)
 	    LOAD BX, -1         ; Load true flag (any non-zero value, in this case -1) into BX
 QRX1:	PUSH SP, BX         ; BX contains our flag (true or false depending on if character was read in), so we push it onto the data stack (SP)
 		$NEXT               ; All done, let's continue.
@@ -377,7 +378,7 @@ BRAN1:	    FETCH EX,EX	    ; Yes, it's zero. Load IP (EX) with value pointed to 
 		$CODE	2,"0<",ZLESS
 		POP	AX, SP          ; Pop value (n) at TOS data stack (SP) into AX
 		OR AX, AX, AX       ; Or value with itself to check the sign
-		JNEG ZLESS1         ; Test if it's negative
+		JS ZLESS1         ; Test if it's negative
 		LOAD BX,0           ; It is not negative (i.e. AX is 0 or positive) Load 0 into BX
 		JMP ZLESS2          ; JMP to pushing onto the data stack
 ZLESS1: LOAD BX, -1         ; It is negative, load -1 into BX
