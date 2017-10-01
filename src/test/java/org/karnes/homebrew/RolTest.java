@@ -1,4 +1,4 @@
-package org.karnes.homebrew;
+package temp;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,9 +18,9 @@ public class RolTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -37,6 +37,7 @@ public class RolTest {
         assertFalse(computer.getSignFlag(), "The sign flag should not be set");
     }
 
+
     @Test
     @DisplayName("Alternating ROL")
     public void testAltRol() {
@@ -46,9 +47,9 @@ public class RolTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -74,9 +75,9 @@ public class RolTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -103,9 +104,9 @@ public class RolTest {
                 + "         HALT                    ; DONE \r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -129,9 +130,9 @@ public class RolTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -157,9 +158,9 @@ public class RolTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -185,9 +186,9 @@ public class RolTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);

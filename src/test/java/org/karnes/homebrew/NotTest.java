@@ -1,4 +1,4 @@
-package org.karnes.homebrew;
+package temp;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,9 +18,9 @@ public class NotTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -46,9 +46,9 @@ public class NotTest {
                 + "         HALT                    ; DONE \r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -72,9 +72,9 @@ public class NotTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -100,9 +100,9 @@ public class NotTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -128,9 +128,9 @@ public class NotTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -146,4 +146,5 @@ public class NotTest {
         assertTrue(computer.getZeroFlag(), "The zero flag should be set, since the input is all ones, and we're flipping the bits.");
         assertFalse(computer.getSignFlag(), "The sign flag should not be set, since the highest bit is zero");
     }
+
 }

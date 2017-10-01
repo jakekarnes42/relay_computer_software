@@ -1,5 +1,4 @@
-package org.karnes.homebrew;
-
+package temp;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,9 +26,9 @@ public class DirectiveTest {
                 + "         HALT                ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -49,12 +48,38 @@ public class DirectiveTest {
                 + " DW 1234; Write dec word\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         assertEquals((short) 0xABCD, RAM[0], "Declare Word should set the hex short into memory");
         assertEquals((short) 1234, RAM[1], "Declare Word should set the decimal short into memory");
+
+    }
+
+    @Test
+    @DisplayName("Test declaring a word, and labelling that word")
+    public void testDeclareWordWithLabel() {
+        String code = ";Let's play with directives!\r\n"
+                + " ORG {100}                               ; Move code pointer into mem\r\n"
+                + " SECRET: DW 0x2100, 0xF0F0, 0xFFFF       ; Write hex words for LOAD AX, F0F0 and then HALT\r\n"
+                + " ORG {0}                                 ; Move code pointer back to 0\r\n"
+                + " JMP SECRET           ; First instruction is to jump to SECRET\r\n"
+                + "\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        //Check RAM
+        assertEquals((short) 0x2107, RAM[0], "Instruction should be an unconditional JMP");
+        assertEquals((short) 100, RAM[1], "Target of unconditional JMP should be the SECRET label at 100");
+
+
+        assertEquals((short) 0x2100, RAM[100], "Declare Word should set the hex short into memory");
+        assertEquals((short) 0xF0F0, RAM[101], "Declare Word should set the hex short into memory");
+        assertEquals((short) 0xFFFF, RAM[102], "Declare Word should set the hex short into memory");
+
 
     }
 
@@ -68,9 +93,9 @@ public class DirectiveTest {
                 + " DW {x+10}; Write word, from JS value expression\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         assertEquals((short) 8 * 8, RAM[0], "Declare Word should evaluate the JS expressions and store result into memory");
         assertEquals((short) 9 * 9, RAM[1], "Declare Word should evaluate the JS expressions and store result into memory");
@@ -88,9 +113,9 @@ public class DirectiveTest {
                 + " DW 73; Write word, from JS value expression\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         assertEquals((short) 42, RAM[0], "Declare Word should evaluate the literal expression and store result into memory");
         assertEquals((short) 8 * 8, RAM[1], "Declare Word should evaluate the JS expressions and store result into memory");
@@ -113,9 +138,9 @@ public class DirectiveTest {
                 + " DW {$}; Write current code pointer value, from JS value expression\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         assertEquals((short) 0, RAM[0], "Declare Word should evaluate the JS expressions and store result into memory");
         assertEquals((short) 1, RAM[1], "Declare Word should evaluate the JS expressions and store result into memory");
@@ -135,9 +160,9 @@ public class DirectiveTest {
                 + " DW {$}      ; The value 27 is written into memory location 27\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         assertEquals((short) 0, RAM[0], "Declare Word should evaluate the JS expressions and store result into memory");
         assertEquals((short) 100, RAM[25], "Declare Word should evaluate the JS expressions and store result into memory");
@@ -178,9 +203,9 @@ public class DirectiveTest {
                 + "         HALT            ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -200,9 +225,9 @@ public class DirectiveTest {
                 + " LOAD AX, {MY_VAL}   ; Load the constant into AX\r\n"
                 + " HALT                ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -211,5 +236,107 @@ public class DirectiveTest {
         assertEquals((short) 42, computer.getAX(), "AX should have the constant's value (42)");
     }
 
+    @Test
+    @DisplayName("Declaring a multi-letter String, that looks like a register")
+    public void testDSRegString() {
+        String testStr = "AX";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
+
+    @Test
+    @DisplayName("Declaring a multi-letter String")
+    public void testDSMultiLetter() {
+        String testStr = "Test123";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
+
+    @Test
+    @DisplayName("Declaring a one letter String")
+    public void testDS1Letter() {
+        String testStr = "!";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
+
+    @Test
+    @DisplayName("Declaring a one letter String")
+    public void testDS1Letter2() {
+        String testStr = "@";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
+
+
+    @Test
+    @DisplayName("Declaring a one letter String")
+    public void testDS1Letter3() {
+        String testStr = "1";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
+
+    @Test
+    @DisplayName("Declaring a one letter String")
+    public void testDS1Letter4() {
+        String testStr = "A";
+
+        String code = ";Let's declare a string!\r\n"
+                + " DS \"" + testStr + "\"       ; Declare a string\r\n";
+
+        Assembler assembler = new Assembler(code);
+
+        short[] RAM = assembler.assemble();
+
+        for (int i = 0; i < testStr.length(); i++) {
+            assertEquals((short) testStr.charAt(i), RAM[i], "The memory at address " + i + " should have the string's character.");
+        }
+    }
 
 }

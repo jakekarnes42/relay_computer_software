@@ -39,9 +39,9 @@ public class MacroReferenceFinder extends AsmHomeBrewBaseVisitor<ParsedMacro> {
         return referencedMacro;
     }
 
-    private ParseTree parse(String text) {
-        //Get the parse tree from the text.
-        CharStream input = CharStreams.fromString(text);
+    private ParseTree parse(String line) {
+        //Get the parse tree from the single line.
+        CharStream input = CharStreams.fromString(line);
         DescriptiveErrorListener errorListener = new DescriptiveErrorListener();
         AsmHomeBrewLexer lexer = new AsmHomeBrewLexer(input);
         lexer.addErrorListener(errorListener);
@@ -52,7 +52,7 @@ public class MacroReferenceFinder extends AsmHomeBrewBaseVisitor<ParsedMacro> {
 
         //Error if invalid syntax found
         if (!errorListener.getErrors().isEmpty()) {
-            throw new IllegalStateException("Found errors while parsing text. Errors: " + errorListener.getErrors());
+            throw new IllegalStateException("Found errors while parsing line:\" " + line + " Errors: " + errorListener.getErrors());
         }
 
         return parseTree;

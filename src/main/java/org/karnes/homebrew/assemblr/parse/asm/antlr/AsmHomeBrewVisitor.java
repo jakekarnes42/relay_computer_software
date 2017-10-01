@@ -29,11 +29,11 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInstruction(AsmHomeBrewParser.InstructionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link AsmHomeBrewParser#lbl}.
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#labelDefinition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLbl(AsmHomeBrewParser.LblContext ctx);
+	T visitLabelDefinition(AsmHomeBrewParser.LabelDefinitionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#operation}.
 	 * @param ctx the parse tree
@@ -76,12 +76,6 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIoOpcode(AsmHomeBrewParser.IoOpcodeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AsmHomeBrewParser#oneArgOpcode}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOneArgOpcode(AsmHomeBrewParser.OneArgOpcodeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#jumpOperation}.
 	 * @param ctx the parse tree
@@ -197,6 +191,12 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStackRegister(AsmHomeBrewParser.StackRegisterContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#opcode}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOpcode(AsmHomeBrewParser.OpcodeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#assemblerDirective}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -268,4 +268,10 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitString(AsmHomeBrewParser.StringContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#parenString}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenString(AsmHomeBrewParser.ParenStringContext ctx);
 }

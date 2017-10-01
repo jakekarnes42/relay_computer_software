@@ -1,4 +1,4 @@
-package org.karnes.homebrew;
+package temp;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DecTest {
 
+
     @Test
     @DisplayName("Simple DEC")
     public void testSimpleDec() {
@@ -18,9 +19,9 @@ public class DecTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -46,9 +47,9 @@ public class DecTest {
                 + "         HALT                    ; DONE \r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -72,9 +73,9 @@ public class DecTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -100,9 +101,9 @@ public class DecTest {
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);
@@ -122,16 +123,16 @@ public class DecTest {
 
     @Test
     @DisplayName("Zero DEC")
-    public void testCarryInc() {
+    public void testZeroDec() {
         int value = 0;
         String code = "     LOAD AX, " + value + "  ; AX = value\r\n"
                 + "         DEC BX, AX              ; BX = AX - 1\r\n"
                 + "         HALT                    ; DONE\r\n"
                 + "\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
         computer.setMainMemory(RAM);

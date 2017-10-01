@@ -52,13 +52,13 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLbl(AsmHomeBrewParser.LblContext ctx) { }
+	@Override public void enterLabelDefinition(AsmHomeBrewParser.LabelDefinitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLbl(AsmHomeBrewParser.LblContext ctx) { }
+	@Override public void exitLabelDefinition(AsmHomeBrewParser.LabelDefinitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -143,18 +143,6 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIoOpcode(AsmHomeBrewParser.IoOpcodeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterOneArgOpcode(AsmHomeBrewParser.OneArgOpcodeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOneArgOpcode(AsmHomeBrewParser.OneArgOpcodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -388,6 +376,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterOpcode(AsmHomeBrewParser.OpcodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOpcode(AsmHomeBrewParser.OpcodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAssemblerDirective(AsmHomeBrewParser.AssemblerDirectiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -527,6 +527,18 @@ public class AsmHomeBrewBaseListener implements AsmHomeBrewListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitString(AsmHomeBrewParser.StringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParenString(AsmHomeBrewParser.ParenStringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParenString(AsmHomeBrewParser.ParenStringContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

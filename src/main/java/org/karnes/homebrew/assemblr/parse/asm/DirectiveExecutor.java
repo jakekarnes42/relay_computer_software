@@ -64,7 +64,10 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
         //Get the string
         String strValue = ctx.STRING().getText();
 
-        //Store each character in the string
+        //Substring to get rid of surrounding quotes
+        strValue = strValue.substring(1, strValue.length()-1);
+
+        //Store each character in the string into memory
         strValue.chars().forEach(c -> storeValueInMem((char) c));
 
         return null;

@@ -1,4 +1,4 @@
-package org.karnes.homebrew;
+package temp;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,8 @@ import java.nio.charset.StandardCharsets;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IOInstructionTest {
-    private final static String ENCODING = StandardCharsets.UTF_16.name();
+    private final static String ENCODING = StandardCharsets.UTF_8.name();
+
 
     @Test
     @DisplayName("Test basic functionality of I/O simulation ")
@@ -65,9 +66,9 @@ public class IOInstructionTest {
                 + "     WRDIN SP    ; SP should be zero since there's no more input\r\n"
                 + "     HALT                    ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -111,9 +112,9 @@ public class IOInstructionTest {
                 + "     WRDOUT EX       ; Write EX \r\n"
                 + "     HALT            ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -159,9 +160,9 @@ public class IOInstructionTest {
                 + "     WRDOUT EX       ; Write EX \r\n"
                 + "     HALT            ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -196,9 +197,9 @@ public class IOInstructionTest {
     public void testSimpleWordOutStack() throws UnsupportedEncodingException {
         String code = " {STR_LOC = 1000}    ; Constant of where we'll write the characters\r\n"
                 + "     ORG {STR_LOC}       ; Move code pointer to where we want save characters\r\n"
-                + "     DS \"!ekaJ\"        ; Write string to memory backwards for stack compatibility\r\n"
+                + "     DS \"Jake!\"        ; Write string to memory\r\n"
                 + "     ORG {0}             ; Move code pointer back to initial start location\r\n"
-                + "     LOAD SP, {STR_LOC+5}; Point stack pointer at memory location, at the last letter\r\n"
+                + "     LOAD SP, {STR_LOC}  ; Point stack pointer at memory location, at the first\r\n"
 
                 //Print the String
                 + "     POP AX, SP  ; AX = J\r\n"
@@ -213,9 +214,9 @@ public class IOInstructionTest {
                 + "     WRDOUT EX   ; Write EX \r\n"
                 + "     HALT        ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -296,9 +297,9 @@ public class IOInstructionTest {
                 + "     WRDOUT AX       ; Write AX \r\n"
                 + "     HALT            ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 
@@ -334,12 +335,12 @@ public class IOInstructionTest {
                 + "READ:    WRDIN AX        ; Get the next letter into AX \r\n"
                 + "         JZ READ_DONE    ; If there wasn't a letter, jump to READ_DONE\r\n"
                 + "         STORE CX, AX    ; Store the letter at memory address of CX \r\n"
-                + "         DEC CX, CX      ; Decrement CX to previous memory location\r\n"
+                + "         INC CX, CX      ; Increment CX to previous memory location\r\n"
                 + "         JMP READ        ; Jump back to read another character \r\n"
 
 
                 + "; All of the letters are on RP stack. And we want to calculate how many letters we read in\r\n"
-                + "READ_DONE:   SUB DX , RP, CX ; DX = RP - CX, so DX now has difference between final CX and RP TOS\r\n"
+                + "READ_DONE:   SUB DX , CX, RP ; DX = CX - RP, so DX now has difference between final CX and RP TOS\r\n"
 
 
                 + "; Now all of the letters have been pushed onto RP in reverse order, and DX is our counter \r\n"
@@ -368,9 +369,9 @@ public class IOInstructionTest {
                 + "     WRDOUT AX       ; Write AX \r\n"
                 + "     HALT            ; DONE\r\n";
 
-        Assembler assembler = new Assembler();
+        Assembler assembler = new Assembler(code);
 
-        short[] RAM = assembler.assemble(code);
+        short[] RAM = assembler.assemble();
 
         RelayComputer computer = new RelayComputer();
 

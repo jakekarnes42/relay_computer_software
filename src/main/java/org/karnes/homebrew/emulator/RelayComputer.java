@@ -83,12 +83,12 @@ public class RelayComputer {
     /**
      * Main memory
      */
-    private short[] mainMemory = new short[(1 << 16)];
+    protected short[] mainMemory = new short[(1 << 16)];
 
     /**
      * I/O Device
      */
-    private IODevice ioDevice = new JavaSimulatedIODevice();
+    protected IODevice ioDevice = new JavaSimulatedIODevice();
 
     /**
      * Emulator specific: Indicator that the computer should stop
@@ -109,81 +109,86 @@ public class RelayComputer {
         }
     }
 
-    private void executeCurrentInstruction() {
-        InstructionOpcode currentOpcode = InstructionOpcode.getOpcode(INST);
-        switch (currentOpcode) {
-            case NOP:
-                executeNOPInstruction();
-                break;
-            case HALT:
-            case MOV:
-            case CLR:
-                executeMOVInstruction();
-                break;
-            case INC:
-                executeINCInstruction();
-                break;
-            case DEC:
-                executeDECInstruction();
-                break;
-            case NOT:
-                executeNOTInstruction();
-                break;
-            case ROL:
-                executeROLInstruction();
-                break;
-            case ADD:
-                executeADDInstruction();
-                break;
-            case AND:
-                executeANDInstruction();
-                break;
-            case OR:
-                executeORInstruction();
-                break;
-            case XOR:
-                executeXORInstruction();
-                break;
-            case CMP:
-            case SUB:
-                executeCMPSUBInstruction();
-                break;
-            case LOAD:
-            case JMP:
-                executeLOADJMPInstruction();
-                break;
-            case JNEG:
-            case JZ:
-            case JC:
-            case JO:
-            case JNNEG:
-            case JNZ:
-            case JNC:
-            case JNO:
-                executeConditionalJumpInstruction();
-                break;
-            case STORE:
-                executeSTOREInstruction();
-                break;
-            case FETCH:
-                executeFETCHInstruction();
-                break;
-            case PUSH:
-                executePUSHInstruction();
-                break;
-            case POP:
-            case RET:
-                executePOPInstruction();
-                break;
-            case CALL:
-                executeCALLInstruction();
-                break;
-            case WRDIN:
-                executeWRDINInstruction();
-                break;
-            case WRDOUT:
-                executeWRDOUTInstruction();
-                break;
+    protected void executeCurrentInstruction() {
+        try {
+            InstructionOpcode currentOpcode = InstructionOpcode.getOpcode(INST);
+
+            switch (currentOpcode) {
+                case NOP:
+                    executeNOPInstruction();
+                    break;
+                case HALT:
+                case MOV:
+                case CLR:
+                    executeMOVInstruction();
+                    break;
+                case INC:
+                    executeINCInstruction();
+                    break;
+                case DEC:
+                    executeDECInstruction();
+                    break;
+                case NOT:
+                    executeNOTInstruction();
+                    break;
+                case ROL:
+                    executeROLInstruction();
+                    break;
+                case ADD:
+                    executeADDInstruction();
+                    break;
+                case AND:
+                    executeANDInstruction();
+                    break;
+                case OR:
+                    executeORInstruction();
+                    break;
+                case XOR:
+                    executeXORInstruction();
+                    break;
+                case CMP:
+                case SUB:
+                    executeCMPSUBInstruction();
+                    break;
+                case LOAD:
+                case JMP:
+                    executeLOADJMPInstruction();
+                    break;
+                case JNEG:
+                case JZ:
+                case JC:
+                case JO:
+                case JNNEG:
+                case JNZ:
+                case JNC:
+                case JNO:
+                    executeConditionalJumpInstruction();
+                    break;
+                case STORE:
+                    executeSTOREInstruction();
+                    break;
+                case FETCH:
+                    executeFETCHInstruction();
+                    break;
+                case PUSH:
+                    executePUSHInstruction();
+                    break;
+                case POP:
+                case RET:
+                    executePOPInstruction();
+                    break;
+                case CALL:
+                    executeCALLInstruction();
+                    break;
+                case WRDIN:
+                    executeWRDINInstruction();
+                    break;
+                case WRDOUT:
+                    executeWRDOUTInstruction();
+                    break;
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Found illegal instruction. Loaded from mem address: " + Integer.toUnsignedString(PC - 1), e);
         }
     }
 
@@ -192,7 +197,7 @@ public class RelayComputer {
      * NO-OP. Do nothing.
      */
     @SuppressWarnings("EmptyMethod")
-    private void executeNOPInstruction() {
+    protected void executeNOPInstruction() {
         return; //Intentionally empty
     }
 
@@ -200,7 +205,7 @@ public class RelayComputer {
     /*
      * MOVE. Move values between registers.
      */
-    private void executeMOVInstruction() {
+    protected void executeMOVInstruction() {
         switch (INST) {
             case (short) 0b1111_1111_11_000_000: //MOV AX AX | CLR AX
                 AX = 0;
@@ -404,7 +409,7 @@ public class RelayComputer {
     /*
      * INC. Increment a value by one.
      */
-    private void executeINCInstruction() {
+    protected void executeINCInstruction() {
         switch (INST) {
 
             case 0b0001_0000_00_000_000: //INC AX AX (AX + 1 -> AX)
@@ -607,7 +612,7 @@ public class RelayComputer {
     /*
      * Decrement. Decrement a value by one.
      */
-    private void executeDECInstruction() {
+    protected void executeDECInstruction() {
         switch (INST) {
             case 0b0001_0000_01_000_000: //DEC AX AX (AX - 1 -> AX)
                 AX = aluDecrement(AX);
@@ -809,7 +814,7 @@ public class RelayComputer {
     /*
      * Negation. Binary NOT of a value.
      */
-    private void executeNOTInstruction() {
+    protected void executeNOTInstruction() {
         switch (INST) {
             case 0b0001_0000_10_000_000: //NOT AX AX (~AX -> AX)
                 AX = aluNegate(AX);
@@ -1012,7 +1017,7 @@ public class RelayComputer {
     /*
      * ROL: rotation one bit left
      */
-    private void executeROLInstruction() {
+    protected void executeROLInstruction() {
         switch (INST) {
             case 0b0001_0000_11_000_000: //ROL AX AX (rol AX -> AX)
                 AX = aluLeftRotation(AX);
@@ -1216,7 +1221,7 @@ public class RelayComputer {
     /*
      * ADD: add two registers together, storing into the destination register
      */
-    private void executeADDInstruction() {
+    protected void executeADDInstruction() {
 
         switch (INST) {
             case 0b0001_1_00_000_000_000: //ADD AX AX AX (AX + AX -> AX)
@@ -2765,7 +2770,7 @@ public class RelayComputer {
     /*
      * AND: Bit-wise AND two registers together, storing into the destination register
      */
-    private void executeANDInstruction() {
+    protected void executeANDInstruction() {
         switch (INST) {
             case 0b0001_1_01_000_000_000: //AND AX AX AX (AX & AX -> AX)
                 AX = aluAnd(AX, AX);
@@ -4314,7 +4319,7 @@ public class RelayComputer {
     /*
      * OR: Bit-wise OR two registers together, storing into the destination register
      */
-    private void executeORInstruction() {
+    protected void executeORInstruction() {
         switch (INST) {
 
             case 0b0001_1_10_000_000_000: //OR AX AX AX (AX | AX -> AX)
@@ -5862,7 +5867,7 @@ public class RelayComputer {
     /*
      * XOR: Bit-wise XOR two registers together, storing into the destination register
      */
-    private void executeXORInstruction() {
+    protected void executeXORInstruction() {
         switch (INST) {
             case 0b0001_1_11_000_000_000: //XOR AX AX AX (AX ^ AX -> AX)
                 AX = aluXor(AX, AX);
@@ -7413,7 +7418,7 @@ public class RelayComputer {
      * Compare/Subtract: Subtract two registers, storing into the destination register.
 	 * This is useful for comparing values and updating condition registers
      */
-    private void executeCMPSUBInstruction() {
+    protected void executeCMPSUBInstruction() {
         switch (INST) {
             case 0b0001_010_000_000_000: //CMP/SUB AX AX AX (AX - AX -> AX)
                 AX = compareSubtract(AX, AX);
@@ -8961,7 +8966,7 @@ public class RelayComputer {
     /*
      * LOAD/JMP: Immediately fetch word from memory to register
 	*/
-    private void executeLOADJMPInstruction() {
+    protected void executeLOADJMPInstruction() {
         switch (INST) {
 
             case 0b0010_0001_0000_0_000: //LOAD AX
@@ -9003,7 +9008,7 @@ public class RelayComputer {
     /*
      * Conditional Jump: JMP to address depending on condition register
      */
-    private void executeConditionalJumpInstruction() {
+    protected void executeConditionalJumpInstruction() {
         BigInteger instruction = BigInteger.valueOf(INST);
 
         boolean negateBit = instruction.testBit(4);
@@ -9026,7 +9031,7 @@ public class RelayComputer {
     /*
      * Store. Store a word from a register to memory
      */
-    private void executeSTOREInstruction() {
+    protected void executeSTOREInstruction() {
         switch (INST) {
             case 0b0010_0010_00_000_000: //STORE AX AX (AX -> [AX])
                 store(AX, AX);
@@ -9230,7 +9235,7 @@ public class RelayComputer {
     /*
      * FETCH. Load word from memory to register
      */
-    private void executeFETCHInstruction() {
+    protected void executeFETCHInstruction() {
         switch (INST) {
 
             case 0b0010_0100_00_000_000: //FETCH AX AX ([AX] -> AX)
@@ -9435,7 +9440,7 @@ public class RelayComputer {
     /*
      * PUSH. Push register value onto a stack
      */
-    private void executePUSHInstruction() {
+    protected void executePUSHInstruction() {
         switch (INST) {
             case 0b0100_0000_0001_0_000: //PUSH SP AX
                 push(STACK_SP, AX);
@@ -9495,7 +9500,7 @@ public class RelayComputer {
     /*
      * POP. Pop the value from a stack into a register
      */
-    private void executePOPInstruction() {
+    protected void executePOPInstruction() {
         switch (INST) {
 
 
@@ -9558,7 +9563,7 @@ public class RelayComputer {
     /*
      * CALL: Push PC to stack and Jump Immediate
      */
-    private void executeCALLInstruction() {
+    protected void executeCALLInstruction() {
         switch (INST) {
             case 0b0100_0000_0100_0_000: //CALL SP
                 callImmediate(STACK_SP);
@@ -9577,7 +9582,7 @@ public class RelayComputer {
     /*
      * WRDIN. RECEIVE I/O WORD
      */
-    private void executeWRDINInstruction() {
+    protected void executeWRDINInstruction() {
         switch (INST) {
             case (short) 0b1000_0000_0000_0_000: //WRDIN AX
                 AX = wordIn();
@@ -9614,7 +9619,7 @@ public class RelayComputer {
     /*
      * WRDOUT. Send I/O word
      */
-    private void executeWRDOUTInstruction() {
+    protected void executeWRDOUTInstruction() {
         switch (INST) {
 
             case (short) 0b1000_1000_0000_0_000: //WRDOUT AX
@@ -9648,27 +9653,27 @@ public class RelayComputer {
     }
 
 
-    private void unknownInstruction(short instruction) {
+    protected void unknownInstruction(short instruction) {
         throw new IllegalArgumentException("Unknown instruction: "
                 + Integer.toBinaryString(0xFFFF & instruction));
     }
 
 
-    private short aluIncrement(short inputRegister) {
+    protected short aluIncrement(short inputRegister) {
         TMP1X = inputRegister;
         int output = ((char) TMP1X) + 1;
         updateConditionCodes(inputRegister, (short) 1, output);
         return (short) output;
     }
 
-    private short aluDecrement(short inputRegister) {
+    protected short aluDecrement(short inputRegister) {
         TMP1X = inputRegister;
         int output = ((char) TMP1X) - 1;
         updateConditionCodes(inputRegister, (short) -1, output);
         return (short) output;
     }
 
-    private short aluNegate(short inputRegister) {
+    protected short aluNegate(short inputRegister) {
         TMP1X = inputRegister;
         short output = (short) ~TMP1X;
         carry = false;
@@ -9678,7 +9683,7 @@ public class RelayComputer {
         return output;
     }
 
-    private short aluLeftRotation(short inputRegister) {
+    protected short aluLeftRotation(short inputRegister) {
         TMP1X = inputRegister;
         short output = (short) (((TMP1X & 0xffff) << 1) | ((TMP1X & 0xffff) >>> (16 - 1)));
         carry = false;
@@ -9688,7 +9693,7 @@ public class RelayComputer {
         return output;
     }
 
-    private short aluAdd(short inputRegister, short inputRegister2) {
+    protected short aluAdd(short inputRegister, short inputRegister2) {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
         int output = ((char) TMP1X) + ((char) TMP2X);
@@ -9696,7 +9701,7 @@ public class RelayComputer {
         return (short) output;
     }
 
-    private short aluAnd(short inputRegister, short inputRegister2) {
+    protected short aluAnd(short inputRegister, short inputRegister2) {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
         int output = TMP1X & TMP2X;
@@ -9707,7 +9712,7 @@ public class RelayComputer {
         return (short) output;
     }
 
-    private short aluOr(short inputRegister, short inputRegister2) {
+    protected short aluOr(short inputRegister, short inputRegister2) {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
         int output = TMP1X | TMP2X;
@@ -9718,7 +9723,7 @@ public class RelayComputer {
         return (short) output;
     }
 
-    private short aluXor(short inputRegister, short inputRegister2) {
+    protected short aluXor(short inputRegister, short inputRegister2) {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
         int output = TMP1X ^ TMP2X;
@@ -9729,7 +9734,7 @@ public class RelayComputer {
         return (short) output;
     }
 
-    private short compareSubtract(short inputRegister, short inputRegister2) {
+    protected short compareSubtract(short inputRegister, short inputRegister2) {
         TMP1X = inputRegister;
         TMP2X = inputRegister2;
 
@@ -9740,7 +9745,7 @@ public class RelayComputer {
         return (short) output;
     }
 
-    private void updateConditionCodes(short input1, short input2, int aluOutput) {
+    protected void updateConditionCodes(short input1, short input2, int aluOutput) {
         //Carry when 17th bit is set (too large for 16 bit num)
         BigInteger output = BigInteger.valueOf(aluOutput);
         carry = output.testBit(16); //Use 16 because of zero-indexing
@@ -9756,72 +9761,59 @@ public class RelayComputer {
         sign = output.testBit(15); //Use 15 because of zero-indexing
     }
 
-    private short load() {
+    protected short load() {
         TMP1X = mainMemory[(char) PC]; //Get the value in mem following instruction
         PC++; //Increment PC to next mem addr
         return TMP1X;
     }
 
-    private void store(short destinationRegister, short sourceRegister) {
+    protected void store(short destinationRegister, short sourceRegister) {
         mainMemory[(char) destinationRegister] = sourceRegister; //Put the value of source into mem pointed to by dest
     }
 
-    private short fetch(short sourceRegister) {
+    protected short fetch(short sourceRegister) {
         short memValue = mainMemory[(char) sourceRegister]; //Get the value in mem pointed to by source
         return memValue;
     }
 
-    private void push(StackReg stackRegister, short sourceRegister) {
+    protected void push(StackReg stackRegister, short sourceRegister) {
         if (stackRegister == STACK_SP) {
-            SP++; //Increment the stack pointer to the new TOS
+            SP--; //Decrement the stack pointer to the new TOS
             mainMemory[(char) SP] = sourceRegister; //Insert value at TOS
         } else {
-            RP++; //Increment the stack pointer to the new TOS
+            RP--; //Decrement the stack pointer to the new TOS
             mainMemory[(char) RP] = sourceRegister; //Insert value at TOS
-
         }
     }
 
-    private short pop(StackReg stackRegister) {
+    protected short pop(StackReg stackRegister) {
         if (stackRegister == STACK_SP) {
             short value = mainMemory[(char) SP];//Get value at TOS
-            SP--; //Decrement the stack pointer to the new TOS
+            SP++; //Increment the stack pointer to the new TOS
             return value;
         } else {
             short value = mainMemory[(char) RP];//Get value at TOS
-            RP--; //Decrement the stack pointer to the new TOS
+            RP++; //Decrement the stack pointer to the new TOS
             return value;
         }
     }
 
-    private void callImmediate(StackReg stackRegister) {
+    protected void callImmediate(StackReg stackRegister) {
         TMP1X = mainMemory[(char) PC]; //Get the value in mem following instruction
         PC++; //Increment PC to next mem addr
 
-        if (stackRegister == STACK_SP) {
-            SP++; //Increment the stack pointer to the new TOS
-            mainMemory[(char) SP] = PC; //Insert PC value at TOS
-        } else {
-            RP++; //Increment the stack pointer to the new TOS
-            mainMemory[(char) RP] = PC; //Insert PC value at TOS
-        }
+        push(stackRegister, PC);
 
         PC = TMP1X; //MOV the value into PC to jump
     }
 
-    private void call(StackReg stackRegister, short sourceRegister) {
-        if (stackRegister == STACK_SP) {
-            SP++; //Increment the stack pointer to the new TOS
-            mainMemory[(char) SP] = PC; //Insert PC value at TOS
-        } else {
-            RP++; //Increment the stack pointer to the new TOS
-            mainMemory[(char) RP] = PC; //Insert PC value at TOS
-        }
+    protected void call(StackReg stackRegister, short sourceRegister) {
+        push(stackRegister, PC);
 
         PC = sourceRegister; //MOV the value of the source into PC to jump
     }
 
-    private short wordIn() {
+    protected short wordIn() {
         if (ioDevice.hasWord()) {
             zero = false;
             return ioDevice.getWord();
@@ -9832,7 +9824,7 @@ public class RelayComputer {
         }
     }
 
-    private void wordOut(short sourceRegister) {
+    protected void wordOut(short sourceRegister) {
         ioDevice.sendWord(sourceRegister);
     }
 

@@ -12,18 +12,15 @@ import java.util.Map;
  */
 public class SymbolResolver extends DirectiveExecutor {
 
-    @Override
-    public Void visitInstruction(AsmHomeBrewParser.InstructionContext ctx) {
-        //Check if this instruction is labelled
-        if (ctx.lbl() != null) {
-            //Store the label and the current codePointer to our symbol table.
-            String labelText = ctx.lbl().label().getText();
-            symbolTable.put(labelText, codePointer);
-        }
 
-        //Continue descent
-        return super.visitInstruction(ctx);
+    @Override
+    public Void visitLabelDefinition(AsmHomeBrewParser.LabelDefinitionContext ctx) {
+        //Store the label and the current codePointer to our symbol table.
+        String labelText = ctx.label().getText();
+        symbolTable.put(labelText, codePointer);
+        return null;
     }
+
 
     @Override
     public Void visitNoArgOperation(AsmHomeBrewParser.NoArgOperationContext ctx) {
@@ -126,6 +123,13 @@ public class SymbolResolver extends DirectiveExecutor {
 
     @Override
     public Void visitAssemblerWordDeclaration(AsmHomeBrewParser.AssemblerWordDeclarationContext ctx) {
+        //Check if this declared word(s) is/are labelled
+        if (ctx.labelDefinition() != null) {
+            //Handle the label
+            visitLabelDefinition(ctx.labelDefinition());
+        }
+
+
         //Calculate how many words are declared.
         int numWords = ctx.value().size();
         codePointer += numWords;
@@ -136,8 +140,21 @@ public class SymbolResolver extends DirectiveExecutor {
 
     @Override
     public Void visitAssemblerStringDeclaration(AsmHomeBrewParser.AssemblerStringDeclarationContext ctx) {
+        //Check if this declared string is labelled
+        if (ctx.labelDefinition() != null) {
+            //Handle the label
+            visitLabelDefinition(ctx.labelDefinition());
+        }
+
+
         //Calculate how many letters are declared.
-        int numLetters = ctx.STRING().getText().length();
+        //Get the string
+        String strValue = ctx.STRING().getText();
+
+        //Substring to get rid of surrounding quotes
+        strValue = strValue.substring(1, strValue.length() - 1);
+
+        int numLetters = strValue.length();
         codePointer += numLetters;
 
         //Don't continue descent

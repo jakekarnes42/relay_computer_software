@@ -1,5 +1,6 @@
 package org.karnes.homebrew.emulator;
 
+
 public enum InstructionOpcode {
     NOP((short) 0b0000_0000_0000_0000, (byte) 16),
     HALT((short) 0b1111_1111_1111_1111, (byte) 16),

@@ -6,6 +6,13 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Identifies assembly macros using a regular-expression-based parser. Several attempts were made to use ANTLR for this,
+ * but they were unsuccessful.
+ * <br>
+ * When finding a macro definition, we need to find its parameters, and its body (the lines inside the macro itself). We
+ * also need to identify which lines do not belong to a macro, but are part of the rest of the source code.
+ */
 public class MacroDefinitionFinder {
 
     Pattern macroRegex = Pattern.compile("^\\s*MACRO\\s+" + //Macro keyword
@@ -39,12 +46,15 @@ public class MacroDefinitionFinder {
      */
     private ParsedMacro currentMacro = null;
 
+    private int lineNum = 0;
+
 
     public void findMacros(String text) {
 
         try (Scanner codeScanner = new Scanner(text)) {
             while (codeScanner.hasNextLine()) {
                 String line = codeScanner.nextLine();
+                lineNum++;
 
                 //Check if it's a new macro definition
                 Matcher macroRegexMatcher = macroRegex.matcher(line);
@@ -69,7 +79,7 @@ public class MacroDefinitionFinder {
 
         //Check that we didn't end inside a macro
         if (currentMacro != null) {
-            throw new IllegalStateException("Finished parsing while still in a macro. Likely missing ENDM statement.");
+            throw new IllegalStateException("Finished parsing while still in a macro. Likely missing ENDM statement. Line: " + lineNum);
         }
 
     }
@@ -77,7 +87,7 @@ public class MacroDefinitionFinder {
     private void parseNewMacroDefinition(Matcher macroRegexMatcher) {
         //Check that we aren't already in a macro
         if (currentMacro != null) {
-            throw new IllegalStateException("Nested macro defintions are not allowed");
+            throw new IllegalStateException("Nested macro defintions are not allowed. Line: " + lineNum);
         }
 
         String macroName = macroRegexMatcher.group(1);
@@ -103,7 +113,7 @@ public class MacroDefinitionFinder {
                     if (paramNames.contains(param)) {
                         // No duplicate names allowed in macro definition
                         throw new IllegalArgumentException("Macro " + macroName +
-                                " has two or more parameters with the same name: " + param);
+                                " has two or more parameters with the same name: " + param + ". Line: " + lineNum);
                     } else {
                         paramNames.add(param);
                     }
@@ -121,7 +131,7 @@ public class MacroDefinitionFinder {
     private void parseENDM() {
         //Check that we didn't end outside a macro
         if (currentMacro == null) {
-            throw new IllegalStateException("Found ENDM keyword outside of macro. Unable to complete a macro that hasn't started..");
+            throw new IllegalStateException("Found ENDM keyword outside of macro. Unable to complete a macro that hasn't started. Line: " + lineNum);
         }
 
         //Our macro is complete. Add it to the list and clear the tracking

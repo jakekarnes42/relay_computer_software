@@ -80,7 +80,12 @@ public class MacroExpander {
                 for (int i = 0; i < macroParamNames.size(); i++) {
                     String macroParam = macroParamNames.get(i);
                     String referenceParam = referenceParamNames.get(i);
-                    macroBodyLine = macroBodyLine.replaceAll(macroParam, referenceParam);
+
+                    //Replace all occurrences
+                    while (macroBodyLine.contains(macroParam)) {
+                        macroBodyLine = macroBodyLine.replace(macroParam, referenceParam);
+                    }
+
                 }
 
                 //Add this to our text
