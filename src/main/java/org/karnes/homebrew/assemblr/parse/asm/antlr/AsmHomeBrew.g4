@@ -34,6 +34,8 @@ operation
 noArgOperation
    : NOP
    | HALT
+   | TIN
+   | TOUT
    ;
 
 //One argument needed
@@ -69,8 +71,8 @@ jumpOpcode
    : JMP
    | JZ
    | JNZ
-   | JNEG
-   | JNNEG
+   | JS
+   | JNS
    | JC
    | JNC
    | JO
@@ -79,10 +81,22 @@ jumpOpcode
 
 // Two arguments needed
 binaryOperation
-   : binaryRegRegOperation
+   : aluBinaryOperation
+   | binaryRegRegOperation
    | binaryRegValOperation
    | stackOperation
    ;
+
+aluBinaryOperation
+    : aluBinaryOpcode register ',' register
+    ;
+
+aluBinaryOpcode
+    : INC
+    | DEC
+    | NOT
+    ;
+
 
 binaryRegRegOperation
     : binaryRegRegOpCode register ',' register
@@ -90,10 +104,6 @@ binaryRegRegOperation
 
 binaryRegRegOpCode
    : MOV
-   | INC
-   | DEC
-   | NOT
-   | ROL
    | STORE
    | FETCH
    ;
@@ -122,12 +132,6 @@ popOperation
 
 callOperation
    : CALL stackRegister ',' value
-   ;
-
-stackOpcode
-   : PUSH
-   | POP
-   | CALL
    ;
 
 
@@ -191,7 +195,6 @@ opcode
    | OR
    | XOR
    | NOT
-   | ROL
    | CMP
    | SUB
    | LOAD
@@ -206,14 +209,16 @@ opcode
    | JMP
    | JZ
    | JNZ
-   | JNEG
-   | JNNEG
+   | JS
+   | JNS
    | JC
    | JNC
    | JO
    | JNO
    | NOP
    | HALT
+   | TIN
+   | TOUT
    ;
 
 
@@ -434,7 +439,6 @@ AND: A N D ;
 OR: O R ;
 XOR: X O R ;
 NOT: N O T ;
-ROL: R O L;
 CMP: C M P;
 SUB: S U B;
 LOAD: L O A D;
@@ -449,14 +453,16 @@ WRDOUT: W R D O U T ;
 JMP: J M P ;
 JZ: J Z ;
 JNZ: J N Z ;
-JNEG: J N E G ;
-JNNEG: J N N E G;
+JS: J S ;
+JNS: J N S;
 JC: J C;
 JNC: J N C ;
 JO: J O ;
 JNO: J N O ;
 NOP: N O P ;
 HALT: H A L T ;
+TIN: T I N ;
+TOUT: T O U T ;
 
 // Assembler directive ops
 ORG: O R G ;

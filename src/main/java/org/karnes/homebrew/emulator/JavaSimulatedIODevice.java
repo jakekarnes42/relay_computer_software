@@ -49,4 +49,10 @@ public class JavaSimulatedIODevice implements IODevice {
         }
     }
 
+    @Override
+    public boolean canSendWord() {
+        //Always ready!
+        return true;
+    }
+
 }

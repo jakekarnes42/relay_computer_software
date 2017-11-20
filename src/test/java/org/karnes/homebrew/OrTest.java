@@ -1,4 +1,4 @@
-package temp;
+package org.karnes.homebrew;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -151,7 +151,7 @@ public class OrTest {
         short value1 = 100;
         String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
                 + "     OR AX, AX, AX           ; AX = AX | AX\r\n"
-                + "     JNEG ZLESS1         ; Test if it's negative\r\n"
+                + "     JS ZLESS1         ; Test if it's negative\r\n"
                 + "     LOAD BX,0           ; It is not negative (i.e. AX is 0 or positive) Load 0 into BX\r\n"
                 + "     JMP ZLESS2          ; JMP to pushing onto the data stack\r\n"
                 + "     ZLESS1: LOAD BX, -1         ; It is negative, load -1 into BX\r\n"
@@ -184,7 +184,7 @@ public class OrTest {
         short value1 = 0;
         String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
                 + "     OR AX, AX, AX           ; AX = AX | AX\r\n"
-                + "     JNEG ZLESS1         ; Test if it's negative\r\n"
+                + "     JS ZLESS1         ; Test if it's negative\r\n"
                 + "     LOAD BX,0           ; It is not negative (i.e. AX is 0 or positive) Load 0 into BX\r\n"
                 + "     JMP ZLESS2          ; JMP to pushing onto the data stack\r\n"
                 + "     ZLESS1: LOAD BX, -1         ; It is negative, load -1 into BX\r\n"
@@ -217,7 +217,7 @@ public class OrTest {
         short value1 = -1;
         String code = " LOAD AX, " + value1 + " ; AX = value1\r\n"
                 + "     OR AX, AX, AX           ; AX = AX | AX\r\n"
-                + "     JNEG ZLESS1         ; Test if it's negative\r\n"
+                + "     JS ZLESS1         ; Test if it's negative\r\n"
                 + "     LOAD BX,0           ; It is not negative (i.e. AX is 0 or positive) Load 0 into BX\r\n"
                 + "     JMP ZLESS2          ; JMP to pushing onto the data stack\r\n"
                 + "     ZLESS1: LOAD BX, -1         ; It is negative, load -1 into BX\r\n"

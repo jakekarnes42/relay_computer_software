@@ -23,10 +23,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         //Get instruction
         short instruction = getOpcodeMask(ctx);
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
-        //Increment our codePointer.
-        codePointer++;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
+
         //No need to continue descent
         return null;
     }
@@ -38,10 +37,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         //Get instruction
         short instruction = (short) (getOpcodeMask(ctx.ioOpcode()) | getLastRegisterMask(ctx.register()));
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
-        //Increment our codePointer.
-        codePointer++;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
+
         //No need to continue descent
         return null;
     }
@@ -51,10 +49,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         //Get instruction
         short instruction = (short) (getOpcodeMask("CLR") | getMidRegisterMask(ctx.register()) | getLastRegisterMask(ctx.register()));
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
-        //Increment our codePointer.
-        codePointer++;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
+
         //No need to continue descent
         return null;
     }
@@ -64,10 +61,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         //Get instruction
         short instruction = (short) (getOpcodeMask("RET") | getStackMask(ctx.stackRegister()) | getLastRegisterMask("PC"));
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
-        //Increment our codePointer.
-        codePointer++;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
+
         //No need to continue descent
         return null;
     }
@@ -77,31 +73,40 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         //Get instruction
         short instruction = getOpcodeMask(ctx.jumpOpcode());
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
 
         //Get memory target
         char memoryTarget = getValue(ctx.value());
 
-        //Store memory target into memory
-        memory[codePointer + 1] = (short) memoryTarget;
+        //Store target into memory and increment code pointer
+        storeValueInMem(memoryTarget);
 
-        //Increment our codePointer.
-        codePointer += 2;
         //No need to continue descent
         return null;
     }
 
     //Binary Operations
 
+
+    @Override
+    public Void visitAluBinaryOperation(AsmHomeBrewParser.AluBinaryOperationContext ctx) {
+        short instruction = (short) (getOpcodeMask(ctx.aluBinaryOpcode()) | getFirstRegisterMask(ctx.register(0)) | getMidRegisterMask(ctx.register(1)));
+
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
+
+        //No need to continue descent
+        return null;
+    }
+
     @Override
     public Void visitBinaryRegRegOperation(AsmHomeBrewParser.BinaryRegRegOperationContext ctx) {
         short instruction = (short) (getOpcodeMask(ctx.binaryRegRegOpCode()) | getMidRegisterMask(ctx.register(0)) | getLastRegisterMask(ctx.register(1)));
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
-        //Increment our codePointer.
-        codePointer++;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
+
         //No need to continue descent
         return null;
     }
@@ -111,17 +116,15 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         //Get instruction
         short instruction = (short) (getOpcodeMask(ctx.binaryRegValOpCode()) | getLastRegisterMask(ctx.register()));
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
 
         //Get memory target
         char memoryTarget = getValue(ctx.value());
 
-        //Store memory target into memory
-        memory[codePointer + 1] = (short) memoryTarget;
+        //Store target into memory and increment code pointer
+        storeValueInMem(memoryTarget);
 
-        //Increment our codePointer.
-        codePointer += 2;
         //No need to continue descent
         return null;
     }
@@ -130,10 +133,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
     public Void visitPushOperation(AsmHomeBrewParser.PushOperationContext ctx) {
         short instruction = (short) (getOpcodeMask("PUSH") | getStackMask(ctx.stackRegister()) | getLastRegisterMask(ctx.register()));
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
-        //Increment our codePointer.
-        codePointer++;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
+
         //No need to continue descent
         return null;
     }
@@ -142,10 +144,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
     public Void visitPopOperation(AsmHomeBrewParser.PopOperationContext ctx) {
         short instruction = (short) (getOpcodeMask("POP") | getStackMask(ctx.stackRegister()) | getLastRegisterMask(ctx.register()));
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
-        //Increment our codePointer.
-        codePointer++;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
+
         //No need to continue descent
         return null;
     }
@@ -156,17 +157,15 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         //Get instruction
         short instruction = (short) (getOpcodeMask("CALL") | getStackMask(ctx.stackRegister()));
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
 
         //Get memory target
         char memoryTarget = getValue(ctx.value());
 
-        //Store memory target into memory
-        memory[codePointer + 1] = (short) memoryTarget;
+        //Store target into memory and increment code pointer
+        storeValueInMem(memoryTarget);
 
-        //Increment our codePointer.
-        codePointer += 2;
         //No need to continue descent
         return null;
     }
@@ -178,10 +177,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
     public Void visitAluTernaryOperation(AsmHomeBrewParser.AluTernaryOperationContext ctx) {
         short instruction = (short) (getOpcodeMask(ctx.aluTernaryOpcode()) | getFirstRegisterMask(ctx.register(0)) | getMidRegisterMask(ctx.register(1)) | getLastRegisterMask(ctx.register(2)));
 
-        //Store instruction into memory
-        memory[codePointer] = instruction;
-        //Increment our codePointer.
-        codePointer++;
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
+
         //No need to continue descent
         return null;
     }

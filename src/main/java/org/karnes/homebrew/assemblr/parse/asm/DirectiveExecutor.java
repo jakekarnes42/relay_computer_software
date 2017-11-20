@@ -65,7 +65,7 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
         String strValue = ctx.STRING().getText();
 
         //Substring to get rid of surrounding quotes
-        strValue = strValue.substring(1, strValue.length()-1);
+        strValue = strValue.substring(1, strValue.length() - 1);
 
         //Store each character in the string into memory
         strValue.chars().forEach(c -> storeValueInMem((char) c));
@@ -123,12 +123,18 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
         }
     }
 
-    private void storeValueInMem(char value) {
+    protected void storeValueInMem(char value) {
+        //Cast to short and move on.
+        storeValueInMem((short) value);
+    }
+
+    protected void storeValueInMem(short value) {
         //Store it
-        memory[codePointer] = (short) value;
+        memory[codePointer] = value;
 
         //Increment our codePointer.
         codePointer++;
     }
+
 
 }
