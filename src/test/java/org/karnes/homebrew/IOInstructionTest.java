@@ -1,4 +1,4 @@
-package temp;
+package org.karnes.homebrew;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ public class IOInstructionTest {
 
 
     @Test
-    @DisplayName("Test basic functionality of I/O simulation ")
+    @DisplayName("Test basic functionality of I/O simulation")
     public void testIODevice() throws UnsupportedEncodingException {
         //Set up input
         String input = "test";
@@ -54,7 +54,7 @@ public class IOInstructionTest {
     }
 
     @Test
-    @DisplayName("Simple WRDIN: reading 5 characters until we run out ")
+    @DisplayName("Simple WRDIN: reading 5 characters until we run out")
     public void testSimpleWordIn() throws UnsupportedEncodingException {
 
         String code = " WRDIN AX    ; AX = H\r\n"
@@ -95,7 +95,7 @@ public class IOInstructionTest {
     }
 
     @Test
-    @DisplayName("Simple WRDOUT: writing 5 characters ")
+    @DisplayName("Simple WRDOUT: writing 5 characters")
     public void testSimpleWordOut() throws UnsupportedEncodingException {
 
         //I looked up the hex codes in the UTF-16 character set
