@@ -49,7 +49,7 @@ import mraa.*;
  * java -Djava.library.path=/usr/lib/arm-linux-gnueabihf/ -jar <output jar filename>
  */
 
-public class App {
+public class MCP23017Tester {
 
     static int[] gpioAPins = {9, 10, 11, 12, 14, 15, 16, 17};
     static int[] gpioBPins = {58, 61, 69, 71, 73, 87, 88, 7};
