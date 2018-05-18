@@ -1,4 +1,4 @@
-package mcp23017;
+package org.karnes.mcp23017;
 
 import mraa.*;
 
