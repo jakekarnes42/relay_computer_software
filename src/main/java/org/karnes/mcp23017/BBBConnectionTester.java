@@ -1,7 +1,33 @@
 package org.karnes.mcp23017;
 
-public class BBBConnectionTester {
 
+/**
+ * Tester class for the BBB Connection Test board Rev B
+ *
+ * <h2>BeagleBone Black Setup</h2>
+ * First need to install Java. Next install <a href="https://github.com/intel-iot-devkit/mraa">MRAA</a>
+ *
+ * <h2>Board Setup</h2>
+ * <p>
+ * Power
+ * BBB P9_1 (DGND) connected to 12V power supply's GND terminal
+ * BBB P9_2 (DGND) connected to GND plug on board
+ * BBB P9_3 (VDD 3.3V) connected to 3.3V plug on board
+ * <p>
+ * I2C lines
+ * BBB P9_19 (I2C2_SCL) connected to SCL plug on board
+ * BBB P9_20 (I2C2_SDA) connected to SDA plug on board
+ *
+ * <h2>Execution steps</h2>
+ * <ol>
+ *     <li>Compile: <pre>mvn clean install</pre></li>
+ *     <li>Copy to BBB: <pre>scp target/relay-0.1-SNAPSHOT.jar debian@192.168.7.2:~</pre></li>
+ *     <li>SSH into BBB: <pre>ssh debian@192.168.7.2</pre></li>
+ *     <li>Run on BBB: <pre>java -Djava.library.path=/usr/lib/arm-linux-gnueabihf/ -jar <output jar filename></pre></li>
+ * </ol>
+ *
+ */
+public class BBBConnectionTester {
 
     public static void main(String args[]) throws InterruptedException {
         I2CBus bus = I2CBus.getBus();
