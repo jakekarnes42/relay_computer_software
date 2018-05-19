@@ -28,7 +28,7 @@ public class I2CBus {
 
 
     private I2CBus() {
-        //If the native lib is already loaded, this shouldn't do anything
+        //Only need to load the native lib once
         try {
             System.loadLibrary("mraajava");
         } catch (UnsatisfiedLinkError e) {
@@ -39,6 +39,7 @@ public class I2CBus {
 
         //Initialize the native lib
         mraa.init();
+
         //Connect to bus i2c-2 on the Beagle Bone Black
         i2c = new I2c(1);
     }

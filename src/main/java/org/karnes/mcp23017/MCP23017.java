@@ -2,6 +2,8 @@ package org.karnes.mcp23017;
 
 /**
  * Represents a MCP23017 attached to the I2C bus.
+ *
+ * TODO: this needs a nicer interface. It works, but let's make this "better"
  */
 public class MCP23017 {
 
@@ -79,7 +81,7 @@ public class MCP23017 {
         if (value) {
             newStatus = (byte) (currentStatus | (1 << pin.getPosition()));
         } else {
-            newStatus = (byte) (currentStatus & (~(1 << pin.getPosition()));
+            newStatus = (byte) (currentStatus & ~(1 << pin.getPosition()));
         }
 
         //update the pin status
