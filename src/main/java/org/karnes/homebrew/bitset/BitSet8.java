@@ -4,43 +4,43 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class BitSet16 implements FixedBitSet<BitSet16> {
+public class BitSet8 implements FixedBitSet<BitSet8> {
 
-    private static final int SIZE = 16;
+    private static final int SIZE = 8;
     private final ArbitraryBitSet bitSet;
 
-    public BitSet16() {
+    public BitSet8() {
         bitSet = new ArbitraryBitSet(SIZE);
     }
 
 
-    public BitSet16(boolean[] value) {
+    public BitSet8(boolean[] value) {
         if (value.length != SIZE) {
-            throw new IllegalArgumentException("A BitSet16 must be exactly " + SIZE + "bits");
+            throw new IllegalArgumentException("A BitSet8 must be exactly " + SIZE + "bits");
         }
         bitSet = new ArbitraryBitSet(value);
 
     }
 
-    public BitSet16(String bitString) {
+    public BitSet8(String bitString) {
         bitSet = new ArbitraryBitSet(bitString);
 
         if (bitSet.size() != SIZE) {
-            throw new IllegalArgumentException("A BitSet16 must be exactly " + SIZE + "bits");
+            throw new IllegalArgumentException("A BitSet8 must be exactly " + SIZE + "bits");
         }
     }
 
-    public static BitSet16 fromShort(short value) {
+    public static BitSet8 fromByte(byte value) {
         final boolean[] bits = new boolean[SIZE];
         for (int i = 0; i < SIZE; i++) {
             bits[SIZE - 1 - i] = (1 << i & value) != 0;
         }
-        return new BitSet16(bits);
+        return new BitSet8(bits);
     }
 
-    public short toShort() {
+    public byte toByte() {
         if (bitSet.size() != SIZE) {
-            throw new IllegalArgumentException("A BitSet16 must be exactly " + SIZE + "bits");
+            throw new IllegalArgumentException("A BitSet8 must be exactly " + SIZE + "bits");
         }
 
         //Convert to an int in the interim
@@ -48,24 +48,16 @@ public class BitSet16 implements FixedBitSet<BitSet16> {
         for (int i = 0; i < SIZE; ++i) {
             n = (n << 1) + (bitSet.bits[i] ? 1 : 0);
         }
-        return (short) n;
+        return (byte) n;
     }
 
-    public static BitSet16 fromChar(char value) {
-        return fromShort((short) value);
-    }
-
-
-    public char toChar() {
-        return (char) toShort();
-    }
 
     public int size() {
         return SIZE;
     }
 
-    public BitSet16 negate() {
-        return new BitSet16(bitSet.negate().bits);
+    public BitSet8 negate() {
+        return new BitSet8(bitSet.negate().bits);
     }
 
     public String toString() {
@@ -76,8 +68,8 @@ public class BitSet16 implements FixedBitSet<BitSet16> {
         return bitSet.get(position);
     }
 
-    public BitSet16 set(int position, boolean newValue) throws ArrayIndexOutOfBoundsException {
-        return new BitSet16(bitSet.set(position, newValue).bits);
+    public BitSet8 set(int position, boolean newValue) throws ArrayIndexOutOfBoundsException {
+        return new BitSet8(bitSet.set(position, newValue).bits);
     }
 
     public Iterator<Boolean> iterator() {
@@ -87,8 +79,8 @@ public class BitSet16 implements FixedBitSet<BitSet16> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BitSet16)) return false;
-        BitSet16 booleans = (BitSet16) o;
+        if (!(o instanceof BitSet8)) return false;
+        BitSet8 booleans = (BitSet8) o;
         return Objects.equals(bitSet, booleans.bitSet);
     }
 
@@ -97,9 +89,8 @@ public class BitSet16 implements FixedBitSet<BitSet16> {
         return Objects.hash(bitSet);
     }
 
-
     @Override
-    public BitSet16 copy() {
-        return new BitSet16(Arrays.copyOf(bitSet.bits, SIZE));
+    public BitSet8 copy() {
+        return new BitSet8(Arrays.copyOf(bitSet.bits, SIZE));
     }
 }

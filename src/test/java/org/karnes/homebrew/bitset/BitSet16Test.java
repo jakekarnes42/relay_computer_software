@@ -97,4 +97,18 @@ public class BitSet16Test {
         assertEquals((char) 32767, shortMaxBitSet.toChar());
     }
 
+    @Test
+    public void testCopy() {
+        BitSet16 zeroBitSet = new BitSet16();
+        assertEquals((short) 0, zeroBitSet.copy().toShort());
+        assertEquals((char) 0, zeroBitSet.copy().toChar());
+        assertEquals(zeroBitSet, zeroBitSet.copy());
+
+        //If we change the copy, the original should not be changed
+        BitSet16 negated = zeroBitSet.copy().negate();
+        assertEquals((short) 0, zeroBitSet.toShort());
+        assertEquals((char) 0, zeroBitSet.toChar());
+    }
+
+
 }

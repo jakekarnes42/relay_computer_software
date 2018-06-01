@@ -1,0 +1,61 @@
+package org.karnes.homebrew.bitset;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+public class BitSet8Test {
+
+    @Test
+    public void testMyBytes() {
+        byte zero = (byte) 0;
+        BitSet8 zeroBitSet = BitSet8.fromByte(zero);
+        zeroBitSet.forEach(val -> assertFalse(val));
+        assertEquals(zero, zeroBitSet.toByte());
+
+        byte one = (byte) 1;
+        BitSet8 oneBitSet = BitSet8.fromByte(one);
+        assertTrue(oneBitSet.get(0));
+        for (int i = 1; i < oneBitSet.size(); i++) {
+            assertFalse(oneBitSet.get(i));
+        }
+        assertEquals(one, oneBitSet.toByte());
+
+        byte minusOne = (byte) -1;
+        BitSet8 minusOneBitSet = BitSet8.fromByte(minusOne);
+        minusOneBitSet.forEach(val -> assertTrue(val));
+        assertEquals(minusOne, minusOneBitSet.toByte());
+
+
+        byte min = Byte.MIN_VALUE;
+        BitSet8 minBitSet = BitSet8.fromByte(min);
+        assertTrue(minBitSet.get(7));
+        for (int i = 0; i < minBitSet.size() - 1; i++) {
+            assertFalse(minBitSet.get(i));
+        }
+        assertEquals(min, minBitSet.toByte());
+
+
+        byte max = Byte.MAX_VALUE;
+        BitSet8 maxBitSet = BitSet8.fromByte(max);
+        assertFalse(maxBitSet.get(7));
+        for (int i = 0; i < maxBitSet.size() - 1; i++) {
+            assertTrue(maxBitSet.get(i));
+        }
+        assertEquals(max, maxBitSet.toByte());
+    }
+
+    @Test
+    public void testCopy() {
+        BitSet8 zeroBitSet = new BitSet8();
+        assertEquals((byte) 0, zeroBitSet.copy().toByte());
+        assertEquals(zeroBitSet, zeroBitSet.copy());
+
+        //If we change the copy, the original should not be changed
+        BitSet8 negated = zeroBitSet.copy().negate();
+        assertEquals((short) 0, zeroBitSet.toByte());
+    }
+
+
+}
