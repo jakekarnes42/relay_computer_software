@@ -3,6 +3,7 @@ package org.karnes.mcp23017;
 import mraa.I2c;
 import mraa.Result;
 import mraa.mraa;
+import org.karnes.homebrew.bitset.BitSet8;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class I2CBus {
 
     private final I2c i2c;
-    private final Map<Short, MCP23017> mcp23017Cache = new ConcurrentHashMap<>();
+    private final Map<MCP23017Address, MCP23017> mcp23017Cache = new ConcurrentHashMap<>();
 
     public static I2CBus getBus() {
         return SingletonHolder.instance;
@@ -45,19 +46,15 @@ public class I2CBus {
     }
 
 
-    public synchronized MCP23017 getMCP23017(int hardwareAddress) {
-        return getMCP23017((short) hardwareAddress);
-    }
-
-    public synchronized MCP23017 getMCP23017(short hardwareAddress) {
+    public synchronized MCP23017 getMCP23017(MCP23017Address hardwareAddress) {
         if (!mcp23017Cache.containsKey(hardwareAddress)) {
             mcp23017Cache.put(hardwareAddress, new MCP23017(this, hardwareAddress));
         }
         return mcp23017Cache.get(hardwareAddress);
     }
 
-    private synchronized Result setAddress(short address) {
-        Result addressResult = i2c.address(address);
+    private synchronized Result setAddress(MCP23017Address address) {
+        Result addressResult = i2c.address(address.getHardwareValue());
         if (addressResult != Result.SUCCESS) {
             throw new I2CException("Error getting device at hardware address " + address + ": " + addressResult);
         }
@@ -65,21 +62,21 @@ public class I2CBus {
     }
 
 
-    public synchronized void writeByte(short address, short register, byte value) {
+    public synchronized void writeByte(MCP23017Address address, short register, BitSet8 value) {
         setAddress(address);
 
-        Result writeResult = i2c.writeReg(register, value);
+        Result writeResult = i2c.writeReg(register, value.toByte());
         if (writeResult != Result.SUCCESS) {
             throw new I2CException("Error writing byte at hardware address: " + address +
                     " register: " + register + " value: " + value + " error:" + writeResult);
         }
     }
 
-    public synchronized byte readByte(short address, short register) {
+    public synchronized BitSet8 readByte(MCP23017Address address, short register) {
         setAddress(address);
 
         short readResult = i2c.readReg(register);
-        return (byte) readResult;
+        return BitSet8.fromByte((byte) readResult);
     }
 
 

@@ -1,14 +1,16 @@
 package org.karnes.mcp23017;
 
+import org.karnes.homebrew.bitset.BitSet8;
+
 /**
  * Represents a MCP23017 attached to the I2C bus.
- *
+ * <p>
  * TODO: this needs a nicer interface. It works, but let's make this "better"
  */
 public class MCP23017 {
 
     private final I2CBus bus;
-    private final short address;
+    private final MCP23017Address address;
 
     private final short IO_DIRECTION_REGISTER = 0x0;
     private final short INPUT_POLARITY_REGISTER = 0x2;
@@ -23,12 +25,12 @@ public class MCP23017 {
     private final short OUTPUT_LATCH_REGISTER = 0x14;
 
     /**
-     * This shouldn't be used directly, instead use {@link I2CBus#getMCP23017(short)}
+     * This shouldn't be used directly, instead use {@link I2CBus#getMCP23017(MCP23017Address)}
      *
      * @param bus
      * @param address
      */
-    protected MCP23017(I2CBus bus, short address) {
+    protected MCP23017(I2CBus bus, MCP23017Address address) {
         this.bus = bus;
         this.address = address;
 
@@ -39,8 +41,9 @@ public class MCP23017 {
      * Sets all GPIO pins (A and B) to outputs
      */
     public synchronized void setAllPinsToOuput() {
-        bus.writeByte(address, (short) (IO_DIRECTION_REGISTER + MCP23017Port.A.getOffset()), (byte) 0x0);
-        bus.writeByte(address, (short) (IO_DIRECTION_REGISTER + MCP23017Port.B.getOffset()), (byte) 0x0);
+        BitSet8 zero = new BitSet8();
+        bus.writeByte(address, (short) (IO_DIRECTION_REGISTER + MCP23017Port.A.getOffset()), zero);
+        bus.writeByte(address, (short) (IO_DIRECTION_REGISTER + MCP23017Port.B.getOffset()), zero);
     }
 
 
@@ -51,16 +54,9 @@ public class MCP23017 {
 
     public synchronized boolean getPinStatus(MCP23017Pin pin) {
         //Get the whole port's current status
-        byte portStatus = bus.readByte(address, (short) (GPIO_PORT_REGISTER + pin.getPort().getOffset()));
+        BitSet8 portStatus = bus.readByte(address, (short) (GPIO_PORT_REGISTER + pin.getPort().getOffset()));
 
-        //Create a mask for just this pin
-        byte shiftMask = (byte) (((byte) 1) << pin.getPosition());
-
-        //Mask with AND to get just the bit we're interested in
-        byte result = (byte) (portStatus & shiftMask);
-
-        //Return whether or not it's zero
-        return result != 0;
+        return portStatus.get(pin.getPosition());
     }
 
     public synchronized void outputOn(MCP23017Pin pin) {
@@ -74,15 +70,10 @@ public class MCP23017 {
     private synchronized void updateRegisterForPin(short register, MCP23017Pin pin, boolean value) {
         short exactRegister = (short) (register + pin.getPort().getOffset());
         //get the current pin status for the port
-        byte currentStatus = bus.readByte(address, exactRegister);
+        BitSet8 currentStatus = bus.readByte(address, exactRegister);
 
         //Update the status accordingly
-        byte newStatus;
-        if (value) {
-            newStatus = (byte) (currentStatus | (1 << pin.getPosition()));
-        } else {
-            newStatus = (byte) (currentStatus & ~(1 << pin.getPosition()));
-        }
+        BitSet8 newStatus = currentStatus.set(pin.getPosition(), value);
 
         //update the pin status
         bus.writeByte(address, exactRegister, newStatus);
@@ -137,5 +128,27 @@ enum MCP23017Port {
 
     public int getOffset() {
         return offset;
+    }
+}
+
+enum MCP23017Address {
+    ADDR0(0x20),
+    ADDR1(0x21),
+    ADDR2(0x22),
+    ADDR3(0x23),
+    ADDR4(0x24),
+    ADDR5(0x25),
+    ADDR6(0x26),
+    ADDR7(0x27);
+
+    //Because the underlying library wants shorts
+    private final short hardwareValue;
+
+    MCP23017Address(int hardwareValue) {
+        this.hardwareValue = (short) hardwareValue;
+    }
+
+    public short getHardwareValue() {
+        return hardwareValue;
     }
 }

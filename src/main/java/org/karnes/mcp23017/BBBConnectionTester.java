@@ -20,18 +20,17 @@ package org.karnes.mcp23017;
  *
  * <h2>Execution steps</h2>
  * <ol>
- *     <li>Compile: <pre>mvn clean install</pre></li>
- *     <li>Copy to BBB: <pre>scp target/relay-0.1-SNAPSHOT.jar debian@192.168.7.2:~</pre></li>
- *     <li>SSH into BBB: <pre>ssh debian@192.168.7.2</pre></li>
- *     <li>Run on BBB: <pre>java -Djava.library.path=/usr/lib/arm-linux-gnueabihf/ -jar <output jar filename></pre></li>
+ * <li>Compile: <pre>mvn clean install</pre></li>
+ * <li>Copy to BBB: <pre>scp target/relay-0.1-SNAPSHOT.jar debian@192.168.7.2:~</pre></li>
+ * <li>SSH into BBB: <pre>ssh debian@192.168.7.2</pre></li>
+ * <li>Run on BBB: <pre>java -Djava.library.path=/usr/lib/arm-linux-gnueabihf/ -jar <output jar filename></pre></li>
  * </ol>
- *
  */
 public class BBBConnectionTester {
 
     public static void main(String args[]) throws InterruptedException {
         I2CBus bus = I2CBus.getBus();
-        MCP23017 mcp23017 = bus.getMCP23017(0x20);
+        MCP23017 mcp23017 = bus.getMCP23017(MCP23017Address.ADDR0);
 
         //First, set all the ports to output
         mcp23017.setAllPinsToOuput();
