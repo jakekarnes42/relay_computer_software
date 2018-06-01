@@ -18,9 +18,9 @@ public enum InstructionOpcode {
     DEC((short) 0b0001_011_000_000_000, (byte) 7),
 
     //Logic Unit
-    AND((short) 0b0001_100_000_000_000, (byte) 7),
-    OR((short) 0b0001_101_000_000_000, (byte) 7),
-    XOR((short) 0b0001_110_000_000_000, (byte) 7),
+    XOR((short) 0b0001_100_000_000_000, (byte) 7),
+    OR((short)  0b0001_101_000_000_000, (byte) 7),
+    AND((short) 0b0001_110_000_000_000, (byte) 7),
     NOT((short) 0b0001_111_000_000_000, (byte) 7),
 
     // Jumps

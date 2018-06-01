@@ -74,8 +74,7 @@ public class BitSet8Test {
 
     @Test
     public void testMaxNibbles() {
-        byte max = Byte.MAX_VALUE;
-        BitSet8 bitSet = BitSet8.fromByte(max);
+        BitSet8 bitSet = new BitSet8("1111 1111");
         BitSet4 lowerNibble = bitSet.getLowerNibble();
         lowerNibble.forEach(val -> assertTrue(val));
         BitSet4 upperNibble = bitSet.getUpperNibble();
