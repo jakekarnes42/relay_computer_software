@@ -117,4 +117,9 @@ public class ArbitraryBitSet implements FixedBitSet<ArbitraryBitSet> {
     public ArbitraryBitSet copy() {
         return new ArbitraryBitSet(Arrays.copyOf(bits, bits.length));
     }
+
+    @Override
+    public FixedBitSet getSlice(int from, int to) {
+        return new ArbitraryBitSet(Arrays.copyOfRange(bits, from, to));
+    }
 }

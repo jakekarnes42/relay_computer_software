@@ -201,6 +201,27 @@ public class ArbitraryBitSetTest {
         );
     }
 
+    private static Stream<Arguments> sliceArgs() {
+        return Stream.of(
+                Arguments.of(new ArbitraryBitSet("000"), 0, false, new ArbitraryBitSet("000")),
+                Arguments.of(new ArbitraryBitSet("000"), 1, false, new ArbitraryBitSet("000")),
+                Arguments.of(new ArbitraryBitSet("000"), 2, false, new ArbitraryBitSet("000")),
+
+                Arguments.of(new ArbitraryBitSet("000"), 0, true, new ArbitraryBitSet("001")),
+                Arguments.of(new ArbitraryBitSet("000"), 1, true, new ArbitraryBitSet("010")),
+                Arguments.of(new ArbitraryBitSet("000"), 2, true, new ArbitraryBitSet("100")),
+
+                Arguments.of(new ArbitraryBitSet("111"), 0, false, new ArbitraryBitSet("110")),
+                Arguments.of(new ArbitraryBitSet("111"), 1, false, new ArbitraryBitSet("101")),
+                Arguments.of(new ArbitraryBitSet("111"), 2, false, new ArbitraryBitSet("011")),
+
+                Arguments.of(new ArbitraryBitSet("111"), 0, true, new ArbitraryBitSet("111")),
+                Arguments.of(new ArbitraryBitSet("111"), 1, true, new ArbitraryBitSet("111")),
+                Arguments.of(new ArbitraryBitSet("111"), 2, true, new ArbitraryBitSet("111"))
+
+        );
+    }
+
 
     private static <A, B> Stream<Arguments> zip(Stream<A> arg1, Stream<B> arg2) {
         Iterator<A> iteratorA = arg1.iterator();

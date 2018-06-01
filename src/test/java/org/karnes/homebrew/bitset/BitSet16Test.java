@@ -106,8 +106,47 @@ public class BitSet16Test {
 
         //If we change the copy, the original should not be changed
         BitSet16 negated = zeroBitSet.copy().negate();
+        assertNotEquals(negated, zeroBitSet);
         assertEquals((short) 0, zeroBitSet.toShort());
         assertEquals((char) 0, zeroBitSet.toChar());
+    }
+
+    @Test
+    public void testZeroBytes() {
+        char zero = (char) 0;
+        BitSet16 bitSet = BitSet16.fromChar(zero);
+        BitSet8 lowerByte = bitSet.getLowerByte();
+        lowerByte.forEach(val -> assertFalse(val));
+        BitSet8 upperByte = bitSet.getUpperByte();
+        upperByte.forEach(val -> assertFalse(val));
+        BitSet8[] bytes = bitSet.toBytes();
+        assertEquals(upperByte, bytes[0]);
+        assertEquals(lowerByte, bytes[1]);
+    }
+
+    @Test
+    public void testMaxBytes() {
+        char max = Character.MAX_VALUE;
+        BitSet16 bitSet = BitSet16.fromChar(max);
+        BitSet8 lowerByte = bitSet.getLowerByte();
+        lowerByte.forEach(val -> assertTrue(val));
+        BitSet8 upperByte = bitSet.getUpperByte();
+        upperByte.forEach(val -> assertTrue(val));
+        BitSet8[] bytes = bitSet.toBytes();
+        assertEquals(upperByte, bytes[0]);
+        assertEquals(lowerByte, bytes[1]);
+    }
+
+    @Test
+    public void testMixBytes() {
+        BitSet16 bitSet = new BitSet16("1010 0110 0101 1001");
+        BitSet8 lowerByte = bitSet.getLowerByte();
+        assertEquals("[01011001]", lowerByte.toString());
+        BitSet8 upperByte = bitSet.getUpperByte();
+        assertEquals("[10100110]", upperByte.toString());
+        BitSet8[] bytes = bitSet.toBytes();
+        assertEquals(upperByte, bytes[0]);
+        assertEquals(lowerByte, bytes[1]);
     }
 
 

@@ -1,0 +1,24 @@
+package org.karnes.homebrew.emulator.component;
+
+import org.karnes.homebrew.bitset.FixedBitSet;
+
+/**
+ * Represents the changed value of a particular Bus
+ */
+public class BusValueChangedEvent {
+    private final String busName;
+    private final FixedBitSet updatedValue;
+
+    public BusValueChangedEvent(String busName, FixedBitSet updatedValue) {
+        this.busName = busName;
+        this.updatedValue = updatedValue;
+    }
+
+    public String getBusName() {
+        return busName;
+    }
+
+    public FixedBitSet getUpdatedValue() {
+        return updatedValue;
+    }
+}

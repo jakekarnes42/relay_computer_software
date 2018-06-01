@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class BitSet16 implements FixedBitSet<BitSet16> {
 
-    private static final int SIZE = 16;
+    static final int SIZE = 16;
     private final ArbitraryBitSet bitSet;
 
     public BitSet16() {
@@ -101,5 +101,28 @@ public class BitSet16 implements FixedBitSet<BitSet16> {
     @Override
     public BitSet16 copy() {
         return new BitSet16(Arrays.copyOf(bitSet.bits, SIZE));
+    }
+
+    /**
+     * Returns the two bytes ({@code BitSet8}) which make up this word (BitSet16).
+     * The upper 8 bits will be at index 0, the lower 8 bits will be at index 1 of the resulting array.
+     *
+     * @return the two bytes ({@code BitSet8}) which make up this word (BitSet16).
+     */
+    public BitSet8[] toBytes() {
+        return new BitSet8[]{getUpperByte(), getLowerByte()};
+    }
+
+    public BitSet8 getLowerByte() {
+        return new BitSet8(Arrays.copyOfRange(bitSet.bits, BitSet8.SIZE, SIZE));
+    }
+
+    public BitSet8 getUpperByte() {
+        return new BitSet8(Arrays.copyOfRange(bitSet.bits, 0, BitSet8.SIZE));
+    }
+
+    @Override
+    public FixedBitSet getSlice(int from, int to) {
+        return bitSet.getSlice(from, to);
     }
 }

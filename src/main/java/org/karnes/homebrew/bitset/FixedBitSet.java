@@ -55,4 +55,13 @@ public interface FixedBitSet<T extends FixedBitSet> extends Serializable, Iterab
      * @return a copy of the FixedBitSet
      */
     T copy();
+
+    /**
+     * Gets a copy of a slice of the current FixedBitSet
+     *
+     * @param from inclusive
+     * @param to   exclusive
+     * @return A copy of the slice of the FixedBitSet
+     */
+    FixedBitSet getSlice(int from, int to);
 }
