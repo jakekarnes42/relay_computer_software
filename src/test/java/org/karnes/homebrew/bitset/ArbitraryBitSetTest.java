@@ -116,6 +116,13 @@ public class ArbitraryBitSetTest {
         assertFalse(iterator.hasNext());
     }
 
+    @ParameterizedTest
+    @MethodSource("sliceArgs")
+    public void testSlice(ArbitraryBitSet input, int from, int to, ArbitraryBitSet expected) {
+        FixedBitSet slice = input.getSlice(from, to);
+        assertEquals(expected, slice);
+    }
+
 
     private static Stream<ArbitraryBitSet> allBitSetSize3() {
         return Stream.of(
@@ -203,22 +210,12 @@ public class ArbitraryBitSetTest {
 
     private static Stream<Arguments> sliceArgs() {
         return Stream.of(
-                Arguments.of(new ArbitraryBitSet("000"), 0, false, new ArbitraryBitSet("000")),
-                Arguments.of(new ArbitraryBitSet("000"), 1, false, new ArbitraryBitSet("000")),
-                Arguments.of(new ArbitraryBitSet("000"), 2, false, new ArbitraryBitSet("000")),
-
-                Arguments.of(new ArbitraryBitSet("000"), 0, true, new ArbitraryBitSet("001")),
-                Arguments.of(new ArbitraryBitSet("000"), 1, true, new ArbitraryBitSet("010")),
-                Arguments.of(new ArbitraryBitSet("000"), 2, true, new ArbitraryBitSet("100")),
-
-                Arguments.of(new ArbitraryBitSet("111"), 0, false, new ArbitraryBitSet("110")),
-                Arguments.of(new ArbitraryBitSet("111"), 1, false, new ArbitraryBitSet("101")),
-                Arguments.of(new ArbitraryBitSet("111"), 2, false, new ArbitraryBitSet("011")),
-
-                Arguments.of(new ArbitraryBitSet("111"), 0, true, new ArbitraryBitSet("111")),
-                Arguments.of(new ArbitraryBitSet("111"), 1, true, new ArbitraryBitSet("111")),
-                Arguments.of(new ArbitraryBitSet("111"), 2, true, new ArbitraryBitSet("111"))
-
+                Arguments.of(new ArbitraryBitSet("0000"), 0, 4, new ArbitraryBitSet("0000")),
+                Arguments.of(new ArbitraryBitSet("1100"), 0, 2, new ArbitraryBitSet("00")),
+                Arguments.of(new ArbitraryBitSet("1100"), 2, 4, new ArbitraryBitSet("11")),
+                Arguments.of(new ArbitraryBitSet("110011"), 2, 4, new ArbitraryBitSet("00")),
+                Arguments.of(new ArbitraryBitSet("1001"), 0, 1, new ArbitraryBitSet("1")),
+                Arguments.of(new ArbitraryBitSet("101"), 0, 2, new ArbitraryBitSet("01"))
         );
     }
 

@@ -57,7 +57,7 @@ public interface FixedBitSet<T extends FixedBitSet> extends Serializable, Iterab
     T copy();
 
     /**
-     * Gets a copy of a slice of the current FixedBitSet
+     * Gets a copy of a slice of the current FixedBitSet. This uses the same indexing scheme as {@link #get(int)}
      *
      * @param from inclusive
      * @param to   exclusive

@@ -120,6 +120,14 @@ public class ArbitraryBitSet implements FixedBitSet<ArbitraryBitSet> {
 
     @Override
     public FixedBitSet getSlice(int from, int to) {
-        return new ArbitraryBitSet(Arrays.copyOfRange(bits, from, to));
+        if (to <= from) {
+            throw new IllegalArgumentException(to + " <= " + from);
+        }
+
+        int toIndex = bits.length - from;
+        int fromIndex = bits.length - to;
+
+
+        return new ArbitraryBitSet(Arrays.copyOfRange(bits, fromIndex, toIndex));
     }
 }

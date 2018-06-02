@@ -21,9 +21,7 @@ public class BusTest {
         assertEquals(new ArbitraryBitSet(4), bus.getBusValue());
 
         //Add a connection to the bus
-        BusStateTracker tracker1 = new BusStateTracker(bus.getBusValue());
-        BusConnection connection1 = new BusConnection(bus, tracker1);
-        bus.addConnection(connection1);
+        BusConnection connection1 = new BusConnection(bus);
         assertEquals(1, bus.getConnections().size());
         assertEquals(new ArbitraryBitSet(4), bus.getBusValue());
 
@@ -41,9 +39,7 @@ public class BusTest {
         assertEquals(new ArbitraryBitSet(4), bus.getBusValue());
 
         //Add a connection to the bus
-        BusStateTracker tracker1 = new BusStateTracker(bus.getBusValue());
-        BusConnection connection1 = new BusConnection(bus, tracker1);
-        bus.addConnection(connection1);
+        BusConnection connection1 = new BusConnection(bus);
         assertEquals(new ArbitraryBitSet(4), connection1.getToBusOutput());
         assertEquals(1, bus.getConnections().size());
         assertEquals(new ArbitraryBitSet(4), bus.getBusValue());
@@ -54,9 +50,7 @@ public class BusTest {
         assertEquals(new ArbitraryBitSet("0001"), connection1.getBusValue());
 
         //Add a connection to the bus
-        BusStateTracker tracker2 = new BusStateTracker(bus.getBusValue());
-        BusConnection connection2 = new BusConnection(bus, tracker2);
-        bus.addConnection(connection2);
+        BusConnection connection2 = new BusConnection(bus);
         assertEquals(2, bus.getConnections().size());
         assertEquals(new ArbitraryBitSet("0001"), bus.getBusValue());
         assertEquals(new ArbitraryBitSet("0001"), connection1.getBusValue());
@@ -83,7 +77,6 @@ public class BusTest {
         //Add a connection to the bus, with tracking
         BusStateTracker tracker1 = new BusStateTracker(bus.getBusValue());
         BusConnection connection1 = new BusConnection(bus, tracker1);
-        bus.addConnection(connection1);
         assertEquals(1, tracker1.values.size());
 
         //Update the connection. Turn on one of the wires
@@ -94,7 +87,6 @@ public class BusTest {
         //Add a connection to the bus
         BusStateTracker tracker2 = new BusStateTracker(bus.getBusValue());
         BusConnection connection2 = new BusConnection(bus, tracker2);
-        bus.addConnection(connection2);
         assertEquals(2, tracker1.values.size());
         assertEquals(new ArbitraryBitSet("0001"), tracker1.values.get(1));
 
@@ -113,9 +105,6 @@ public class BusTest {
 class BusStateTracker implements BusConnectedDevice {
 
     List<FixedBitSet> values = new ArrayList<>();
-
-    public BusStateTracker() {
-    }
 
 
     public BusStateTracker(FixedBitSet initialValue) {

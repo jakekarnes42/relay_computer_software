@@ -13,10 +13,12 @@ public class Bus {
     private final String name;
     private final int width;
     private List<BusConnection> connections = new ArrayList<>();
+    private FixedBitSet lastValue;
 
     public Bus(String name, int width) {
         this.name = name;
         this.width = width;
+        lastValue = new ArbitraryBitSet(width);
     }
 
     public String getName() {
@@ -57,19 +59,27 @@ public class Bus {
             }
         }
 
+        lastValue = value;
         return value;
     }
 
     /**
      * External notification that one of the inputs to the Bus has changed, the Bus will in turn notify each of its BusConnections
      */
-    public void inputChanged() {
+    public void notifyInputChanged() {
+        //Copy the old value for comparison
+        FixedBitSet oldValue = lastValue.copy();
+
         //Reload the value
         FixedBitSet updatedValue = getBusValue();
 
-        //Notify all connections
-        for (BusConnection connection : connections) {
-            connection.handleBusValueChangedEvent(new BusValueChangedEvent(name, updatedValue));
+        //Compare to see if there was a change after updating
+        if (!oldValue.equals(updatedValue)) {
+            //There was a change
+            //Notify all connections
+            for (BusConnection connection : connections) {
+                connection.handleBusValueChangedEvent(new BusValueChangedEvent(name, updatedValue));
+            }
         }
 
     }

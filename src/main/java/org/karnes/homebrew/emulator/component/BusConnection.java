@@ -12,10 +12,17 @@ public class BusConnection {
     private final BusConnectedDevice device;
     private FixedBitSet value;
 
+    public BusConnection(Bus bus) {
+        this(bus, null);
+    }
+
     public BusConnection(Bus bus, BusConnectedDevice device) {
         this.bus = bus;
         value = new ArbitraryBitSet(bus.getWidth());
         this.device = device;
+
+        //Give a reference back to the bus
+        bus.addConnection(this);
     }
 
     public int getWidth() {
@@ -44,7 +51,7 @@ public class BusConnection {
         }
         this.value = value;
         //This connection's input to the Bus has changed, the bus should handle this.
-        bus.inputChanged();
+        bus.notifyInputChanged();
     }
 
     /**
@@ -63,6 +70,8 @@ public class BusConnection {
      * @param busValueChangedEvent
      */
     public void handleBusValueChangedEvent(BusValueChangedEvent busValueChangedEvent) {
-        device.handleBusValueChangedEvent(busValueChangedEvent);
+        if (device != null) {
+            device.handleBusValueChangedEvent(busValueChangedEvent);
+        }
     }
 }

@@ -21,4 +21,12 @@ public class BusValueChangedEvent {
     public FixedBitSet getUpdatedValue() {
         return updatedValue;
     }
+
+    @Override
+    public String toString() {
+        return "BusValueChangedEvent{" +
+                "busName='" + busName + '\'' +
+                ", updatedValue=" + updatedValue +
+                '}';
+    }
 }
