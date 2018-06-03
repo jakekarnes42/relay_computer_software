@@ -4,49 +4,46 @@ import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
 import org.karnes.homebrew.emulator.component.bus.Bus;
-import org.karnes.homebrew.emulator.component.bus.BusConnectedDevice;
-import org.karnes.homebrew.emulator.component.bus.BusConnection;
 import org.karnes.homebrew.emulator.component.bus.BusValueChangedEvent;
+import org.karnes.homebrew.emulator.component.bus.InterruptFromBusConnection;
+import org.karnes.homebrew.emulator.component.bus.WriteToBusConnection;
 
 
-public class LogicUnit implements BusConnectedDevice {
+public class LogicUnit {
 
-    private final BusConnection luOperationConnection;
-    private final BusConnection tmp1BusConnection;
-    private final BusConnection tmp2BusConnection;
-    private final BusConnection outputBusConnection;
-    private final BusConnection ccBusConnection;
-    private final String LU_BUS_NAME;
+    private final InterruptFromBusConnection luOperationConnection;
+    private final InterruptFromBusConnection tmp1BusConnection;
+    private final InterruptFromBusConnection tmp2BusConnection;
+    private final WriteToBusConnection outputBusConnection;
+    private final WriteToBusConnection ccBusConnection;
     private final int DATA_WIDTH;
-    private final String INPUT1_BUS_NAME;
-    private final String INPUT2_BUS_NAME;
 
     public LogicUnit(Bus luOperationBus, Bus tmp1Bus, Bus tmp2Bus, Bus outputBus, Bus ccBus) {
+        //Get the opcode bus
         if (luOperationBus.getWidth() != 3) {
             throw new IllegalArgumentException("Unexpected width for LU Operation Bus. Expected 3. Found: "
                     + luOperationBus.getWidth());
         }
-        LU_BUS_NAME = luOperationBus.getName();
-        luOperationConnection = new BusConnection(luOperationBus, this);
 
+        luOperationConnection = luOperationBus.getInterruptConnection(this::handleLUOperationChange);
+
+        //Get the various data-related buses
         if (tmp1Bus.getWidth() != tmp2Bus.getWidth() || tmp2Bus.getWidth() != outputBus.getWidth()) {
             throw new IllegalArgumentException("All buses for data must have the same width. TMP1 width "
                     + tmp1Bus.getWidth() + "TMP2 width " + tmp2Bus.getWidth() + " Output Width" + outputBus.getWidth());
         }
-
         DATA_WIDTH = tmp1Bus.getWidth();
-        INPUT1_BUS_NAME = tmp1Bus.getName();
-        tmp1BusConnection = new BusConnection(tmp1Bus, this);
-        INPUT2_BUS_NAME = tmp2Bus.getName();
-        tmp2BusConnection = new BusConnection(tmp2Bus, this);
-        outputBusConnection = new BusConnection(outputBus, this);
+        tmp1BusConnection = tmp1Bus.getInterruptConnection(this::handleInputChange);
+        tmp2BusConnection = tmp2Bus.getInterruptConnection(this::handleInputChange);
+        outputBusConnection = outputBus.getWriteConnection();
 
+
+        //Get the Condition Code bus
         if (ccBus.getWidth() != 4) {
             throw new IllegalArgumentException("Unexpected width for Condition Code Bus. Expected 4. Found: "
                     + ccBus.getWidth());
         }
-
-        ccBusConnection = new BusConnection(ccBus, this);
+        ccBusConnection = ccBus.getWriteConnection();
 
         //Now that we're connected, it's possible that there's already live data, even though this is a no-no
         if (isLUEnabled()) {
@@ -55,31 +52,28 @@ public class LogicUnit implements BusConnectedDevice {
         }
     }
 
-    @Override
-    public void handleBusValueChangedEvent(BusValueChangedEvent busValueChangedEvent) {
-        if (busValueChangedEvent.getBusName().equals(LU_BUS_NAME)) {
-            //The bus contain the LU opcode has changed. Our LU will need to update
+    private void handleLUOperationChange(BusValueChangedEvent e) {
+        //The bus contain the LU opcode has changed. Our LU will need to update
+        updateOutput();
+    }
+
+    public void handleInputChange(BusValueChangedEvent busValueChangedEvent) {
+        // If the LU is enabled, and one of the inputs changed, we need to update the output
+        if (isLUEnabled()) {
             updateOutput();
-        } else {
-            //The opcode hasn't changed.
-            //But if the LU is enabled, and one of the inputs changed, we need to update the output
-            if (isLUEnabled() &&
-                    (busValueChangedEvent.getBusName().equals(INPUT1_BUS_NAME) ||
-                            busValueChangedEvent.getBusName().equals(INPUT2_BUS_NAME))) {
-                updateOutput();
-            }
         }
+
     }
 
     private boolean isLUEnabled() {
         //The third bit of the opcode decides if the LU is enabled.
-        return luOperationConnection.getBusValue().get(2);
+        return luOperationConnection.readBusValue().get(2);
     }
 
     private LU_OPCODE getCurrentOpCode() {
         if (isLUEnabled()) {
             //The first two bits decide the opcode
-            FixedBitSet slice = luOperationConnection.getBusValue().getSlice(0, 2);
+            FixedBitSet slice = luOperationConnection.readBusValue().getSlice(0, 2);
             return LU_OPCODE.fromBitSet(slice);
         } else {
             //The LU isn't enabled
@@ -91,8 +85,8 @@ public class LogicUnit implements BusConnectedDevice {
         //Check if the LU should do anything at all.
         if (isLUEnabled()) {
             //LU is enabled. Get the input values
-            FixedBitSet tmp1Value = tmp1BusConnection.getBusValue();
-            FixedBitSet tmp2Value = tmp2BusConnection.getBusValue();
+            FixedBitSet tmp1Value = tmp1BusConnection.readBusValue();
+            FixedBitSet tmp2Value = tmp2BusConnection.readBusValue();
 
             // Execute the logic based on the current opcode
             FixedBitSet result;
@@ -118,14 +112,14 @@ public class LogicUnit implements BusConnectedDevice {
             ConditionCode conditionCodes = getConditionCodes(result);
 
             //Set the output
-            outputBusConnection.setToBusOutput(result);
-            ccBusConnection.setToBusOutput(conditionCodes.toBitSet());
+            outputBusConnection.writeValueToBus(result);
+            ccBusConnection.writeValueToBus(conditionCodes.toBitSet());
 
         } else {
             //The LU is disabled, clear the outputs
             ArbitraryBitSet zero = new ArbitraryBitSet(DATA_WIDTH);
-            outputBusConnection.setToBusOutput(zero);
-            ccBusConnection.setToBusOutput(zero);
+            outputBusConnection.writeValueToBus(zero);
+            ccBusConnection.writeValueToBus(zero);
         }
     }
 

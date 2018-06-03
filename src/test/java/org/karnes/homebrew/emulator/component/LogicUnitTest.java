@@ -8,32 +8,35 @@ import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
 import org.karnes.homebrew.emulator.component.bus.Bus;
-import org.karnes.homebrew.emulator.component.bus.BusConnection;
+import org.karnes.homebrew.emulator.component.bus.ReadFromBusConnection;
+import org.karnes.homebrew.emulator.component.bus.VirtualBus;
+import org.karnes.homebrew.emulator.component.bus.WriteToBusConnection;
 import org.karnes.homebrew.emulator.component.logicunit.LogicUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LogicUnitTest {
     private static int DATA_WIDTH = 4;
-    private BusConnection luOperationBusConnection;
-    private BusConnection tmp1BusConnection;
-    private BusConnection tmp2BusConnection;
-    private BusConnection outputBusConnection;
-    private BusConnection ccBusConnection;
+
     private LogicUnit logicUnit;
+    private WriteToBusConnection luOperationBusConnection;
+    private WriteToBusConnection tmp1BusConnection;
+    private WriteToBusConnection tmp2BusConnection;
+    private ReadFromBusConnection outputBusConnection;
+    private ReadFromBusConnection ccBusConnection;
 
     @BeforeEach
     void setUp() {
-        Bus luOperationBus = new Bus("LU_OPERATION_BUS", 3);
-        luOperationBusConnection = new BusConnection(luOperationBus);
-        Bus tmp1Bus = new Bus("TMP1-ALU_BUS", DATA_WIDTH);
-        tmp1BusConnection = new BusConnection(tmp1Bus);
-        Bus tmp2Bus = new Bus("TMP2-ALU_BUS", DATA_WIDTH);
-        tmp2BusConnection = new BusConnection(tmp2Bus);
-        Bus outputBus = new Bus("LU_OUTPUT_BUS", DATA_WIDTH);
-        outputBusConnection = new BusConnection(outputBus);
-        Bus ccBus = new Bus("CC_BUS", 4);
-        ccBusConnection = new BusConnection(ccBus);
+        Bus luOperationBus = new VirtualBus("LU_OPERATION_BUS", 3);
+        luOperationBusConnection = luOperationBus.getWriteConnection();
+        Bus tmp1Bus = new VirtualBus("TMP1-ALU_BUS", DATA_WIDTH);
+        tmp1BusConnection = tmp1Bus.getWriteConnection();
+        Bus tmp2Bus = new VirtualBus("TMP2-ALU_BUS", DATA_WIDTH);
+        tmp2BusConnection = tmp2Bus.getWriteConnection();
+        Bus outputBus = new VirtualBus("LU_OUTPUT_BUS", DATA_WIDTH);
+        outputBusConnection = outputBus.getReadConnection();
+        Bus ccBus = new VirtualBus("CC_BUS", 4);
+        ccBusConnection = ccBus.getReadConnection();
 
         logicUnit = new LogicUnit(luOperationBus, tmp1Bus, tmp2Bus, outputBus, ccBus);
     }
@@ -43,13 +46,13 @@ class LogicUnitTest {
     void simpleTest() {
         //The LU is already hooked up.
         //Enable the output. This should be LU Enable + XOR (0,0)
-        luOperationBusConnection.setToBusOutput(new ArbitraryBitSet("100"));
+        luOperationBusConnection.writeValueToBus(new ArbitraryBitSet("100"));
 
         //The output should be 0.
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.getBusValue());
+        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
 
         //The condition code for ZERO should be set
-        FixedBitSet ccBusValue = ccBusConnection.getBusValue();
+        FixedBitSet ccBusValue = ccBusConnection.readBusValue();
         assertEquals(new ArbitraryBitSet("0001"), ccBusValue);
 
         ConditionCode conditionCode = new ConditionCode(ccBusValue);
@@ -65,17 +68,17 @@ class LogicUnitTest {
     void testAllXORs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
         //The LU is already hooked up.
         //Set the inputs
-        tmp1BusConnection.setToBusOutput(a);
-        tmp2BusConnection.setToBusOutput(b);
+        tmp1BusConnection.writeValueToBus(a);
+        tmp2BusConnection.writeValueToBus(b);
 
         //Enable the output. This should be LU Enable + XOR (a,b)
-        luOperationBusConnection.setToBusOutput(new ArbitraryBitSet("100"));
+        luOperationBusConnection.writeValueToBus(new ArbitraryBitSet("100"));
 
         //The output should be result.
-        assertEquals(result, outputBusConnection.getBusValue());
+        assertEquals(result, outputBusConnection.readBusValue());
 
         //The condition code should be cc
-        assertEquals(cc, ccBusConnection.getBusValue());
+        assertEquals(cc, ccBusConnection.readBusValue());
 
     }
 
@@ -85,17 +88,17 @@ class LogicUnitTest {
     void testAllORs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
         //The LU is already hooked up.
         //Set the inputs
-        tmp1BusConnection.setToBusOutput(a);
-        tmp2BusConnection.setToBusOutput(b);
+        tmp1BusConnection.writeValueToBus(a);
+        tmp2BusConnection.writeValueToBus(b);
 
         //Enable the output. This should be LU Enable + OR (a,b)
-        luOperationBusConnection.setToBusOutput(new ArbitraryBitSet("101"));
+        luOperationBusConnection.writeValueToBus(new ArbitraryBitSet("101"));
 
         //The output should be result.
-        assertEquals(result, outputBusConnection.getBusValue());
+        assertEquals(result, outputBusConnection.readBusValue());
 
         //The condition code should be cc
-        assertEquals(cc, ccBusConnection.getBusValue());
+        assertEquals(cc, ccBusConnection.readBusValue());
 
     }
 
@@ -104,17 +107,17 @@ class LogicUnitTest {
     void testAllANDs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
         //The LU is already hooked up.
         //Set the inputs
-        tmp1BusConnection.setToBusOutput(a);
-        tmp2BusConnection.setToBusOutput(b);
+        tmp1BusConnection.writeValueToBus(a);
+        tmp2BusConnection.writeValueToBus(b);
 
         //Enable the output. This should be LU Enable + AND (a,b)
-        luOperationBusConnection.setToBusOutput(new ArbitraryBitSet("110"));
+        luOperationBusConnection.writeValueToBus(new ArbitraryBitSet("110"));
 
         //The output should be result.
-        assertEquals(result, outputBusConnection.getBusValue());
+        assertEquals(result, outputBusConnection.readBusValue());
 
         //The condition code should be cc
-        assertEquals(cc, ccBusConnection.getBusValue());
+        assertEquals(cc, ccBusConnection.readBusValue());
 
     }
 
@@ -123,16 +126,16 @@ class LogicUnitTest {
     void testAllNOTs(ArbitraryBitSet a, ArbitraryBitSet result, ArbitraryBitSet cc) {
         //The LU is already hooked up.
         //Set the inputs
-        tmp1BusConnection.setToBusOutput(a);
+        tmp1BusConnection.writeValueToBus(a);
 
         //Enable the output. This should be LU Enable + NOT (a)
-        luOperationBusConnection.setToBusOutput(new ArbitraryBitSet("111"));
+        luOperationBusConnection.writeValueToBus(new ArbitraryBitSet("111"));
 
         //The output should be result.
-        assertEquals(result, outputBusConnection.getBusValue());
+        assertEquals(result, outputBusConnection.readBusValue());
 
         //The condition code should be cc
-        assertEquals(cc, ccBusConnection.getBusValue());
+        assertEquals(cc, ccBusConnection.readBusValue());
 
     }
 

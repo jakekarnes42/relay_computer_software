@@ -3,10 +3,7 @@ package org.karnes.homebrew.emulator.component;
 import org.junit.jupiter.api.Test;
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
-import org.karnes.homebrew.emulator.component.bus.Bus;
-import org.karnes.homebrew.emulator.component.bus.BusConnectedDevice;
-import org.karnes.homebrew.emulator.component.bus.BusConnection;
-import org.karnes.homebrew.emulator.component.bus.BusValueChangedEvent;
+import org.karnes.homebrew.emulator.component.bus.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,109 +11,232 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BusTest {
+    private static final int DATA_WIDTH = 4;
+    private static final FixedBitSet ZERO_VAL = new ArbitraryBitSet(DATA_WIDTH);
+    private static final FixedBitSet ONES_VAL = new ArbitraryBitSet("1111");
+    private static final FixedBitSet MIX1_VAL = new ArbitraryBitSet("0101");
+    private static final FixedBitSet MIX2_VAL = new ArbitraryBitSet("1010");
 
     @Test
     public void testSimpleBus() {
-        //Create a new bus
-        Bus bus = new Bus("TestBus", 4);
+        //Create a new software-only bus
+        Bus bus = new VirtualBus("TestBus", 4);
         assertEquals("TestBus", bus.getName());
         assertEquals(4, bus.getWidth());
         assertEquals(0, bus.getConnections().size());
-        assertEquals(new ArbitraryBitSet(4), bus.getBusValue());
+        assertEquals(ZERO_VAL, bus.getValue());
 
-        //Add a connection to the bus
-        BusConnection connection1 = new BusConnection(bus);
+        //Add a connection which reads from the Bus.
+        ReadFromBusConnection readConnection = bus.getReadConnection();
         assertEquals(1, bus.getConnections().size());
-        assertEquals(new ArbitraryBitSet(4), bus.getBusValue());
+        assertEquals(ZERO_VAL, bus.getValue());
 
-        //Update the connection. Turn on one of the wires
-        connection1.setToBusOutput(new ArbitraryBitSet("0001"));
-        assertEquals(new ArbitraryBitSet("0001"), bus.getBusValue());
+        //Read from the bus through the read connection
+        assertEquals(ZERO_VAL, readConnection.readBusValue());
+
+        //Add a connection which writes to the bus
+        WriteToBusConnection writeConnection = bus.getWriteConnection();
+        assertEquals(2, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Write a new value to the Bus
+        writeConnection.writeValueToBus(ONES_VAL);
+
+        //Check that the update propagated
+        assertEquals(ONES_VAL, bus.getValue());
+        assertEquals(ONES_VAL, readConnection.readBusValue());
+
+
     }
 
     @Test
-    public void testConnectedBus() {
-        //Create a new bus
-        Bus bus = new Bus("TestBus", 4);
+    public void testUpdateWriteBus() {
+        //Create a new software-only bus
+        Bus bus = new VirtualBus("TestBus", 4);
+        assertEquals("TestBus", bus.getName());
         assertEquals(4, bus.getWidth());
         assertEquals(0, bus.getConnections().size());
-        assertEquals(new ArbitraryBitSet(4), bus.getBusValue());
+        assertEquals(ZERO_VAL, bus.getValue());
 
-        //Add a connection to the bus
-        BusConnection connection1 = new BusConnection(bus);
-        assertEquals(new ArbitraryBitSet(4), connection1.getToBusOutput());
+        //Add a connection which reads from the Bus.
+        ReadFromBusConnection readConnection = bus.getReadConnection();
         assertEquals(1, bus.getConnections().size());
-        assertEquals(new ArbitraryBitSet(4), bus.getBusValue());
+        assertEquals(ZERO_VAL, bus.getValue());
 
-        //Update the connection. Turn on one of the wires
-        connection1.setToBusOutput(new ArbitraryBitSet("0001"));
-        assertEquals(new ArbitraryBitSet("0001"), bus.getBusValue());
-        assertEquals(new ArbitraryBitSet("0001"), connection1.getBusValue());
+        //Read from the bus through the read connection
+        assertEquals(ZERO_VAL, readConnection.readBusValue());
 
-        //Add a connection to the bus
-        BusConnection connection2 = new BusConnection(bus);
+        //Add a connection which writes to the bus
+        WriteToBusConnection writeConnection = bus.getWriteConnection();
         assertEquals(2, bus.getConnections().size());
-        assertEquals(new ArbitraryBitSet("0001"), bus.getBusValue());
-        assertEquals(new ArbitraryBitSet("0001"), connection1.getBusValue());
-        assertEquals(new ArbitraryBitSet("0001"), connection2.getBusValue());
+        assertEquals(ZERO_VAL, bus.getValue());
 
-        //Update the second connection
-        connection2.setToBusOutput(new ArbitraryBitSet("1000"));
-        assertEquals(new ArbitraryBitSet("1001"), bus.getBusValue());
-        assertEquals(new ArbitraryBitSet("1001"), connection1.getBusValue());
-        assertEquals(new ArbitraryBitSet("1001"), connection2.getBusValue());
+        //Write a new value to the Bus
+        writeConnection.writeValueToBus(ONES_VAL);
 
-        //"turn off" the first connection
-        connection1.setToBusOutput(new ArbitraryBitSet("0000"));
-        assertEquals(new ArbitraryBitSet("1000"), bus.getBusValue());
-        assertEquals(new ArbitraryBitSet("1000"), connection1.getBusValue());
-        assertEquals(new ArbitraryBitSet("1000"), connection2.getBusValue());
+        //Check that the update propagated
+        assertEquals(ONES_VAL, bus.getValue());
+        assertEquals(ONES_VAL, readConnection.readBusValue());
+
+        //Change the write connection's value
+        writeConnection.writeValueToBus(MIX1_VAL);
+
+        //Check that the update propagated
+        assertEquals(MIX1_VAL, bus.getValue());
+        assertEquals(MIX1_VAL, readConnection.readBusValue());
+
+        //Change the write connection's value
+        writeConnection.writeValueToBus(MIX2_VAL);
+
+        //Check that the update propagated
+        assertEquals(MIX2_VAL, bus.getValue());
+        assertEquals(MIX2_VAL, readConnection.readBusValue());
+
+    }
+
+
+    @Test
+    public void testMultiReadBus() {
+        //Create a new software-only bus
+        Bus bus = new VirtualBus("TestBus", 4);
+        assertEquals("TestBus", bus.getName());
+        assertEquals(4, bus.getWidth());
+        assertEquals(0, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Add a connection which reads from the Bus.
+        ReadFromBusConnection readConnection = bus.getReadConnection();
+        assertEquals(1, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Read from the bus through the read connection
+        assertEquals(ZERO_VAL, readConnection.readBusValue());
+
+        //Add anothter connection which reads from the Bus.
+        ReadFromBusConnection readConnection2 = bus.getReadConnection();
+        assertEquals(2, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Read from the bus through the read connection
+        assertEquals(ZERO_VAL, readConnection2.readBusValue());
+
+        //Add a connection which writes to the bus
+        WriteToBusConnection writeConnection = bus.getWriteConnection();
+        assertEquals(3, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Write a new value to the Bus
+        writeConnection.writeValueToBus(ONES_VAL);
+
+        //Check that the update propagated
+        assertEquals(ONES_VAL, bus.getValue());
+        assertEquals(ONES_VAL, readConnection.readBusValue());
+        assertEquals(ONES_VAL, readConnection2.readBusValue());
+
     }
 
     @Test
-    public void testConnectedBusEvents() {
-        //Create a new bus
-        Bus bus = new Bus("TestBus", 4);
+    public void testMultiWriteBus() {
+        //Create a new software-only bus
+        Bus bus = new VirtualBus("TestBus", 4);
+        assertEquals("TestBus", bus.getName());
+        assertEquals(4, bus.getWidth());
+        assertEquals(0, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
 
-        //Add a connection to the bus, with tracking
-        BusStateTracker tracker1 = new BusStateTracker(bus.getBusValue());
-        BusConnection connection1 = new BusConnection(bus, tracker1);
-        assertEquals(1, tracker1.values.size());
+        //Add a connection which reads from the Bus.
+        ReadFromBusConnection readConnection = bus.getReadConnection();
+        assertEquals(1, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
 
-        //Update the connection. Turn on one of the wires
-        connection1.setToBusOutput(new ArbitraryBitSet("0001"));
-        assertEquals(2, tracker1.values.size());
-        assertEquals(new ArbitraryBitSet("0001"), tracker1.values.get(1));
+        //Read from the bus through the read connection
+        assertEquals(ZERO_VAL, readConnection.readBusValue());
 
-        //Add a connection to the bus
-        BusStateTracker tracker2 = new BusStateTracker(bus.getBusValue());
-        BusConnection connection2 = new BusConnection(bus, tracker2);
-        assertEquals(2, tracker1.values.size());
-        assertEquals(new ArbitraryBitSet("0001"), tracker1.values.get(1));
+        //Add a connection which writes to the bus
+        WriteToBusConnection writeConnection = bus.getWriteConnection();
+        assertEquals(2, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
 
-        //Update the second connection
-        connection2.setToBusOutput(new ArbitraryBitSet("1000"));
-        assertEquals(3, tracker1.values.size());
-        assertEquals(new ArbitraryBitSet("1001"), tracker1.values.get(2));
+        //Add another connection which writes to the bus
+        WriteToBusConnection writeConnection2 = bus.getWriteConnection();
+        assertEquals(3, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
 
-        //"turn off" the first connection
-        connection1.setToBusOutput(new ArbitraryBitSet("0000"));
-        assertEquals(4, tracker1.values.size());
-        assertEquals(new ArbitraryBitSet("1000"), tracker1.values.get(3));
+        //Write a new value to the Bus
+        writeConnection.writeValueToBus(MIX1_VAL);
+
+        //Check that the update propagated
+        assertEquals(MIX1_VAL, bus.getValue());
+        assertEquals(MIX1_VAL, readConnection.readBusValue());
+
+        //Write another new value to the Bus
+        writeConnection2.writeValueToBus(MIX2_VAL);
+
+        //Check that the update propagated
+        assertEquals(ONES_VAL, bus.getValue());
+        assertEquals(ONES_VAL, readConnection.readBusValue());
+
+        //Turn off the first connection
+        writeConnection.writeValueToBus(ZERO_VAL);
+
+        //Check that the update propagated
+        assertEquals(MIX2_VAL, bus.getValue());
+        assertEquals(MIX2_VAL, readConnection.readBusValue());
     }
-}
 
-class BusStateTracker implements BusConnectedDevice {
+    @Test
+    public void testInterruptFromBus() {
+        //Create a new software-only bus
+        Bus bus = new VirtualBus("TestBus", 4);
+        assertEquals("TestBus", bus.getName());
+        assertEquals(4, bus.getWidth());
+        assertEquals(0, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
 
-    List<FixedBitSet> values = new ArrayList<>();
+        //Add a connection which interrupts from the Bus.
+        final List<FixedBitSet> allValues = new ArrayList<>();
+        InterruptFromBusConnection interruptConnection = bus.getInterruptConnection(e -> {
+            allValues.add(e.getUpdatedValue());
+        });
+        assertEquals(1, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+        assertEquals(ZERO_VAL, interruptConnection.readBusValue());
 
 
-    public BusStateTracker(FixedBitSet initialValue) {
-        values.add(initialValue);
+        //Add a connection which writes to the bus
+        WriteToBusConnection writeConnection = bus.getWriteConnection();
+        assertEquals(2, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Write a new value to the Bus
+        writeConnection.writeValueToBus(ONES_VAL);
+
+        //Check that the update propagated
+        assertEquals(ONES_VAL, bus.getValue());
+        assertEquals(ONES_VAL, interruptConnection.readBusValue());
+        assertEquals(1, allValues.size());
+        assertEquals(ONES_VAL, allValues.get(0));
+
+        //Change the write connection's value
+        writeConnection.writeValueToBus(MIX1_VAL);
+
+        //Check that the update propagated
+        assertEquals(MIX1_VAL, bus.getValue());
+        assertEquals(MIX1_VAL, interruptConnection.readBusValue());
+        assertEquals(2, allValues.size());
+        assertEquals(MIX1_VAL, allValues.get(1));
+
+
+        //Change the write connection's value
+        writeConnection.writeValueToBus(MIX2_VAL);
+
+        //Check that the update propagated
+        assertEquals(MIX2_VAL, bus.getValue());
+        assertEquals(MIX2_VAL, interruptConnection.readBusValue());
+        assertEquals(3, allValues.size());
+        assertEquals(MIX2_VAL, allValues.get(2));
+
     }
 
-    @Override
-    public void handleBusValueChangedEvent(BusValueChangedEvent busValueChangedEvent) {
-        values.add(busValueChangedEvent.getUpdatedValue());
-    }
+
 }
