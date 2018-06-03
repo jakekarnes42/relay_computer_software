@@ -27,7 +27,7 @@ public class BusTest {
         assertEquals(ZERO_VAL, bus.getValue());
 
         //Add a connection which reads from the Bus.
-        ReadFromBusConnection readConnection = bus.getReadConnection();
+        ReadableBusConnection readConnection = bus.getReadConnection();
         assertEquals(1, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
@@ -35,7 +35,7 @@ public class BusTest {
         assertEquals(ZERO_VAL, readConnection.readBusValue());
 
         //Add a connection which writes to the bus
-        WriteToBusConnection writeConnection = bus.getWriteConnection();
+        WriteableBusConnection writeConnection = bus.getWriteConnection();
         assertEquals(2, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
@@ -45,7 +45,6 @@ public class BusTest {
         //Check that the update propagated
         assertEquals(ONES_VAL, bus.getValue());
         assertEquals(ONES_VAL, readConnection.readBusValue());
-
 
     }
 
@@ -59,7 +58,7 @@ public class BusTest {
         assertEquals(ZERO_VAL, bus.getValue());
 
         //Add a connection which reads from the Bus.
-        ReadFromBusConnection readConnection = bus.getReadConnection();
+        ReadableBusConnection readConnection = bus.getReadConnection();
         assertEquals(1, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
@@ -67,7 +66,7 @@ public class BusTest {
         assertEquals(ZERO_VAL, readConnection.readBusValue());
 
         //Add a connection which writes to the bus
-        WriteToBusConnection writeConnection = bus.getWriteConnection();
+        WriteableBusConnection writeConnection = bus.getWriteConnection();
         assertEquals(2, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
@@ -105,7 +104,7 @@ public class BusTest {
         assertEquals(ZERO_VAL, bus.getValue());
 
         //Add a connection which reads from the Bus.
-        ReadFromBusConnection readConnection = bus.getReadConnection();
+        ReadableBusConnection readConnection = bus.getReadConnection();
         assertEquals(1, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
@@ -113,7 +112,7 @@ public class BusTest {
         assertEquals(ZERO_VAL, readConnection.readBusValue());
 
         //Add anothter connection which reads from the Bus.
-        ReadFromBusConnection readConnection2 = bus.getReadConnection();
+        ReadableBusConnection readConnection2 = bus.getReadConnection();
         assertEquals(2, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
@@ -121,7 +120,7 @@ public class BusTest {
         assertEquals(ZERO_VAL, readConnection2.readBusValue());
 
         //Add a connection which writes to the bus
-        WriteToBusConnection writeConnection = bus.getWriteConnection();
+        WriteableBusConnection writeConnection = bus.getWriteConnection();
         assertEquals(3, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
@@ -145,7 +144,7 @@ public class BusTest {
         assertEquals(ZERO_VAL, bus.getValue());
 
         //Add a connection which reads from the Bus.
-        ReadFromBusConnection readConnection = bus.getReadConnection();
+        ReadableBusConnection readConnection = bus.getReadConnection();
         assertEquals(1, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
@@ -153,12 +152,12 @@ public class BusTest {
         assertEquals(ZERO_VAL, readConnection.readBusValue());
 
         //Add a connection which writes to the bus
-        WriteToBusConnection writeConnection = bus.getWriteConnection();
+        WriteableBusConnection writeConnection = bus.getWriteConnection();
         assertEquals(2, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
         //Add another connection which writes to the bus
-        WriteToBusConnection writeConnection2 = bus.getWriteConnection();
+        WriteableBusConnection writeConnection2 = bus.getWriteConnection();
         assertEquals(3, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
@@ -204,7 +203,7 @@ public class BusTest {
 
 
         //Add a connection which writes to the bus
-        WriteToBusConnection writeConnection = bus.getWriteConnection();
+        WriteableBusConnection writeConnection = bus.getWriteConnection();
         assertEquals(2, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
@@ -236,6 +235,143 @@ public class BusTest {
         assertEquals(3, allValues.size());
         assertEquals(MIX2_VAL, allValues.get(2));
 
+    }
+
+    @Test
+    public void testSimpleBidirectionalBus() {
+        //Create a new software-only bus
+        Bus bus = new VirtualBus("TestBus", 4);
+        assertEquals("TestBus", bus.getName());
+        assertEquals(4, bus.getWidth());
+        assertEquals(0, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Add a bidirectional connection which reads from the Bus.
+        BidirectionalBusConnection connection = bus.getBidirectionalConnection();
+        assertEquals(1, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Read from the bus through the connection
+        assertEquals(ZERO_VAL, connection.readBusValue());
+
+
+        //Write a new value to the Bus
+        connection.writeValueToBus(ONES_VAL);
+
+        //Check that the update propagated
+        assertEquals(ONES_VAL, bus.getValue());
+        assertEquals(ONES_VAL, connection.readBusValue());
+    }
+
+    @Test
+    public void testMultiBidirectionalBus() {
+        //Create a new software-only bus
+        Bus bus = new VirtualBus("TestBus", 4);
+        assertEquals("TestBus", bus.getName());
+        assertEquals(4, bus.getWidth());
+        assertEquals(0, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Add a bidirectional connection which reads from the Bus.
+        BidirectionalBusConnection connection = bus.getBidirectionalConnection();
+        assertEquals(1, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Read from the bus through the connection
+        assertEquals(ZERO_VAL, connection.readBusValue());
+
+        //Write a new value to the Bus
+        connection.writeValueToBus(MIX1_VAL);
+
+        //Check that the update propagated
+        assertEquals(MIX1_VAL, bus.getValue());
+        assertEquals(MIX1_VAL, connection.readBusValue());
+
+        //Add another bidirectional connection which reads from the Bus.
+        BidirectionalBusConnection connection2 = bus.getBidirectionalConnection();
+        assertEquals(2, bus.getConnections().size());
+        assertEquals(MIX1_VAL, bus.getValue());
+
+        //Read from the bus through the connection
+        assertEquals(MIX1_VAL, connection2.readBusValue());
+
+        //Write a new value to the Bus
+        connection2.writeValueToBus(MIX2_VAL);
+
+        //Check that the update propagated
+        assertEquals(ONES_VAL, bus.getValue());
+        assertEquals(ONES_VAL, connection.readBusValue());
+        assertEquals(ONES_VAL, connection2.readBusValue());
+
+        //Turn off the output from the first connection
+        connection.writeValueToBus(ZERO_VAL);
+
+        //Check that the update propagated
+        assertEquals(MIX2_VAL, bus.getValue());
+        assertEquals(MIX2_VAL, connection.readBusValue());
+        assertEquals(MIX2_VAL, connection2.readBusValue());
+
+    }
+
+
+    @Test
+    public void testInterruptableBidirectionalBus() {
+        //Create a new software-only bus
+        Bus bus = new VirtualBus("TestBus", 4);
+        assertEquals("TestBus", bus.getName());
+        assertEquals(4, bus.getWidth());
+        assertEquals(0, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        final List<FixedBitSet> allValues = new ArrayList<>();
+
+        //Add a bidirectional connection which reads from the Bus.
+        BidirectionalBusConnection connection = bus.getBidirectionalInterruptableBusConnection(e -> {
+            allValues.add(e.getUpdatedValue());
+        });
+        assertEquals(1, bus.getConnections().size());
+        assertEquals(ZERO_VAL, bus.getValue());
+
+        //Read from the bus through the connection
+        assertEquals(ZERO_VAL, connection.readBusValue());
+
+        //Write a new value to the Bus
+        connection.writeValueToBus(MIX1_VAL);
+
+        //Check that the update propagated
+        assertEquals(MIX1_VAL, bus.getValue());
+        assertEquals(MIX1_VAL, connection.readBusValue());
+        assertEquals(1, allValues.size());
+        assertEquals(MIX1_VAL, allValues.get(0));
+
+
+        //Add another bidirectional connection which reads from the Bus.
+        BidirectionalBusConnection connection2 = bus.getBidirectionalConnection();
+        assertEquals(2, bus.getConnections().size());
+        assertEquals(MIX1_VAL, bus.getValue());
+
+        //Read from the bus through the connection
+        assertEquals(MIX1_VAL, connection2.readBusValue());
+
+        //Write a new value to the Bus
+        connection2.writeValueToBus(MIX2_VAL);
+
+        //Check that the update propagated
+        assertEquals(ONES_VAL, bus.getValue());
+        assertEquals(ONES_VAL, connection.readBusValue());
+        assertEquals(ONES_VAL, connection2.readBusValue());
+        assertEquals(2, allValues.size());
+        assertEquals(ONES_VAL, allValues.get(1));
+
+        //Turn off the output from the first connection
+        connection.writeValueToBus(ZERO_VAL);
+
+        //Check that the update propagated
+        assertEquals(MIX2_VAL, bus.getValue());
+        assertEquals(MIX2_VAL, connection.readBusValue());
+        assertEquals(MIX2_VAL, connection2.readBusValue());
+        assertEquals(3, allValues.size());
+        assertEquals(MIX2_VAL, allValues.get(2));
     }
 
 

@@ -40,8 +40,8 @@ public class VirtualBus implements Bus {
         ArbitraryBitSet value = new ArbitraryBitSet(width);
         //Check each connection
         for (AbstractBusConnection connection : connections) {
-            if (connection instanceof WriteToBusConnection) {
-                FixedBitSet fromConnectionValue = ((WriteToBusConnection) connection).getValueFromConnection();
+            if (connection instanceof WriteableBusConnection) {
+                FixedBitSet fromConnectionValue = ((WriteableBusConnection) connection).getValueFromConnection();
                 //Check every bit of incoming values from connected devices
                 for (int i = 0; i < width; i++) {
                     //if it's true, set that value to true
@@ -71,15 +71,15 @@ public class VirtualBus implements Bus {
 
             //Notify all interruptable connections
             for (AbstractBusConnection connection : connections) {
-                if (connection instanceof InterruptFromBusConnection) {
-                    ((InterruptFromBusConnection) connection).handleBusValueChangedEvent(event);
+                if (connection instanceof InterruptableBusConnection) {
+                    ((InterruptableBusConnection) connection).handleBusValueChangedEvent(event);
                 }
             }
         }
     }
 
     @Override
-    public ReadFromBusConnection getReadConnection() {
+    public ReadableBusConnection getReadConnection() {
         ReadFromBusConnection connection = new ReadFromBusConnection(this);
         connections.add(connection);
         return connection;
@@ -93,8 +93,23 @@ public class VirtualBus implements Bus {
     }
 
     @Override
-    public WriteToBusConnection getWriteConnection() {
+    public WriteableBusConnection getWriteConnection() {
         WriteToBusConnection connection = new WriteToBusConnection(this);
+        connections.add(connection);
+        return connection;
+    }
+
+    @Override
+    public BidirectionalBusConnection getBidirectionalConnection() {
+        BidirectionalBusConnection connection = new BidirectionalBusConnection(this);
+        connections.add(connection);
+        return connection;
+    }
+
+
+    @Override
+    public BidirectionalInterruptableBusConnection getBidirectionalInterruptableBusConnection(BusValueChangeHandler handler) {
+        BidirectionalInterruptableBusConnection connection = new BidirectionalInterruptableBusConnection(this, handler);
         connections.add(connection);
         return connection;
     }

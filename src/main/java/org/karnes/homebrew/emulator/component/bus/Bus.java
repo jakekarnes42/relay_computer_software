@@ -20,9 +20,13 @@ public interface Bus {
 
     void update();
 
-    ReadFromBusConnection getReadConnection();
+    ReadableBusConnection getReadConnection();
 
     InterruptFromBusConnection getInterruptConnection(BusValueChangeHandler handler);
 
-    WriteToBusConnection getWriteConnection();
+    WriteableBusConnection getWriteConnection();
+
+    BidirectionalBusConnection getBidirectionalConnection();
+
+    BidirectionalInterruptableBusConnection getBidirectionalInterruptableBusConnection(BusValueChangeHandler handler);
 }

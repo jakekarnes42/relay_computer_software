@@ -3,10 +3,7 @@ package org.karnes.homebrew.emulator.component.logicunit;
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
-import org.karnes.homebrew.emulator.component.bus.Bus;
-import org.karnes.homebrew.emulator.component.bus.BusValueChangedEvent;
-import org.karnes.homebrew.emulator.component.bus.InterruptFromBusConnection;
-import org.karnes.homebrew.emulator.component.bus.WriteToBusConnection;
+import org.karnes.homebrew.emulator.component.bus.*;
 
 
 public class LogicUnit {
@@ -14,8 +11,8 @@ public class LogicUnit {
     private final InterruptFromBusConnection luOperationConnection;
     private final InterruptFromBusConnection tmp1BusConnection;
     private final InterruptFromBusConnection tmp2BusConnection;
-    private final WriteToBusConnection outputBusConnection;
-    private final WriteToBusConnection ccBusConnection;
+    private final WriteableBusConnection outputBusConnection;
+    private final WriteableBusConnection ccBusConnection;
     private final int DATA_WIDTH;
 
     public LogicUnit(Bus luOperationBus, Bus tmp1Bus, Bus tmp2Bus, Bus outputBus, Bus ccBus) {

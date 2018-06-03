@@ -7,10 +7,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
-import org.karnes.homebrew.emulator.component.bus.Bus;
-import org.karnes.homebrew.emulator.component.bus.ReadFromBusConnection;
-import org.karnes.homebrew.emulator.component.bus.VirtualBus;
-import org.karnes.homebrew.emulator.component.bus.WriteToBusConnection;
+import org.karnes.homebrew.emulator.component.bus.*;
 import org.karnes.homebrew.emulator.component.logicunit.LogicUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,11 +16,11 @@ class LogicUnitTest {
     private static int DATA_WIDTH = 4;
 
     private LogicUnit logicUnit;
-    private WriteToBusConnection luOperationBusConnection;
-    private WriteToBusConnection tmp1BusConnection;
-    private WriteToBusConnection tmp2BusConnection;
-    private ReadFromBusConnection outputBusConnection;
-    private ReadFromBusConnection ccBusConnection;
+    private WriteableBusConnection luOperationBusConnection;
+    private WriteableBusConnection tmp1BusConnection;
+    private WriteableBusConnection tmp2BusConnection;
+    private ReadableBusConnection outputBusConnection;
+    private ReadableBusConnection ccBusConnection;
 
     @BeforeEach
     void setUp() {
