@@ -1,4 +1,4 @@
-package org.karnes.homebrew.emulator.component;
+package org.karnes.homebrew.emulator.component.bus;
 
 /**
  * A device in the computer which is connected to one or more Buses.

@@ -3,6 +3,10 @@ package org.karnes.homebrew.emulator.component;
 import org.junit.jupiter.api.Test;
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
+import org.karnes.homebrew.emulator.component.bus.Bus;
+import org.karnes.homebrew.emulator.component.bus.BusConnectedDevice;
+import org.karnes.homebrew.emulator.component.bus.BusConnection;
+import org.karnes.homebrew.emulator.component.bus.BusValueChangedEvent;
 
 import java.util.ArrayList;
 import java.util.List;

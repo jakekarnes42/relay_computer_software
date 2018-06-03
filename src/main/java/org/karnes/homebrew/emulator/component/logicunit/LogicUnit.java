@@ -1,10 +1,13 @@
-package org.karnes.homebrew.emulator.component;
+package org.karnes.homebrew.emulator.component.logicunit;
 
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
+import org.karnes.homebrew.emulator.component.bus.Bus;
+import org.karnes.homebrew.emulator.component.bus.BusConnectedDevice;
+import org.karnes.homebrew.emulator.component.bus.BusConnection;
+import org.karnes.homebrew.emulator.component.bus.BusValueChangedEvent;
 
-import static org.karnes.homebrew.emulator.component.LU_OPCODE.*;
 
 public class LogicUnit implements BusConnectedDevice {
 
@@ -77,21 +80,10 @@ public class LogicUnit implements BusConnectedDevice {
         if (isLUEnabled()) {
             //The first two bits decide the opcode
             FixedBitSet slice = luOperationConnection.getBusValue().getSlice(0, 2);
-            if (slice.equals(new ArbitraryBitSet("00"))) {
-                return XOR;
-            } else if (slice.equals(new ArbitraryBitSet("01"))) {
-                return OR;
-            } else if (slice.equals(new ArbitraryBitSet("10"))) {
-                return AND;
-            } else if (slice.equals(new ArbitraryBitSet("11"))) {
-                return NOT;
-            } else {
-                //Should not reach
-                throw new IllegalStateException("Invalid Slice of Op Code: " + slice);
-            }
+            return LU_OPCODE.fromBitSet(slice);
         } else {
             //The LU isn't enabled
-            return NULL;
+            return null;
         }
     }
 
@@ -178,11 +170,6 @@ public class LogicUnit implements BusConnectedDevice {
         return result;
     }
 
-
-}
-
-enum LU_OPCODE {
-    XOR, OR, AND, NOT, NULL;
 
 }
 

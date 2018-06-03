@@ -7,6 +7,9 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
+import org.karnes.homebrew.emulator.component.bus.Bus;
+import org.karnes.homebrew.emulator.component.bus.BusConnection;
+import org.karnes.homebrew.emulator.component.logicunit.LogicUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
