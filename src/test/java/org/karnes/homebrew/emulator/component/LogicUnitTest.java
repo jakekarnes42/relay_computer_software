@@ -1,20 +1,17 @@
 package org.karnes.homebrew.emulator.component;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
 
-import java.util.stream.Stream;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class LogicUnitTest {
+    private static int DATA_WIDTH = 4;
     private BusConnection luOperationBusConnection;
     private BusConnection tmp1BusConnection;
     private BusConnection tmp2BusConnection;
@@ -26,11 +23,11 @@ class LogicUnitTest {
     void setUp() {
         Bus luOperationBus = new Bus("LU_OPERATION_BUS", 3);
         luOperationBusConnection = new BusConnection(luOperationBus);
-        Bus tmp1Bus = new Bus("TMP1-ALU_BUS", 3);
+        Bus tmp1Bus = new Bus("TMP1-ALU_BUS", DATA_WIDTH);
         tmp1BusConnection = new BusConnection(tmp1Bus);
-        Bus tmp2Bus = new Bus("TMP2-ALU_BUS", 3);
+        Bus tmp2Bus = new Bus("TMP2-ALU_BUS", DATA_WIDTH);
         tmp2BusConnection = new BusConnection(tmp2Bus);
-        Bus outputBus = new Bus("LU_OUTPUT_BUS", 3);
+        Bus outputBus = new Bus("LU_OUTPUT_BUS", DATA_WIDTH);
         outputBusConnection = new BusConnection(outputBus);
         Bus ccBus = new Bus("CC_BUS", 4);
         ccBusConnection = new BusConnection(ccBus);
@@ -38,9 +35,6 @@ class LogicUnitTest {
         logicUnit = new LogicUnit(luOperationBus, tmp1Bus, tmp2Bus, outputBus, ccBus);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
 
     @Test
     void simpleTest() {
@@ -49,7 +43,7 @@ class LogicUnitTest {
         luOperationBusConnection.setToBusOutput(new ArbitraryBitSet("100"));
 
         //The output should be 0.
-        assertEquals(new ArbitraryBitSet(3), outputBusConnection.getBusValue());
+        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.getBusValue());
 
         //The condition code for ZERO should be set
         FixedBitSet ccBusValue = ccBusConnection.getBusValue();
@@ -62,9 +56,10 @@ class LogicUnitTest {
         assertFalse(conditionCode.isCarry());
     }
 
+
     @ParameterizedTest
-    @MethodSource("someXORs")
-    void testSomeXORs(FixedBitSet a, FixedBitSet b, FixedBitSet result, FixedBitSet cc) {
+    @CsvFileSource(resources = "/4bit_XORs.csv", numLinesToSkip = 1)
+    void testAllXORs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
         //The LU is already hooked up.
         //Set the inputs
         tmp1BusConnection.setToBusOutput(a);
@@ -81,22 +76,10 @@ class LogicUnitTest {
 
     }
 
-    private static Stream<Arguments> someXORs() {
-        return Stream.of(
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("000"), new ArbitraryBitSet("101"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("001"), new ArbitraryBitSet("100"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("010"), new ArbitraryBitSet("111"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("011"), new ArbitraryBitSet("110"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("100"), new ArbitraryBitSet("001"), new ArbitraryBitSet("0000")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("101"), new ArbitraryBitSet("000"), new ArbitraryBitSet("0001")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("110"), new ArbitraryBitSet("011"), new ArbitraryBitSet("0000")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("111"), new ArbitraryBitSet("010"), new ArbitraryBitSet("0000"))
-        );
-    }
 
     @ParameterizedTest
-    @MethodSource("someORs")
-    void testSomeORs(FixedBitSet a, FixedBitSet b, FixedBitSet result, FixedBitSet cc) {
+    @CsvFileSource(resources = "/4bit_ORs.csv", numLinesToSkip = 1)
+    void testAllORs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
         //The LU is already hooked up.
         //Set the inputs
         tmp1BusConnection.setToBusOutput(a);
@@ -113,23 +96,9 @@ class LogicUnitTest {
 
     }
 
-    private static Stream<Arguments> someORs() {
-        return Stream.of(
-                Arguments.of(new ArbitraryBitSet("000"), new ArbitraryBitSet("000"), new ArbitraryBitSet("000"), new ArbitraryBitSet("0001")),
-                Arguments.of(new ArbitraryBitSet("001"), new ArbitraryBitSet("001"), new ArbitraryBitSet("001"), new ArbitraryBitSet("0000")),
-                Arguments.of(new ArbitraryBitSet("100"), new ArbitraryBitSet("000"), new ArbitraryBitSet("100"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("111"), new ArbitraryBitSet("011"), new ArbitraryBitSet("111"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("100"), new ArbitraryBitSet("101"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("110"), new ArbitraryBitSet("101"), new ArbitraryBitSet("111"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("110"), new ArbitraryBitSet("111"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("111"), new ArbitraryBitSet("111"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("111"), new ArbitraryBitSet("111"), new ArbitraryBitSet("111"), new ArbitraryBitSet("0010"))
-        );
-    }
-
     @ParameterizedTest
-    @MethodSource("someANDs")
-    void testSomeANDs(FixedBitSet a, FixedBitSet b, FixedBitSet result, FixedBitSet cc) {
+    @CsvFileSource(resources = "/4bit_ANDs.csv", numLinesToSkip = 1)
+    void testAllANDs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
         //The LU is already hooked up.
         //Set the inputs
         tmp1BusConnection.setToBusOutput(a);
@@ -146,24 +115,9 @@ class LogicUnitTest {
 
     }
 
-    private static Stream<Arguments> someANDs() {
-        return Stream.of(
-                Arguments.of(new ArbitraryBitSet("000"), new ArbitraryBitSet("000"), new ArbitraryBitSet("000"), new ArbitraryBitSet("0001")),
-                Arguments.of(new ArbitraryBitSet("001"), new ArbitraryBitSet("001"), new ArbitraryBitSet("001"), new ArbitraryBitSet("0000")),
-                Arguments.of(new ArbitraryBitSet("100"), new ArbitraryBitSet("000"), new ArbitraryBitSet("000"), new ArbitraryBitSet("0001")),
-                Arguments.of(new ArbitraryBitSet("111"), new ArbitraryBitSet("011"), new ArbitraryBitSet("011"), new ArbitraryBitSet("0000")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("100"), new ArbitraryBitSet("100"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("110"), new ArbitraryBitSet("101"), new ArbitraryBitSet("100"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("110"), new ArbitraryBitSet("100"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("111"), new ArbitraryBitSet("101"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("111"), new ArbitraryBitSet("111"), new ArbitraryBitSet("111"), new ArbitraryBitSet("0010"))
-        );
-    }
-
-
     @ParameterizedTest
-    @MethodSource("someNots")
-    void testSomeNOTs(FixedBitSet a, FixedBitSet result, FixedBitSet cc) {
+    @CsvFileSource(resources = "/4bit_NOTs.csv", numLinesToSkip = 1)
+    void testAllNOTs(ArbitraryBitSet a, ArbitraryBitSet result, ArbitraryBitSet cc) {
         //The LU is already hooked up.
         //Set the inputs
         tmp1BusConnection.setToBusOutput(a);
@@ -178,20 +132,5 @@ class LogicUnitTest {
         assertEquals(cc, ccBusConnection.getBusValue());
 
     }
-
-    private static Stream<Arguments> someNots() {
-        return Stream.of(
-                Arguments.of(new ArbitraryBitSet("000"), new ArbitraryBitSet("111"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("001"), new ArbitraryBitSet("110"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("010"), new ArbitraryBitSet("101"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("011"), new ArbitraryBitSet("100"), new ArbitraryBitSet("0010")),
-                Arguments.of(new ArbitraryBitSet("100"), new ArbitraryBitSet("011"), new ArbitraryBitSet("0000")),
-                Arguments.of(new ArbitraryBitSet("101"), new ArbitraryBitSet("010"), new ArbitraryBitSet("0000")),
-                Arguments.of(new ArbitraryBitSet("110"), new ArbitraryBitSet("001"), new ArbitraryBitSet("0000")),
-                Arguments.of(new ArbitraryBitSet("111"), new ArbitraryBitSet("000"), new ArbitraryBitSet("0001"))
-
-        );
-    }
-
 
 }
