@@ -1,6 +1,10 @@
-package org.karnes.mcp23017;
+package org.karnes.homebrew.hardware;
 
+import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.BitSet8;
+import org.karnes.homebrew.bitset.FixedBitSet;
+
+import java.util.Arrays;
 
 /**
  * Represents a MCP23017 attached to the I2C bus.
@@ -47,8 +51,12 @@ public class MCP23017 {
     }
 
 
-    public synchronized void setInput(MCP23017Pin pin) {
-        updateRegisterForPin(IO_DIRECTION_REGISTER, pin, true);
+    public synchronized void setInput(MCP23017Pin[] pins) {
+        updateRegisterForPins(IO_DIRECTION_REGISTER, pins, ArbitraryBitSet.allOnes(pins.length));
+    }
+
+    public synchronized void setOutput(MCP23017Pin[] pins) {
+        updateRegisterForPins(IO_DIRECTION_REGISTER, pins, new ArbitraryBitSet(pins.length));
 
     }
 
@@ -59,24 +67,59 @@ public class MCP23017 {
         return portStatus.get(pin.getPosition());
     }
 
-    public synchronized void outputOn(MCP23017Pin pin) {
-        updateRegisterForPin(GPIO_PORT_REGISTER, pin, true);
+
+    private synchronized void updateRegisterForPins(short register, MCP23017Pin[] pins, FixedBitSet values) {
+        //Check lengths
+        if (pins.length != values.size()) {
+            throw new IllegalStateException("Unequal pins and value. Pins: " + Arrays.toString(pins) + " Value: " + values);
+        }
+
+        //Update pins for Port A
+        updateRegisterForPortWithPins(register, MCP23017Port.A, pins, values);
+
+        //Update the pins for Port B
+        updateRegisterForPortWithPins(register, MCP23017Port.B, pins, values);
+
     }
 
-    public synchronized void outputOff(MCP23017Pin pin) {
-        updateRegisterForPin(GPIO_PORT_REGISTER, pin, false);
+    private synchronized void updateRegisterForPortWithPins(short register, MCP23017Port port, MCP23017Pin[] pins, FixedBitSet values) {
+        //Get the new value for port
+        BitSet8 currentValue = bus.readByte(address, (short) (register + port.getOffset()));
+        BitSet8 newValue = currentValue.copy();
+        for (int i = 0; i < pins.length; i++) {
+            MCP23017Pin pin = pins[i];
+            if (pin.getPort() == port) {
+                newValue = newValue.set(pin.getPosition(), values.get(i));
+            }
+        }
+
+        //Write the updates if needed
+        if (!currentValue.equals(newValue)) {
+            bus.writeByte(address, (short) (register + port.getOffset()), newValue);
+        }
     }
 
-    private synchronized void updateRegisterForPin(short register, MCP23017Pin pin, boolean value) {
-        short exactRegister = (short) (register + pin.getPort().getOffset());
-        //get the current pin status for the port
-        BitSet8 currentStatus = bus.readByte(address, exactRegister);
+    public synchronized void write(MCP23017Pin[] outputPins, FixedBitSet<ArbitraryBitSet> value) {
+        updateRegisterForPins(GPIO_PORT_REGISTER, outputPins, value);
+    }
 
-        //Update the status accordingly
-        BitSet8 newStatus = currentStatus.set(pin.getPosition(), value);
+    public synchronized FixedBitSet read(MCP23017Pin[] inputPins) {
+        //Get A and B current values
+        BitSet8 aValue = bus.readByte(address, (short) (GPIO_PORT_REGISTER + MCP23017Port.A.getOffset()));
+        BitSet8 bValue = bus.readByte(address, (short) (GPIO_PORT_REGISTER + MCP23017Port.B.getOffset()));
 
-        //update the pin status
-        bus.writeByte(address, exactRegister, newStatus);
+        ArbitraryBitSet result = new ArbitraryBitSet(inputPins.length);
+        for (int i = 0; i < inputPins.length; i++) {
+            MCP23017Pin pin = inputPins[i];
+            boolean value;
+            if (pin.getPort() == MCP23017Port.A) {
+                value = aValue.get(pin.getPosition());
+            } else {
+                value = bValue.get(pin.getPosition());
+            }
+            result = result.set(i, value);
+        }
+        return result;
     }
 }
 

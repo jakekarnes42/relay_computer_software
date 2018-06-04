@@ -130,4 +130,12 @@ public class ArbitraryBitSet implements FixedBitSet<ArbitraryBitSet> {
 
         return new ArbitraryBitSet(Arrays.copyOfRange(bits, fromIndex, toIndex));
     }
+
+    public static ArbitraryBitSet allOnes(int width) {
+        ArbitraryBitSet bitSet = new ArbitraryBitSet(width);
+        for (int i = 0; i < width; i++) {
+            bitSet = bitSet.set(i, true);
+        }
+        return bitSet;
+    }
 }

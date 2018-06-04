@@ -1,4 +1,4 @@
-package org.karnes.mcp23017;
+package org.karnes.homebrew.hardware;
 
 public class I2CException extends RuntimeException {
     /**

@@ -1,15 +1,16 @@
-package org.karnes.homebrew.emulator.component.bus;
+package org.karnes.homebrew.emulator.component.bus.connection;
 
+import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
+
+/**
+ * A {@link BidirectionalBusConnection} to a {@link BidirectionalBus} which also supports interrupts
+ */
 public class BidirectionalInterruptableBusConnection extends BidirectionalBusConnection implements InterruptableBusConnection {
 
     private BusValueChangeHandler handler;
 
-    BidirectionalInterruptableBusConnection(Bus bus) {
+    public BidirectionalInterruptableBusConnection(BidirectionalBus bus, BusValueChangeHandler handler) {
         super(bus);
-    }
-
-    public BidirectionalInterruptableBusConnection(Bus bus, BusValueChangeHandler handler) {
-        this(bus);
         this.handler = handler;
 
     }

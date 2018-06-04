@@ -51,14 +51,23 @@ public class ArbitraryBitSetTest {
 
         ArbitraryBitSet bString2 = new ArbitraryBitSet("[111]");
         assertEquals(bString2, bString);
-        assertEquals(bString2, bString);
+        assertEquals(bString, bString2);
 
         ArbitraryBitSet bBoolean = new ArbitraryBitSet(new boolean[]{true, true, true});
         assertEquals(bBoolean, bString);
-        assertEquals(bBoolean, bString);
+        assertEquals(bString, bBoolean);
         assertEquals(bBoolean, bString2);
-        assertEquals(bBoolean, bString2);
+        assertEquals(bString2, bBoolean);
+
+        ArbitraryBitSet bOnes = ArbitraryBitSet.allOnes(3);
+        assertEquals(bOnes, bString);
+        assertEquals(bString, bOnes);
+        assertEquals(bOnes, bString2);
+        assertEquals(bString2, bOnes);
+        assertEquals(bOnes, bBoolean);
+        assertEquals(bBoolean, bOnes);
     }
+
 
     @ParameterizedTest
     @MethodSource("allBitSetSize3")

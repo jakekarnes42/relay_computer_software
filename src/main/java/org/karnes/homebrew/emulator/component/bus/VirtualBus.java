@@ -2,17 +2,27 @@ package org.karnes.homebrew.emulator.component.bus;
 
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
+import org.karnes.homebrew.emulator.component.bus.connection.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VirtualBus implements Bus {
+/**
+ * A pure software Bus which can be used in emulation to connect different components
+ */
+public class VirtualBus implements BidirectionalBus {
     private final String name;
     private final int width;
-    private final List<AbstractBusConnection> connections;
+    private final List<BusConnection> connections;
     private FixedBitSet lastValue;
 
 
+    /**
+     * A new virtual, software only Bus. Its value is initialized to all 0's.
+     *
+     * @param name  The name of the Bus
+     * @param width The width of the Bus
+     */
     public VirtualBus(String name, int width) {
         this.name = name;
         this.width = width;
@@ -31,7 +41,7 @@ public class VirtualBus implements Bus {
     }
 
     @Override
-    public List<AbstractBusConnection> getConnections() {
+    public List<BusConnection> getConnections() {
         return connections;
     }
 
@@ -39,7 +49,7 @@ public class VirtualBus implements Bus {
     public FixedBitSet getValue() {
         ArbitraryBitSet value = new ArbitraryBitSet(width);
         //Check each connection
-        for (AbstractBusConnection connection : connections) {
+        for (BusConnection connection : connections) {
             if (connection instanceof WriteableBusConnection) {
                 FixedBitSet fromConnectionValue = ((WriteableBusConnection) connection).getValueFromConnection();
                 //Check every bit of incoming values from connected devices
@@ -56,8 +66,9 @@ public class VirtualBus implements Bus {
         return value;
     }
 
+
     @Override
-    public void update() {
+    public void refreshValues() {
         //Copy the old value for comparison
         FixedBitSet oldValue = lastValue.copy();
 
@@ -70,7 +81,7 @@ public class VirtualBus implements Bus {
             BusValueChangedEvent event = new BusValueChangedEvent(name, updatedValue);
 
             //Notify all interruptable connections
-            for (AbstractBusConnection connection : connections) {
+            for (BusConnection connection : connections) {
                 if (connection instanceof InterruptableBusConnection) {
                     ((InterruptableBusConnection) connection).handleBusValueChangedEvent(event);
                 }
@@ -91,6 +102,7 @@ public class VirtualBus implements Bus {
         connections.add(connection);
         return connection;
     }
+
 
     @Override
     public WriteableBusConnection getWriteConnection() {

@@ -8,6 +8,8 @@ import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
 import org.karnes.homebrew.emulator.component.bus.*;
+import org.karnes.homebrew.emulator.component.bus.connection.ReadableBusConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.WriteableBusConnection;
 import org.karnes.homebrew.emulator.component.logicunit.LogicUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,15 +26,15 @@ class LogicUnitTest {
 
     @BeforeEach
     void setUp() {
-        Bus luOperationBus = new VirtualBus("LU_OPERATION_BUS", 3);
+        BidirectionalBus luOperationBus = new VirtualBus("LU_OPERATION_BUS", 3);
         luOperationBusConnection = luOperationBus.getWriteConnection();
-        Bus tmp1Bus = new VirtualBus("TMP1-ALU_BUS", DATA_WIDTH);
+        BidirectionalBus tmp1Bus = new VirtualBus("TMP1-ALU_BUS", DATA_WIDTH);
         tmp1BusConnection = tmp1Bus.getWriteConnection();
-        Bus tmp2Bus = new VirtualBus("TMP2-ALU_BUS", DATA_WIDTH);
+        BidirectionalBus tmp2Bus = new VirtualBus("TMP2-ALU_BUS", DATA_WIDTH);
         tmp2BusConnection = tmp2Bus.getWriteConnection();
-        Bus outputBus = new VirtualBus("LU_OUTPUT_BUS", DATA_WIDTH);
+        BidirectionalBus outputBus = new VirtualBus("LU_OUTPUT_BUS", DATA_WIDTH);
         outputBusConnection = outputBus.getReadConnection();
-        Bus ccBus = new VirtualBus("CC_BUS", 4);
+        BidirectionalBus ccBus = new VirtualBus("CC_BUS", 4);
         ccBusConnection = ccBus.getReadConnection();
 
         logicUnit = new LogicUnit(luOperationBus, tmp1Bus, tmp2Bus, outputBus, ccBus);

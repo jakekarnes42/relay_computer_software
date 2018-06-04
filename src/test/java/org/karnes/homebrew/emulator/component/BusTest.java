@@ -3,7 +3,9 @@ package org.karnes.homebrew.emulator.component;
 import org.junit.jupiter.api.Test;
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
-import org.karnes.homebrew.emulator.component.bus.*;
+import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
+import org.karnes.homebrew.emulator.component.bus.VirtualBus;
+import org.karnes.homebrew.emulator.component.bus.connection.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +15,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BusTest {
     private static final int DATA_WIDTH = 4;
     private static final FixedBitSet ZERO_VAL = new ArbitraryBitSet(DATA_WIDTH);
-    private static final FixedBitSet ONES_VAL = new ArbitraryBitSet("1111");
+    private static final FixedBitSet ONES_VAL = ArbitraryBitSet.allOnes(4);
     private static final FixedBitSet MIX1_VAL = new ArbitraryBitSet("0101");
     private static final FixedBitSet MIX2_VAL = new ArbitraryBitSet("1010");
 
     @Test
     public void testSimpleBus() {
         //Create a new software-only bus
-        Bus bus = new VirtualBus("TestBus", 4);
+        BidirectionalBus bus = new VirtualBus("TestBus", 4);
         assertEquals("TestBus", bus.getName());
         assertEquals(4, bus.getWidth());
         assertEquals(0, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Add a connection which reads from the Bus.
+        //Add a connection which reads from the BidirectionalBus.
         ReadableBusConnection readConnection = bus.getReadConnection();
         assertEquals(1, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
@@ -39,7 +41,7 @@ public class BusTest {
         assertEquals(2, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Write a new value to the Bus
+        //Write a new value to the BidirectionalBus
         writeConnection.writeValueToBus(ONES_VAL);
 
         //Check that the update propagated
@@ -51,13 +53,13 @@ public class BusTest {
     @Test
     public void testUpdateWriteBus() {
         //Create a new software-only bus
-        Bus bus = new VirtualBus("TestBus", 4);
+        BidirectionalBus bus = new VirtualBus("TestBus", 4);
         assertEquals("TestBus", bus.getName());
         assertEquals(4, bus.getWidth());
         assertEquals(0, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Add a connection which reads from the Bus.
+        //Add a connection which reads from the BidirectionalBus.
         ReadableBusConnection readConnection = bus.getReadConnection();
         assertEquals(1, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
@@ -70,7 +72,7 @@ public class BusTest {
         assertEquals(2, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Write a new value to the Bus
+        //Write a new value to the BidirectionalBus
         writeConnection.writeValueToBus(ONES_VAL);
 
         //Check that the update propagated
@@ -97,13 +99,13 @@ public class BusTest {
     @Test
     public void testMultiReadBus() {
         //Create a new software-only bus
-        Bus bus = new VirtualBus("TestBus", 4);
+        BidirectionalBus bus = new VirtualBus("TestBus", 4);
         assertEquals("TestBus", bus.getName());
         assertEquals(4, bus.getWidth());
         assertEquals(0, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Add a connection which reads from the Bus.
+        //Add a connection which reads from the BidirectionalBus.
         ReadableBusConnection readConnection = bus.getReadConnection();
         assertEquals(1, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
@@ -111,7 +113,7 @@ public class BusTest {
         //Read from the bus through the read connection
         assertEquals(ZERO_VAL, readConnection.readBusValue());
 
-        //Add anothter connection which reads from the Bus.
+        //Add anothter connection which reads from the BidirectionalBus.
         ReadableBusConnection readConnection2 = bus.getReadConnection();
         assertEquals(2, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
@@ -124,7 +126,7 @@ public class BusTest {
         assertEquals(3, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Write a new value to the Bus
+        //Write a new value to the BidirectionalBus
         writeConnection.writeValueToBus(ONES_VAL);
 
         //Check that the update propagated
@@ -137,13 +139,13 @@ public class BusTest {
     @Test
     public void testMultiWriteBus() {
         //Create a new software-only bus
-        Bus bus = new VirtualBus("TestBus", 4);
+        BidirectionalBus bus = new VirtualBus("TestBus", 4);
         assertEquals("TestBus", bus.getName());
         assertEquals(4, bus.getWidth());
         assertEquals(0, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Add a connection which reads from the Bus.
+        //Add a connection which reads from the BidirectionalBus.
         ReadableBusConnection readConnection = bus.getReadConnection();
         assertEquals(1, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
@@ -161,14 +163,14 @@ public class BusTest {
         assertEquals(3, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Write a new value to the Bus
+        //Write a new value to the BidirectionalBus
         writeConnection.writeValueToBus(MIX1_VAL);
 
         //Check that the update propagated
         assertEquals(MIX1_VAL, bus.getValue());
         assertEquals(MIX1_VAL, readConnection.readBusValue());
 
-        //Write another new value to the Bus
+        //Write another new value to the BidirectionalBus
         writeConnection2.writeValueToBus(MIX2_VAL);
 
         //Check that the update propagated
@@ -186,13 +188,13 @@ public class BusTest {
     @Test
     public void testInterruptFromBus() {
         //Create a new software-only bus
-        Bus bus = new VirtualBus("TestBus", 4);
+        BidirectionalBus bus = new VirtualBus("TestBus", 4);
         assertEquals("TestBus", bus.getName());
         assertEquals(4, bus.getWidth());
         assertEquals(0, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Add a connection which interrupts from the Bus.
+        //Add a connection which interrupts from the BidirectionalBus.
         final List<FixedBitSet> allValues = new ArrayList<>();
         InterruptFromBusConnection interruptConnection = bus.getInterruptConnection(e -> {
             allValues.add(e.getUpdatedValue());
@@ -207,7 +209,7 @@ public class BusTest {
         assertEquals(2, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Write a new value to the Bus
+        //Write a new value to the BidirectionalBus
         writeConnection.writeValueToBus(ONES_VAL);
 
         //Check that the update propagated
@@ -240,13 +242,13 @@ public class BusTest {
     @Test
     public void testSimpleBidirectionalBus() {
         //Create a new software-only bus
-        Bus bus = new VirtualBus("TestBus", 4);
+        BidirectionalBus bus = new VirtualBus("TestBus", 4);
         assertEquals("TestBus", bus.getName());
         assertEquals(4, bus.getWidth());
         assertEquals(0, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Add a bidirectional connection which reads from the Bus.
+        //Add a bidirectional connection which reads from the BidirectionalBus.
         BidirectionalBusConnection connection = bus.getBidirectionalConnection();
         assertEquals(1, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
@@ -255,7 +257,7 @@ public class BusTest {
         assertEquals(ZERO_VAL, connection.readBusValue());
 
 
-        //Write a new value to the Bus
+        //Write a new value to the BidirectionalBus
         connection.writeValueToBus(ONES_VAL);
 
         //Check that the update propagated
@@ -266,13 +268,13 @@ public class BusTest {
     @Test
     public void testMultiBidirectionalBus() {
         //Create a new software-only bus
-        Bus bus = new VirtualBus("TestBus", 4);
+        BidirectionalBus bus = new VirtualBus("TestBus", 4);
         assertEquals("TestBus", bus.getName());
         assertEquals(4, bus.getWidth());
         assertEquals(0, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
 
-        //Add a bidirectional connection which reads from the Bus.
+        //Add a bidirectional connection which reads from the BidirectionalBus.
         BidirectionalBusConnection connection = bus.getBidirectionalConnection();
         assertEquals(1, bus.getConnections().size());
         assertEquals(ZERO_VAL, bus.getValue());
@@ -280,14 +282,14 @@ public class BusTest {
         //Read from the bus through the connection
         assertEquals(ZERO_VAL, connection.readBusValue());
 
-        //Write a new value to the Bus
+        //Write a new value to the BidirectionalBus
         connection.writeValueToBus(MIX1_VAL);
 
         //Check that the update propagated
         assertEquals(MIX1_VAL, bus.getValue());
         assertEquals(MIX1_VAL, connection.readBusValue());
 
-        //Add another bidirectional connection which reads from the Bus.
+        //Add another bidirectional connection which reads from the BidirectionalBus.
         BidirectionalBusConnection connection2 = bus.getBidirectionalConnection();
         assertEquals(2, bus.getConnections().size());
         assertEquals(MIX1_VAL, bus.getValue());
@@ -295,7 +297,7 @@ public class BusTest {
         //Read from the bus through the connection
         assertEquals(MIX1_VAL, connection2.readBusValue());
 
-        //Write a new value to the Bus
+        //Write a new value to the BidirectionalBus
         connection2.writeValueToBus(MIX2_VAL);
 
         //Check that the update propagated
@@ -317,7 +319,7 @@ public class BusTest {
     @Test
     public void testInterruptableBidirectionalBus() {
         //Create a new software-only bus
-        Bus bus = new VirtualBus("TestBus", 4);
+        BidirectionalBus bus = new VirtualBus("TestBus", 4);
         assertEquals("TestBus", bus.getName());
         assertEquals(4, bus.getWidth());
         assertEquals(0, bus.getConnections().size());
@@ -325,8 +327,8 @@ public class BusTest {
 
         final List<FixedBitSet> allValues = new ArrayList<>();
 
-        //Add a bidirectional connection which reads from the Bus.
-        BidirectionalBusConnection connection = bus.getBidirectionalInterruptableBusConnection(e -> {
+        //Add a bidirectional connection which reads from the BidirectionalBus.
+        BidirectionalInterruptableBusConnection connection = bus.getBidirectionalInterruptableBusConnection(e -> {
             allValues.add(e.getUpdatedValue());
         });
         assertEquals(1, bus.getConnections().size());
@@ -335,7 +337,7 @@ public class BusTest {
         //Read from the bus through the connection
         assertEquals(ZERO_VAL, connection.readBusValue());
 
-        //Write a new value to the Bus
+        //Write a new value to the BidirectionalBus
         connection.writeValueToBus(MIX1_VAL);
 
         //Check that the update propagated
@@ -345,7 +347,7 @@ public class BusTest {
         assertEquals(MIX1_VAL, allValues.get(0));
 
 
-        //Add another bidirectional connection which reads from the Bus.
+        //Add another bidirectional connection which reads from the BidirectionalBus.
         BidirectionalBusConnection connection2 = bus.getBidirectionalConnection();
         assertEquals(2, bus.getConnections().size());
         assertEquals(MIX1_VAL, bus.getValue());
@@ -353,7 +355,7 @@ public class BusTest {
         //Read from the bus through the connection
         assertEquals(MIX1_VAL, connection2.readBusValue());
 
-        //Write a new value to the Bus
+        //Write a new value to the BidirectionalBus
         connection2.writeValueToBus(MIX2_VAL);
 
         //Check that the update propagated

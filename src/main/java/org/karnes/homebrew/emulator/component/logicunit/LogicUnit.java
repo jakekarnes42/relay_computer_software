@@ -4,6 +4,9 @@ import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
 import org.karnes.homebrew.emulator.component.bus.*;
+import org.karnes.homebrew.emulator.component.bus.connection.BusValueChangedEvent;
+import org.karnes.homebrew.emulator.component.bus.connection.InterruptFromBusConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.WriteableBusConnection;
 
 
 public class LogicUnit {
@@ -15,10 +18,10 @@ public class LogicUnit {
     private final WriteableBusConnection ccBusConnection;
     private final int DATA_WIDTH;
 
-    public LogicUnit(Bus luOperationBus, Bus tmp1Bus, Bus tmp2Bus, Bus outputBus, Bus ccBus) {
+    public LogicUnit(ReadableBus luOperationBus, ReadableBus tmp1Bus, ReadableBus tmp2Bus, BidirectionalBus outputBus, BidirectionalBus ccBus) {
         //Get the opcode bus
         if (luOperationBus.getWidth() != 3) {
-            throw new IllegalArgumentException("Unexpected width for LU Operation Bus. Expected 3. Found: "
+            throw new IllegalArgumentException("Unexpected width for LU Operation BidirectionalBus. Expected 3. Found: "
                     + luOperationBus.getWidth());
         }
 
@@ -37,7 +40,7 @@ public class LogicUnit {
 
         //Get the Condition Code bus
         if (ccBus.getWidth() != 4) {
-            throw new IllegalArgumentException("Unexpected width for Condition Code Bus. Expected 4. Found: "
+            throw new IllegalArgumentException("Unexpected width for Condition Code BidirectionalBus. Expected 4. Found: "
                     + ccBus.getWidth());
         }
         ccBusConnection = ccBus.getWriteConnection();

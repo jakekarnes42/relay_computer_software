@@ -1,4 +1,4 @@
-package org.karnes.mcp23017;
+package org.karnes.homebrew.hardware;
 
 import mraa.I2c;
 import mraa.Result;
@@ -16,7 +16,7 @@ public class I2CBus {
     private final I2c i2c;
     private final Map<MCP23017Address, MCP23017> mcp23017Cache = new ConcurrentHashMap<>();
 
-    public static I2CBus getBus() {
+    public static I2CBus getI2CBus() {
         return SingletonHolder.instance;
     }
 
