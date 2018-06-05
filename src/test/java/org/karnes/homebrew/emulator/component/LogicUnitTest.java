@@ -64,7 +64,7 @@ class LogicUnitTest {
     }
 
     @Test
-    void testChainingOperations() {
+    void testChangingOperations() {
         //The LU is already hooked up.
         //First send the OFF signal
         luOperationBusConnection.writeValueToBus(LU_OPCODE.OFF.toBitSet());
@@ -108,6 +108,62 @@ class LogicUnitTest {
         //The output and cc should now have valid values.
         assertEquals(new ArbitraryBitSet("1010"), outputBusConnection.readBusValue());
         assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
+
+        //Turn it back to OFF
+        luOperationBusConnection.writeValueToBus(LU_OPCODE.OFF.toBitSet());
+
+        //The output and cc should be 0.
+        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+    }
+
+    @Test
+    void testChangingInputss() {
+        //The LU is already hooked up.
+        //First send the OFF signal
+        luOperationBusConnection.writeValueToBus(LU_OPCODE.OFF.toBitSet());
+
+        //The output and cc should be 0.
+        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+
+        //Set some inputs
+        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0101"));
+        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("1010"));
+
+        //The output and cc should be still 0.
+        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+
+        //Enable OR
+        luOperationBusConnection.writeValueToBus(LU_OPCODE.OR.toBitSet());
+
+        //The output and cc should now have valid values.
+        assertEquals(ArbitraryBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
+
+        //Change the first input
+        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0000"));
+
+        //The output and cc should change accordingly.
+        assertEquals(new ArbitraryBitSet("1010"), outputBusConnection.readBusValue());
+        assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
+
+
+        //Change the second input
+        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("0000"));
+
+        //The output and cc should change accordingly.
+        assertEquals(new ArbitraryBitSet("0000"), outputBusConnection.readBusValue());
+        assertEquals(new ArbitraryBitSet("0001"), ccBusConnection.readBusValue());
+
+        //Change the first input again
+        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0101"));
+
+        //The output and cc should change accordingly.
+        assertEquals(new ArbitraryBitSet("0101"), outputBusConnection.readBusValue());
+        assertEquals(new ArbitraryBitSet("0000"), ccBusConnection.readBusValue());
+
 
         //Turn it back to OFF
         luOperationBusConnection.writeValueToBus(LU_OPCODE.OFF.toBitSet());
