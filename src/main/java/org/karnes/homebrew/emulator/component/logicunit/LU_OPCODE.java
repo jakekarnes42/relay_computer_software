@@ -4,14 +4,18 @@ import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 
 public enum LU_OPCODE {
-    XOR(new ArbitraryBitSet("00")), OR(new ArbitraryBitSet("01")), AND(new ArbitraryBitSet("10")), NOT(new ArbitraryBitSet("11"));
+    XOR(new ArbitraryBitSet("100")),
+    OR(new ArbitraryBitSet("101")),
+    AND(new ArbitraryBitSet("110")),
+    NOT(new ArbitraryBitSet("111")),
+    OFF(new ArbitraryBitSet("000"));
 
 
     private final FixedBitSet bitSet;
 
     LU_OPCODE(FixedBitSet bitSet) {
-        if (bitSet.size() != 2) {
-            throw new IllegalArgumentException("LU_OPCODE must be created from a FixedBitSet of size 2");
+        if (bitSet.size() != 3) {
+            throw new IllegalArgumentException("LU_OPCODE must be created from a FixedBitSet of size 3");
         }
         this.bitSet = bitSet;
     }
@@ -21,13 +25,15 @@ public enum LU_OPCODE {
     }
 
     public static LU_OPCODE fromBitSet(FixedBitSet input) {
-        if (input.equals(new ArbitraryBitSet("00"))) {
+        if (input.get(2) == false) {
+            return OFF;
+        } else if (input.equals(new ArbitraryBitSet("100"))) {
             return XOR;
-        } else if (input.equals(new ArbitraryBitSet("01"))) {
+        } else if (input.equals(new ArbitraryBitSet("101"))) {
             return OR;
-        } else if (input.equals(new ArbitraryBitSet("10"))) {
+        } else if (input.equals(new ArbitraryBitSet("110"))) {
             return AND;
-        } else if (input.equals(new ArbitraryBitSet("11"))) {
+        } else if (input.equals(new ArbitraryBitSet("111"))) {
             return NOT;
         } else {
             throw new IllegalArgumentException("Invalid BitSet for LU_OPCODE " + input);

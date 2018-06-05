@@ -3,7 +3,8 @@ package org.karnes.homebrew.emulator.component.logicunit;
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
-import org.karnes.homebrew.emulator.component.bus.*;
+import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
+import org.karnes.homebrew.emulator.component.bus.ReadableBus;
 import org.karnes.homebrew.emulator.component.bus.connection.BusValueChangedEvent;
 import org.karnes.homebrew.emulator.component.bus.connection.InterruptFromBusConnection;
 import org.karnes.homebrew.emulator.component.bus.connection.WriteableBusConnection;
@@ -71,14 +72,7 @@ public class LogicUnit {
     }
 
     private LU_OPCODE getCurrentOpCode() {
-        if (isLUEnabled()) {
-            //The first two bits decide the opcode
-            FixedBitSet slice = luOperationConnection.readBusValue().getSlice(0, 2);
-            return LU_OPCODE.fromBitSet(slice);
-        } else {
-            //The LU isn't enabled
-            return null;
-        }
+        return LU_OPCODE.fromBitSet(luOperationConnection.readBusValue());
     }
 
     private void updateOutput() {
@@ -104,7 +98,7 @@ public class LogicUnit {
                     result = performNOT(tmp1Value);
                     break;
                 default: //Should not reach
-                    throw new IllegalStateException("Unexpected LU opcode");
+                    throw new IllegalStateException("Unexpected LU opcode: " + getCurrentOpCode());
 
             }
 
