@@ -7,20 +7,20 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
+import org.karnes.homebrew.emulator.component.arithmeticunit.AU_OPCODE;
+import org.karnes.homebrew.emulator.component.arithmeticunit.ArithmeticUnit;
 import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
 import org.karnes.homebrew.emulator.component.bus.VirtualBus;
 import org.karnes.homebrew.emulator.component.bus.connection.ReadableBusConnection;
 import org.karnes.homebrew.emulator.component.bus.connection.WriteableBusConnection;
-import org.karnes.homebrew.emulator.component.logicunit.LU_OPCODE;
-import org.karnes.homebrew.emulator.component.logicunit.LogicUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LogicUnitTest {
+class ArithemeticUnitTest {
     private static int DATA_WIDTH = 4;
 
-    private LogicUnit logicUnit;
-    private WriteableBusConnection luOperationBusConnection;
+    private ArithmeticUnit arithmeticUnit;
+    private WriteableBusConnection auOperationBusConnection;
     private WriteableBusConnection tmp1BusConnection;
     private WriteableBusConnection tmp2BusConnection;
     private ReadableBusConnection outputBusConnection;
@@ -28,26 +28,26 @@ class LogicUnitTest {
 
     @BeforeEach
     void setUp() {
-        BidirectionalBus luOperationBus = new VirtualBus("LU_OPERATION_BUS", 3);
-        luOperationBusConnection = luOperationBus.getWriteConnection();
+        BidirectionalBus auOperationBus = new VirtualBus("AU_OPERATION_BUS", 3);
+        auOperationBusConnection = auOperationBus.getWriteConnection();
         BidirectionalBus tmp1Bus = new VirtualBus("TMP1-ALU_BUS", DATA_WIDTH);
         tmp1BusConnection = tmp1Bus.getWriteConnection();
         BidirectionalBus tmp2Bus = new VirtualBus("TMP2-ALU_BUS", DATA_WIDTH);
         tmp2BusConnection = tmp2Bus.getWriteConnection();
-        BidirectionalBus outputBus = new VirtualBus("LU_OUTPUT_BUS", DATA_WIDTH);
+        BidirectionalBus outputBus = new VirtualBus("AU_OUTPUT_BUS", DATA_WIDTH);
         outputBusConnection = outputBus.getReadConnection();
         BidirectionalBus ccBus = new VirtualBus("CC_BUS", 4);
         ccBusConnection = ccBus.getReadConnection();
 
-        logicUnit = new LogicUnit(luOperationBus, tmp1Bus, tmp2Bus, outputBus, ccBus);
+        arithmeticUnit = new ArithmeticUnit(auOperationBus, tmp1Bus, tmp2Bus, outputBus, ccBus);
     }
 
 
     @Test
     void simpleTest() {
-        //The LU is already hooked up.
-        //Enable the output. This should be LU Enable + XOR (0,0)
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.XOR.toBitSet());
+        //The AU is already hooked up.
+        //Enable the output. This should be AU Enable + ADD (0,0)
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
 
         //The output should be 0.
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
@@ -65,52 +65,52 @@ class LogicUnitTest {
 
     @Test
     void testChangingOperations() {
-        //The LU is already hooked up.
+        //The AU is already hooked up.
         //First send the OFF signal
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.OFF.toBitSet());
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
 
         //Set some inputs
-        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0101"));
-        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("1010"));
+        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0101")); // 5
+        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("1010")); // -6
 
         //The output and cc should be still 0.
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
 
-        //Enable OR
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.OR.toBitSet());
+        //Enable ADD
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(ArbitraryBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(ArbitraryBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue()); //-1
         assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
 
-        //Change to AND
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.AND.toBitSet());
+        //Change to SUB
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.SUB.toBitSet());
 
         //The output and cc should change accordingly.
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet("0001"), ccBusConnection.readBusValue());
+        assertEquals(new ArbitraryBitSet("1011"), outputBusConnection.readBusValue()); //is 11 -> overflow to: -5 
+        assertEquals(new ArbitraryBitSet("1110"), ccBusConnection.readBusValue());
 
-        //Change to XOR
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.XOR.toBitSet());
-
-        //The output and cc should now have valid values.
-        assertEquals(ArbitraryBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
-
-        //Change to NOT
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.NOT.toBitSet());
+        //Change to INC
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.INC.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(new ArbitraryBitSet("1010"), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
+        assertEquals(new ArbitraryBitSet("0110"), outputBusConnection.readBusValue()); //6
+        assertEquals(new ArbitraryBitSet("0000"), ccBusConnection.readBusValue());
+
+        //Change to DEC
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.DEC.toBitSet());
+
+        //The output and cc should now have valid values.
+        assertEquals(new ArbitraryBitSet("0100"), outputBusConnection.readBusValue()); //4
+        assertEquals(new ArbitraryBitSet("0000"), ccBusConnection.readBusValue());
 
         //Turn it back to OFF
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.OFF.toBitSet());
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
@@ -119,39 +119,39 @@ class LogicUnitTest {
 
     @Test
     void testChangingInputs() {
-        //The LU is already hooked up.
+        //The AU is already hooked up.
         //First send the OFF signal
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.OFF.toBitSet());
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
 
         //Set some inputs
-        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0101"));
-        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("1010"));
+        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0101")); // 5
+        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("1010")); // -6
 
         //The output and cc should be still 0.
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
-
-        //Enable OR
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.OR.toBitSet());
+ 
+        //Enable ADD
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(ArbitraryBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(ArbitraryBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue()); //-1
         assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
 
         //Change the first input
-        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0000"));
+        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0000")); // 0
 
         //The output and cc should change accordingly.
-        assertEquals(new ArbitraryBitSet("1010"), outputBusConnection.readBusValue());
+        assertEquals(new ArbitraryBitSet("1010"), outputBusConnection.readBusValue()); // -6
         assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
 
 
         //Change the second input
-        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("0000"));
+        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("0000")); //0
 
         //The output and cc should change accordingly.
         assertEquals(new ArbitraryBitSet("0000"), outputBusConnection.readBusValue());
@@ -166,7 +166,7 @@ class LogicUnitTest {
 
 
         //Turn it back to OFF
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.OFF.toBitSet());
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
         assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
@@ -175,15 +175,15 @@ class LogicUnitTest {
 
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/4bit_XORs.csv", numLinesToSkip = 1)
-    void testAllXORs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
-        //The LU is already hooked up.
+    @CsvFileSource(resources = "/4bit_ADDs.csv", numLinesToSkip = 1)
+    void testAllADDs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
+        //The AU is already hooked up.
         //Set the inputs
         tmp1BusConnection.writeValueToBus(a);
         tmp2BusConnection.writeValueToBus(b);
 
-        //Enable the output. This should be LU Enable + XOR (a,b)
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.XOR.toBitSet());
+        //Enable the output. This should be AU Enable + ADD (a,b)
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
 
         //The output should be result.
         assertEquals(result, outputBusConnection.readBusValue());
@@ -195,15 +195,15 @@ class LogicUnitTest {
 
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/4bit_ORs.csv", numLinesToSkip = 1)
-    void testAllORs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
-        //The LU is already hooked up.
+    @CsvFileSource(resources = "/4bit_SUBs.csv", numLinesToSkip = 1)
+    void testAllSUBs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
+        //The AU is already hooked up.
         //Set the inputs
         tmp1BusConnection.writeValueToBus(a);
         tmp2BusConnection.writeValueToBus(b);
 
-        //Enable the output. This should be LU Enable + OR (a,b)
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.OR.toBitSet());
+        //Enable the output. This should be AU Enable + SUB (a,b)
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.SUB.toBitSet());
 
         //The output should be result.
         assertEquals(result, outputBusConnection.readBusValue());
@@ -214,15 +214,14 @@ class LogicUnitTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/4bit_ANDs.csv", numLinesToSkip = 1)
-    void testAllANDs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
-        //The LU is already hooked up.
+    @CsvFileSource(resources = "/4bit_INCs.csv", numLinesToSkip = 1)
+    void testAllINCs(ArbitraryBitSet a, ArbitraryBitSet result, ArbitraryBitSet cc) {
+        //The AU is already hooked up.
         //Set the inputs
         tmp1BusConnection.writeValueToBus(a);
-        tmp2BusConnection.writeValueToBus(b);
 
-        //Enable the output. This should be LU Enable + AND (a,b)
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.AND.toBitSet());
+        //Enable the output. This should be AU Enable + INC (a,b)
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.INC.toBitSet());
 
         //The output should be result.
         assertEquals(result, outputBusConnection.readBusValue());
@@ -233,14 +232,14 @@ class LogicUnitTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/4bit_NOTs.csv", numLinesToSkip = 1)
-    void testAllNOTs(ArbitraryBitSet a, ArbitraryBitSet result, ArbitraryBitSet cc) {
-        //The LU is already hooked up.
+    @CsvFileSource(resources = "/4bit_DECs.csv", numLinesToSkip = 1)
+    void testAllDECs(ArbitraryBitSet a, ArbitraryBitSet result, ArbitraryBitSet cc) {
+        //The AU is already hooked up.
         //Set the inputs
         tmp1BusConnection.writeValueToBus(a);
 
-        //Enable the output. This should be LU Enable + NOT (a)
-        luOperationBusConnection.writeValueToBus(LU_OPCODE.NOT.toBitSet());
+        //Enable the output. This should be AU Enable + DEC (a)
+        auOperationBusConnection.writeValueToBus(AU_OPCODE.DEC.toBitSet());
 
         //The output should be result.
         assertEquals(result, outputBusConnection.readBusValue());
