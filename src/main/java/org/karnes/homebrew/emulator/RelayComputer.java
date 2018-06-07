@@ -8814,13 +8814,14 @@ public class RelayComputer {
         BigInteger instruction = BigInteger.valueOf(INST);
 
         boolean negateBit = instruction.testBit(4);
-        boolean zeroBit = instruction.testBit(3);
-        boolean signBit = instruction.testBit(2);
-        boolean overflowBit = instruction.testBit(1);
-        boolean carryBit = instruction.testBit(0);
 
-        //JMP ≡ (n) ⊕ ( (z ∧ zero_reg) ∨ (s ∧ sign_reg) ∨ (o ∧ overflow_reg) ∨ (c ∧ carry_reg) )
-        boolean shouldJump = (negateBit ^ ((zeroBit && zero) || (signBit && sign) || (overflowBit && overflow) || (carryBit && carry)));
+        boolean carryBit = instruction.testBit(3);
+        boolean overflowBit = instruction.testBit(2);
+        boolean signBit = instruction.testBit(1);
+        boolean zeroBit = instruction.testBit(0);
+
+        //JMP ≡ (n) ⊕ ( (c ∧ carry_reg) ∨ (o ∧ overflow_reg) ∨ (s ∧ sign_reg) ∨ (z ∧ zero_reg) )
+        boolean shouldJump = (negateBit ^ ((carryBit && carry) || (overflowBit && overflow) || (signBit && sign) || (zeroBit && zero)));
 
         if (shouldJump) {
             PC = load();

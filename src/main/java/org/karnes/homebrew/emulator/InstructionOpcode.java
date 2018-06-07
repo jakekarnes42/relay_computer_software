@@ -25,14 +25,14 @@ public enum InstructionOpcode {
 
     // Jumps
     JMP((short) 0b0010_0001_0000_0_111, (byte) 16),
-    JZ((short) 0b0000_1000_000_0_1000, (byte) 16),
-    JS((short) 0b0000_1000_000_0_0100, (byte) 16),
-    JO((short) 0b0000_1000_000_0_0010, (byte) 16),
-    JC((short) 0b0000_1000_000_0_0001, (byte) 16),
-    JNZ((short) 0b0000_1000_000_1_1000, (byte) 16),
-    JNS((short) 0b0000_1000_000_1_0100, (byte) 16),
-    JNO((short) 0b0000_1000_000_1_0010, (byte) 16),
-    JNC((short) 0b0000_1000_000_1_0001, (byte) 16),
+    JZ((short) 0b0000_1000_000_0_0001, (byte) 16),
+    JS((short) 0b0000_1000_000_0_0010, (byte) 16),
+    JO((short) 0b0000_1000_000_0_0100, (byte) 16),
+    JC((short) 0b0000_1000_000_0_1000, (byte) 16),
+    JNZ((short) 0b0000_1000_000_1_0001, (byte) 16),
+    JNS((short) 0b0000_1000_000_1_0010, (byte) 16),
+    JNO((short) 0b0000_1000_000_1_0100, (byte) 16),
+    JNC((short) 0b0000_1000_000_1_1000, (byte) 16),
 
     //Memory
     LOAD((short) 0b0010_0001_0000_0_000, (byte) 13),
