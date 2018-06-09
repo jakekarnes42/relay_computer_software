@@ -83,6 +83,12 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitJumpOperation(AsmHomeBrewParser.JumpOperationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AsmHomeBrewParser#conditionalJumpOperation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditionalJumpOperation(AsmHomeBrewParser.ConditionalJumpOperationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#jumpOpcode}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -94,18 +100,6 @@ public interface AsmHomeBrewVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBinaryOperation(AsmHomeBrewParser.BinaryOperationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AsmHomeBrewParser#aluBinaryOperation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAluBinaryOperation(AsmHomeBrewParser.AluBinaryOperationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AsmHomeBrewParser#aluBinaryOpcode}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAluBinaryOpcode(AsmHomeBrewParser.AluBinaryOpcodeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AsmHomeBrewParser#binaryRegRegOperation}.
 	 * @param ctx the parse tree

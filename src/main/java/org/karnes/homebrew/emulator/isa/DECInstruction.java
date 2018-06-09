@@ -4,8 +4,7 @@ import org.karnes.homebrew.bitset.BitSet16;
 import org.karnes.homebrew.emulator.component.register.RegisterName;
 
 public class DECInstruction extends AbstractTwoRegALUInstruction {
-    DECInstruction(RegisterName destination, RegisterName source
-    ) {
+    public DECInstruction(RegisterName destination, RegisterName source) {
         super("DEC", destination, source, new BitSet16("0001 011 000 000 000"));
     }
 }

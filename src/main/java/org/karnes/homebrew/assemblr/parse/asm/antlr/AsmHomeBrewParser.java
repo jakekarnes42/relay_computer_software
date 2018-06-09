@@ -28,22 +28,22 @@ public class AsmHomeBrewParser extends Parser {
 		RULE_program = 0, RULE_line = 1, RULE_instruction = 2, RULE_labelDefinition = 3, 
 		RULE_operation = 4, RULE_noArgOperation = 5, RULE_unaryOperation = 6, 
 		RULE_returnOperation = 7, RULE_clearOperation = 8, RULE_ioOperation = 9, 
-		RULE_ioOpcode = 10, RULE_jumpOperation = 11, RULE_jumpOpcode = 12, RULE_binaryOperation = 13, 
-		RULE_aluBinaryOperation = 14, RULE_aluBinaryOpcode = 15, RULE_binaryRegRegOperation = 16, 
-		RULE_binaryRegRegOpCode = 17, RULE_binaryRegValOperation = 18, RULE_binaryRegValOpCode = 19, 
-		RULE_stackOperation = 20, RULE_pushOperation = 21, RULE_popOperation = 22, 
-		RULE_callOperation = 23, RULE_ternaryOperation = 24, RULE_aluTernaryOperation = 25, 
-		RULE_aluTernaryOpcode = 26, RULE_value = 27, RULE_label = 28, RULE_register = 29, 
-		RULE_stackRegister = 30, RULE_opcode = 31, RULE_assemblerDirective = 32, 
-		RULE_assemblerOrgDirective = 33, RULE_assemblerWordDeclaration = 34, RULE_assemblerStringDeclaration = 35, 
-		RULE_macro = 36, RULE_macroParamValue = 37, RULE_jsExpression = 38, RULE_name = 39, 
-		RULE_macroName = 40, RULE_number = 41, RULE_comment = 42, RULE_string = 43, 
-		RULE_parenString = 44;
+		RULE_ioOpcode = 10, RULE_jumpOperation = 11, RULE_conditionalJumpOperation = 12, 
+		RULE_jumpOpcode = 13, RULE_binaryOperation = 14, RULE_binaryRegRegOperation = 15, 
+		RULE_binaryRegRegOpCode = 16, RULE_binaryRegValOperation = 17, RULE_binaryRegValOpCode = 18, 
+		RULE_stackOperation = 19, RULE_pushOperation = 20, RULE_popOperation = 21, 
+		RULE_callOperation = 22, RULE_ternaryOperation = 23, RULE_aluTernaryOperation = 24, 
+		RULE_aluTernaryOpcode = 25, RULE_value = 26, RULE_label = 27, RULE_register = 28, 
+		RULE_stackRegister = 29, RULE_opcode = 30, RULE_assemblerDirective = 31, 
+		RULE_assemblerOrgDirective = 32, RULE_assemblerWordDeclaration = 33, RULE_assemblerStringDeclaration = 34, 
+		RULE_macro = 35, RULE_macroParamValue = 36, RULE_jsExpression = 37, RULE_name = 38, 
+		RULE_macroName = 39, RULE_number = 40, RULE_comment = 41, RULE_string = 42, 
+		RULE_parenString = 43;
 	public static final String[] ruleNames = {
 		"program", "line", "instruction", "labelDefinition", "operation", "noArgOperation", 
 		"unaryOperation", "returnOperation", "clearOperation", "ioOperation", 
-		"ioOpcode", "jumpOperation", "jumpOpcode", "binaryOperation", "aluBinaryOperation", 
-		"aluBinaryOpcode", "binaryRegRegOperation", "binaryRegRegOpCode", "binaryRegValOperation", 
+		"ioOpcode", "jumpOperation", "conditionalJumpOperation", "jumpOpcode", 
+		"binaryOperation", "binaryRegRegOperation", "binaryRegRegOpCode", "binaryRegValOperation", 
 		"binaryRegValOpCode", "stackOperation", "pushOperation", "popOperation", 
 		"callOperation", "ternaryOperation", "aluTernaryOperation", "aluTernaryOpcode", 
 		"value", "label", "register", "stackRegister", "opcode", "assemblerDirective", 
@@ -149,27 +149,27 @@ public class AsmHomeBrewParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(94); 
+			setState(92); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(91);
+				setState(89);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << CLR) | (1L << ADD) | (1L << INC) | (1L << DEC) | (1L << AND) | (1L << OR) | (1L << XOR) | (1L << NOT) | (1L << CMP) | (1L << SUB) | (1L << LOAD) | (1L << FETCH) | (1L << STORE) | (1L << PUSH) | (1L << POP) | (1L << RET) | (1L << CALL) | (1L << WRDIN) | (1L << WRDOUT) | (1L << JMP) | (1L << JZ) | (1L << JNZ) | (1L << JS) | (1L << JNS) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO) | (1L << NOP) | (1L << HALT) | (1L << TIN) | (1L << TOUT) | (1L << ORG) | (1L << DW) | (1L << DS) | (1L << NAME) | (1L << MACRO_NAME) | (1L << COMMENT) | (1L << JAVASCRIPT))) != 0)) {
 					{
-					setState(90);
+					setState(88);
 					line();
 					}
 				}
 
-				setState(93);
+				setState(91);
 				match(EOL);
 				}
 				}
-				setState(96); 
+				setState(94); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << CLR) | (1L << ADD) | (1L << INC) | (1L << DEC) | (1L << AND) | (1L << OR) | (1L << XOR) | (1L << NOT) | (1L << CMP) | (1L << SUB) | (1L << LOAD) | (1L << FETCH) | (1L << STORE) | (1L << PUSH) | (1L << POP) | (1L << RET) | (1L << CALL) | (1L << WRDIN) | (1L << WRDOUT) | (1L << JMP) | (1L << JZ) | (1L << JNZ) | (1L << JS) | (1L << JNS) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO) | (1L << NOP) | (1L << HALT) | (1L << TIN) | (1L << TOUT) | (1L << ORG) | (1L << DW) | (1L << DS) | (1L << NAME) | (1L << MACRO_NAME) | (1L << COMMENT) | (1L << JAVASCRIPT) | (1L << EOL))) != 0) );
@@ -226,27 +226,27 @@ public class AsmHomeBrewParser extends Parser {
 		enterRule(_localctx, 2, RULE_line);
 		int _la;
 		try {
-			setState(115);
+			setState(113);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(98);
+				setState(96);
 				comment();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(99);
+				setState(97);
 				labelDefinition();
-				setState(101);
+				setState(99);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==COMMENT) {
 					{
-					setState(100);
+					setState(98);
 					comment();
 					}
 				}
@@ -256,14 +256,14 @@ public class AsmHomeBrewParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(103);
+				setState(101);
 				instruction();
-				setState(105);
+				setState(103);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==COMMENT) {
 					{
-					setState(104);
+					setState(102);
 					comment();
 					}
 				}
@@ -273,14 +273,14 @@ public class AsmHomeBrewParser extends Parser {
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(107);
+				setState(105);
 				assemblerDirective();
-				setState(109);
+				setState(107);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==COMMENT) {
 					{
-					setState(108);
+					setState(106);
 					comment();
 					}
 				}
@@ -290,14 +290,14 @@ public class AsmHomeBrewParser extends Parser {
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(111);
+				setState(109);
 				macro();
-				setState(113);
+				setState(111);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==COMMENT) {
 					{
-					setState(112);
+					setState(110);
 					comment();
 					}
 				}
@@ -353,24 +353,24 @@ public class AsmHomeBrewParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(118);
+			setState(116);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==NAME) {
 				{
-				setState(117);
+				setState(115);
 				labelDefinition();
 				}
 			}
 
-			setState(120);
+			setState(118);
 			operation();
-			setState(122);
+			setState(120);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 			case 1:
 				{
-				setState(121);
+				setState(119);
 				comment();
 				}
 				break;
@@ -417,9 +417,9 @@ public class AsmHomeBrewParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(124);
+			setState(122);
 			label();
-			setState(125);
+			setState(123);
 			match(T__0);
 			}
 		}
@@ -470,7 +470,7 @@ public class AsmHomeBrewParser extends Parser {
 		OperationContext _localctx = new OperationContext(_ctx, getState());
 		enterRule(_localctx, 8, RULE_operation);
 		try {
-			setState(131);
+			setState(129);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NOP:
@@ -479,7 +479,7 @@ public class AsmHomeBrewParser extends Parser {
 			case TOUT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(127);
+				setState(125);
 				noArgOperation();
 				}
 				break;
@@ -498,7 +498,7 @@ public class AsmHomeBrewParser extends Parser {
 			case JNO:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(128);
+				setState(126);
 				unaryOperation();
 				}
 				break;
@@ -514,7 +514,7 @@ public class AsmHomeBrewParser extends Parser {
 			case CALL:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(129);
+				setState(127);
 				binaryOperation();
 				}
 				break;
@@ -526,7 +526,7 @@ public class AsmHomeBrewParser extends Parser {
 			case SUB:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(130);
+				setState(128);
 				ternaryOperation();
 				}
 				break;
@@ -576,7 +576,7 @@ public class AsmHomeBrewParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(133);
+			setState(131);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NOP) | (1L << HALT) | (1L << TIN) | (1L << TOUT))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -609,6 +609,9 @@ public class AsmHomeBrewParser extends Parser {
 		public JumpOperationContext jumpOperation() {
 			return getRuleContext(JumpOperationContext.class,0);
 		}
+		public ConditionalJumpOperationContext conditionalJumpOperation() {
+			return getRuleContext(ConditionalJumpOperationContext.class,0);
+		}
 		public ClearOperationContext clearOperation() {
 			return getRuleContext(ClearOperationContext.class,0);
 		}
@@ -635,25 +638,31 @@ public class AsmHomeBrewParser extends Parser {
 		UnaryOperationContext _localctx = new UnaryOperationContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_unaryOperation);
 		try {
-			setState(139);
+			setState(138);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case WRDIN:
 			case WRDOUT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(135);
+				setState(133);
 				ioOperation();
 				}
 				break;
 			case RET:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(136);
+				setState(134);
 				returnOperation();
 				}
 				break;
 			case JMP:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(135);
+				jumpOperation();
+				}
+				break;
 			case JZ:
 			case JNZ:
 			case JS:
@@ -662,16 +671,16 @@ public class AsmHomeBrewParser extends Parser {
 			case JNC:
 			case JO:
 			case JNO:
-				enterOuterAlt(_localctx, 3);
+				enterOuterAlt(_localctx, 4);
 				{
-				setState(137);
-				jumpOperation();
+				setState(136);
+				conditionalJumpOperation();
 				}
 				break;
 			case CLR:
-				enterOuterAlt(_localctx, 4);
+				enterOuterAlt(_localctx, 5);
 				{
-				setState(138);
+				setState(137);
 				clearOperation();
 				}
 				break;
@@ -720,9 +729,9 @@ public class AsmHomeBrewParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(141);
+			setState(140);
 			match(RET);
-			setState(142);
+			setState(141);
 			stackRegister();
 			}
 		}
@@ -767,9 +776,9 @@ public class AsmHomeBrewParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(144);
+			setState(143);
 			match(CLR);
-			setState(145);
+			setState(144);
 			register();
 			}
 		}
@@ -816,9 +825,9 @@ public class AsmHomeBrewParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(147);
+			setState(146);
 			ioOpcode();
-			setState(148);
+			setState(147);
 			register();
 			}
 		}
@@ -862,7 +871,7 @@ public class AsmHomeBrewParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(150);
+			setState(149);
 			_la = _input.LA(1);
 			if ( !(_la==WRDIN || _la==WRDOUT) ) {
 			_errHandler.recoverInline(this);
@@ -886,9 +895,7 @@ public class AsmHomeBrewParser extends Parser {
 	}
 
 	public static class JumpOperationContext extends ParserRuleContext {
-		public JumpOpcodeContext jumpOpcode() {
-			return getRuleContext(JumpOpcodeContext.class,0);
-		}
+		public TerminalNode JMP() { return getToken(AsmHomeBrewParser.JMP, 0); }
 		public ValueContext value() {
 			return getRuleContext(ValueContext.class,0);
 		}
@@ -917,9 +924,58 @@ public class AsmHomeBrewParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
+			setState(151);
+			match(JMP);
 			setState(152);
+			value();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ConditionalJumpOperationContext extends ParserRuleContext {
+		public JumpOpcodeContext jumpOpcode() {
+			return getRuleContext(JumpOpcodeContext.class,0);
+		}
+		public ValueContext value() {
+			return getRuleContext(ValueContext.class,0);
+		}
+		public ConditionalJumpOperationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_conditionalJumpOperation; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof AsmHomeBrewListener ) ((AsmHomeBrewListener)listener).enterConditionalJumpOperation(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof AsmHomeBrewListener ) ((AsmHomeBrewListener)listener).exitConditionalJumpOperation(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AsmHomeBrewVisitor ) return ((AsmHomeBrewVisitor<? extends T>)visitor).visitConditionalJumpOperation(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ConditionalJumpOperationContext conditionalJumpOperation() throws RecognitionException {
+		ConditionalJumpOperationContext _localctx = new ConditionalJumpOperationContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_conditionalJumpOperation);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(154);
 			jumpOpcode();
-			setState(153);
+			setState(155);
 			value();
 			}
 		}
@@ -935,7 +991,6 @@ public class AsmHomeBrewParser extends Parser {
 	}
 
 	public static class JumpOpcodeContext extends ParserRuleContext {
-		public TerminalNode JMP() { return getToken(AsmHomeBrewParser.JMP, 0); }
 		public TerminalNode JZ() { return getToken(AsmHomeBrewParser.JZ, 0); }
 		public TerminalNode JNZ() { return getToken(AsmHomeBrewParser.JNZ, 0); }
 		public TerminalNode JS() { return getToken(AsmHomeBrewParser.JS, 0); }
@@ -965,14 +1020,14 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final JumpOpcodeContext jumpOpcode() throws RecognitionException {
 		JumpOpcodeContext _localctx = new JumpOpcodeContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_jumpOpcode);
+		enterRule(_localctx, 26, RULE_jumpOpcode);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(155);
+			setState(157);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << JMP) | (1L << JZ) | (1L << JNZ) | (1L << JS) | (1L << JNS) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << JZ) | (1L << JNZ) | (1L << JS) | (1L << JNS) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -994,9 +1049,6 @@ public class AsmHomeBrewParser extends Parser {
 	}
 
 	public static class BinaryOperationContext extends ParserRuleContext {
-		public AluBinaryOperationContext aluBinaryOperation() {
-			return getRuleContext(AluBinaryOperationContext.class,0);
-		}
 		public BinaryRegRegOperationContext binaryRegRegOperation() {
 			return getRuleContext(BinaryRegRegOperationContext.class,0);
 		}
@@ -1027,156 +1079,41 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final BinaryOperationContext binaryOperation() throws RecognitionException {
 		BinaryOperationContext _localctx = new BinaryOperationContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_binaryOperation);
+		enterRule(_localctx, 28, RULE_binaryOperation);
 		try {
-			setState(161);
+			setState(162);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
+			case MOV:
 			case INC:
 			case DEC:
 			case NOT:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(157);
-				aluBinaryOperation();
-				}
-				break;
-			case MOV:
 			case FETCH:
 			case STORE:
-				enterOuterAlt(_localctx, 2);
+				enterOuterAlt(_localctx, 1);
 				{
-				setState(158);
+				setState(159);
 				binaryRegRegOperation();
 				}
 				break;
 			case LOAD:
-				enterOuterAlt(_localctx, 3);
+				enterOuterAlt(_localctx, 2);
 				{
-				setState(159);
+				setState(160);
 				binaryRegValOperation();
 				}
 				break;
 			case PUSH:
 			case POP:
 			case CALL:
-				enterOuterAlt(_localctx, 4);
+				enterOuterAlt(_localctx, 3);
 				{
-				setState(160);
+				setState(161);
 				stackOperation();
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class AluBinaryOperationContext extends ParserRuleContext {
-		public AluBinaryOpcodeContext aluBinaryOpcode() {
-			return getRuleContext(AluBinaryOpcodeContext.class,0);
-		}
-		public List<RegisterContext> register() {
-			return getRuleContexts(RegisterContext.class);
-		}
-		public RegisterContext register(int i) {
-			return getRuleContext(RegisterContext.class,i);
-		}
-		public AluBinaryOperationContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_aluBinaryOperation; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof AsmHomeBrewListener ) ((AsmHomeBrewListener)listener).enterAluBinaryOperation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof AsmHomeBrewListener ) ((AsmHomeBrewListener)listener).exitAluBinaryOperation(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AsmHomeBrewVisitor ) return ((AsmHomeBrewVisitor<? extends T>)visitor).visitAluBinaryOperation(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final AluBinaryOperationContext aluBinaryOperation() throws RecognitionException {
-		AluBinaryOperationContext _localctx = new AluBinaryOperationContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_aluBinaryOperation);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(163);
-			aluBinaryOpcode();
-			setState(164);
-			register();
-			setState(165);
-			match(T__1);
-			setState(166);
-			register();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class AluBinaryOpcodeContext extends ParserRuleContext {
-		public TerminalNode INC() { return getToken(AsmHomeBrewParser.INC, 0); }
-		public TerminalNode DEC() { return getToken(AsmHomeBrewParser.DEC, 0); }
-		public TerminalNode NOT() { return getToken(AsmHomeBrewParser.NOT, 0); }
-		public AluBinaryOpcodeContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_aluBinaryOpcode; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof AsmHomeBrewListener ) ((AsmHomeBrewListener)listener).enterAluBinaryOpcode(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof AsmHomeBrewListener ) ((AsmHomeBrewListener)listener).exitAluBinaryOpcode(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AsmHomeBrewVisitor ) return ((AsmHomeBrewVisitor<? extends T>)visitor).visitAluBinaryOpcode(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final AluBinaryOpcodeContext aluBinaryOpcode() throws RecognitionException {
-		AluBinaryOpcodeContext _localctx = new AluBinaryOpcodeContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_aluBinaryOpcode);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(168);
-			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INC) | (1L << DEC) | (1L << NOT))) != 0)) ) {
-			_errHandler.recoverInline(this);
-			}
-			else {
-				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-				_errHandler.reportMatch(this);
-				consume();
-			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1221,17 +1158,17 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final BinaryRegRegOperationContext binaryRegRegOperation() throws RecognitionException {
 		BinaryRegRegOperationContext _localctx = new BinaryRegRegOperationContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_binaryRegRegOperation);
+		enterRule(_localctx, 30, RULE_binaryRegRegOperation);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(170);
+			setState(164);
 			binaryRegRegOpCode();
-			setState(171);
+			setState(165);
 			register();
-			setState(172);
+			setState(166);
 			match(T__1);
-			setState(173);
+			setState(167);
 			register();
 			}
 		}
@@ -1250,6 +1187,9 @@ public class AsmHomeBrewParser extends Parser {
 		public TerminalNode MOV() { return getToken(AsmHomeBrewParser.MOV, 0); }
 		public TerminalNode STORE() { return getToken(AsmHomeBrewParser.STORE, 0); }
 		public TerminalNode FETCH() { return getToken(AsmHomeBrewParser.FETCH, 0); }
+		public TerminalNode INC() { return getToken(AsmHomeBrewParser.INC, 0); }
+		public TerminalNode DEC() { return getToken(AsmHomeBrewParser.DEC, 0); }
+		public TerminalNode NOT() { return getToken(AsmHomeBrewParser.NOT, 0); }
 		public BinaryRegRegOpCodeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1271,14 +1211,14 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final BinaryRegRegOpCodeContext binaryRegRegOpCode() throws RecognitionException {
 		BinaryRegRegOpCodeContext _localctx = new BinaryRegRegOpCodeContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_binaryRegRegOpCode);
+		enterRule(_localctx, 32, RULE_binaryRegRegOpCode);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(175);
+			setState(169);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << FETCH) | (1L << STORE))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << INC) | (1L << DEC) | (1L << NOT) | (1L << FETCH) | (1L << STORE))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1330,17 +1270,17 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final BinaryRegValOperationContext binaryRegValOperation() throws RecognitionException {
 		BinaryRegValOperationContext _localctx = new BinaryRegValOperationContext(_ctx, getState());
-		enterRule(_localctx, 36, RULE_binaryRegValOperation);
+		enterRule(_localctx, 34, RULE_binaryRegValOperation);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(177);
+			setState(171);
 			binaryRegValOpCode();
-			setState(178);
+			setState(172);
 			register();
-			setState(179);
+			setState(173);
 			match(T__1);
-			setState(180);
+			setState(174);
 			value();
 			}
 		}
@@ -1378,11 +1318,11 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final BinaryRegValOpCodeContext binaryRegValOpCode() throws RecognitionException {
 		BinaryRegValOpCodeContext _localctx = new BinaryRegValOpCodeContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_binaryRegValOpCode);
+		enterRule(_localctx, 36, RULE_binaryRegValOpCode);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(182);
+			setState(176);
 			match(LOAD);
 			}
 		}
@@ -1428,29 +1368,29 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final StackOperationContext stackOperation() throws RecognitionException {
 		StackOperationContext _localctx = new StackOperationContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_stackOperation);
+		enterRule(_localctx, 38, RULE_stackOperation);
 		try {
-			setState(187);
+			setState(181);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case PUSH:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(184);
+				setState(178);
 				pushOperation();
 				}
 				break;
 			case POP:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(185);
+				setState(179);
 				popOperation();
 				}
 				break;
 			case CALL:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(186);
+				setState(180);
 				callOperation();
 				}
 				break;
@@ -1498,17 +1438,17 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final PushOperationContext pushOperation() throws RecognitionException {
 		PushOperationContext _localctx = new PushOperationContext(_ctx, getState());
-		enterRule(_localctx, 42, RULE_pushOperation);
+		enterRule(_localctx, 40, RULE_pushOperation);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(189);
+			setState(183);
 			match(PUSH);
-			setState(190);
+			setState(184);
 			stackRegister();
-			setState(191);
+			setState(185);
 			match(T__1);
-			setState(192);
+			setState(186);
 			register();
 			}
 		}
@@ -1552,17 +1492,17 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final PopOperationContext popOperation() throws RecognitionException {
 		PopOperationContext _localctx = new PopOperationContext(_ctx, getState());
-		enterRule(_localctx, 44, RULE_popOperation);
+		enterRule(_localctx, 42, RULE_popOperation);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(194);
+			setState(188);
 			match(POP);
-			setState(195);
+			setState(189);
 			register();
-			setState(196);
+			setState(190);
 			match(T__1);
-			setState(197);
+			setState(191);
 			stackRegister();
 			}
 		}
@@ -1606,17 +1546,17 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final CallOperationContext callOperation() throws RecognitionException {
 		CallOperationContext _localctx = new CallOperationContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_callOperation);
+		enterRule(_localctx, 44, RULE_callOperation);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(199);
+			setState(193);
 			match(CALL);
-			setState(200);
+			setState(194);
 			stackRegister();
-			setState(201);
+			setState(195);
 			match(T__1);
-			setState(202);
+			setState(196);
 			value();
 			}
 		}
@@ -1656,11 +1596,11 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final TernaryOperationContext ternaryOperation() throws RecognitionException {
 		TernaryOperationContext _localctx = new TernaryOperationContext(_ctx, getState());
-		enterRule(_localctx, 48, RULE_ternaryOperation);
+		enterRule(_localctx, 46, RULE_ternaryOperation);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(204);
+			setState(198);
 			aluTernaryOperation();
 			}
 		}
@@ -1706,21 +1646,21 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final AluTernaryOperationContext aluTernaryOperation() throws RecognitionException {
 		AluTernaryOperationContext _localctx = new AluTernaryOperationContext(_ctx, getState());
-		enterRule(_localctx, 50, RULE_aluTernaryOperation);
+		enterRule(_localctx, 48, RULE_aluTernaryOperation);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(206);
+			setState(200);
 			aluTernaryOpcode();
-			setState(207);
+			setState(201);
 			register();
-			setState(208);
+			setState(202);
 			match(T__1);
-			setState(209);
+			setState(203);
 			register();
-			setState(210);
+			setState(204);
 			match(T__1);
-			setState(211);
+			setState(205);
 			register();
 			}
 		}
@@ -1763,12 +1703,12 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final AluTernaryOpcodeContext aluTernaryOpcode() throws RecognitionException {
 		AluTernaryOpcodeContext _localctx = new AluTernaryOpcodeContext(_ctx, getState());
-		enterRule(_localctx, 52, RULE_aluTernaryOpcode);
+		enterRule(_localctx, 50, RULE_aluTernaryOpcode);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(213);
+			setState(207);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ADD) | (1L << AND) | (1L << OR) | (1L << XOR) | (1L << CMP) | (1L << SUB))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -1822,29 +1762,29 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final ValueContext value() throws RecognitionException {
 		ValueContext _localctx = new ValueContext(_ctx, getState());
-		enterRule(_localctx, 54, RULE_value);
+		enterRule(_localctx, 52, RULE_value);
 		try {
-			setState(218);
+			setState(212);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NAME:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(215);
+				setState(209);
 				label();
 				}
 				break;
 			case NUMBER:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(216);
+				setState(210);
 				number();
 				}
 				break;
 			case JAVASCRIPT:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(217);
+				setState(211);
 				jsExpression();
 				}
 				break;
@@ -1888,11 +1828,11 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final LabelContext label() throws RecognitionException {
 		LabelContext _localctx = new LabelContext(_ctx, getState());
-		enterRule(_localctx, 56, RULE_label);
+		enterRule(_localctx, 54, RULE_label);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(220);
+			setState(214);
 			name();
 			}
 		}
@@ -1937,12 +1877,12 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final RegisterContext register() throws RecognitionException {
 		RegisterContext _localctx = new RegisterContext(_ctx, getState());
-		enterRule(_localctx, 58, RULE_register);
+		enterRule(_localctx, 56, RULE_register);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(222);
+			setState(216);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << AX) | (1L << BX) | (1L << CX) | (1L << DX) | (1L << EX) | (1L << SP) | (1L << RP) | (1L << PC))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -1989,12 +1929,12 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final StackRegisterContext stackRegister() throws RecognitionException {
 		StackRegisterContext _localctx = new StackRegisterContext(_ctx, getState());
-		enterRule(_localctx, 60, RULE_stackRegister);
+		enterRule(_localctx, 58, RULE_stackRegister);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(224);
+			setState(218);
 			_la = _input.LA(1);
 			if ( !(_la==SP || _la==RP) ) {
 			_errHandler.recoverInline(this);
@@ -2072,12 +2012,12 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final OpcodeContext opcode() throws RecognitionException {
 		OpcodeContext _localctx = new OpcodeContext(_ctx, getState());
-		enterRule(_localctx, 62, RULE_opcode);
+		enterRule(_localctx, 60, RULE_opcode);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(226);
+			setState(220);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MOV) | (1L << CLR) | (1L << ADD) | (1L << INC) | (1L << DEC) | (1L << AND) | (1L << OR) | (1L << XOR) | (1L << NOT) | (1L << CMP) | (1L << SUB) | (1L << LOAD) | (1L << FETCH) | (1L << STORE) | (1L << PUSH) | (1L << POP) | (1L << RET) | (1L << CALL) | (1L << WRDIN) | (1L << WRDOUT) | (1L << JMP) | (1L << JZ) | (1L << JNZ) | (1L << JS) | (1L << JNS) | (1L << JC) | (1L << JNC) | (1L << JO) | (1L << JNO) | (1L << NOP) | (1L << HALT) | (1L << TIN) | (1L << TOUT))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -2134,36 +2074,36 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final AssemblerDirectiveContext assemblerDirective() throws RecognitionException {
 		AssemblerDirectiveContext _localctx = new AssemblerDirectiveContext(_ctx, getState());
-		enterRule(_localctx, 64, RULE_assemblerDirective);
+		enterRule(_localctx, 62, RULE_assemblerDirective);
 		try {
-			setState(232);
+			setState(226);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(228);
+				setState(222);
 				jsExpression();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(229);
+				setState(223);
 				assemblerOrgDirective();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(230);
+				setState(224);
 				assemblerWordDeclaration();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(231);
+				setState(225);
 				assemblerStringDeclaration();
 				}
 				break;
@@ -2206,13 +2146,13 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final AssemblerOrgDirectiveContext assemblerOrgDirective() throws RecognitionException {
 		AssemblerOrgDirectiveContext _localctx = new AssemblerOrgDirectiveContext(_ctx, getState());
-		enterRule(_localctx, 66, RULE_assemblerOrgDirective);
+		enterRule(_localctx, 64, RULE_assemblerOrgDirective);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(234);
+			setState(228);
 			match(ORG);
-			setState(235);
+			setState(229);
 			jsExpression();
 			}
 		}
@@ -2259,44 +2199,44 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final AssemblerWordDeclarationContext assemblerWordDeclaration() throws RecognitionException {
 		AssemblerWordDeclarationContext _localctx = new AssemblerWordDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 68, RULE_assemblerWordDeclaration);
+		enterRule(_localctx, 66, RULE_assemblerWordDeclaration);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(238);
+			setState(232);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==NAME) {
 				{
-				setState(237);
+				setState(231);
 				labelDefinition();
 				}
 			}
 
-			setState(240);
+			setState(234);
 			match(DW);
-			setState(245); 
+			setState(239); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(242);
+				setState(236);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__1) {
 					{
-					setState(241);
+					setState(235);
 					match(T__1);
 					}
 				}
 
-				setState(244);
+				setState(238);
 				value();
 				}
 				}
-				setState(247); 
+				setState(241); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << NAME) | (1L << NUMBER) | (1L << JAVASCRIPT))) != 0) );
@@ -2340,24 +2280,24 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final AssemblerStringDeclarationContext assemblerStringDeclaration() throws RecognitionException {
 		AssemblerStringDeclarationContext _localctx = new AssemblerStringDeclarationContext(_ctx, getState());
-		enterRule(_localctx, 70, RULE_assemblerStringDeclaration);
+		enterRule(_localctx, 68, RULE_assemblerStringDeclaration);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(250);
+			setState(244);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==NAME) {
 				{
-				setState(249);
+				setState(243);
 				labelDefinition();
 				}
 			}
 
-			setState(252);
+			setState(246);
 			match(DS);
-			setState(253);
+			setState(247);
 			match(STRING);
 			}
 		}
@@ -2403,108 +2343,120 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final MacroContext macro() throws RecognitionException {
 		MacroContext _localctx = new MacroContext(_ctx, getState());
-		enterRule(_localctx, 72, RULE_macro);
+		enterRule(_localctx, 70, RULE_macro);
 		try {
-			setState(376);
+			setState(370);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(255);
+				setState(249);
 				macroName();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(256);
+				setState(250);
 				macroName();
-				setState(257);
+				setState(251);
 				macroParamValue();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(259);
+				setState(253);
 				macroName();
-				setState(260);
+				setState(254);
 				macroParamValue();
-				setState(261);
+				setState(255);
 				match(T__1);
-				setState(262);
+				setState(256);
 				macroParamValue();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(264);
+				setState(258);
 				macroName();
-				setState(265);
+				setState(259);
 				macroParamValue();
-				setState(266);
+				setState(260);
 				match(T__1);
-				setState(267);
+				setState(261);
 				macroParamValue();
-				setState(268);
+				setState(262);
 				match(T__1);
-				setState(269);
+				setState(263);
 				macroParamValue();
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(271);
+				setState(265);
 				macroName();
+				setState(266);
+				macroParamValue();
+				setState(267);
+				match(T__1);
+				setState(268);
+				macroParamValue();
+				setState(269);
+				match(T__1);
+				setState(270);
+				macroParamValue();
+				setState(271);
+				match(T__1);
 				setState(272);
-				macroParamValue();
-				setState(273);
-				match(T__1);
-				setState(274);
-				macroParamValue();
-				setState(275);
-				match(T__1);
-				setState(276);
-				macroParamValue();
-				setState(277);
-				match(T__1);
-				setState(278);
 				macroParamValue();
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(280);
+				setState(274);
 				macroName();
+				setState(275);
+				macroParamValue();
+				setState(276);
+				match(T__1);
+				setState(277);
+				macroParamValue();
+				setState(278);
+				match(T__1);
+				setState(279);
+				macroParamValue();
+				setState(280);
+				match(T__1);
 				setState(281);
 				macroParamValue();
 				setState(282);
 				match(T__1);
 				setState(283);
 				macroParamValue();
-				setState(284);
-				match(T__1);
-				setState(285);
-				macroParamValue();
-				setState(286);
-				match(T__1);
-				setState(287);
-				macroParamValue();
-				setState(288);
-				match(T__1);
-				setState(289);
-				macroParamValue();
 				}
 				break;
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(291);
+				setState(285);
 				macroName();
+				setState(286);
+				macroParamValue();
+				setState(287);
+				match(T__1);
+				setState(288);
+				macroParamValue();
+				setState(289);
+				match(T__1);
+				setState(290);
+				macroParamValue();
+				setState(291);
+				match(T__1);
 				setState(292);
 				macroParamValue();
 				setState(293);
@@ -2515,25 +2467,25 @@ public class AsmHomeBrewParser extends Parser {
 				match(T__1);
 				setState(296);
 				macroParamValue();
-				setState(297);
-				match(T__1);
-				setState(298);
-				macroParamValue();
-				setState(299);
-				match(T__1);
-				setState(300);
-				macroParamValue();
-				setState(301);
-				match(T__1);
-				setState(302);
-				macroParamValue();
 				}
 				break;
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(304);
+				setState(298);
 				macroName();
+				setState(299);
+				macroParamValue();
+				setState(300);
+				match(T__1);
+				setState(301);
+				macroParamValue();
+				setState(302);
+				match(T__1);
+				setState(303);
+				macroParamValue();
+				setState(304);
+				match(T__1);
 				setState(305);
 				macroParamValue();
 				setState(306);
@@ -2548,25 +2500,25 @@ public class AsmHomeBrewParser extends Parser {
 				match(T__1);
 				setState(311);
 				macroParamValue();
-				setState(312);
-				match(T__1);
-				setState(313);
-				macroParamValue();
-				setState(314);
-				match(T__1);
-				setState(315);
-				macroParamValue();
-				setState(316);
-				match(T__1);
-				setState(317);
-				macroParamValue();
 				}
 				break;
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(319);
+				setState(313);
 				macroName();
+				setState(314);
+				macroParamValue();
+				setState(315);
+				match(T__1);
+				setState(316);
+				macroParamValue();
+				setState(317);
+				match(T__1);
+				setState(318);
+				macroParamValue();
+				setState(319);
+				match(T__1);
 				setState(320);
 				macroParamValue();
 				setState(321);
@@ -2585,25 +2537,25 @@ public class AsmHomeBrewParser extends Parser {
 				match(T__1);
 				setState(328);
 				macroParamValue();
-				setState(329);
-				match(T__1);
-				setState(330);
-				macroParamValue();
-				setState(331);
-				match(T__1);
-				setState(332);
-				macroParamValue();
-				setState(333);
-				match(T__1);
-				setState(334);
-				macroParamValue();
 				}
 				break;
 			case 10:
 				enterOuterAlt(_localctx, 10);
 				{
-				setState(336);
+				setState(330);
 				macroName();
+				setState(331);
+				macroParamValue();
+				setState(332);
+				match(T__1);
+				setState(333);
+				macroParamValue();
+				setState(334);
+				match(T__1);
+				setState(335);
+				macroParamValue();
+				setState(336);
+				match(T__1);
 				setState(337);
 				macroParamValue();
 				setState(338);
@@ -2626,25 +2578,25 @@ public class AsmHomeBrewParser extends Parser {
 				match(T__1);
 				setState(347);
 				macroParamValue();
-				setState(348);
-				match(T__1);
-				setState(349);
-				macroParamValue();
-				setState(350);
-				match(T__1);
-				setState(351);
-				macroParamValue();
-				setState(352);
-				match(T__1);
-				setState(353);
-				macroParamValue();
 				}
 				break;
 			case 11:
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(355);
+				setState(349);
 				macroName();
+				setState(350);
+				macroParamValue();
+				setState(351);
+				match(T__1);
+				setState(352);
+				macroParamValue();
+				setState(353);
+				match(T__1);
+				setState(354);
+				macroParamValue();
+				setState(355);
+				match(T__1);
 				setState(356);
 				macroParamValue();
 				setState(357);
@@ -2670,18 +2622,6 @@ public class AsmHomeBrewParser extends Parser {
 				setState(367);
 				match(T__1);
 				setState(368);
-				macroParamValue();
-				setState(369);
-				match(T__1);
-				setState(370);
-				macroParamValue();
-				setState(371);
-				match(T__1);
-				setState(372);
-				macroParamValue();
-				setState(373);
-				match(T__1);
-				setState(374);
 				macroParamValue();
 				}
 				break;
@@ -2735,9 +2675,9 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final MacroParamValueContext macroParamValue() throws RecognitionException {
 		MacroParamValueContext _localctx = new MacroParamValueContext(_ctx, getState());
-		enterRule(_localctx, 74, RULE_macroParamValue);
+		enterRule(_localctx, 72, RULE_macroParamValue);
 		try {
-			setState(383);
+			setState(377);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case MOV:
@@ -2775,7 +2715,7 @@ public class AsmHomeBrewParser extends Parser {
 			case TOUT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(378);
+				setState(372);
 				opcode();
 				}
 				break;
@@ -2789,21 +2729,21 @@ public class AsmHomeBrewParser extends Parser {
 			case PC:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(379);
+				setState(373);
 				register();
 				}
 				break;
 			case STRING:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(380);
+				setState(374);
 				string();
 				}
 				break;
 			case PAREN_STRING:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(381);
+				setState(375);
 				parenString();
 				}
 				break;
@@ -2812,7 +2752,7 @@ public class AsmHomeBrewParser extends Parser {
 			case JAVASCRIPT:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(382);
+				setState(376);
 				value();
 				}
 				break;
@@ -2854,11 +2794,11 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final JsExpressionContext jsExpression() throws RecognitionException {
 		JsExpressionContext _localctx = new JsExpressionContext(_ctx, getState());
-		enterRule(_localctx, 76, RULE_jsExpression);
+		enterRule(_localctx, 74, RULE_jsExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(385);
+			setState(379);
 			match(JAVASCRIPT);
 			}
 		}
@@ -2896,11 +2836,11 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final NameContext name() throws RecognitionException {
 		NameContext _localctx = new NameContext(_ctx, getState());
-		enterRule(_localctx, 78, RULE_name);
+		enterRule(_localctx, 76, RULE_name);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(387);
+			setState(381);
 			match(NAME);
 			}
 		}
@@ -2938,11 +2878,11 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final MacroNameContext macroName() throws RecognitionException {
 		MacroNameContext _localctx = new MacroNameContext(_ctx, getState());
-		enterRule(_localctx, 80, RULE_macroName);
+		enterRule(_localctx, 78, RULE_macroName);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(389);
+			setState(383);
 			match(MACRO_NAME);
 			}
 		}
@@ -2980,11 +2920,11 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final NumberContext number() throws RecognitionException {
 		NumberContext _localctx = new NumberContext(_ctx, getState());
-		enterRule(_localctx, 82, RULE_number);
+		enterRule(_localctx, 80, RULE_number);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(391);
+			setState(385);
 			match(NUMBER);
 			}
 		}
@@ -3022,11 +2962,11 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final CommentContext comment() throws RecognitionException {
 		CommentContext _localctx = new CommentContext(_ctx, getState());
-		enterRule(_localctx, 84, RULE_comment);
+		enterRule(_localctx, 82, RULE_comment);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(393);
+			setState(387);
 			match(COMMENT);
 			}
 		}
@@ -3064,11 +3004,11 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final StringContext string() throws RecognitionException {
 		StringContext _localctx = new StringContext(_ctx, getState());
-		enterRule(_localctx, 86, RULE_string);
+		enterRule(_localctx, 84, RULE_string);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(395);
+			setState(389);
 			match(STRING);
 			}
 		}
@@ -3106,11 +3046,11 @@ public class AsmHomeBrewParser extends Parser {
 
 	public final ParenStringContext parenString() throws RecognitionException {
 		ParenStringContext _localctx = new ParenStringContext(_ctx, getState());
-		enterRule(_localctx, 88, RULE_parenString);
+		enterRule(_localctx, 86, RULE_parenString);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(397);
+			setState(391);
 			match(PAREN_STRING);
 			}
 		}
@@ -3126,134 +3066,131 @@ public class AsmHomeBrewParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3;\u0192\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3;\u018c\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
 		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36\4\37\t\37\4 \t \4!"+
 		"\t!\4\"\t\"\4#\t#\4$\t$\4%\t%\4&\t&\4\'\t\'\4(\t(\4)\t)\4*\t*\4+\t+\4"+
-		",\t,\4-\t-\4.\t.\3\2\5\2^\n\2\3\2\6\2a\n\2\r\2\16\2b\3\3\3\3\3\3\5\3h"+
-		"\n\3\3\3\3\3\5\3l\n\3\3\3\3\3\5\3p\n\3\3\3\3\3\5\3t\n\3\5\3v\n\3\3\4\5"+
-		"\4y\n\4\3\4\3\4\5\4}\n\4\3\5\3\5\3\5\3\6\3\6\3\6\3\6\5\6\u0086\n\6\3\7"+
-		"\3\7\3\b\3\b\3\b\3\b\5\b\u008e\n\b\3\t\3\t\3\t\3\n\3\n\3\n\3\13\3\13\3"+
-		"\13\3\f\3\f\3\r\3\r\3\r\3\16\3\16\3\17\3\17\3\17\3\17\5\17\u00a4\n\17"+
-		"\3\20\3\20\3\20\3\20\3\20\3\21\3\21\3\22\3\22\3\22\3\22\3\22\3\23\3\23"+
-		"\3\24\3\24\3\24\3\24\3\24\3\25\3\25\3\26\3\26\3\26\5\26\u00be\n\26\3\27"+
-		"\3\27\3\27\3\27\3\27\3\30\3\30\3\30\3\30\3\30\3\31\3\31\3\31\3\31\3\31"+
-		"\3\32\3\32\3\33\3\33\3\33\3\33\3\33\3\33\3\33\3\34\3\34\3\35\3\35\3\35"+
-		"\5\35\u00dd\n\35\3\36\3\36\3\37\3\37\3 \3 \3!\3!\3\"\3\"\3\"\3\"\5\"\u00eb"+
-		"\n\"\3#\3#\3#\3$\5$\u00f1\n$\3$\3$\5$\u00f5\n$\3$\6$\u00f8\n$\r$\16$\u00f9"+
-		"\3%\5%\u00fd\n%\3%\3%\3%\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&"+
-		"\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&"+
-		"\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&"+
-		"\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&"+
-		"\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&"+
-		"\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\3&\5&\u017b\n&\3\'\3\'\3\'\3\'"+
-		"\3\'\5\'\u0182\n\'\3(\3(\3)\3)\3*\3*\3+\3+\3,\3,\3-\3-\3.\3.\3.\2\2/\2"+
-		"\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJL"+
-		"NPRTVXZ\2\13\3\2\"%\3\2\27\30\3\2\31!\4\2\b\t\r\r\4\2\5\5\21\22\5\2\7"+
-		"\7\n\f\16\17\3\2)\60\3\2./\3\2\5%\2\u0192\2`\3\2\2\2\4u\3\2\2\2\6x\3\2"+
-		"\2\2\b~\3\2\2\2\n\u0085\3\2\2\2\f\u0087\3\2\2\2\16\u008d\3\2\2\2\20\u008f"+
-		"\3\2\2\2\22\u0092\3\2\2\2\24\u0095\3\2\2\2\26\u0098\3\2\2\2\30\u009a\3"+
-		"\2\2\2\32\u009d\3\2\2\2\34\u00a3\3\2\2\2\36\u00a5\3\2\2\2 \u00aa\3\2\2"+
-		"\2\"\u00ac\3\2\2\2$\u00b1\3\2\2\2&\u00b3\3\2\2\2(\u00b8\3\2\2\2*\u00bd"+
-		"\3\2\2\2,\u00bf\3\2\2\2.\u00c4\3\2\2\2\60\u00c9\3\2\2\2\62\u00ce\3\2\2"+
-		"\2\64\u00d0\3\2\2\2\66\u00d7\3\2\2\28\u00dc\3\2\2\2:\u00de\3\2\2\2<\u00e0"+
-		"\3\2\2\2>\u00e2\3\2\2\2@\u00e4\3\2\2\2B\u00ea\3\2\2\2D\u00ec\3\2\2\2F"+
-		"\u00f0\3\2\2\2H\u00fc\3\2\2\2J\u017a\3\2\2\2L\u0181\3\2\2\2N\u0183\3\2"+
-		"\2\2P\u0185\3\2\2\2R\u0187\3\2\2\2T\u0189\3\2\2\2V\u018b\3\2\2\2X\u018d"+
-		"\3\2\2\2Z\u018f\3\2\2\2\\^\5\4\3\2]\\\3\2\2\2]^\3\2\2\2^_\3\2\2\2_a\7"+
-		":\2\2`]\3\2\2\2ab\3\2\2\2b`\3\2\2\2bc\3\2\2\2c\3\3\2\2\2dv\5V,\2eg\5\b"+
-		"\5\2fh\5V,\2gf\3\2\2\2gh\3\2\2\2hv\3\2\2\2ik\5\6\4\2jl\5V,\2kj\3\2\2\2"+
-		"kl\3\2\2\2lv\3\2\2\2mo\5B\"\2np\5V,\2on\3\2\2\2op\3\2\2\2pv\3\2\2\2qs"+
-		"\5J&\2rt\5V,\2sr\3\2\2\2st\3\2\2\2tv\3\2\2\2ud\3\2\2\2ue\3\2\2\2ui\3\2"+
-		"\2\2um\3\2\2\2uq\3\2\2\2v\5\3\2\2\2wy\5\b\5\2xw\3\2\2\2xy\3\2\2\2yz\3"+
-		"\2\2\2z|\5\n\6\2{}\5V,\2|{\3\2\2\2|}\3\2\2\2}\7\3\2\2\2~\177\5:\36\2\177"+
-		"\u0080\7\3\2\2\u0080\t\3\2\2\2\u0081\u0086\5\f\7\2\u0082\u0086\5\16\b"+
-		"\2\u0083\u0086\5\34\17\2\u0084\u0086\5\62\32\2\u0085\u0081\3\2\2\2\u0085"+
-		"\u0082\3\2\2\2\u0085\u0083\3\2\2\2\u0085\u0084\3\2\2\2\u0086\13\3\2\2"+
-		"\2\u0087\u0088\t\2\2\2\u0088\r\3\2\2\2\u0089\u008e\5\24\13\2\u008a\u008e"+
-		"\5\20\t\2\u008b\u008e\5\30\r\2\u008c\u008e\5\22\n\2\u008d\u0089\3\2\2"+
-		"\2\u008d\u008a\3\2\2\2\u008d\u008b\3\2\2\2\u008d\u008c\3\2\2\2\u008e\17"+
-		"\3\2\2\2\u008f\u0090\7\25\2\2\u0090\u0091\5> \2\u0091\21\3\2\2\2\u0092"+
-		"\u0093\7\6\2\2\u0093\u0094\5<\37\2\u0094\23\3\2\2\2\u0095\u0096\5\26\f"+
-		"\2\u0096\u0097\5<\37\2\u0097\25\3\2\2\2\u0098\u0099\t\3\2\2\u0099\27\3"+
-		"\2\2\2\u009a\u009b\5\32\16\2\u009b\u009c\58\35\2\u009c\31\3\2\2\2\u009d"+
-		"\u009e\t\4\2\2\u009e\33\3\2\2\2\u009f\u00a4\5\36\20\2\u00a0\u00a4\5\""+
-		"\22\2\u00a1\u00a4\5&\24\2\u00a2\u00a4\5*\26\2\u00a3\u009f\3\2\2\2\u00a3"+
-		"\u00a0\3\2\2\2\u00a3\u00a1\3\2\2\2\u00a3\u00a2\3\2\2\2\u00a4\35\3\2\2"+
-		"\2\u00a5\u00a6\5 \21\2\u00a6\u00a7\5<\37\2\u00a7\u00a8\7\4\2\2\u00a8\u00a9"+
-		"\5<\37\2\u00a9\37\3\2\2\2\u00aa\u00ab\t\5\2\2\u00ab!\3\2\2\2\u00ac\u00ad"+
-		"\5$\23\2\u00ad\u00ae\5<\37\2\u00ae\u00af\7\4\2\2\u00af\u00b0\5<\37\2\u00b0"+
-		"#\3\2\2\2\u00b1\u00b2\t\6\2\2\u00b2%\3\2\2\2\u00b3\u00b4\5(\25\2\u00b4"+
-		"\u00b5\5<\37\2\u00b5\u00b6\7\4\2\2\u00b6\u00b7\58\35\2\u00b7\'\3\2\2\2"+
-		"\u00b8\u00b9\7\20\2\2\u00b9)\3\2\2\2\u00ba\u00be\5,\27\2\u00bb\u00be\5"+
-		".\30\2\u00bc\u00be\5\60\31\2\u00bd\u00ba\3\2\2\2\u00bd\u00bb\3\2\2\2\u00bd"+
-		"\u00bc\3\2\2\2\u00be+\3\2\2\2\u00bf\u00c0\7\23\2\2\u00c0\u00c1\5> \2\u00c1"+
-		"\u00c2\7\4\2\2\u00c2\u00c3\5<\37\2\u00c3-\3\2\2\2\u00c4\u00c5\7\24\2\2"+
-		"\u00c5\u00c6\5<\37\2\u00c6\u00c7\7\4\2\2\u00c7\u00c8\5> \2\u00c8/\3\2"+
-		"\2\2\u00c9\u00ca\7\26\2\2\u00ca\u00cb\5> \2\u00cb\u00cc\7\4\2\2\u00cc"+
-		"\u00cd\58\35\2\u00cd\61\3\2\2\2\u00ce\u00cf\5\64\33\2\u00cf\63\3\2\2\2"+
-		"\u00d0\u00d1\5\66\34\2\u00d1\u00d2\5<\37\2\u00d2\u00d3\7\4\2\2\u00d3\u00d4"+
-		"\5<\37\2\u00d4\u00d5\7\4\2\2\u00d5\u00d6\5<\37\2\u00d6\65\3\2\2\2\u00d7"+
-		"\u00d8\t\7\2\2\u00d8\67\3\2\2\2\u00d9\u00dd\5:\36\2\u00da\u00dd\5T+\2"+
-		"\u00db\u00dd\5N(\2\u00dc\u00d9\3\2\2\2\u00dc\u00da\3\2\2\2\u00dc\u00db"+
-		"\3\2\2\2\u00dd9\3\2\2\2\u00de\u00df\5P)\2\u00df;\3\2\2\2\u00e0\u00e1\t"+
-		"\b\2\2\u00e1=\3\2\2\2\u00e2\u00e3\t\t\2\2\u00e3?\3\2\2\2\u00e4\u00e5\t"+
-		"\n\2\2\u00e5A\3\2\2\2\u00e6\u00eb\5N(\2\u00e7\u00eb\5D#\2\u00e8\u00eb"+
-		"\5F$\2\u00e9\u00eb\5H%\2\u00ea\u00e6\3\2\2\2\u00ea\u00e7\3\2\2\2\u00ea"+
-		"\u00e8\3\2\2\2\u00ea\u00e9\3\2\2\2\u00ebC\3\2\2\2\u00ec\u00ed\7&\2\2\u00ed"+
-		"\u00ee\5N(\2\u00eeE\3\2\2\2\u00ef\u00f1\5\b\5\2\u00f0\u00ef\3\2\2\2\u00f0"+
-		"\u00f1\3\2\2\2\u00f1\u00f2\3\2\2\2\u00f2\u00f7\7\'\2\2\u00f3\u00f5\7\4"+
-		"\2\2\u00f4\u00f3\3\2\2\2\u00f4\u00f5\3\2\2\2\u00f5\u00f6\3\2\2\2\u00f6"+
-		"\u00f8\58\35\2\u00f7\u00f4\3\2\2\2\u00f8\u00f9\3\2\2\2\u00f9\u00f7\3\2"+
-		"\2\2\u00f9\u00fa\3\2\2\2\u00faG\3\2\2\2\u00fb\u00fd\5\b\5\2\u00fc\u00fb"+
-		"\3\2\2\2\u00fc\u00fd\3\2\2\2\u00fd\u00fe\3\2\2\2\u00fe\u00ff\7(\2\2\u00ff"+
-		"\u0100\7\67\2\2\u0100I\3\2\2\2\u0101\u017b\5R*\2\u0102\u0103\5R*\2\u0103"+
-		"\u0104\5L\'\2\u0104\u017b\3\2\2\2\u0105\u0106\5R*\2\u0106\u0107\5L\'\2"+
-		"\u0107\u0108\7\4\2\2\u0108\u0109\5L\'\2\u0109\u017b\3\2\2\2\u010a\u010b"+
-		"\5R*\2\u010b\u010c\5L\'\2\u010c\u010d\7\4\2\2\u010d\u010e\5L\'\2\u010e"+
-		"\u010f\7\4\2\2\u010f\u0110\5L\'\2\u0110\u017b\3\2\2\2\u0111\u0112\5R*"+
-		"\2\u0112\u0113\5L\'\2\u0113\u0114\7\4\2\2\u0114\u0115\5L\'\2\u0115\u0116"+
-		"\7\4\2\2\u0116\u0117\5L\'\2\u0117\u0118\7\4\2\2\u0118\u0119\5L\'\2\u0119"+
-		"\u017b\3\2\2\2\u011a\u011b\5R*\2\u011b\u011c\5L\'\2\u011c\u011d\7\4\2"+
-		"\2\u011d\u011e\5L\'\2\u011e\u011f\7\4\2\2\u011f\u0120\5L\'\2\u0120\u0121"+
-		"\7\4\2\2\u0121\u0122\5L\'\2\u0122\u0123\7\4\2\2\u0123\u0124\5L\'\2\u0124"+
-		"\u017b\3\2\2\2\u0125\u0126\5R*\2\u0126\u0127\5L\'\2\u0127\u0128\7\4\2"+
-		"\2\u0128\u0129\5L\'\2\u0129\u012a\7\4\2\2\u012a\u012b\5L\'\2\u012b\u012c"+
-		"\7\4\2\2\u012c\u012d\5L\'\2\u012d\u012e\7\4\2\2\u012e\u012f\5L\'\2\u012f"+
-		"\u0130\7\4\2\2\u0130\u0131\5L\'\2\u0131\u017b\3\2\2\2\u0132\u0133\5R*"+
-		"\2\u0133\u0134\5L\'\2\u0134\u0135\7\4\2\2\u0135\u0136\5L\'\2\u0136\u0137"+
-		"\7\4\2\2\u0137\u0138\5L\'\2\u0138\u0139\7\4\2\2\u0139\u013a\5L\'\2\u013a"+
-		"\u013b\7\4\2\2\u013b\u013c\5L\'\2\u013c\u013d\7\4\2\2\u013d\u013e\5L\'"+
-		"\2\u013e\u013f\7\4\2\2\u013f\u0140\5L\'\2\u0140\u017b\3\2\2\2\u0141\u0142"+
-		"\5R*\2\u0142\u0143\5L\'\2\u0143\u0144\7\4\2\2\u0144\u0145\5L\'\2\u0145"+
-		"\u0146\7\4\2\2\u0146\u0147\5L\'\2\u0147\u0148\7\4\2\2\u0148\u0149\5L\'"+
-		"\2\u0149\u014a\7\4\2\2\u014a\u014b\5L\'\2\u014b\u014c\7\4\2\2\u014c\u014d"+
-		"\5L\'\2\u014d\u014e\7\4\2\2\u014e\u014f\5L\'\2\u014f\u0150\7\4\2\2\u0150"+
-		"\u0151\5L\'\2\u0151\u017b\3\2\2\2\u0152\u0153\5R*\2\u0153\u0154\5L\'\2"+
-		"\u0154\u0155\7\4\2\2\u0155\u0156\5L\'\2\u0156\u0157\7\4\2\2\u0157\u0158"+
-		"\5L\'\2\u0158\u0159\7\4\2\2\u0159\u015a\5L\'\2\u015a\u015b\7\4\2\2\u015b"+
-		"\u015c\5L\'\2\u015c\u015d\7\4\2\2\u015d\u015e\5L\'\2\u015e\u015f\7\4\2"+
-		"\2\u015f\u0160\5L\'\2\u0160\u0161\7\4\2\2\u0161\u0162\5L\'\2\u0162\u0163"+
-		"\7\4\2\2\u0163\u0164\5L\'\2\u0164\u017b\3\2\2\2\u0165\u0166\5R*\2\u0166"+
-		"\u0167\5L\'\2\u0167\u0168\7\4\2\2\u0168\u0169\5L\'\2\u0169\u016a\7\4\2"+
-		"\2\u016a\u016b\5L\'\2\u016b\u016c\7\4\2\2\u016c\u016d\5L\'\2\u016d\u016e"+
-		"\7\4\2\2\u016e\u016f\5L\'\2\u016f\u0170\7\4\2\2\u0170\u0171\5L\'\2\u0171"+
-		"\u0172\7\4\2\2\u0172\u0173\5L\'\2\u0173\u0174\7\4\2\2\u0174\u0175\5L\'"+
-		"\2\u0175\u0176\7\4\2\2\u0176\u0177\5L\'\2\u0177\u0178\7\4\2\2\u0178\u0179"+
-		"\5L\'\2\u0179\u017b\3\2\2\2\u017a\u0101\3\2\2\2\u017a\u0102\3\2\2\2\u017a"+
-		"\u0105\3\2\2\2\u017a\u010a\3\2\2\2\u017a\u0111\3\2\2\2\u017a\u011a\3\2"+
-		"\2\2\u017a\u0125\3\2\2\2\u017a\u0132\3\2\2\2\u017a\u0141\3\2\2\2\u017a"+
-		"\u0152\3\2\2\2\u017a\u0165\3\2\2\2\u017bK\3\2\2\2\u017c\u0182\5@!\2\u017d"+
-		"\u0182\5<\37\2\u017e\u0182\5X-\2\u017f\u0182\5Z.\2\u0180\u0182\58\35\2"+
-		"\u0181\u017c\3\2\2\2\u0181\u017d\3\2\2\2\u0181\u017e\3\2\2\2\u0181\u017f"+
-		"\3\2\2\2\u0181\u0180\3\2\2\2\u0182M\3\2\2\2\u0183\u0184\79\2\2\u0184O"+
-		"\3\2\2\2\u0185\u0186\7\61\2\2\u0186Q\3\2\2\2\u0187\u0188\7\62\2\2\u0188"+
-		"S\3\2\2\2\u0189\u018a\7\63\2\2\u018aU\3\2\2\2\u018b\u018c\7\66\2\2\u018c"+
-		"W\3\2\2\2\u018d\u018e\7\67\2\2\u018eY\3\2\2\2\u018f\u0190\78\2\2\u0190"+
-		"[\3\2\2\2\27]bgkosux|\u0085\u008d\u00a3\u00bd\u00dc\u00ea\u00f0\u00f4"+
-		"\u00f9\u00fc\u017a\u0181";
+		",\t,\4-\t-\3\2\5\2\\\n\2\3\2\6\2_\n\2\r\2\16\2`\3\3\3\3\3\3\5\3f\n\3\3"+
+		"\3\3\3\5\3j\n\3\3\3\3\3\5\3n\n\3\3\3\3\3\5\3r\n\3\5\3t\n\3\3\4\5\4w\n"+
+		"\4\3\4\3\4\5\4{\n\4\3\5\3\5\3\5\3\6\3\6\3\6\3\6\5\6\u0084\n\6\3\7\3\7"+
+		"\3\b\3\b\3\b\3\b\3\b\5\b\u008d\n\b\3\t\3\t\3\t\3\n\3\n\3\n\3\13\3\13\3"+
+		"\13\3\f\3\f\3\r\3\r\3\r\3\16\3\16\3\16\3\17\3\17\3\20\3\20\3\20\5\20\u00a5"+
+		"\n\20\3\21\3\21\3\21\3\21\3\21\3\22\3\22\3\23\3\23\3\23\3\23\3\23\3\24"+
+		"\3\24\3\25\3\25\3\25\5\25\u00b8\n\25\3\26\3\26\3\26\3\26\3\26\3\27\3\27"+
+		"\3\27\3\27\3\27\3\30\3\30\3\30\3\30\3\30\3\31\3\31\3\32\3\32\3\32\3\32"+
+		"\3\32\3\32\3\32\3\33\3\33\3\34\3\34\3\34\5\34\u00d7\n\34\3\35\3\35\3\36"+
+		"\3\36\3\37\3\37\3 \3 \3!\3!\3!\3!\5!\u00e5\n!\3\"\3\"\3\"\3#\5#\u00eb"+
+		"\n#\3#\3#\5#\u00ef\n#\3#\6#\u00f2\n#\r#\16#\u00f3\3$\5$\u00f7\n$\3$\3"+
+		"$\3$\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3"+
+		"%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3"+
+		"%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3"+
+		"%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3"+
+		"%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3%\3"+
+		"%\3%\3%\3%\3%\3%\3%\3%\5%\u0175\n%\3&\3&\3&\3&\3&\5&\u017c\n&\3\'\3\'"+
+		"\3(\3(\3)\3)\3*\3*\3+\3+\3,\3,\3-\3-\3-\2\2.\2\4\6\b\n\f\16\20\22\24\26"+
+		"\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJLNPRTVX\2\n\3\2\"%\3\2\27\30"+
+		"\3\2\32!\6\2\5\5\b\t\r\r\21\22\5\2\7\7\n\f\16\17\3\2)\60\3\2./\3\2\5%"+
+		"\2\u018d\2^\3\2\2\2\4s\3\2\2\2\6v\3\2\2\2\b|\3\2\2\2\n\u0083\3\2\2\2\f"+
+		"\u0085\3\2\2\2\16\u008c\3\2\2\2\20\u008e\3\2\2\2\22\u0091\3\2\2\2\24\u0094"+
+		"\3\2\2\2\26\u0097\3\2\2\2\30\u0099\3\2\2\2\32\u009c\3\2\2\2\34\u009f\3"+
+		"\2\2\2\36\u00a4\3\2\2\2 \u00a6\3\2\2\2\"\u00ab\3\2\2\2$\u00ad\3\2\2\2"+
+		"&\u00b2\3\2\2\2(\u00b7\3\2\2\2*\u00b9\3\2\2\2,\u00be\3\2\2\2.\u00c3\3"+
+		"\2\2\2\60\u00c8\3\2\2\2\62\u00ca\3\2\2\2\64\u00d1\3\2\2\2\66\u00d6\3\2"+
+		"\2\28\u00d8\3\2\2\2:\u00da\3\2\2\2<\u00dc\3\2\2\2>\u00de\3\2\2\2@\u00e4"+
+		"\3\2\2\2B\u00e6\3\2\2\2D\u00ea\3\2\2\2F\u00f6\3\2\2\2H\u0174\3\2\2\2J"+
+		"\u017b\3\2\2\2L\u017d\3\2\2\2N\u017f\3\2\2\2P\u0181\3\2\2\2R\u0183\3\2"+
+		"\2\2T\u0185\3\2\2\2V\u0187\3\2\2\2X\u0189\3\2\2\2Z\\\5\4\3\2[Z\3\2\2\2"+
+		"[\\\3\2\2\2\\]\3\2\2\2]_\7:\2\2^[\3\2\2\2_`\3\2\2\2`^\3\2\2\2`a\3\2\2"+
+		"\2a\3\3\2\2\2bt\5T+\2ce\5\b\5\2df\5T+\2ed\3\2\2\2ef\3\2\2\2ft\3\2\2\2"+
+		"gi\5\6\4\2hj\5T+\2ih\3\2\2\2ij\3\2\2\2jt\3\2\2\2km\5@!\2ln\5T+\2ml\3\2"+
+		"\2\2mn\3\2\2\2nt\3\2\2\2oq\5H%\2pr\5T+\2qp\3\2\2\2qr\3\2\2\2rt\3\2\2\2"+
+		"sb\3\2\2\2sc\3\2\2\2sg\3\2\2\2sk\3\2\2\2so\3\2\2\2t\5\3\2\2\2uw\5\b\5"+
+		"\2vu\3\2\2\2vw\3\2\2\2wx\3\2\2\2xz\5\n\6\2y{\5T+\2zy\3\2\2\2z{\3\2\2\2"+
+		"{\7\3\2\2\2|}\58\35\2}~\7\3\2\2~\t\3\2\2\2\177\u0084\5\f\7\2\u0080\u0084"+
+		"\5\16\b\2\u0081\u0084\5\36\20\2\u0082\u0084\5\60\31\2\u0083\177\3\2\2"+
+		"\2\u0083\u0080\3\2\2\2\u0083\u0081\3\2\2\2\u0083\u0082\3\2\2\2\u0084\13"+
+		"\3\2\2\2\u0085\u0086\t\2\2\2\u0086\r\3\2\2\2\u0087\u008d\5\24\13\2\u0088"+
+		"\u008d\5\20\t\2\u0089\u008d\5\30\r\2\u008a\u008d\5\32\16\2\u008b\u008d"+
+		"\5\22\n\2\u008c\u0087\3\2\2\2\u008c\u0088\3\2\2\2\u008c\u0089\3\2\2\2"+
+		"\u008c\u008a\3\2\2\2\u008c\u008b\3\2\2\2\u008d\17\3\2\2\2\u008e\u008f"+
+		"\7\25\2\2\u008f\u0090\5<\37\2\u0090\21\3\2\2\2\u0091\u0092\7\6\2\2\u0092"+
+		"\u0093\5:\36\2\u0093\23\3\2\2\2\u0094\u0095\5\26\f\2\u0095\u0096\5:\36"+
+		"\2\u0096\25\3\2\2\2\u0097\u0098\t\3\2\2\u0098\27\3\2\2\2\u0099\u009a\7"+
+		"\31\2\2\u009a\u009b\5\66\34\2\u009b\31\3\2\2\2\u009c\u009d\5\34\17\2\u009d"+
+		"\u009e\5\66\34\2\u009e\33\3\2\2\2\u009f\u00a0\t\4\2\2\u00a0\35\3\2\2\2"+
+		"\u00a1\u00a5\5 \21\2\u00a2\u00a5\5$\23\2\u00a3\u00a5\5(\25\2\u00a4\u00a1"+
+		"\3\2\2\2\u00a4\u00a2\3\2\2\2\u00a4\u00a3\3\2\2\2\u00a5\37\3\2\2\2\u00a6"+
+		"\u00a7\5\"\22\2\u00a7\u00a8\5:\36\2\u00a8\u00a9\7\4\2\2\u00a9\u00aa\5"+
+		":\36\2\u00aa!\3\2\2\2\u00ab\u00ac\t\5\2\2\u00ac#\3\2\2\2\u00ad\u00ae\5"+
+		"&\24\2\u00ae\u00af\5:\36\2\u00af\u00b0\7\4\2\2\u00b0\u00b1\5\66\34\2\u00b1"+
+		"%\3\2\2\2\u00b2\u00b3\7\20\2\2\u00b3\'\3\2\2\2\u00b4\u00b8\5*\26\2\u00b5"+
+		"\u00b8\5,\27\2\u00b6\u00b8\5.\30\2\u00b7\u00b4\3\2\2\2\u00b7\u00b5\3\2"+
+		"\2\2\u00b7\u00b6\3\2\2\2\u00b8)\3\2\2\2\u00b9\u00ba\7\23\2\2\u00ba\u00bb"+
+		"\5<\37\2\u00bb\u00bc\7\4\2\2\u00bc\u00bd\5:\36\2\u00bd+\3\2\2\2\u00be"+
+		"\u00bf\7\24\2\2\u00bf\u00c0\5:\36\2\u00c0\u00c1\7\4\2\2\u00c1\u00c2\5"+
+		"<\37\2\u00c2-\3\2\2\2\u00c3\u00c4\7\26\2\2\u00c4\u00c5\5<\37\2\u00c5\u00c6"+
+		"\7\4\2\2\u00c6\u00c7\5\66\34\2\u00c7/\3\2\2\2\u00c8\u00c9\5\62\32\2\u00c9"+
+		"\61\3\2\2\2\u00ca\u00cb\5\64\33\2\u00cb\u00cc\5:\36\2\u00cc\u00cd\7\4"+
+		"\2\2\u00cd\u00ce\5:\36\2\u00ce\u00cf\7\4\2\2\u00cf\u00d0\5:\36\2\u00d0"+
+		"\63\3\2\2\2\u00d1\u00d2\t\6\2\2\u00d2\65\3\2\2\2\u00d3\u00d7\58\35\2\u00d4"+
+		"\u00d7\5R*\2\u00d5\u00d7\5L\'\2\u00d6\u00d3\3\2\2\2\u00d6\u00d4\3\2\2"+
+		"\2\u00d6\u00d5\3\2\2\2\u00d7\67\3\2\2\2\u00d8\u00d9\5N(\2\u00d99\3\2\2"+
+		"\2\u00da\u00db\t\7\2\2\u00db;\3\2\2\2\u00dc\u00dd\t\b\2\2\u00dd=\3\2\2"+
+		"\2\u00de\u00df\t\t\2\2\u00df?\3\2\2\2\u00e0\u00e5\5L\'\2\u00e1\u00e5\5"+
+		"B\"\2\u00e2\u00e5\5D#\2\u00e3\u00e5\5F$\2\u00e4\u00e0\3\2\2\2\u00e4\u00e1"+
+		"\3\2\2\2\u00e4\u00e2\3\2\2\2\u00e4\u00e3\3\2\2\2\u00e5A\3\2\2\2\u00e6"+
+		"\u00e7\7&\2\2\u00e7\u00e8\5L\'\2\u00e8C\3\2\2\2\u00e9\u00eb\5\b\5\2\u00ea"+
+		"\u00e9\3\2\2\2\u00ea\u00eb\3\2\2\2\u00eb\u00ec\3\2\2\2\u00ec\u00f1\7\'"+
+		"\2\2\u00ed\u00ef\7\4\2\2\u00ee\u00ed\3\2\2\2\u00ee\u00ef\3\2\2\2\u00ef"+
+		"\u00f0\3\2\2\2\u00f0\u00f2\5\66\34\2\u00f1\u00ee\3\2\2\2\u00f2\u00f3\3"+
+		"\2\2\2\u00f3\u00f1\3\2\2\2\u00f3\u00f4\3\2\2\2\u00f4E\3\2\2\2\u00f5\u00f7"+
+		"\5\b\5\2\u00f6\u00f5\3\2\2\2\u00f6\u00f7\3\2\2\2\u00f7\u00f8\3\2\2\2\u00f8"+
+		"\u00f9\7(\2\2\u00f9\u00fa\7\67\2\2\u00faG\3\2\2\2\u00fb\u0175\5P)\2\u00fc"+
+		"\u00fd\5P)\2\u00fd\u00fe\5J&\2\u00fe\u0175\3\2\2\2\u00ff\u0100\5P)\2\u0100"+
+		"\u0101\5J&\2\u0101\u0102\7\4\2\2\u0102\u0103\5J&\2\u0103\u0175\3\2\2\2"+
+		"\u0104\u0105\5P)\2\u0105\u0106\5J&\2\u0106\u0107\7\4\2\2\u0107\u0108\5"+
+		"J&\2\u0108\u0109\7\4\2\2\u0109\u010a\5J&\2\u010a\u0175\3\2\2\2\u010b\u010c"+
+		"\5P)\2\u010c\u010d\5J&\2\u010d\u010e\7\4\2\2\u010e\u010f\5J&\2\u010f\u0110"+
+		"\7\4\2\2\u0110\u0111\5J&\2\u0111\u0112\7\4\2\2\u0112\u0113\5J&\2\u0113"+
+		"\u0175\3\2\2\2\u0114\u0115\5P)\2\u0115\u0116\5J&\2\u0116\u0117\7\4\2\2"+
+		"\u0117\u0118\5J&\2\u0118\u0119\7\4\2\2\u0119\u011a\5J&\2\u011a\u011b\7"+
+		"\4\2\2\u011b\u011c\5J&\2\u011c\u011d\7\4\2\2\u011d\u011e\5J&\2\u011e\u0175"+
+		"\3\2\2\2\u011f\u0120\5P)\2\u0120\u0121\5J&\2\u0121\u0122\7\4\2\2\u0122"+
+		"\u0123\5J&\2\u0123\u0124\7\4\2\2\u0124\u0125\5J&\2\u0125\u0126\7\4\2\2"+
+		"\u0126\u0127\5J&\2\u0127\u0128\7\4\2\2\u0128\u0129\5J&\2\u0129\u012a\7"+
+		"\4\2\2\u012a\u012b\5J&\2\u012b\u0175\3\2\2\2\u012c\u012d\5P)\2\u012d\u012e"+
+		"\5J&\2\u012e\u012f\7\4\2\2\u012f\u0130\5J&\2\u0130\u0131\7\4\2\2\u0131"+
+		"\u0132\5J&\2\u0132\u0133\7\4\2\2\u0133\u0134\5J&\2\u0134\u0135\7\4\2\2"+
+		"\u0135\u0136\5J&\2\u0136\u0137\7\4\2\2\u0137\u0138\5J&\2\u0138\u0139\7"+
+		"\4\2\2\u0139\u013a\5J&\2\u013a\u0175\3\2\2\2\u013b\u013c\5P)\2\u013c\u013d"+
+		"\5J&\2\u013d\u013e\7\4\2\2\u013e\u013f\5J&\2\u013f\u0140\7\4\2\2\u0140"+
+		"\u0141\5J&\2\u0141\u0142\7\4\2\2\u0142\u0143\5J&\2\u0143\u0144\7\4\2\2"+
+		"\u0144\u0145\5J&\2\u0145\u0146\7\4\2\2\u0146\u0147\5J&\2\u0147\u0148\7"+
+		"\4\2\2\u0148\u0149\5J&\2\u0149\u014a\7\4\2\2\u014a\u014b\5J&\2\u014b\u0175"+
+		"\3\2\2\2\u014c\u014d\5P)\2\u014d\u014e\5J&\2\u014e\u014f\7\4\2\2\u014f"+
+		"\u0150\5J&\2\u0150\u0151\7\4\2\2\u0151\u0152\5J&\2\u0152\u0153\7\4\2\2"+
+		"\u0153\u0154\5J&\2\u0154\u0155\7\4\2\2\u0155\u0156\5J&\2\u0156\u0157\7"+
+		"\4\2\2\u0157\u0158\5J&\2\u0158\u0159\7\4\2\2\u0159\u015a\5J&\2\u015a\u015b"+
+		"\7\4\2\2\u015b\u015c\5J&\2\u015c\u015d\7\4\2\2\u015d\u015e\5J&\2\u015e"+
+		"\u0175\3\2\2\2\u015f\u0160\5P)\2\u0160\u0161\5J&\2\u0161\u0162\7\4\2\2"+
+		"\u0162\u0163\5J&\2\u0163\u0164\7\4\2\2\u0164\u0165\5J&\2\u0165\u0166\7"+
+		"\4\2\2\u0166\u0167\5J&\2\u0167\u0168\7\4\2\2\u0168\u0169\5J&\2\u0169\u016a"+
+		"\7\4\2\2\u016a\u016b\5J&\2\u016b\u016c\7\4\2\2\u016c\u016d\5J&\2\u016d"+
+		"\u016e\7\4\2\2\u016e\u016f\5J&\2\u016f\u0170\7\4\2\2\u0170\u0171\5J&\2"+
+		"\u0171\u0172\7\4\2\2\u0172\u0173\5J&\2\u0173\u0175\3\2\2\2\u0174\u00fb"+
+		"\3\2\2\2\u0174\u00fc\3\2\2\2\u0174\u00ff\3\2\2\2\u0174\u0104\3\2\2\2\u0174"+
+		"\u010b\3\2\2\2\u0174\u0114\3\2\2\2\u0174\u011f\3\2\2\2\u0174\u012c\3\2"+
+		"\2\2\u0174\u013b\3\2\2\2\u0174\u014c\3\2\2\2\u0174\u015f\3\2\2\2\u0175"+
+		"I\3\2\2\2\u0176\u017c\5> \2\u0177\u017c\5:\36\2\u0178\u017c\5V,\2\u0179"+
+		"\u017c\5X-\2\u017a\u017c\5\66\34\2\u017b\u0176\3\2\2\2\u017b\u0177\3\2"+
+		"\2\2\u017b\u0178\3\2\2\2\u017b\u0179\3\2\2\2\u017b\u017a\3\2\2\2\u017c"+
+		"K\3\2\2\2\u017d\u017e\79\2\2\u017eM\3\2\2\2\u017f\u0180\7\61\2\2\u0180"+
+		"O\3\2\2\2\u0181\u0182\7\62\2\2\u0182Q\3\2\2\2\u0183\u0184\7\63\2\2\u0184"+
+		"S\3\2\2\2\u0185\u0186\7\66\2\2\u0186U\3\2\2\2\u0187\u0188\7\67\2\2\u0188"+
+		"W\3\2\2\2\u0189\u018a\78\2\2\u018aY\3\2\2\2\27[`eimqsvz\u0083\u008c\u00a4"+
+		"\u00b7\u00d6\u00e4\u00ea\u00ee\u00f3\u00f6\u0174\u017b";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

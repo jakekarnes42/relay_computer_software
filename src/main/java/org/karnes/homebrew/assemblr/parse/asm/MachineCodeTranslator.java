@@ -1,9 +1,10 @@
 package org.karnes.homebrew.assemblr.parse.asm;
 
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
-import org.karnes.homebrew.emulator.InstructionOpcode;
-import org.karnes.homebrew.emulator.Register;
+import org.karnes.homebrew.bitset.BitSet16;
+import org.karnes.homebrew.emulator.component.register.RegisterName;
+import org.karnes.homebrew.emulator.component.register.StackRegisterName;
+import org.karnes.homebrew.emulator.isa.*;
 
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import java.util.Map;
  */
 public class MachineCodeTranslator extends DirectiveExecutor {
 
-    public MachineCodeTranslator(Map<String, Character> symbolTable) {
+    public MachineCodeTranslator(Map<String, BitSet16> symbolTable) {
         this.symbolTable = symbolTable;
     }
 
@@ -21,7 +22,24 @@ public class MachineCodeTranslator extends DirectiveExecutor {
     @Override
     public Void visitNoArgOperation(AsmHomeBrewParser.NoArgOperationContext ctx) {
         //Get instruction
-        short instruction = getOpcodeMask(ctx);
+        String name = ctx.getText();
+        Instruction instruction;
+        switch (name) {
+            case "NOP":
+                instruction = new NOPInstruction();
+                break;
+            case "HALT":
+                instruction = new HALTInstruction();
+                break;
+            case "TIN":
+                instruction = new TINInstruction();
+                break;
+            case "TOUT":
+                instruction = new TOUTInstruction();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected no arg instruction: " + name);
+        }
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
@@ -34,8 +52,22 @@ public class MachineCodeTranslator extends DirectiveExecutor {
 
     @Override
     public Void visitIoOperation(AsmHomeBrewParser.IoOperationContext ctx) {
+        //Get register
+        RegisterName register = getRegister(ctx.register());
+
         //Get instruction
-        short instruction = (short) (getOpcodeMask(ctx.ioOpcode()) | getLastRegisterMask(ctx.register()));
+        String name = ctx.ioOpcode().getText();
+        Instruction instruction;
+        switch (name) {
+            case "WRDIN":
+                instruction = new WRDINInstruction(register);
+                break;
+            case "WRDOUT":
+                instruction = new WRDOUTInstruction(register);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected IO instruction: " + name);
+        }
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
@@ -44,10 +76,12 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         return null;
     }
 
+
     @Override
     public Void visitClearOperation(AsmHomeBrewParser.ClearOperationContext ctx) {
-        //Get instruction
-        short instruction = (short) (getOpcodeMask("CLR") | getMidRegisterMask(ctx.register()) | getLastRegisterMask(ctx.register()));
+        //A CLR instruction is an alais for a MOV instruction
+        RegisterName register = getRegister(ctx.register());
+        MOVInstruction instruction = new MOVInstruction(register, register);
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
@@ -58,8 +92,8 @@ public class MachineCodeTranslator extends DirectiveExecutor {
 
     @Override
     public Void visitReturnOperation(AsmHomeBrewParser.ReturnOperationContext ctx) {
-        //Get instruction
-        short instruction = (short) (getOpcodeMask("RET") | getStackMask(ctx.stackRegister()) | getLastRegisterMask("PC"));
+        StackRegisterName stackRegister = getStackRegister(ctx.stackRegister());
+        RETInstruction instruction = new RETInstruction(stackRegister);
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
@@ -68,16 +102,36 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         return null;
     }
 
+
     @Override
     public Void visitJumpOperation(AsmHomeBrewParser.JumpOperationContext ctx) {
         //Get instruction
-        short instruction = getOpcodeMask(ctx.jumpOpcode());
+        JMPInstruction instruction = new JMPInstruction();
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
 
         //Get memory target
-        char memoryTarget = getValue(ctx.value());
+        BitSet16 memoryTarget = getValue(ctx.value());
+
+        //Store target into memory and increment code pointer
+        storeValueInMem(memoryTarget);
+
+        //No need to continue descent
+        return null;
+    }
+
+    @Override
+    public Void visitConditionalJumpOperation(AsmHomeBrewParser.ConditionalJumpOperationContext ctx) {
+        String opcodeStr = ctx.jumpOpcode().getText();
+        ConditionalJumpType jumpType = ConditionalJumpType.valueOf(opcodeStr);
+        ConditionalJMPInstruction instruction = new ConditionalJMPInstruction(jumpType);
+
+        //Store instruction into memory and increment code pointer
+        storeValueInMem(instruction);
+
+        //Get memory target
+        BitSet16 memoryTarget = getValue(ctx.value());
 
         //Store target into memory and increment code pointer
         storeValueInMem(memoryTarget);
@@ -88,21 +142,38 @@ public class MachineCodeTranslator extends DirectiveExecutor {
 
     //Binary Operations
 
-
-    @Override
-    public Void visitAluBinaryOperation(AsmHomeBrewParser.AluBinaryOperationContext ctx) {
-        short instruction = (short) (getOpcodeMask(ctx.aluBinaryOpcode()) | getFirstRegisterMask(ctx.register(0)) | getMidRegisterMask(ctx.register(1)));
-
-        //Store instruction into memory and increment code pointer
-        storeValueInMem(instruction);
-
-        //No need to continue descent
-        return null;
-    }
-
     @Override
     public Void visitBinaryRegRegOperation(AsmHomeBrewParser.BinaryRegRegOperationContext ctx) {
-        short instruction = (short) (getOpcodeMask(ctx.binaryRegRegOpCode()) | getMidRegisterMask(ctx.register(0)) | getLastRegisterMask(ctx.register(1)));
+        //Get registers
+        RegisterName dest = getRegister(ctx.register(0));
+        RegisterName src = getRegister(ctx.register(1));
+
+        //Get instruction
+        String name = ctx.binaryRegRegOpCode().getText();
+        Instruction instruction;
+        switch (name) {
+            case "MOV":
+                instruction = new MOVInstruction(dest, src);
+                break;
+            case "STORE":
+                instruction = new STOREInstruction(dest, src);
+                break;
+            case "FETCH":
+                instruction = new FETCHInstruction(dest, src);
+                break;
+            case "INC":
+                instruction = new INCInstruction(dest, src);
+                break;
+            case "DEC":
+                instruction = new DECInstruction(dest, src);
+                break;
+            case "NOT":
+                instruction = new NOTInstruction(dest, src);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected Register-Register instruction: " + name);
+        }
+
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
@@ -113,14 +184,15 @@ public class MachineCodeTranslator extends DirectiveExecutor {
 
     @Override
     public Void visitBinaryRegValOperation(AsmHomeBrewParser.BinaryRegValOperationContext ctx) {
-        //Get instruction
-        short instruction = (short) (getOpcodeMask(ctx.binaryRegValOpCode()) | getLastRegisterMask(ctx.register()));
+        //LOAD is the only instruction in this category
+        RegisterName register = getRegister(ctx.register());
+        LOADInstruction instruction = new LOADInstruction(register);
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
 
         //Get memory target
-        char memoryTarget = getValue(ctx.value());
+        BitSet16 memoryTarget = getValue(ctx.value());
 
         //Store target into memory and increment code pointer
         storeValueInMem(memoryTarget);
@@ -131,7 +203,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
 
     @Override
     public Void visitPushOperation(AsmHomeBrewParser.PushOperationContext ctx) {
-        short instruction = (short) (getOpcodeMask("PUSH") | getStackMask(ctx.stackRegister()) | getLastRegisterMask(ctx.register()));
+        StackRegisterName stackRegister = getStackRegister(ctx.stackRegister());
+        RegisterName register = getRegister(ctx.register());
+        PUSHInstruction instruction = new PUSHInstruction(stackRegister, register);
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
@@ -142,7 +216,9 @@ public class MachineCodeTranslator extends DirectiveExecutor {
 
     @Override
     public Void visitPopOperation(AsmHomeBrewParser.PopOperationContext ctx) {
-        short instruction = (short) (getOpcodeMask("POP") | getStackMask(ctx.stackRegister()) | getLastRegisterMask(ctx.register()));
+        StackRegisterName stackRegister = getStackRegister(ctx.stackRegister());
+        RegisterName register = getRegister(ctx.register());
+        POPInstruction instruction = new POPInstruction(register, stackRegister);
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
@@ -154,14 +230,14 @@ public class MachineCodeTranslator extends DirectiveExecutor {
 
     @Override
     public Void visitCallOperation(AsmHomeBrewParser.CallOperationContext ctx) {
-        //Get instruction
-        short instruction = (short) (getOpcodeMask("CALL") | getStackMask(ctx.stackRegister()));
+        StackRegisterName stackRegister = getStackRegister(ctx.stackRegister());
+        CALLInstruction instruction = new CALLInstruction(stackRegister);
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
 
         //Get memory target
-        char memoryTarget = getValue(ctx.value());
+        BitSet16 memoryTarget = getValue(ctx.value());
 
         //Store target into memory and increment code pointer
         storeValueInMem(memoryTarget);
@@ -175,7 +251,35 @@ public class MachineCodeTranslator extends DirectiveExecutor {
 
     @Override
     public Void visitAluTernaryOperation(AsmHomeBrewParser.AluTernaryOperationContext ctx) {
-        short instruction = (short) (getOpcodeMask(ctx.aluTernaryOpcode()) | getFirstRegisterMask(ctx.register(0)) | getMidRegisterMask(ctx.register(1)) | getLastRegisterMask(ctx.register(2)));
+        //Get registers
+        RegisterName dest = getRegister(ctx.register(0));
+        RegisterName src2 = getRegister(ctx.register(1));
+        RegisterName src1 = getRegister(ctx.register(2));
+
+        //Get instruction
+        String name = ctx.aluTernaryOpcode().getText();
+        Instruction instruction;
+        switch (name) {
+            case "ADD":
+                instruction = new ADDInstruction(dest, src2, src1);
+                break;
+            case "AND":
+                instruction = new ANDInstruction(dest, src2, src1);
+                break;
+            case "OR":
+                instruction = new ORInstruction(dest, src2, src1);
+                break;
+            case "XOR":
+                instruction = new XORInstruction(dest, src2, src1);
+                break;
+            case "CMP": //CMP is an alias for SUB
+            case "SUB":
+                instruction = new SUBInstruction(dest, src2, src1);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected ALU ternary instruction: " + name);
+        }
+
 
         //Store instruction into memory and increment code pointer
         storeValueInMem(instruction);
@@ -184,41 +288,24 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         return null;
     }
 
-    private short getFirstRegisterMask(AsmHomeBrewParser.RegisterContext ctx) {
-        String registerStr = ctx.getText().toUpperCase();
-        return Register.valueOf(registerStr).getFirstPositionInstructionMask();
+    private RegisterName getRegister(AsmHomeBrewParser.RegisterContext ctx) {
+        String regStr = ctx.getText();
+        RegisterName register = RegisterName.valueOf(regStr);
+        return register;
     }
 
-    private short getMidRegisterMask(AsmHomeBrewParser.RegisterContext ctx) {
-        String registerStr = ctx.getText().toUpperCase();
-        return Register.valueOf(registerStr).getSecondPositionInstructionMask();
+    private StackRegisterName getStackRegister(AsmHomeBrewParser.StackRegisterContext ctx) {
+        String regStr = ctx.getText();
+        StackRegisterName register = StackRegisterName.valueOf(regStr);
+        return register;
     }
 
-    private short getLastRegisterMask(AsmHomeBrewParser.RegisterContext ctx) {
-        String registerStr = ctx.getText().toUpperCase();
-        return getLastRegisterMask(registerStr);
+    private void storeValueInMem(Instruction instruction) {
+        BitSet16 binary = instruction.toBinary();
+        storeValueInMem(binary);
     }
 
-    private short getLastRegisterMask(String registerStr) {
-        return Register.valueOf(registerStr).getThirdPositionInstructionMask();
-    }
-
-    private short getStackMask(AsmHomeBrewParser.StackRegisterContext ctx) {
-        String registerStr = ctx.getText().toUpperCase();
-        return Register.valueOf(registerStr).getStackRegisterInstructionMask();
-    }
-
-    private short getOpcodeMask(ParserRuleContext ctx) {
-        String opcodeName = ctx.getText().toUpperCase();
-        return getOpcodeMask(opcodeName);
-    }
-
-    private short getOpcodeMask(String opcodeName) {
-        return InstructionOpcode.valueOf(opcodeName).getInstructionOpcodeMask();
-    }
-
-
-    public short[] getMemory() {
+    public BitSet16[] getMemory() {
         return memory;
     }
 }

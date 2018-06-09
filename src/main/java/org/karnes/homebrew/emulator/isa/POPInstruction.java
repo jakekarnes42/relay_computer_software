@@ -16,7 +16,7 @@ public class POPInstruction implements Instruction {
     private final StackRegisterName sourceRegister;
     private final BitSet16 binary;
 
-    POPInstruction(RegisterName destinationRegister, StackRegisterName sourceRegister) {
+    public POPInstruction(RegisterName destinationRegister, StackRegisterName sourceRegister) {
         this.destinationRegister = destinationRegister;
         this.sourceRegister = sourceRegister;
 
@@ -29,7 +29,7 @@ public class POPInstruction implements Instruction {
 
         typeBits = sourceRegister.getBitSet();
         for (int i = 0; i < typeBits.size(); i++) {
-            bits = bits.set(i+3, typeBits.get(i));
+            bits = bits.set(i + 3, typeBits.get(i));
         }
 
         this.binary = bits;

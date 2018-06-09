@@ -16,7 +16,7 @@ public class PUSHInstruction implements Instruction {
     private final RegisterName sourceRegister;
     private final BitSet16 binary;
 
-    PUSHInstruction(StackRegisterName destinationRegister, RegisterName sourceRegister) {
+    public PUSHInstruction(StackRegisterName destinationRegister, RegisterName sourceRegister) {
         this.destinationRegister = destinationRegister;
         this.sourceRegister = sourceRegister;
 

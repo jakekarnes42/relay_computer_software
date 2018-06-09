@@ -43,6 +43,7 @@ unaryOperation
    : ioOperation
    | returnOperation
    | jumpOperation
+   | conditionalJumpOperation
    | clearOperation
    ;
 
@@ -64,12 +65,17 @@ ioOpcode
    ;
 
 jumpOperation
+   : JMP value
+   ;
+
+conditionalJumpOperation
    : jumpOpcode value
    ;
 
+
+//TODO: Allow for more types of conditional jumps
 jumpOpcode
-   : JMP
-   | JZ
+   : JZ
    | JNZ
    | JS
    | JNS
@@ -81,21 +87,10 @@ jumpOpcode
 
 // Two arguments needed
 binaryOperation
-   : aluBinaryOperation
-   | binaryRegRegOperation
+   : binaryRegRegOperation
    | binaryRegValOperation
    | stackOperation
    ;
-
-aluBinaryOperation
-    : aluBinaryOpcode register ',' register
-    ;
-
-aluBinaryOpcode
-    : INC
-    | DEC
-    | NOT
-    ;
 
 
 binaryRegRegOperation
@@ -106,6 +101,9 @@ binaryRegRegOpCode
    : MOV
    | STORE
    | FETCH
+   | INC
+   | DEC
+   | NOT
    ;
 
 binaryRegValOperation

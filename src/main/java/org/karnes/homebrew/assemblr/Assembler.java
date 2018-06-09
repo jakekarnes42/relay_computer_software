@@ -9,6 +9,7 @@ import org.karnes.homebrew.assemblr.parse.asm.SymbolResolver;
 import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewLexer;
 import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
 import org.karnes.homebrew.assemblr.parse.macro.MacroExpander;
+import org.karnes.homebrew.bitset.BitSet16;
 
 import java.util.Map;
 
@@ -16,14 +17,13 @@ import java.util.Map;
  * Assembles the source assembly code into a binary executable that can be loaded into the relay computer's ram.
  * <br>
  * The assembly process encompasses macro expansion, symbol resolution, and machine code translation.
- *
  */
 public class Assembler {
 
     private String originalCode;
     private String expandedCodeWithMacros;
-    private Map<String, Character> symbolTable;
-    private short[] binaryOutput;
+    private Map<String, BitSet16> symbolTable;
+    private short[] binaryOutput = new short[Character.MAX_VALUE];
 
     public Assembler(String originalCode) {
         this.originalCode = originalCode;
@@ -39,7 +39,15 @@ public class Assembler {
         //Symbol resolution
         symbolTable = resolveSymbols(parseTree);
 
-        binaryOutput = convertToMachineCode(parseTree, symbolTable);
+        //Convert to machine code
+        BitSet16[] bitSetOutput = convertToMachineCode(parseTree, symbolTable);
+
+        //Convert to shorts as the binary format
+        //TODO: review and see if we can return the BitSet16 array
+        for (int i = 0; i < Character.MAX_VALUE; i++) {
+            BitSet16 memValue = bitSetOutput[i] == null ? new BitSet16() : bitSetOutput[i];
+            binaryOutput[i] = memValue.toShort();
+        }
         return binaryOutput;
     }
 
@@ -49,7 +57,7 @@ public class Assembler {
         return expandedText;
     }
 
-    private Map<String, Character> resolveSymbols(ParseTree parseTree) {
+    private Map<String, BitSet16> resolveSymbols(ParseTree parseTree) {
         //Resolve symbols
         SymbolResolver translator = new SymbolResolver();
         translator.visit(parseTree);
@@ -57,7 +65,7 @@ public class Assembler {
         return translator.getSymbolTable();
     }
 
-    private short[] convertToMachineCode(ParseTree parseTree, Map<String, Character> symbolTable) {
+    private BitSet16[] convertToMachineCode(ParseTree parseTree, Map<String, BitSet16> symbolTable) {
         //Convert to machine code
         MachineCodeTranslator translator = new MachineCodeTranslator(symbolTable);
         translator.visit(parseTree);
@@ -92,7 +100,7 @@ public class Assembler {
         return expandedCodeWithMacros;
     }
 
-    public Map<String, Character> getSymbolTable() {
+    public Map<String, BitSet16> getSymbolTable() {
         return symbolTable;
     }
 
