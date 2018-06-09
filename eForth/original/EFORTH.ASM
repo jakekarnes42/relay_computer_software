@@ -1548,7 +1548,7 @@ ABOR1:		DW	DOSTR,DROP,EXIT		;drop error
 		$COLON	10,'$INTERPRET',INTER
 		DW	NAMEQ,QDUP		;?defined
 		DW	QBRAN,INTE1
-		DW	AT,DOLIT,COMPO,ANDD	;?compile only lexicon bits
+		DW	AT,DOLIT,COMPO,ANDD	;?compile only lexicon bitSet
 		D$	ABORQ,' compile only'
 		DW	EXECU,EXIT		;execute defined word
 INTE1:		DW	TNUMB,ATEXE		;convert a number
@@ -2005,7 +2005,7 @@ TNAM4:		DW	DROP,DOLIT,0,EXIT	;false flag
 		$COLON	3,'.ID',DOTID
 		DW	QDUP			;if zero no name
 		DW	QBRAN,DOTI1
-		DW	COUNT,DOLIT,01FH,ANDD	;mask lexicon bits
+		DW	COUNT,DOLIT,01FH,ANDD	;mask lexicon bitSet
 		DW	UTYPE,EXIT		;display name string
 DOTI1:		D$	DOTQP,' {noName}'
 		DW	EXIT
