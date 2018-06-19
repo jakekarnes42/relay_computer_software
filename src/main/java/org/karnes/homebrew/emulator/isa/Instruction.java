@@ -1,9 +1,9 @@
 package org.karnes.homebrew.emulator.isa;
 
-import org.karnes.homebrew.bitset.BitSet16;
+import org.karnes.homebrew.bitset.FixedBitSet;
 
 public interface Instruction {
     String getName();
 
-    BitSet16 toBinary();
+    FixedBitSet toBinary();
 }

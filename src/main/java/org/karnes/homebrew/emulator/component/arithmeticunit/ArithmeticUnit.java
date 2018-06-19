@@ -1,6 +1,5 @@
 package org.karnes.homebrew.emulator.component.arithmeticunit;
 
-import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
 import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
@@ -86,7 +85,7 @@ public class ArithmeticUnit {
 
         } else {
             //The AU is disabled, clear the outputs
-            ArbitraryBitSet zero = new ArbitraryBitSet(DATA_WIDTH);
+            FixedBitSet zero = new FixedBitSet(DATA_WIDTH);
             outputBusConnection.writeValueToBus(zero);
             ccBusConnection.writeValueToBus(zero);
         }
@@ -102,7 +101,7 @@ public class ArithmeticUnit {
         boolean INC_DEC = opcode.get(0);
         if (INC_DEC) {
             //If the INC_DEC line is high, the B is replaced with the number 00..01
-            B = new ArbitraryBitSet(DATA_WIDTH).set(0, true);
+            B = new FixedBitSet(DATA_WIDTH).set(0, true);
         }
 
         //We XOR the B with the SUB signal
@@ -113,7 +112,7 @@ public class ArithmeticUnit {
         }
 
         //Set up some variables for use later
-        FixedBitSet SUM = new ArbitraryBitSet(DATA_WIDTH);
+        FixedBitSet SUM = new FixedBitSet(DATA_WIDTH);
         boolean CIN = SUB; //Initialize CIN with the SUB signal
         boolean COUT = false;
         boolean penultimateCOUT = false;
@@ -165,7 +164,7 @@ public class ArithmeticUnit {
         //Check for condition codes
 
         //Zero detection
-        boolean ZERO = SUM.equals(new ArbitraryBitSet(DATA_WIDTH));
+        boolean ZERO = SUM.equals(new FixedBitSet(DATA_WIDTH));
         //SIGN is the highest bit of the SUM
         boolean SIGN = SUM.get(DATA_WIDTH - 1);
         //OVERFLOW is COUT xor'd with the second to last COUT

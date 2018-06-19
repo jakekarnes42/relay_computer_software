@@ -1,6 +1,5 @@
 package org.karnes.homebrew.emulator;
 
-import org.karnes.homebrew.bitset.BitSet4;
 import org.karnes.homebrew.bitset.FixedBitSet;
 
 import java.util.Objects;
@@ -53,8 +52,8 @@ public class ConditionCode {
         return zero;
     }
 
-    public BitSet4 toBitSet() {
-        return new BitSet4(new boolean[]{carry, overflow, sign, zero});
+    public FixedBitSet toBitSet() {
+        return new FixedBitSet(new boolean[]{carry, overflow, sign, zero});
     }
 
     @Override

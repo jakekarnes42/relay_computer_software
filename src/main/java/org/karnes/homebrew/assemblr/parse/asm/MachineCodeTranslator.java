@@ -1,7 +1,7 @@
 package org.karnes.homebrew.assemblr.parse.asm;
 
 import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
-import org.karnes.homebrew.bitset.BitSet16;
+import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.register.RegisterName;
 import org.karnes.homebrew.emulator.component.register.StackRegisterName;
 import org.karnes.homebrew.emulator.isa.*;
@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class MachineCodeTranslator extends DirectiveExecutor {
 
-    public MachineCodeTranslator(Map<String, BitSet16> symbolTable) {
+    public MachineCodeTranslator(Map<String, FixedBitSet> symbolTable) {
         this.symbolTable = symbolTable;
     }
 
@@ -112,7 +112,7 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         storeValueInMem(instruction);
 
         //Get memory target
-        BitSet16 memoryTarget = getValue(ctx.value());
+        FixedBitSet memoryTarget = getValue(ctx.value());
 
         //Store target into memory and increment code pointer
         storeValueInMem(memoryTarget);
@@ -131,7 +131,7 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         storeValueInMem(instruction);
 
         //Get memory target
-        BitSet16 memoryTarget = getValue(ctx.value());
+        FixedBitSet memoryTarget = getValue(ctx.value());
 
         //Store target into memory and increment code pointer
         storeValueInMem(memoryTarget);
@@ -192,7 +192,7 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         storeValueInMem(instruction);
 
         //Get memory target
-        BitSet16 memoryTarget = getValue(ctx.value());
+        FixedBitSet memoryTarget = getValue(ctx.value());
 
         //Store target into memory and increment code pointer
         storeValueInMem(memoryTarget);
@@ -237,7 +237,7 @@ public class MachineCodeTranslator extends DirectiveExecutor {
         storeValueInMem(instruction);
 
         //Get memory target
-        BitSet16 memoryTarget = getValue(ctx.value());
+        FixedBitSet memoryTarget = getValue(ctx.value());
 
         //Store target into memory and increment code pointer
         storeValueInMem(memoryTarget);
@@ -301,11 +301,11 @@ public class MachineCodeTranslator extends DirectiveExecutor {
     }
 
     private void storeValueInMem(Instruction instruction) {
-        BitSet16 binary = instruction.toBinary();
+        FixedBitSet binary = instruction.toBinary();
         storeValueInMem(binary);
     }
 
-    public BitSet16[] getMemory() {
+    public FixedBitSet[] getMemory() {
         return memory;
     }
 }

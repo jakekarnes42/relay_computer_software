@@ -1,7 +1,7 @@
 package org.karnes.homebrew.assemblr.parse.asm;
 
 import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
-import org.karnes.homebrew.bitset.BitSet16;
+import org.karnes.homebrew.bitset.FixedBitSet;
 
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class SymbolResolver extends DirectiveExecutor {
     public Void visitLabelDefinition(AsmHomeBrewParser.LabelDefinitionContext ctx) {
         //Store the label and the current codePointer to our symbol table.
         String labelText = ctx.label().getText();
-        symbolTable.put(labelText, BitSet16.fromChar(codePointer));
+        symbolTable.put(labelText, FixedBitSet.fromChar(codePointer));
         return null;
     }
 
@@ -172,7 +172,7 @@ public class SymbolResolver extends DirectiveExecutor {
         return null;
     }
 
-    public Map<String, BitSet16> getSymbolTable() {
+    public Map<String, FixedBitSet> getSymbolTable() {
         return symbolTable;
     }
 }

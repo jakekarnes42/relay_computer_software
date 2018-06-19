@@ -1,6 +1,5 @@
 package org.karnes.homebrew.emulator.component.logicunit;
 
-import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
 import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
@@ -111,14 +110,14 @@ public class LogicUnit {
 
         } else {
             //The LU is disabled, clear the outputs
-            ArbitraryBitSet zero = new ArbitraryBitSet(DATA_WIDTH);
+            FixedBitSet zero = new FixedBitSet(DATA_WIDTH);
             outputBusConnection.writeValueToBus(zero);
             ccBusConnection.writeValueToBus(zero);
         }
     }
 
     private ConditionCode getConditionCodes(FixedBitSet result) {
-        boolean zero = result.equals(new ArbitraryBitSet(DATA_WIDTH));
+        boolean zero = result.equals(new FixedBitSet(DATA_WIDTH));
         boolean sign = result.get(DATA_WIDTH - 1);
 
         return new ConditionCode(false, false, sign, zero);
@@ -127,7 +126,7 @@ public class LogicUnit {
 
 
     private FixedBitSet performXOR(FixedBitSet a, FixedBitSet b) {
-        ArbitraryBitSet result = new ArbitraryBitSet(DATA_WIDTH);
+        FixedBitSet result = new FixedBitSet(DATA_WIDTH);
         for (int i = 0; i < DATA_WIDTH; i++) {
             result = result.set(i, a.get(i) ^ b.get(i));
         }
@@ -135,7 +134,7 @@ public class LogicUnit {
     }
 
     private FixedBitSet performOR(FixedBitSet a, FixedBitSet b) {
-        ArbitraryBitSet result = new ArbitraryBitSet(DATA_WIDTH);
+        FixedBitSet result = new FixedBitSet(DATA_WIDTH);
         for (int i = 0; i < DATA_WIDTH; i++) {
             result = result.set(i, a.get(i) || b.get(i));
         }
@@ -143,7 +142,7 @@ public class LogicUnit {
     }
 
     private FixedBitSet performAND(FixedBitSet a, FixedBitSet b) {
-        ArbitraryBitSet result = new ArbitraryBitSet(DATA_WIDTH);
+        FixedBitSet result = new FixedBitSet(DATA_WIDTH);
         for (int i = 0; i < DATA_WIDTH; i++) {
             result = result.set(i, a.get(i) && b.get(i));
         }
@@ -151,7 +150,7 @@ public class LogicUnit {
     }
 
     private FixedBitSet performNOT(FixedBitSet a) {
-        ArbitraryBitSet result = new ArbitraryBitSet(DATA_WIDTH);
+        FixedBitSet result = new FixedBitSet(DATA_WIDTH);
         for (int i = 0; i < DATA_WIDTH; i++) {
             result = result.set(i, !a.get(i));
         }

@@ -1,6 +1,5 @@
 package org.karnes.homebrew.emulator.isa;
 
-import org.karnes.homebrew.bitset.BitSet16;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.register.RegisterName;
 
@@ -14,15 +13,15 @@ public class AbstractThreeRegInstruction implements Instruction {
     RegisterName destinationRegister;
     RegisterName source1Register;
     RegisterName source2Register;
-    BitSet16 binary;
+    FixedBitSet binary;
 
-    AbstractThreeRegInstruction(String name, RegisterName destinationRegister, RegisterName source2Register, RegisterName source1Register, BitSet16 template) {
+    AbstractThreeRegInstruction(String name, RegisterName destinationRegister, RegisterName source2Register, RegisterName source1Register, FixedBitSet template) {
         this.name = name;
         this.source2Register = source2Register;
         this.source1Register = source1Register;
         this.destinationRegister = destinationRegister;
 
-        BitSet16 bits = template.copy();
+        FixedBitSet bits = template.copy();
 
         FixedBitSet typeBits = source1Register.getBitSet();
         for (int i = 0; i < typeBits.size(); i++) {
@@ -61,7 +60,7 @@ public class AbstractThreeRegInstruction implements Instruction {
     }
 
     @Override
-    public BitSet16 toBinary() {
+    public FixedBitSet toBinary() {
         return binary;
     }
 }

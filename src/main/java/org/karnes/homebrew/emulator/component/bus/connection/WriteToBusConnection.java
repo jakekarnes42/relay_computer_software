@@ -1,6 +1,5 @@
 package org.karnes.homebrew.emulator.component.bus.connection;
 
-import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.bus.WriteableBus;
 
@@ -11,7 +10,7 @@ public class WriteToBusConnection implements WriteableBusConnection {
 
     public WriteToBusConnection(WriteableBus bus) {
         this.bus = bus;
-        value = new ArbitraryBitSet(bus.getWidth());
+        value = new FixedBitSet(bus.getWidth());
     }
 
     @Override

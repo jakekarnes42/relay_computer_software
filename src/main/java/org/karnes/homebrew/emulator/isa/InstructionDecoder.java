@@ -1,34 +1,36 @@
 package org.karnes.homebrew.emulator.isa;
 
-import org.karnes.homebrew.bitset.BitSet16;
+import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.register.RegisterName;
 import org.karnes.homebrew.emulator.component.register.StackRegisterName;
+
+import static java.lang.Short.SIZE;
 
 /**
  * Big scary boolean logic to convert from binary to an {@link Instruction}
  */
 public class InstructionDecoder {
-    public Instruction decode(BitSet16 binary) {
+    public Instruction decode(FixedBitSet binary) {
         /*
          * Check all the easy ones first
          */
-        if (binary.equals(new BitSet16())) {
+        if (binary.equals(new FixedBitSet(SIZE))) {
             return new NOPInstruction();
         }
 
-        if (binary.equals(new BitSet16("1111 1111 11 111 111"))) {
+        if (binary.equals(new FixedBitSet("1111 1111 11 111 111"))) {
             return new HALTInstruction();
         }
 
-        if (binary.equals(new BitSet16("0010 0001 0000 0 111"))) {
+        if (binary.equals(new FixedBitSet("0010 0001 0000 0 111"))) {
             return new JMPInstruction();
         }
 
-        if (binary.equals(new BitSet16("1000 0000 0000 0000"))) {
+        if (binary.equals(new FixedBitSet("1000 0000 0000 0000"))) {
             return new TINInstruction();
         }
 
-        if (binary.equals(new BitSet16("1000 1000 0000 0000"))) {
+        if (binary.equals(new FixedBitSet("1000 1000 0000 0000"))) {
             return new TOUTInstruction();
         }
 

@@ -1,6 +1,5 @@
 package org.karnes.homebrew.emulator.isa;
 
-import org.karnes.homebrew.bitset.BitSet16;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.register.RegisterName;
 import org.karnes.homebrew.emulator.component.register.StackRegisterName;
@@ -14,13 +13,13 @@ public class POPInstruction implements Instruction {
     private final String name = "POP";
     private final RegisterName destinationRegister;
     private final StackRegisterName sourceRegister;
-    private final BitSet16 binary;
+    private final FixedBitSet binary;
 
     public POPInstruction(RegisterName destinationRegister, StackRegisterName sourceRegister) {
         this.destinationRegister = destinationRegister;
         this.sourceRegister = sourceRegister;
 
-        BitSet16 bits = new BitSet16("0100 0000 0010 0 000");
+        FixedBitSet bits = new FixedBitSet("0100 0000 0010 0 000");
 
         FixedBitSet typeBits = destinationRegister.getBitSet();
         for (int i = 0; i < typeBits.size(); i++) {
@@ -50,7 +49,7 @@ public class POPInstruction implements Instruction {
     }
 
     @Override
-    public BitSet16 toBinary() {
+    public FixedBitSet toBinary() {
         return binary;
     }
 }

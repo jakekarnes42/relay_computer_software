@@ -1,6 +1,5 @@
 package org.karnes.homebrew.emulator.isa;
 
-import org.karnes.homebrew.bitset.BitSet16;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.register.StackRegisterName;
 
@@ -12,13 +11,13 @@ public class AbstractOneStackRegInstruction implements Instruction {
 
     private final String name;
     private final StackRegisterName register;
-    private final BitSet16 binary;
+    private final FixedBitSet binary;
 
-    AbstractOneStackRegInstruction(String name, StackRegisterName register, BitSet16 template) {
+    AbstractOneStackRegInstruction(String name, StackRegisterName register, FixedBitSet template) {
         this.name = name;
         this.register = register;
 
-        BitSet16 bits = template.copy();
+        FixedBitSet bits = template.copy();
         FixedBitSet typeBits = register.getBitSet();
         for (int i = 0; i < typeBits.size(); i++) {
             bits = bits.set(i+3, typeBits.get(i));
@@ -37,7 +36,7 @@ public class AbstractOneStackRegInstruction implements Instruction {
     }
 
     @Override
-    public BitSet16 toBinary() {
+    public FixedBitSet toBinary() {
         return binary;
     }
 }

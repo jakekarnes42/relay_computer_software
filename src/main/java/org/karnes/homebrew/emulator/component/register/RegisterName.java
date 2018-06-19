@@ -1,20 +1,19 @@
 package org.karnes.homebrew.emulator.component.register;
 
-import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 
 /**
  * The names of the registers available to the Relay CPU.
  */
 public enum RegisterName {
-    AX(new ArbitraryBitSet("000")),
-    BX(new ArbitraryBitSet("001")),
-    CX(new ArbitraryBitSet("010")),
-    DX(new ArbitraryBitSet("011")),
-    EX(new ArbitraryBitSet("100")),
-    SP(new ArbitraryBitSet("101")),
-    RP(new ArbitraryBitSet("110")),
-    PC(new ArbitraryBitSet("111"));
+    AX(new FixedBitSet("000")),
+    BX(new FixedBitSet("001")),
+    CX(new FixedBitSet("010")),
+    DX(new FixedBitSet("011")),
+    EX(new FixedBitSet("100")),
+    SP(new FixedBitSet("101")),
+    RP(new FixedBitSet("110")),
+    PC(new FixedBitSet("111"));
 
     private final FixedBitSet bitSet;
 

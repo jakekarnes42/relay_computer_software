@@ -1,6 +1,5 @@
 package org.karnes.homebrew.emulator.component.bus;
 
-import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.bus.connection.*;
 
@@ -27,7 +26,7 @@ public class VirtualBus implements BidirectionalBus {
         this.name = name;
         this.width = width;
         connections = new ArrayList<>();
-        lastValue = new ArbitraryBitSet(width);
+        lastValue = new FixedBitSet(width);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class VirtualBus implements BidirectionalBus {
 
     @Override
     public FixedBitSet getValue() {
-        ArbitraryBitSet value = new ArbitraryBitSet(width);
+        FixedBitSet value = new FixedBitSet(width);
         //Check each connection
         for (BusConnection connection : connections) {
             if (connection instanceof WriteableBusConnection) {

@@ -1,7 +1,7 @@
 package org.karnes.homebrew.emulator;
 
 import org.junit.jupiter.api.Test;
-import org.karnes.homebrew.bitset.BitSet4;
+import org.karnes.homebrew.bitset.FixedBitSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,7 +9,7 @@ class ConditionCodeTest {
 
     @Test
     public void testConditionCodeOff() {
-        BitSet4 bits = new BitSet4();
+        FixedBitSet bits = new FixedBitSet(4);
         ConditionCode cc = new ConditionCode(bits);
         assertEquals(cc, new ConditionCode(false, false, false, false));
         assertFalse(cc.isCarry());
@@ -21,7 +21,7 @@ class ConditionCodeTest {
 
     @Test
     public void testConditionCodeOn() {
-        BitSet4 bits = new BitSet4("1110");
+        FixedBitSet bits = new FixedBitSet("1110");
         ConditionCode cc = new ConditionCode(bits);
         assertEquals(cc, new ConditionCode(true, true, true, false));
         assertTrue(cc.isCarry());

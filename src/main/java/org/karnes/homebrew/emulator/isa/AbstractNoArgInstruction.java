@@ -1,6 +1,6 @@
 package org.karnes.homebrew.emulator.isa;
 
-import org.karnes.homebrew.bitset.BitSet16;
+import org.karnes.homebrew.bitset.FixedBitSet;
 
 /**
  * Abstract class for instructions which require no register arguments. They may take arguments (such as labels/values)
@@ -9,9 +9,9 @@ import org.karnes.homebrew.bitset.BitSet16;
 public class AbstractNoArgInstruction implements Instruction {
 
     private final String name;
-    private final BitSet16 binary;
+    private final FixedBitSet binary;
 
-    AbstractNoArgInstruction(String name, BitSet16 binary) {
+    AbstractNoArgInstruction(String name, FixedBitSet binary) {
         this.name = name;
         this.binary = binary;
     }
@@ -22,7 +22,7 @@ public class AbstractNoArgInstruction implements Instruction {
     }
 
     @Override
-    public BitSet16 toBinary() {
+    public FixedBitSet toBinary() {
         return binary;
     }
 }

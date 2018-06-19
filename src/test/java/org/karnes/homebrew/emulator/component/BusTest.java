@@ -1,7 +1,6 @@
 package org.karnes.homebrew.emulator.component;
 
 import org.junit.jupiter.api.Test;
-import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
 import org.karnes.homebrew.emulator.component.bus.VirtualBus;
@@ -14,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BusTest {
     private static final int DATA_WIDTH = 4;
-    private static final FixedBitSet ZERO_VAL = new ArbitraryBitSet(DATA_WIDTH);
-    private static final FixedBitSet ONES_VAL = ArbitraryBitSet.allOnes(4);
-    private static final FixedBitSet MIX1_VAL = new ArbitraryBitSet("0101");
-    private static final FixedBitSet MIX2_VAL = new ArbitraryBitSet("1010");
+    private static final FixedBitSet ZERO_VAL = new FixedBitSet(DATA_WIDTH);
+    private static final FixedBitSet ONES_VAL = FixedBitSet.allOnes(4);
+    private static final FixedBitSet MIX1_VAL = new FixedBitSet("0101");
+    private static final FixedBitSet MIX2_VAL = new FixedBitSet("1010");
 
     @Test
     public void testSimpleBus() {

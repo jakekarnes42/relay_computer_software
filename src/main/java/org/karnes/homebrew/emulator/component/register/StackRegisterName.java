@@ -1,18 +1,17 @@
 package org.karnes.homebrew.emulator.component.register;
 
-import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 
 /**
  * The names of the stack registers available to the Relay CPU.
  */
 public enum StackRegisterName {
-    SP(new ArbitraryBitSet("0")),
-    RP(new ArbitraryBitSet("1"));
+    SP(new FixedBitSet("0")),
+    RP(new FixedBitSet("1"));
 
-    private final ArbitraryBitSet bitSet;
+    private final FixedBitSet bitSet;
 
-    StackRegisterName(ArbitraryBitSet bitSet) {
+    StackRegisterName(FixedBitSet bitSet) {
         this.bitSet = bitSet;
     }
 
@@ -29,7 +28,7 @@ public enum StackRegisterName {
         return null;
     }
 
-    public ArbitraryBitSet getBitSet() {
+    public FixedBitSet getBitSet() {
         return bitSet;
     }
 }

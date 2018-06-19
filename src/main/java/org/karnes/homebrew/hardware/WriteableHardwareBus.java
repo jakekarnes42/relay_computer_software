@@ -1,6 +1,5 @@
 package org.karnes.homebrew.hardware;
 
-import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.bus.WriteableBus;
 import org.karnes.homebrew.emulator.component.bus.connection.WriteToBusConnection;
@@ -54,7 +53,7 @@ public class WriteableHardwareBus implements WriteableBus {
     @Override
     public synchronized void refreshValues() {
         //Check each connection to build our new value
-        ArbitraryBitSet value = new ArbitraryBitSet(width);
+        FixedBitSet value = new FixedBitSet(width);
         for (WriteableBusConnection connection : getConnections()) {
             FixedBitSet fromConnectionValue = connection.getValueFromConnection();
 

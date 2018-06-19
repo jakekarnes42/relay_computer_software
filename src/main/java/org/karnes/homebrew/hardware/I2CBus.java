@@ -3,7 +3,7 @@ package org.karnes.homebrew.hardware;
 import mraa.I2c;
 import mraa.Result;
 import mraa.mraa;
-import org.karnes.homebrew.bitset.BitSet8;
+import org.karnes.homebrew.bitset.FixedBitSet;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,7 +62,7 @@ public class I2CBus {
     }
 
 
-    public synchronized void writeByte(MCP23017Address address, short register, BitSet8 value) {
+    public synchronized void writeByte(MCP23017Address address, short register, FixedBitSet value) {
         setAddress(address);
 
         Result writeResult = i2c.writeReg(register, value.toByte());
@@ -72,11 +72,11 @@ public class I2CBus {
         }
     }
 
-    public synchronized BitSet8 readByte(MCP23017Address address, short register) {
+    public synchronized FixedBitSet readByte(MCP23017Address address, short register) {
         setAddress(address);
 
         short readResult = i2c.readReg(register);
-        return BitSet8.fromByte((byte) readResult);
+        return FixedBitSet.fromByte((byte) readResult);
     }
 
 

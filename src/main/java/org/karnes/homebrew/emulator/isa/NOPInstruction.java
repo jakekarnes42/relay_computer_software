@@ -1,9 +1,11 @@
 package org.karnes.homebrew.emulator.isa;
 
-import org.karnes.homebrew.bitset.BitSet16;
+import org.karnes.homebrew.bitset.FixedBitSet;
+
+import static java.lang.Short.SIZE;
 
 public class NOPInstruction extends AbstractNoArgInstruction {
     public NOPInstruction() {
-        super("NOP", new BitSet16());
+        super("NOP", new FixedBitSet(SIZE));
     }
 }

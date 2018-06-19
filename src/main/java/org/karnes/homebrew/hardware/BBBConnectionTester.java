@@ -1,7 +1,7 @@
 package org.karnes.homebrew.hardware;
 
 
-import org.karnes.homebrew.bitset.ArbitraryBitSet;
+import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
 import org.karnes.homebrew.emulator.component.bus.ReadableBus;
 import org.karnes.homebrew.emulator.component.bus.WriteableBus;
@@ -63,18 +63,18 @@ public class BBBConnectionTester {
 
 
         //Turn on and off the output only LED
-        writeConnection.writeValueToBus(new ArbitraryBitSet("1"));
+        writeConnection.writeValueToBus(new FixedBitSet("1"));
         System.out.println("Output 0 turned on.");
         Thread.sleep(3000);
-        writeConnection.writeValueToBus(new ArbitraryBitSet("0"));
+        writeConnection.writeValueToBus(new FixedBitSet("0"));
         System.out.println("Output 0 turned off.");
         Thread.sleep(1000);
 
         //Do the same for the other bidirectional output LED
-        bidirectionalBusConnection.writeValueToBus(new ArbitraryBitSet("1"));
+        bidirectionalBusConnection.writeValueToBus(new FixedBitSet("1"));
         System.out.println("Output 1 turned on.");
         Thread.sleep(3000);
-        bidirectionalBusConnection.writeValueToBus(new ArbitraryBitSet("0"));
+        bidirectionalBusConnection.writeValueToBus(new FixedBitSet("0"));
         System.out.println("Output 1 turned off.");
         Thread.sleep(1000);
 

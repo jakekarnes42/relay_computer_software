@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.karnes.homebrew.bitset.ArbitraryBitSet;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
 import org.karnes.homebrew.emulator.component.arithmeticunit.AU_OPCODE;
@@ -50,11 +49,11 @@ class ArithemeticUnitTest {
         auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
 
         //The output should be 0.
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
 
         //The condition code for ZERO should be set
         FixedBitSet ccBusValue = ccBusConnection.readBusValue();
-        assertEquals(new ArbitraryBitSet("0001"), ccBusValue);
+        assertEquals(new FixedBitSet("0001"), ccBusValue);
 
         ConditionCode conditionCode = new ConditionCode(ccBusValue);
         assertTrue(conditionCode.isZero());
@@ -70,51 +69,51 @@ class ArithemeticUnitTest {
         auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
 
         //Set some inputs
-        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0101")); // 5
-        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("1010")); // -6
+        tmp1BusConnection.writeValueToBus(new FixedBitSet("0101")); // 5
+        tmp2BusConnection.writeValueToBus(new FixedBitSet("1010")); // -6
 
         //The output and cc should be still 0.
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
 
         //Enable ADD
         auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(ArbitraryBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue()); //-1
-        assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
+        assertEquals(FixedBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue()); //-1
+        assertEquals(new FixedBitSet("0010"), ccBusConnection.readBusValue());
 
         //Change to SUB
         auOperationBusConnection.writeValueToBus(AU_OPCODE.SUB.toBitSet());
 
         //The output and cc should change accordingly.
-        assertEquals(new ArbitraryBitSet("1011"), outputBusConnection.readBusValue()); //is 11 -> overflow to: -5 
-        assertEquals(new ArbitraryBitSet("1110"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("1011"), outputBusConnection.readBusValue()); //is 11 -> overflow to: -5
+        assertEquals(new FixedBitSet("1110"), ccBusConnection.readBusValue());
 
         //Change to INC
         auOperationBusConnection.writeValueToBus(AU_OPCODE.INC.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(new ArbitraryBitSet("0110"), outputBusConnection.readBusValue()); //6
-        assertEquals(new ArbitraryBitSet("0000"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("0110"), outputBusConnection.readBusValue()); //6
+        assertEquals(new FixedBitSet("0000"), ccBusConnection.readBusValue());
 
         //Change to DEC
         auOperationBusConnection.writeValueToBus(AU_OPCODE.DEC.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(new ArbitraryBitSet("0100"), outputBusConnection.readBusValue()); //4
-        assertEquals(new ArbitraryBitSet("0000"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("0100"), outputBusConnection.readBusValue()); //4
+        assertEquals(new FixedBitSet("0000"), ccBusConnection.readBusValue());
 
         //Turn it back to OFF
         auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
     }
 
     @Test
@@ -124,59 +123,59 @@ class ArithemeticUnitTest {
         auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
 
         //Set some inputs
-        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0101")); // 5
-        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("1010")); // -6
+        tmp1BusConnection.writeValueToBus(new FixedBitSet("0101")); // 5
+        tmp2BusConnection.writeValueToBus(new FixedBitSet("1010")); // -6
 
         //The output and cc should be still 0.
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
  
         //Enable ADD
         auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(ArbitraryBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue()); //-1
-        assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
+        assertEquals(FixedBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue()); //-1
+        assertEquals(new FixedBitSet("0010"), ccBusConnection.readBusValue());
 
         //Change the first input
-        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0000")); // 0
+        tmp1BusConnection.writeValueToBus(new FixedBitSet("0000")); // 0
 
         //The output and cc should change accordingly.
-        assertEquals(new ArbitraryBitSet("1010"), outputBusConnection.readBusValue()); // -6
-        assertEquals(new ArbitraryBitSet("0010"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("1010"), outputBusConnection.readBusValue()); // -6
+        assertEquals(new FixedBitSet("0010"), ccBusConnection.readBusValue());
 
 
         //Change the second input
-        tmp2BusConnection.writeValueToBus(new ArbitraryBitSet("0000")); //0
+        tmp2BusConnection.writeValueToBus(new FixedBitSet("0000")); //0
 
         //The output and cc should change accordingly.
-        assertEquals(new ArbitraryBitSet("0000"), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet("0001"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("0000"), outputBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("0001"), ccBusConnection.readBusValue());
 
         //Change the first input again
-        tmp1BusConnection.writeValueToBus(new ArbitraryBitSet("0101"));
+        tmp1BusConnection.writeValueToBus(new FixedBitSet("0101"));
 
         //The output and cc should change accordingly.
-        assertEquals(new ArbitraryBitSet("0101"), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet("0000"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("0101"), outputBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("0000"), ccBusConnection.readBusValue());
 
 
         //Turn it back to OFF
         auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new ArbitraryBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
     }
 
 
     @ParameterizedTest
     @CsvFileSource(resources = "/4bit_ADDs.csv", numLinesToSkip = 1)
-    void testAllADDs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
+    void testAllADDs(FixedBitSet a, FixedBitSet b, FixedBitSet result, FixedBitSet cc) {
         //The AU is already hooked up.
         //Set the inputs
         tmp1BusConnection.writeValueToBus(a);
@@ -196,7 +195,7 @@ class ArithemeticUnitTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/4bit_SUBs.csv", numLinesToSkip = 1)
-    void testAllSUBs(ArbitraryBitSet a, ArbitraryBitSet b, ArbitraryBitSet result, ArbitraryBitSet cc) {
+    void testAllSUBs(FixedBitSet a, FixedBitSet b, FixedBitSet result, FixedBitSet cc) {
         //The AU is already hooked up.
         //Set the inputs
         tmp1BusConnection.writeValueToBus(a);
@@ -215,7 +214,7 @@ class ArithemeticUnitTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/4bit_INCs.csv", numLinesToSkip = 1)
-    void testAllINCs(ArbitraryBitSet a, ArbitraryBitSet result, ArbitraryBitSet cc) {
+    void testAllINCs(FixedBitSet a, FixedBitSet result, FixedBitSet cc) {
         //The AU is already hooked up.
         //Set the inputs
         tmp1BusConnection.writeValueToBus(a);
@@ -233,7 +232,7 @@ class ArithemeticUnitTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/4bit_DECs.csv", numLinesToSkip = 1)
-    void testAllDECs(ArbitraryBitSet a, ArbitraryBitSet result, ArbitraryBitSet cc) {
+    void testAllDECs(FixedBitSet a, FixedBitSet result, FixedBitSet cc) {
         //The AU is already hooked up.
         //Set the inputs
         tmp1BusConnection.writeValueToBus(a);

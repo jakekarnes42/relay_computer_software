@@ -6,7 +6,7 @@ public class Helper {
 
     private static String testFormat = "@Test\n" +
             "                  void decode%s_%s_%s() {\n" +
-            "                      BitSet16 binary = new BitSet16(\"0001 111 %s %s 000\");\n" +
+            "                      FixedBitSet binary = new FixedBitSet(\"0001 111 %s %s 000\");\n" +
             "                      Instruction instruction = decoder.decode(binary);\n" +
             "                      assertNotNull(instruction);\n" +
             "                      assertTrue(instruction instanceof %sInstruction);\n" +

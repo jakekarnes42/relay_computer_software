@@ -9,7 +9,7 @@ import org.karnes.homebrew.assemblr.parse.asm.SymbolResolver;
 import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewLexer;
 import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
 import org.karnes.homebrew.assemblr.parse.macro.MacroExpander;
-import org.karnes.homebrew.bitset.BitSet16;
+import org.karnes.homebrew.bitset.FixedBitSet;
 
 import java.util.Map;
 
@@ -22,7 +22,7 @@ public class Assembler {
 
     private String originalCode;
     private String expandedCodeWithMacros;
-    private Map<String, BitSet16> symbolTable;
+    private Map<String, FixedBitSet> symbolTable;
     private short[] binaryOutput = new short[Character.MAX_VALUE];
 
     public Assembler(String originalCode) {
@@ -40,12 +40,12 @@ public class Assembler {
         symbolTable = resolveSymbols(parseTree);
 
         //Convert to machine code
-        BitSet16[] bitSetOutput = convertToMachineCode(parseTree, symbolTable);
+        FixedBitSet[] bitSetOutput = convertToMachineCode(parseTree, symbolTable);
 
         //Convert to shorts as the binary format
-        //TODO: review and see if we can return the BitSet16 array
+        //TODO: review and see if we can return the FixedBitSet array
         for (int i = 0; i < Character.MAX_VALUE; i++) {
-            BitSet16 memValue = bitSetOutput[i] == null ? new BitSet16() : bitSetOutput[i];
+            FixedBitSet memValue = bitSetOutput[i] == null ? new FixedBitSet(Short.SIZE) : bitSetOutput[i];
             binaryOutput[i] = memValue.toShort();
         }
         return binaryOutput;
@@ -57,7 +57,7 @@ public class Assembler {
         return expandedText;
     }
 
-    private Map<String, BitSet16> resolveSymbols(ParseTree parseTree) {
+    private Map<String, FixedBitSet> resolveSymbols(ParseTree parseTree) {
         //Resolve symbols
         SymbolResolver translator = new SymbolResolver();
         translator.visit(parseTree);
@@ -65,7 +65,7 @@ public class Assembler {
         return translator.getSymbolTable();
     }
 
-    private BitSet16[] convertToMachineCode(ParseTree parseTree, Map<String, BitSet16> symbolTable) {
+    private FixedBitSet[] convertToMachineCode(ParseTree parseTree, Map<String, FixedBitSet> symbolTable) {
         //Convert to machine code
         MachineCodeTranslator translator = new MachineCodeTranslator(symbolTable);
         translator.visit(parseTree);
@@ -100,7 +100,7 @@ public class Assembler {
         return expandedCodeWithMacros;
     }
 
-    public Map<String, BitSet16> getSymbolTable() {
+    public Map<String, FixedBitSet> getSymbolTable() {
         return symbolTable;
     }
 

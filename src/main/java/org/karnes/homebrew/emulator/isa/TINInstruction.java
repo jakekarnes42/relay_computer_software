@@ -1,9 +1,9 @@
 package org.karnes.homebrew.emulator.isa;
 
-import org.karnes.homebrew.bitset.BitSet16;
+import org.karnes.homebrew.bitset.FixedBitSet;
 
 public class TINInstruction extends AbstractNoArgInstruction {
     public TINInstruction() {
-        super("TIN", new BitSet16("1000 0000 0000 0000"));
+        super("TIN", new FixedBitSet("1000 0000 0000 0000"));
     }
 }
