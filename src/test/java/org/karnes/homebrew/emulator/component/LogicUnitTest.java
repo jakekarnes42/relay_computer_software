@@ -27,7 +27,7 @@ class LogicUnitTest {
 
     @BeforeEach
     void setUp() {
-        BidirectionalBus luOperationBus = new VirtualBus("LU_OPERATION_BUS", 3);
+        BidirectionalBus luOperationBus = new VirtualBus("LU_OPERATION_BUS", LU_OPCODE.WIDTH);
         luOperationBusConnection = luOperationBus.getWriteConnection();
         BidirectionalBus tmp1Bus = new VirtualBus("TMP1-ALU_BUS", DATA_WIDTH);
         tmp1BusConnection = tmp1Bus.getWriteConnection();
@@ -35,7 +35,7 @@ class LogicUnitTest {
         tmp2BusConnection = tmp2Bus.getWriteConnection();
         BidirectionalBus outputBus = new VirtualBus("LU_OUTPUT_BUS", DATA_WIDTH);
         outputBusConnection = outputBus.getReadConnection();
-        BidirectionalBus ccBus = new VirtualBus("CC_BUS", 4);
+        BidirectionalBus ccBus = new VirtualBus("CC_BUS", ConditionCode.WIDTH);
         ccBusConnection = ccBus.getReadConnection();
 
         logicUnit = new LogicUnit(luOperationBus, tmp1Bus, tmp2Bus, outputBus, ccBus);

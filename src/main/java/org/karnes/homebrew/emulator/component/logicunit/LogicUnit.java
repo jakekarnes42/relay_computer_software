@@ -20,8 +20,8 @@ public class LogicUnit {
 
     public LogicUnit(ReadableBus luOperationBus, ReadableBus tmp1Bus, ReadableBus tmp2Bus, BidirectionalBus outputBus, BidirectionalBus ccBus) {
         //Get the opcode bus
-        if (luOperationBus.getWidth() != 3) {
-            throw new IllegalArgumentException("Unexpected width for LU Operation BidirectionalBus. Expected 3. Found: "
+        if (luOperationBus.getWidth() != LU_OPCODE.WIDTH) {
+            throw new IllegalArgumentException("Unexpected width for LU Operation BidirectionalBus. Expected " + LU_OPCODE.WIDTH + ". Found: "
                     + luOperationBus.getWidth());
         }
 
@@ -39,8 +39,8 @@ public class LogicUnit {
 
 
         //Get the Condition Code bus
-        if (ccBus.getWidth() != 4) {
-            throw new IllegalArgumentException("Unexpected width for Condition Code BidirectionalBus. Expected 4. Found: "
+        if (ccBus.getWidth() != ConditionCode.WIDTH) {
+            throw new IllegalArgumentException("Unexpected width for Condition Code BidirectionalBus. Expected " + ConditionCode.WIDTH + ". Found: "
                     + ccBus.getWidth());
         }
         ccBusConnection = ccBus.getWriteConnection();

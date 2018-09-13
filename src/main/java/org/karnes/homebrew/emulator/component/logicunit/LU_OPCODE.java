@@ -9,12 +9,12 @@ public enum LU_OPCODE {
     NOT(new FixedBitSet("111")),
     OFF(new FixedBitSet("000"));
 
-
+    public static final int WIDTH = 3;
     private final FixedBitSet bitSet;
 
     LU_OPCODE(FixedBitSet bitSet) {
-        if (bitSet.size() != 3) {
-            throw new IllegalArgumentException("LU_OPCODE must be created from a FixedBitSet of size 3");
+        if (bitSet.size() != WIDTH) {
+            throw new IllegalArgumentException("LU_OPCODE must be created from a FixedBitSet of size " + WIDTH);
         }
         this.bitSet = bitSet;
     }

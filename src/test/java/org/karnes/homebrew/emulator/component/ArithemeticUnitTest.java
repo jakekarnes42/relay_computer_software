@@ -27,7 +27,7 @@ class ArithemeticUnitTest {
 
     @BeforeEach
     void setUp() {
-        BidirectionalBus auOperationBus = new VirtualBus("AU_OPERATION_BUS", 3);
+        BidirectionalBus auOperationBus = new VirtualBus("AU_OPERATION_BUS", AU_OPCODE.WIDTH);
         auOperationBusConnection = auOperationBus.getWriteConnection();
         BidirectionalBus tmp1Bus = new VirtualBus("TMP1-ALU_BUS", DATA_WIDTH);
         tmp1BusConnection = tmp1Bus.getWriteConnection();
@@ -35,7 +35,7 @@ class ArithemeticUnitTest {
         tmp2BusConnection = tmp2Bus.getWriteConnection();
         BidirectionalBus outputBus = new VirtualBus("AU_OUTPUT_BUS", DATA_WIDTH);
         outputBusConnection = outputBus.getReadConnection();
-        BidirectionalBus ccBus = new VirtualBus("CC_BUS", 4);
+        BidirectionalBus ccBus = new VirtualBus("CC_BUS", ConditionCode.WIDTH);
         ccBusConnection = ccBus.getReadConnection();
 
         arithmeticUnit = new ArithmeticUnit(auOperationBus, tmp1Bus, tmp2Bus, outputBus, ccBus);

@@ -20,8 +20,8 @@ public class ArithmeticUnit {
 
     public ArithmeticUnit(ReadableBus auOperationBus, ReadableBus tmp1Bus, ReadableBus tmp2Bus, BidirectionalBus outputBus, BidirectionalBus ccBus) {
         //Get the opcode bus
-        if (auOperationBus.getWidth() != 3) {
-            throw new IllegalArgumentException("Unexpected width for AU Operation BidirectionalBus. Expected 3. Found: "
+        if (auOperationBus.getWidth() != AU_OPCODE.WIDTH) {
+            throw new IllegalArgumentException("Unexpected width for AU Operation BidirectionalBus. Expected " + AU_OPCODE.WIDTH + ". Found: "
                     + auOperationBus.getWidth());
         }
 
@@ -39,8 +39,8 @@ public class ArithmeticUnit {
 
 
         //Get the Condition Code bus
-        if (ccBus.getWidth() != 4) {
-            throw new IllegalArgumentException("Unexpected width for Condition Code BidirectionalBus. Expected 4. Found: "
+        if (ccBus.getWidth() != ConditionCode.WIDTH) {
+            throw new IllegalArgumentException("Unexpected width for Condition Code BidirectionalBus. Expected " + ConditionCode.WIDTH + ". Found: "
                     + ccBus.getWidth());
         }
         ccBusConnection = ccBus.getWriteConnection();

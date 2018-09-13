@@ -9,12 +9,13 @@ public enum AU_OPCODE {
     DEC(new FixedBitSet("111")),
     OFF(new FixedBitSet("000"));
 
+    public static final int WIDTH = 3;
 
     private final FixedBitSet bitSet;
 
     AU_OPCODE(FixedBitSet bitSet) {
-        if (bitSet.size() != 3) {
-            throw new IllegalArgumentException("AU_OPCODE must be created from a FixedBitSet of size 3");
+        if (bitSet.size() != WIDTH) {
+            throw new IllegalArgumentException("AU_OPCODE must be created from a FixedBitSet of size " + WIDTH);
         }
         this.bitSet = bitSet;
     }
