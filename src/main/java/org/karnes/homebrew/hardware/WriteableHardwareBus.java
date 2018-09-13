@@ -68,7 +68,7 @@ public class WriteableHardwareBus implements WriteableBus {
         }
 
         //Write out the bits according to our software connections
-        mcp23017.write(outputPins, value);
+        mcp23017.write(value, outputPins);
     }
 
     @Override

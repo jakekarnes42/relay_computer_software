@@ -1,7 +1,6 @@
 package org.karnes.homebrew.hardware;
 
 import org.karnes.homebrew.bitset.FixedBitSet;
-import org.karnes.homebrew.bitset.FixedBitSet;
 
 import java.util.Arrays;
 
@@ -37,28 +36,74 @@ public class MCP23017 {
         this.bus = bus;
         this.address = address;
 
-        setAllPinsToOuput();
+        //Gives us a stable starting place
+        setAllPinsToOutput();
     }
 
     /**
      * Sets all GPIO pins (A and B) to outputs
      */
-    public synchronized void setAllPinsToOuput() {
+    public synchronized void setAllPinsToOutput() {
         FixedBitSet zero = new FixedBitSet(Byte.SIZE);
         bus.writeByte(address, (short) (IO_DIRECTION_REGISTER + MCP23017Port.A.getOffset()), zero);
         bus.writeByte(address, (short) (IO_DIRECTION_REGISTER + MCP23017Port.B.getOffset()), zero);
     }
 
 
-    public synchronized void setInput(MCP23017Pin[] pins) {
+    /**
+     * Sets the provided pin(s) to input mode, meaning they can be used to read incoming values.
+     *
+     * @param pins The pin(s) which should be set to input mode.
+     */
+    public synchronized void setInput(MCP23017Pin... pins) {
         updateRegisterForPins(IO_DIRECTION_REGISTER, pins, FixedBitSet.allOnes(pins.length));
     }
 
-    public synchronized void setOutput(MCP23017Pin[] pins) {
+    /**
+     * Sets the provided pin(s) to output mode, meaning they can be used to write outgoing values.
+     *
+     * @param pins The pin(s) which should be set to output mode.
+     */
+    public synchronized void setOutput(MCP23017Pin... pins) {
         updateRegisterForPins(IO_DIRECTION_REGISTER, pins, new FixedBitSet(pins.length));
 
     }
 
+    /**
+     * Writes the value to the outputPins. The outputPins should already be set to output mode via {@link #setAllPinsToOutput()} or {@link #setOutput(MCP23017Pin...)}
+     *
+     * @param outputPins
+     * @param value
+     */
+    public synchronized void write(FixedBitSet value,MCP23017Pin... outputPins ) {
+        updateRegisterForPins(GPIO_PORT_REGISTER, outputPins, value);
+    }
+
+    public synchronized FixedBitSet read(MCP23017Pin... inputPins) {
+        //Get A and B current values
+        FixedBitSet aValue = bus.readByte(address, (short) (GPIO_PORT_REGISTER + MCP23017Port.A.getOffset()));
+        FixedBitSet bValue = bus.readByte(address, (short) (GPIO_PORT_REGISTER + MCP23017Port.B.getOffset()));
+
+        FixedBitSet result = new FixedBitSet(inputPins.length);
+        for (int i = 0; i < inputPins.length; i++) {
+            MCP23017Pin pin = inputPins[i];
+            boolean value;
+            if (pin.getPort() == MCP23017Port.A) {
+                value = aValue.get(pin.getPosition());
+            } else {
+                value = bValue.get(pin.getPosition());
+            }
+            result = result.set(i, value);
+        }
+        return result;
+    }
+
+    /**
+     * Reads a single pin's current status
+     *
+     * @param pin
+     * @return The value of that pin
+     */
     public synchronized boolean getPinStatus(MCP23017Pin pin) {
         //Get the whole port's current status
         FixedBitSet portStatus = bus.readByte(address, (short) (GPIO_PORT_REGISTER + pin.getPort().getOffset()));
@@ -98,28 +143,7 @@ public class MCP23017 {
         }
     }
 
-    public synchronized void write(MCP23017Pin[] outputPins, FixedBitSet value) {
-        updateRegisterForPins(GPIO_PORT_REGISTER, outputPins, value);
-    }
 
-    public synchronized FixedBitSet read(MCP23017Pin[] inputPins) {
-        //Get A and B current values
-        FixedBitSet aValue = bus.readByte(address, (short) (GPIO_PORT_REGISTER + MCP23017Port.A.getOffset()));
-        FixedBitSet bValue = bus.readByte(address, (short) (GPIO_PORT_REGISTER + MCP23017Port.B.getOffset()));
-
-        FixedBitSet result = new FixedBitSet(inputPins.length);
-        for (int i = 0; i < inputPins.length; i++) {
-            MCP23017Pin pin = inputPins[i];
-            boolean value;
-            if (pin.getPort() == MCP23017Port.A) {
-                value = aValue.get(pin.getPosition());
-            } else {
-                value = bValue.get(pin.getPosition());
-            }
-            result = result.set(i, value);
-        }
-        return result;
-    }
 }
 
 enum MCP23017Pin {

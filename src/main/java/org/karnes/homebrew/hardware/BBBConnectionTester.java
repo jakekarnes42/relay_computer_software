@@ -39,7 +39,7 @@ public class BBBConnectionTester {
         I2CBus i2cBus = I2CBus.getI2CBus();
         MCP23017 mcp23017 = i2cBus.getMCP23017(MCP23017Address.ADDR0);
         //First, set all the ports to output for safety?
-        mcp23017.setAllPinsToOuput();
+        mcp23017.setAllPinsToOutput();
 
         //Input only bus w/ interrupt
         ReadableBus inputOnlyBus = new ReadableHardwareBus("Input Only HardwareBus", mcp23017, new MCP23017Pin[]{MCP23017Pin.GPIOA_0});
@@ -80,7 +80,7 @@ public class BBBConnectionTester {
 
         System.out.println("Ready for input testing. Turn on and off 12V switches");
 
-        //While loop to prevent us from exiting the program (the other threads are deamons
+        //While loop to prevent us from exiting the program (the other threads are deamons)
         while (true) {
             Thread.sleep(1000);
         }
