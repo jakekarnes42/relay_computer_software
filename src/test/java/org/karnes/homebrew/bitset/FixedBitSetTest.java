@@ -68,6 +68,35 @@ public class FixedBitSetTest {
         assertEquals(bBoolean, bOnes);
     }
 
+    @Test
+    public void testBitStringConstructors() {
+        assertEquals(new FixedBitSet(new boolean[]{true, false, true}), new FixedBitSet("101"));
+
+        assertEquals(new FixedBitSet(new boolean[]{true, false, true, false, true, false}), new FixedBitSet("101 010"));
+
+        assertEquals(new FixedBitSet(new boolean[]{true, true}), new FixedBitSet("1abc1"));
+
+        assertEquals(new FixedBitSet(new boolean[]{true, true, true, false, false, false, true, true, true}), new FixedBitSet("111_000_111"));
+
+        assertEquals(new FixedBitSet(new boolean[]{false, true, false}), new FixedBitSet("[010]"));
+    }
+
+    @Test
+    public void testConstructorFromToString() {
+        boolean[] values = new boolean[]{true, false, true};
+        FixedBitSet fixedBitSet = new FixedBitSet(values);
+        assertEquals(fixedBitSet, new FixedBitSet(fixedBitSet.toString()));
+
+        values = new boolean[]{true, false, true, false, true, false};
+        fixedBitSet = new FixedBitSet(values);
+        assertEquals(fixedBitSet, new FixedBitSet(fixedBitSet.toString()));
+
+
+        values = new boolean[]{true, true,};
+        fixedBitSet = new FixedBitSet(values);
+        assertEquals(fixedBitSet, new FixedBitSet(fixedBitSet.toString()));
+
+    }
 
     @ParameterizedTest
     @MethodSource("allBitSetSize3")

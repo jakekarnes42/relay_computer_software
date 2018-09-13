@@ -16,15 +16,41 @@ public class FixedBitSet implements Serializable, Iterable<Boolean> {
 
     boolean[] bits;
 
+    /**
+     * Creates a FixedBitSet of the given size. This will have {@code size} number of bits, all of which will be initialized to 0.
+     *
+     * @param size The number of bits in the FixedBitSet
+     */
     public FixedBitSet(int size) {
         bits = new boolean[size];
     }
 
-    public FixedBitSet(boolean[] value) {
-        bits = value;
+    /**
+     * Creates a FixedBitSet from the {@code boolean} array. The FixedBitSet's size will be {@code values.length}.
+     *
+     * @param values The values of the FixedBitSet
+     */
+    public FixedBitSet(boolean[] values) {
+        bits = values;
     }
 
 
+    /**
+     * Creates a FixedBitSet from a String, considering only the characters '0' and '1'. All other characters are stripped out.
+     * <p>
+     * Examples:
+     * <ul>
+     * <li><b>Input: </b>"101" <b>Output: </b>FixedBitSet [101]</li>
+     * <li><b>Input: </b>"101 010" <b>Output: </b>FixedBitSet [101010]</li>
+     * <li><b>Input: </b>"1abc1" <b>Output: </b>FixedBitSet [11]</li>
+     * <li><b>Input: </b>"111_000_111" <b>Output: </b>FixedBitSet [111_000_111]</li>
+     * <li><b>Input: </b>"[010]" <b>Output: </b>FixedBitSet [010]</li>
+     * </ul>
+     * <p>
+     * This is helpful because we can use this constructor to convert the result of {@link FixedBitSet#toString()} back into a FixedBitSet.
+     *
+     * @param bitString The String to convert to a FixedBitSet
+     */
     public FixedBitSet(String bitString) {
         String stripped = bitString.replaceAll("[^01]+", "");
         //Only 0's and 1's should be left
@@ -101,7 +127,9 @@ public class FixedBitSet implements Serializable, Iterable<Boolean> {
     }
 
     /**
-     * Returns an iterator over elements of type {@code T}.
+     * Returns an iterator over each bit in the FixedBitSet (as a {@code boolean}), from right to left.
+     *
+     * <b>Warning:</b> Because this is considered an array of bits, likely representing a number, the positions are considered from right to left <i>which is the opposite of a typical array.</i> When representing a number, the least significant bit will be in position 0.
      *
      * @return an Iterator.
      */
@@ -165,7 +193,7 @@ public class FixedBitSet implements Serializable, Iterable<Boolean> {
 
     /**
      * Converts the FixedBitSet into a byte.
-     * <b>Warning:</b> The FixedBitSet must be exactly 16 bits
+     * <b>Warning:</b> The FixedBitSet must be exactly 8 bits
      *
      * @return The binary-equvialent byte
      * @throws IllegalArgumentException if the current FixedBitSet's size isn't 8 (the number of bits in a byte)
@@ -246,11 +274,9 @@ public class FixedBitSet implements Serializable, Iterable<Boolean> {
      * @return the resulting BitSet
      */
     public static FixedBitSet allOnes(int size) {
-        FixedBitSet bitSet = new FixedBitSet(size);
-        for (int i = 0; i < size; i++) {
-            bitSet = bitSet.set(i, true);
-        }
-        return bitSet;
+        boolean[] values = new boolean[size];
+        Arrays.fill(values, true);
+        return new FixedBitSet(values);
     }
 
     @Override
