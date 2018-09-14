@@ -1,7 +1,10 @@
-package org.karnes.homebrew.emulator.component.logicunit;
+package org.karnes.homebrew.emulator.component.alu.logicunit;
 
 import org.karnes.homebrew.bitset.FixedBitSet;
 
+/**
+ * Binary Opcodes for Logic Unit operations
+ */
 public enum LU_OPCODE {
     XOR(new FixedBitSet("100")),
     OR(new FixedBitSet("101")),
@@ -19,11 +22,23 @@ public enum LU_OPCODE {
         this.bitSet = bitSet;
     }
 
+    /**
+     * Converts the LU_OPCODE to its binary representation as a FixedBitSet
+     *
+     * @return the binary representation of the opcode
+     */
     public FixedBitSet toBitSet() {
         return bitSet;
     }
 
-    public static LU_OPCODE fromBitSet(FixedBitSet input) {
+    /**
+     * Gets the corresponding LU_OPCODE for the given binary representation.
+     *
+     * @param input The binary repesentation
+     * @return The corresponding LU_OPCODE
+     * @throws IllegalArgumentException if the binary representation doesn't correspond to a valid LU_OPCODE
+     */
+    public static LU_OPCODE fromBitSet(FixedBitSet input) throws IllegalArgumentException {
         if (input.get(2) == false) {
             return OFF;
         } else if (input.equals(new FixedBitSet("100"))) {

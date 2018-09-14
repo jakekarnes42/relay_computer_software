@@ -10,8 +10,8 @@ import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
 import org.karnes.homebrew.emulator.component.bus.VirtualBus;
 import org.karnes.homebrew.emulator.component.bus.connection.ReadableBusConnection;
 import org.karnes.homebrew.emulator.component.bus.connection.WriteableBusConnection;
-import org.karnes.homebrew.emulator.component.logicunit.LU_OPCODE;
-import org.karnes.homebrew.emulator.component.logicunit.LogicUnit;
+import org.karnes.homebrew.emulator.component.alu.logicunit.LU_OPCODE;
+import org.karnes.homebrew.emulator.component.alu.logicunit.LogicUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,7 +1,10 @@
-package org.karnes.homebrew.emulator.component.arithmeticunit;
+package org.karnes.homebrew.emulator.component.alu.arithmeticunit;
 
 import org.karnes.homebrew.bitset.FixedBitSet;
 
+/**
+ * Binary Opcodes for Arithmetic Unit operations
+ */
 public enum AU_OPCODE {
     ADD(new FixedBitSet("100")),
     INC(new FixedBitSet("101")),
@@ -20,11 +23,23 @@ public enum AU_OPCODE {
         this.bitSet = bitSet;
     }
 
+    /**
+     * Converts the AU_OPCODE to its binary representation as a FixedBitSet
+     *
+     * @return the binary representation of the opcode
+     */
     public FixedBitSet toBitSet() {
         return bitSet;
     }
 
-    public static AU_OPCODE fromBitSet(FixedBitSet input) {
+    /**
+     * Gets the corresponding AU_OPCODE for the given binary representation.
+     *
+     * @param input The binary repesentation
+     * @return The corresponding AU_OPCODE
+     * @throws IllegalArgumentException if the binary representation doesn't correspond to a valid AU_OPCODE
+     */
+    public static AU_OPCODE fromBitSet(FixedBitSet input) throws IllegalArgumentException {
         if (input.get(2) == false) {
             return OFF;
         } else if (input.equals(new FixedBitSet("100"))) {
