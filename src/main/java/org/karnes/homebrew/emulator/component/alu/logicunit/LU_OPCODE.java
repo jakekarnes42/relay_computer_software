@@ -39,6 +39,10 @@ public enum LU_OPCODE {
      * @throws IllegalArgumentException if the binary representation doesn't correspond to a valid LU_OPCODE
      */
     public static LU_OPCODE fromBitSet(FixedBitSet input) throws IllegalArgumentException {
+        if (input.size() != WIDTH) {
+            throw new IllegalArgumentException("LU_OPCODE must be created from a FixedBitSet of size " + WIDTH);
+        }
+
         if (input.get(2) == false) {
             return OFF;
         } else if (input.equals(new FixedBitSet("100"))) {

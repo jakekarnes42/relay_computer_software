@@ -40,6 +40,10 @@ public enum AU_OPCODE {
      * @throws IllegalArgumentException if the binary representation doesn't correspond to a valid AU_OPCODE
      */
     public static AU_OPCODE fromBitSet(FixedBitSet input) throws IllegalArgumentException {
+        if (input.size() != WIDTH) {
+            throw new IllegalArgumentException("AU_OPCODE must be created from a FixedBitSet of size " + WIDTH);
+        }
+
         if (input.get(2) == false) {
             return OFF;
         } else if (input.equals(new FixedBitSet("100"))) {
