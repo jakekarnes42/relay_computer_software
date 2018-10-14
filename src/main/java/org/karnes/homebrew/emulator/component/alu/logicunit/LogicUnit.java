@@ -3,16 +3,14 @@ package org.karnes.homebrew.emulator.component.alu.logicunit;
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
 import org.karnes.homebrew.emulator.component.alu.ALUComponent;
-import org.karnes.homebrew.emulator.component.bus.ReadableBus;
-import org.karnes.homebrew.emulator.component.bus.WriteableBus;
 
 /**
  * A virtual half of the typical ALU which performs binary logic operations.
  */
 public class LogicUnit extends ALUComponent {
 
-    public LogicUnit(ReadableBus opcodeBus, ReadableBus tmp1Bus, ReadableBus tmp2Bus, WriteableBus outputBus, WriteableBus ccBus) {
-        super(opcodeBus, tmp1Bus, tmp2Bus, outputBus, ccBus);
+    public LogicUnit(int width) {
+        super("LogicUnit", width);
     }
 
 
@@ -45,14 +43,14 @@ public class LogicUnit extends ALUComponent {
         ConditionCode conditionCodes = getConditionCodes(result);
 
         //Set the output
-        outputBusConnection.writeValueToBus(result);
-        ccBusConnection.writeValueToBus(conditionCodes.toBitSet());
+        outputBusConnection.writeValue(result);
+        ccBusConnection.writeValue(conditionCodes.toBitSet());
     }
 
 
     private ConditionCode getConditionCodes(FixedBitSet result) {
-        boolean zero = result.equals(new FixedBitSet(DATA_WIDTH));
-        boolean sign = result.get(DATA_WIDTH - 1);
+        boolean zero = result.equals(new FixedBitSet(width));
+        boolean sign = result.get(width - 1);
 
         //The LU cannot produce the conditions which would set the carry or overflow flags
         return new ConditionCode(false, false, sign, zero);
@@ -61,32 +59,32 @@ public class LogicUnit extends ALUComponent {
 
 
     private FixedBitSet performXOR(FixedBitSet a, FixedBitSet b) {
-        FixedBitSet result = new FixedBitSet(DATA_WIDTH);
-        for (int i = 0; i < DATA_WIDTH; i++) {
+        FixedBitSet result = new FixedBitSet(width);
+        for (int i = 0; i < width; i++) {
             result = result.set(i, a.get(i) ^ b.get(i));
         }
         return result;
     }
 
     private FixedBitSet performOR(FixedBitSet a, FixedBitSet b) {
-        FixedBitSet result = new FixedBitSet(DATA_WIDTH);
-        for (int i = 0; i < DATA_WIDTH; i++) {
+        FixedBitSet result = new FixedBitSet(width);
+        for (int i = 0; i < width; i++) {
             result = result.set(i, a.get(i) || b.get(i));
         }
         return result;
     }
 
     private FixedBitSet performAND(FixedBitSet a, FixedBitSet b) {
-        FixedBitSet result = new FixedBitSet(DATA_WIDTH);
-        for (int i = 0; i < DATA_WIDTH; i++) {
+        FixedBitSet result = new FixedBitSet(width);
+        for (int i = 0; i < width; i++) {
             result = result.set(i, a.get(i) && b.get(i));
         }
         return result;
     }
 
     private FixedBitSet performNOT(FixedBitSet a) {
-        FixedBitSet result = new FixedBitSet(DATA_WIDTH);
-        for (int i = 0; i < DATA_WIDTH; i++) {
+        FixedBitSet result = new FixedBitSet(width);
+        for (int i = 0; i < width; i++) {
             result = result.set(i, !a.get(i));
         }
         return result;

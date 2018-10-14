@@ -9,7 +9,7 @@ import java.util.Arrays;
  * <p>
  * TODO: this needs a nicer interface. It works, but let's make this "better"
  */
-public class MCP23017 {
+class MCP23017 {
 
     private final I2CBus bus;
     private final MCP23017Address address;
@@ -75,7 +75,7 @@ public class MCP23017 {
      * @param outputPins
      * @param value
      */
-    public synchronized void write(FixedBitSet value,MCP23017Pin... outputPins ) {
+    public synchronized void write(FixedBitSet value, MCP23017Pin... outputPins) {
         updateRegisterForPins(GPIO_PORT_REGISTER, outputPins, value);
     }
 

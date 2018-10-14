@@ -2,11 +2,6 @@ package org.karnes.homebrew.hardware;
 
 
 import org.karnes.homebrew.bitset.FixedBitSet;
-import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
-import org.karnes.homebrew.emulator.component.bus.ReadableBus;
-import org.karnes.homebrew.emulator.component.bus.WriteableBus;
-import org.karnes.homebrew.emulator.component.bus.connection.BidirectionalInterruptableBusConnection;
-import org.karnes.homebrew.emulator.component.bus.connection.WriteableBusConnection;
 
 /**
  * Tester class for the BBB Connection Test board Rev B
@@ -41,49 +36,49 @@ public class BBBConnectionTester {
         //First, set all the ports to output for safety?
         mcp23017.setAllPinsToOutput();
 
-        //Input only bus w/ interrupt
-        ReadableBus inputOnlyBus = new ReadableHardwareBus("Input Only HardwareBus", mcp23017, new MCP23017Pin[]{MCP23017Pin.GPIOA_0});
-        inputOnlyBus.getInterruptConnection(e -> {
-            System.out.println("Input only bus from GPIOA Changed. Value: " + e.getUpdatedValue());
-        });
-
-        //Output only
-        WriteableBus outputOnlyBus = new WriteableHardwareBus("Output Only HardwareBus", mcp23017, new MCP23017Pin[]{MCP23017Pin.GPIOA_7});
-        WriteableBusConnection writeConnection = outputOnlyBus.getWriteConnection();
-
-        //Bidirectional bus
-        BidirectionalBus biBus = new BidirectionalHardwareBus("Bidirectional HardwareBus", mcp23017, new MCP23017Pin[]{MCP23017Pin.GPIOB_0}, new MCP23017Pin[]{MCP23017Pin.GPIOB_7});
-        BidirectionalInterruptableBusConnection bidirectionalBusConnection = biBus.getBidirectionalInterruptableBusConnection(e -> {
-            System.out.println("Bidirectional bus from GPIOB Changed. Value: " + e.getUpdatedValue());
-        });
-
-
-        System.out.println("MCP23017 Test is ready");
-        System.out.println();
-
-
-        //Turn on and off the output only LED
-        writeConnection.writeValueToBus(new FixedBitSet("1"));
-        System.out.println("Output 0 turned on.");
-        Thread.sleep(3000);
-        writeConnection.writeValueToBus(new FixedBitSet("0"));
-        System.out.println("Output 0 turned off.");
-        Thread.sleep(1000);
-
-        //Do the same for the other bidirectional output LED
-        bidirectionalBusConnection.writeValueToBus(new FixedBitSet("1"));
-        System.out.println("Output 1 turned on.");
-        Thread.sleep(3000);
-        bidirectionalBusConnection.writeValueToBus(new FixedBitSet("0"));
-        System.out.println("Output 1 turned off.");
-        Thread.sleep(1000);
-
-        System.out.println("Ready for input testing. Turn on and off 12V switches");
-
-        //While loop to prevent us from exiting the program (the other threads are deamons)
-        while (true) {
-            Thread.sleep(1000);
-        }
+//        //Input only bus w/ interrupt
+//        ReadableBus inputOnlyBus = new ReadableHardwareBus("Input Only HardwareBus", mcp23017, new MCP23017Pin[]{MCP23017Pin.GPIOA_0});
+//        inputOnlyBus.getInterruptConnection(e -> {
+//            System.out.println("Input only bus from GPIOA Changed. Value: " + e.getUpdatedValue());
+//        });
+//
+//        //Output only
+//        WritableBus outputOnlyBus = new WritableHardwareBus("Output Only HardwareBus", mcp23017, new MCP23017Pin[]{MCP23017Pin.GPIOA_7});
+//        WritableBusConnection writeConnection = outputOnlyBus.getWriteConnection();
+//
+//        //Bidirectional bus
+//        BidirectionalBus biBus = new BidirectionalHardwareBus("Bidirectional HardwareBus", mcp23017, new MCP23017Pin[]{MCP23017Pin.GPIOB_0}, new MCP23017Pin[]{MCP23017Pin.GPIOB_7});
+//        BidirectionalInterruptableBusConnection bidirectionalBusConnection = biBus.getBidirectionalInterruptableBusConnection(e -> {
+//            System.out.println("Bidirectional bus from GPIOB Changed. Value: " + e.getUpdatedValue());
+//        });
+//
+//
+//        System.out.println("MCP23017 Test is ready");
+//        System.out.println();
+//
+//
+//        //Turn on and off the output only LED
+//        writeConnection.writeValueToBus(new FixedBitSet("1"));
+//        System.out.println("Output 0 turned on.");
+//        Thread.sleep(3000);
+//        writeConnection.writeValueToBus(new FixedBitSet("0"));
+//        System.out.println("Output 0 turned off.");
+//        Thread.sleep(1000);
+//
+//        //Do the same for the other bidirectional output LED
+//        bidirectionalBusConnection.writeValueToBus(new FixedBitSet("1"));
+//        System.out.println("Output 1 turned on.");
+//        Thread.sleep(3000);
+//        bidirectionalBusConnection.writeValueToBus(new FixedBitSet("0"));
+//        System.out.println("Output 1 turned off.");
+//        Thread.sleep(1000);
+//
+//        System.out.println("Ready for input testing. Turn on and off 12V switches");
+//
+//        //While loop to prevent us from exiting the program (the other threads are deamons)
+//        while (true) {
+//            Thread.sleep(1000);
+//        }
 
 
     }

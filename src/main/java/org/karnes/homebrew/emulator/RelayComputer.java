@@ -9630,12 +9630,7 @@ public class RelayComputer {
     }
 
     protected void testWordIn() {
-        if (ioDevice.hasWord()) {
-            zero = false;
-        } else {
-            //There is no input word
-            zero = true;
-        }
+        zero = !ioDevice.hasWord();
     }
 
     protected short wordIn() {
@@ -9643,12 +9638,7 @@ public class RelayComputer {
     }
 
     protected void testWordOut() {
-        if (ioDevice.canSendWord()) {
-            zero = false;
-        } else {
-            //There is no room for output word
-            zero = true;
-        }
+        zero = !ioDevice.canSendWord();
     }
 
     protected void wordOut(short sourceRegister) {

@@ -8,37 +8,32 @@ import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.ConditionCode;
 import org.karnes.homebrew.emulator.component.alu.arithmeticunit.AU_OPCODE;
 import org.karnes.homebrew.emulator.component.alu.arithmeticunit.ArithmeticUnit;
-import org.karnes.homebrew.emulator.component.bus.BidirectionalBus;
-import org.karnes.homebrew.emulator.component.bus.VirtualBus;
-import org.karnes.homebrew.emulator.component.bus.connection.ReadableBusConnection;
-import org.karnes.homebrew.emulator.component.bus.connection.WriteableBusConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.ReadableConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.WritableConnection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArithemeticUnitTest {
+class ArithmeticUnitTest {
     private static int DATA_WIDTH = 4;
 
     private ArithmeticUnit arithmeticUnit;
-    private WriteableBusConnection auOperationBusConnection;
-    private WriteableBusConnection tmp1BusConnection;
-    private WriteableBusConnection tmp2BusConnection;
-    private ReadableBusConnection outputBusConnection;
-    private ReadableBusConnection ccBusConnection;
+    private WritableConnection auOperationConnection;
+    private WritableConnection tmp1Connection;
+    private WritableConnection tmp2Connection;
+    private ReadableConnection outputConnection;
+    private ReadableConnection ccConnection;
 
     @BeforeEach
     void setUp() {
-        BidirectionalBus auOperationBus = new VirtualBus("AU_OPERATION_BUS", AU_OPCODE.WIDTH);
-        auOperationBusConnection = auOperationBus.getWriteConnection();
-        BidirectionalBus tmp1Bus = new VirtualBus("TMP1-ALU_BUS", DATA_WIDTH);
-        tmp1BusConnection = tmp1Bus.getWriteConnection();
-        BidirectionalBus tmp2Bus = new VirtualBus("TMP2-ALU_BUS", DATA_WIDTH);
-        tmp2BusConnection = tmp2Bus.getWriteConnection();
-        BidirectionalBus outputBus = new VirtualBus("AU_OUTPUT_BUS", DATA_WIDTH);
-        outputBusConnection = outputBus.getReadConnection();
-        BidirectionalBus ccBus = new VirtualBus("CC_BUS", ConditionCode.WIDTH);
-        ccBusConnection = ccBus.getReadConnection();
+        //Create a new AU
+        arithmeticUnit = new ArithmeticUnit(DATA_WIDTH);
 
-        arithmeticUnit = new ArithmeticUnit(auOperationBus, tmp1Bus, tmp2Bus, outputBus, ccBus);
+        //Get connections for testing
+        auOperationConnection = arithmeticUnit.getOpcodeConnection();
+        tmp1Connection = arithmeticUnit.getTmp1BusConnection();
+        tmp2Connection = arithmeticUnit.getTmp2BusConnection();
+        outputConnection = arithmeticUnit.getOutputBusConnection();
+        ccConnection = arithmeticUnit.getCcBusConnection();
     }
 
 
@@ -46,13 +41,13 @@ class ArithemeticUnitTest {
     void simpleTest() {
         //The AU is already hooked up.
         //Enable the output. This should be AU Enable + ADD (0,0)
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.ADD.toBitSet());
 
         //The output should be 0.
-        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputConnection.readValue());
 
         //The condition code for ZERO should be set
-        FixedBitSet ccBusValue = ccBusConnection.readBusValue();
+        FixedBitSet ccBusValue = ccConnection.readValue();
         assertEquals(new FixedBitSet("0001"), ccBusValue);
 
         ConditionCode conditionCode = new ConditionCode(ccBusValue);
@@ -66,110 +61,110 @@ class ArithemeticUnitTest {
     void testChangingOperations() {
         //The AU is already hooked up.
         //First send the OFF signal
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
-        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputConnection.readValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccConnection.readValue());
 
         //Set some inputs
-        tmp1BusConnection.writeValueToBus(new FixedBitSet("0101")); // 5
-        tmp2BusConnection.writeValueToBus(new FixedBitSet("1010")); // -6
+        tmp1Connection.writeValue(new FixedBitSet("0101")); // 5
+        tmp2Connection.writeValue(new FixedBitSet("1010")); // -6
 
         //The output and cc should be still 0.
-        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputConnection.readValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccConnection.readValue());
 
         //Enable ADD
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.ADD.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(FixedBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue()); //-1
-        assertEquals(new FixedBitSet("0010"), ccBusConnection.readBusValue());
+        assertEquals(FixedBitSet.allOnes(DATA_WIDTH), outputConnection.readValue()); //-1
+        assertEquals(new FixedBitSet("0010"), ccConnection.readValue());
 
         //Change to SUB
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.SUB.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.SUB.toBitSet());
 
         //The output and cc should change accordingly.
-        assertEquals(new FixedBitSet("1011"), outputBusConnection.readBusValue()); //is 11 -> overflow to: -5
-        assertEquals(new FixedBitSet("1110"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("1011"), outputConnection.readValue()); //is 11 -> overflow to: -5
+        assertEquals(new FixedBitSet("1110"), ccConnection.readValue());
 
         //Change to INC
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.INC.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.INC.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(new FixedBitSet("0110"), outputBusConnection.readBusValue()); //6
-        assertEquals(new FixedBitSet("0000"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("0110"), outputConnection.readValue()); //6
+        assertEquals(new FixedBitSet("0000"), ccConnection.readValue());
 
         //Change to DEC
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.DEC.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.DEC.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(new FixedBitSet("0100"), outputBusConnection.readBusValue()); //4
-        assertEquals(new FixedBitSet("0000"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("0100"), outputConnection.readValue()); //4
+        assertEquals(new FixedBitSet("0000"), ccConnection.readValue());
 
         //Turn it back to OFF
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
-        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputConnection.readValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccConnection.readValue());
     }
 
     @Test
     void testChangingInputs() {
         //The AU is already hooked up.
         //First send the OFF signal
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
-        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputConnection.readValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccConnection.readValue());
 
         //Set some inputs
-        tmp1BusConnection.writeValueToBus(new FixedBitSet("0101")); // 5
-        tmp2BusConnection.writeValueToBus(new FixedBitSet("1010")); // -6
+        tmp1Connection.writeValue(new FixedBitSet("0101")); // 5
+        tmp2Connection.writeValue(new FixedBitSet("1010")); // -6
 
         //The output and cc should be still 0.
-        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
- 
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputConnection.readValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccConnection.readValue());
+
         //Enable ADD
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.ADD.toBitSet());
 
         //The output and cc should now have valid values.
-        assertEquals(FixedBitSet.allOnes(DATA_WIDTH), outputBusConnection.readBusValue()); //-1
-        assertEquals(new FixedBitSet("0010"), ccBusConnection.readBusValue());
+        assertEquals(FixedBitSet.allOnes(DATA_WIDTH), outputConnection.readValue()); //-1
+        assertEquals(new FixedBitSet("0010"), ccConnection.readValue());
 
         //Change the first input
-        tmp1BusConnection.writeValueToBus(new FixedBitSet("0000")); // 0
+        tmp1Connection.writeValue(new FixedBitSet("0000")); // 0
 
         //The output and cc should change accordingly.
-        assertEquals(new FixedBitSet("1010"), outputBusConnection.readBusValue()); // -6
-        assertEquals(new FixedBitSet("0010"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("1010"), outputConnection.readValue()); // -6
+        assertEquals(new FixedBitSet("0010"), ccConnection.readValue());
 
 
         //Change the second input
-        tmp2BusConnection.writeValueToBus(new FixedBitSet("0000")); //0
+        tmp2Connection.writeValue(new FixedBitSet("0000")); //0
 
         //The output and cc should change accordingly.
-        assertEquals(new FixedBitSet("0000"), outputBusConnection.readBusValue());
-        assertEquals(new FixedBitSet("0001"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("0000"), outputConnection.readValue());
+        assertEquals(new FixedBitSet("0001"), ccConnection.readValue());
 
         //Change the first input again
-        tmp1BusConnection.writeValueToBus(new FixedBitSet("0101"));
+        tmp1Connection.writeValue(new FixedBitSet("0101"));
 
         //The output and cc should change accordingly.
-        assertEquals(new FixedBitSet("0101"), outputBusConnection.readBusValue());
-        assertEquals(new FixedBitSet("0000"), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet("0101"), outputConnection.readValue());
+        assertEquals(new FixedBitSet("0000"), ccConnection.readValue());
 
 
         //Turn it back to OFF
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.OFF.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.OFF.toBitSet());
 
         //The output and cc should be 0.
-        assertEquals(new FixedBitSet(DATA_WIDTH), outputBusConnection.readBusValue());
-        assertEquals(new FixedBitSet(DATA_WIDTH), ccBusConnection.readBusValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), outputConnection.readValue());
+        assertEquals(new FixedBitSet(DATA_WIDTH), ccConnection.readValue());
     }
 
 
@@ -178,17 +173,17 @@ class ArithemeticUnitTest {
     void testAllADDs(FixedBitSet a, FixedBitSet b, FixedBitSet result, FixedBitSet cc) {
         //The AU is already hooked up.
         //Set the inputs
-        tmp1BusConnection.writeValueToBus(a);
-        tmp2BusConnection.writeValueToBus(b);
+        tmp1Connection.writeValue(a);
+        tmp2Connection.writeValue(b);
 
         //Enable the output. This should be AU Enable + ADD (a,b)
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.ADD.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.ADD.toBitSet());
 
         //The output should be result.
-        assertEquals(result, outputBusConnection.readBusValue());
+        assertEquals(result, outputConnection.readValue());
 
         //The condition code should be cc
-        assertEquals(cc, ccBusConnection.readBusValue());
+        assertEquals(cc, ccConnection.readValue());
 
     }
 
@@ -198,17 +193,17 @@ class ArithemeticUnitTest {
     void testAllSUBs(FixedBitSet a, FixedBitSet b, FixedBitSet result, FixedBitSet cc) {
         //The AU is already hooked up.
         //Set the inputs
-        tmp1BusConnection.writeValueToBus(a);
-        tmp2BusConnection.writeValueToBus(b);
+        tmp1Connection.writeValue(a);
+        tmp2Connection.writeValue(b);
 
         //Enable the output. This should be AU Enable + SUB (a,b)
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.SUB.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.SUB.toBitSet());
 
         //The output should be result.
-        assertEquals(result, outputBusConnection.readBusValue());
+        assertEquals(result, outputConnection.readValue());
 
         //The condition code should be cc
-        assertEquals(cc, ccBusConnection.readBusValue());
+        assertEquals(cc, ccConnection.readValue());
 
     }
 
@@ -217,16 +212,16 @@ class ArithemeticUnitTest {
     void testAllINCs(FixedBitSet a, FixedBitSet result, FixedBitSet cc) {
         //The AU is already hooked up.
         //Set the inputs
-        tmp1BusConnection.writeValueToBus(a);
+        tmp1Connection.writeValue(a);
 
         //Enable the output. This should be AU Enable + INC (a,b)
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.INC.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.INC.toBitSet());
 
         //The output should be result.
-        assertEquals(result, outputBusConnection.readBusValue());
+        assertEquals(result, outputConnection.readValue());
 
         //The condition code should be cc
-        assertEquals(cc, ccBusConnection.readBusValue());
+        assertEquals(cc, ccConnection.readValue());
 
     }
 
@@ -235,19 +230,18 @@ class ArithemeticUnitTest {
     void testAllDECs(FixedBitSet a, FixedBitSet result, FixedBitSet cc) {
         //The AU is already hooked up.
         //Set the inputs
-        tmp1BusConnection.writeValueToBus(a);
+        tmp1Connection.writeValue(a);
 
         //Enable the output. This should be AU Enable + DEC (a)
-        auOperationBusConnection.writeValueToBus(AU_OPCODE.DEC.toBitSet());
+        auOperationConnection.writeValue(AU_OPCODE.DEC.toBitSet());
 
         //The output should be result.
-        assertEquals(result, outputBusConnection.readBusValue());
+        assertEquals(result, outputConnection.readValue());
 
         //The condition code should be cc
-        assertEquals(cc, ccBusConnection.readBusValue());
+        assertEquals(cc, ccConnection.readValue());
 
     }
-
 
 
 }
