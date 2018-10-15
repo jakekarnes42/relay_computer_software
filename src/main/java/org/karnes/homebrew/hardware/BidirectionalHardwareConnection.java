@@ -2,10 +2,14 @@ package org.karnes.homebrew.hardware;
 
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.SoftwareComponent;
-import org.karnes.homebrew.emulator.component.bus.connection.ReadableConnection;
-import org.karnes.homebrew.emulator.component.bus.connection.WritableConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.BidirectionalConnection;
 
-public class BidirectionalHardwareConnection extends SoftwareComponent implements ReadableConnection, WritableConnection {
+/**
+ * A {@link BidirectionalConnection} which reads and writes to/from hardware.
+ * <b>Warning:</b> If the connection is currently writing a value, it will read <i>at least</i> that value back. You
+ * probably want to zero-out the written output before reading.
+ */
+public class BidirectionalHardwareConnection extends SoftwareComponent implements BidirectionalConnection {
 
     private final ReadableHardwareConnection readConnection;
     private final WritableHardwareConnection writeConnection;
@@ -28,5 +32,10 @@ public class BidirectionalHardwareConnection extends SoftwareComponent implement
     @Override
     public void writeValue(FixedBitSet value) {
         writeConnection.writeValue(value);
+    }
+
+    @Override
+    public boolean isConnected() {
+        return readConnection.isConnected() && writeConnection.isConnected();
     }
 }

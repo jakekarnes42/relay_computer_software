@@ -2,14 +2,15 @@ package org.karnes.homebrew.emulator.component.bus.connection;
 
 import org.karnes.homebrew.bitset.FixedBitSet;
 
+/**
+ * A {@link Connection} which can be written to.
+ */
 public interface WritableConnection extends Connection {
 
     /**
-     * Indicates the the Component's value being output onto the Bus has changed, and the connected Bus should be notified.
-     * <b>Note</b> This does not necessarily define the Bus's value. The Bus may have
-     * other connections which are also writing their own values onto the Bus as well.
+     * Writes a new value to the connection, which may update another component on the other side.
      *
-     * @param value The value that this connection should output onto the Bus
+     * @param value The new value.
      */
     void writeValue(FixedBitSet value);
 }

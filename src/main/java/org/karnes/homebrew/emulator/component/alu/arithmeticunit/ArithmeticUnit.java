@@ -10,6 +10,11 @@ import org.karnes.homebrew.emulator.component.alu.ALUComponent;
 public class ArithmeticUnit extends ALUComponent {
 
 
+    /**
+     * Creates a new AU which can operate data of the specified width.
+     *
+     * @param width The width of the data
+     */
     public ArithmeticUnit(int width) {
         super("ArithmeticUnit", width);
     }
@@ -102,7 +107,6 @@ public class ArithmeticUnit extends ALUComponent {
         //Set the output
         outputBusConnection.writeValue(SUM);
         ccBusConnection.writeValue(conditionCode.toBitSet());
-
     }
 
 }

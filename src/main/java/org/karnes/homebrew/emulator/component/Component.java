@@ -1,5 +1,8 @@
 package org.karnes.homebrew.emulator.component;
 
+/**
+ * A virtual component of the system.
+ */
 public interface Component {
     /**
      * Gets the Component's name, which is useful for debugging.

@@ -8,7 +8,11 @@ import org.karnes.homebrew.emulator.component.alu.ALUComponent;
  * A virtual half of the typical ALU which performs binary logic operations.
  */
 public class LogicUnit extends ALUComponent {
-
+    /**
+     * Creates a new LU which can operate data of the specified width.
+     *
+     * @param width The width of the data
+     */
     public LogicUnit(int width) {
         super("LogicUnit", width);
     }

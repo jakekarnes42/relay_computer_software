@@ -4,10 +4,11 @@ import org.karnes.homebrew.emulator.component.Component;
 import org.karnes.homebrew.emulator.component.bus.Bus;
 
 /**
- * A connection to a Bus.
+ * A connection to a {@link Component}
  *
  * @see ReadableConnection
  * @see WritableConnection
+ * @see BidirectionalConnection
  */
 public interface Connection extends Component {
     /**
@@ -18,4 +19,11 @@ public interface Connection extends Component {
      */
     @Override
     int getWidth();
+
+    /**
+     * Indicates whether or not this Connection is already connected and ready for use.
+     *
+     * @return true if this is connected and ready for I/O, false otherwise.
+     */
+    boolean isConnected();
 }

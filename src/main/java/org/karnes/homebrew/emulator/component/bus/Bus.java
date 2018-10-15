@@ -2,6 +2,7 @@ package org.karnes.homebrew.emulator.component.bus;
 
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.SoftwareComponent;
+import org.karnes.homebrew.emulator.component.bus.connection.BidirectionalConnection;
 import org.karnes.homebrew.emulator.component.bus.connection.ReadableConnection;
 import org.karnes.homebrew.emulator.component.bus.connection.SoftwareConnection;
 import org.karnes.homebrew.emulator.component.bus.connection.WritableConnection;
@@ -10,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A virtual bus which provides connections (virtual or physical) between components.
+ * A virtual bus which provides connections between virtual components.
+ * <b>Warning:</b> The Bus should not be connected to another bus (physical or virtual) yet, as this isn't appropriately
+ * handled.
  */
 public class Bus extends SoftwareComponent {
 
@@ -20,10 +23,10 @@ public class Bus extends SoftwareComponent {
 
 
     /**
-     * A new virtual, software only Bus. Its value is initialized to all 0's.
+     * A new virtual, software-only Bus. Its value is initialized to all 0's.
      *
-     * @param name  The name of the Bus
-     * @param width The width of the Bus
+     * @param name  The name of the Bus.
+     * @param width The width of the Bus.
      */
     public Bus(String name, int width) {
         super(name, width);
@@ -32,37 +35,67 @@ public class Bus extends SoftwareComponent {
         this.currentValue = new FixedBitSet(width);
     }
 
+    /**
+     * Connects this Bus to a {@link ReadableConnection}. The Bus will read from this connection when determining its state.
+     *
+     * @param readableConnection The connection.
+     */
     public void addReadableConnection(ReadableConnection readableConnection) {
         readableConnections.add(readableConnection);
     }
 
+    /**
+     * Creates a new {@link ReadableConnection} from this Bus, which can be used to read the Bus' state.
+     *
+     * @return The connection.
+     */
     public ReadableConnection createReadableConnection() {
-        SoftwareConnection connection = new SoftwareConnection(getName() + " Readable Connection #" + readableConnections.size(), getWidth());
-        addWritableConnection(connection);
-        return connection;
-    }
-
-    public void addWritableConnection(WritableConnection writableConnection) {
-        writableConnections.add(writableConnection);
-    }
-
-    public WritableConnection createWritableConnection() {
-        SoftwareConnection connection = new SoftwareConnection(getName() + " Writable Connection #" + writableConnections.size(), getWidth());
-        addReadableConnection(connection);
-        return connection;
-    }
-
-    public SoftwareConnection createConnection() {
-        SoftwareConnection connection = new SoftwareConnection(getName() + " Bidirectional Connection", getWidth());
-        addReadableConnection(connection);
+        SoftwareConnection connection = new SoftwareConnection(getName() + " Readable Connection #" + readableConnections.size(), getWidth(), this::handleNewValue);
         addWritableConnection(connection);
         return connection;
     }
 
     /**
-     * Checks if the bus needs to update, and if so, updates connected components
+     * Connects this Bus to a {@link WritableConnection} which can receive updates as this Bus changes its value.
      *
-     * @return
+     * @param writableConnection The connection.
+     */
+    public void addWritableConnection(WritableConnection writableConnection) {
+        writableConnections.add(writableConnection);
+    }
+
+    /**
+     * Creates a new {@link WritableConnection} from this Bus, which can be used to write new values onto the Bus.
+     *
+     * @return The connection.
+     */
+    public WritableConnection createWritableConnection() {
+        SoftwareConnection connection = new SoftwareConnection(getName() + " Writable Connection #" + writableConnections.size(), getWidth(), this::handleNewValue);
+        addReadableConnection(connection);
+        return connection;
+    }
+
+    /**
+     * Creates a new {@link BidirectionalConnection} which can be used to read from or write to the Bus.
+     *
+     * @return The connection.
+     */
+    public BidirectionalConnection createBidirectionalConnection() {
+        SoftwareConnection connection = new SoftwareConnection(getName() + " Bidirectional Connection", getWidth(), this::handleNewValue);
+        addReadableConnection(connection);
+        addWritableConnection(connection);
+        return connection;
+    }
+
+    private void handleNewValue(FixedBitSet newValue) {
+        //Send out an update to the connections
+        update();
+    }
+
+    /**
+     * Checks if the bus needs to update, and if so, updates connected components.
+     *
+     * @return {@code true} if the Bus updated its Connections, {@code false} otherwise.
      */
     public boolean update() {
         //Get the values currently being written onto the Bus by the ReadableConnections
