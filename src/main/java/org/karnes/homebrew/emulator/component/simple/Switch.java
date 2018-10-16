@@ -47,7 +47,8 @@ public class Switch extends SoftwareComponent {
      * @see FixedBitSet#set(int, boolean)
      */
     public void turnOn(int position) {
-        update(currentValue.set(position, true));
+        FixedBitSet newValue = currentValue.set(position, true);
+        update(newValue);
     }
 
     /**
@@ -57,7 +58,8 @@ public class Switch extends SoftwareComponent {
      * @see FixedBitSet#set(int, boolean)
      */
     public void turnOff(int position) {
-        update(currentValue.set(position, false));
+        FixedBitSet newValue = currentValue.set(position, false);
+        update(newValue);
     }
 
     /**
@@ -68,7 +70,8 @@ public class Switch extends SoftwareComponent {
      */
     public void toggle(int position) {
         boolean state = currentValue.get(position);
-        update(currentValue.set(position, !state));
+        FixedBitSet newValue = currentValue.set(position, !state);
+        update(newValue);
     }
 
     private void update(FixedBitSet newState) {

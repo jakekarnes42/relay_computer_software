@@ -18,6 +18,9 @@ public abstract class SoftwareComponent implements Component {
      */
     public SoftwareComponent(String name, int width) {
         this.name = Objects.requireNonNull(name, "A non-null name must be supplied for a Component");
+        if (width < 1) {
+            throw new IllegalArgumentException("The width of a Component must be positive. Given: " + width);
+        }
         this.width = width;
     }
 

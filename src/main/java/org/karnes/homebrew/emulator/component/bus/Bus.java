@@ -2,10 +2,7 @@ package org.karnes.homebrew.emulator.component.bus;
 
 import org.karnes.homebrew.bitset.FixedBitSet;
 import org.karnes.homebrew.emulator.component.SoftwareComponent;
-import org.karnes.homebrew.emulator.component.bus.connection.BidirectionalConnection;
-import org.karnes.homebrew.emulator.component.bus.connection.ReadableConnection;
-import org.karnes.homebrew.emulator.component.bus.connection.SoftwareConnection;
-import org.karnes.homebrew.emulator.component.bus.connection.WritableConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,10 +78,14 @@ public class Bus extends SoftwareComponent {
      * @return The connection.
      */
     public BidirectionalConnection createBidirectionalConnection() {
-        SoftwareConnection connection = new SoftwareConnection(getName() + " Bidirectional Connection", getWidth(), this::handleNewValue);
-        addReadableConnection(connection);
-        addWritableConnection(connection);
-        return connection;
+        DuplexSoftwareConnection duplexConnection = new DuplexSoftwareConnection(getName() + " Duplex Connection", getWidth(), createReadableConnection(), createWritableConnection());
+
+        BidirectionalConnection busSideConnection = duplexConnection.getConnectionA();
+        addReadableConnection(busSideConnection);
+        addWritableConnection(busSideConnection);
+
+        BidirectionalConnection otherSideConnection = duplexConnection.getConnectionB();
+        return otherSideConnection;
     }
 
     private void handleNewValue(FixedBitSet newValue) {

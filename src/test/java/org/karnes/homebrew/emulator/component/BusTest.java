@@ -185,8 +185,9 @@ public class BusTest {
         //Write a new value through the first connection
         connection.writeValue(MIX1_VAL);
 
-        //Even before the update, the read connection should be changed
+        //We should be able to read the change
         assertEquals(MIX1_VAL, connection.readValue());
+        assertEquals(MIX1_VAL, connection2.readValue());
 
         //Write a new value through the second connection
         connection2.writeValue(MIX2_VAL);
@@ -194,6 +195,20 @@ public class BusTest {
         //Check that the connections have the logical OR of the input values
         assertEquals(ONES_VAL, connection.readValue());
         assertEquals(ONES_VAL, connection2.readValue());
+
+        //Zero out the first connection
+        connection.writeValue(ZERO_VAL);
+
+        //Check that the connections have the only the second value
+        assertEquals(MIX2_VAL, connection.readValue());
+        assertEquals(MIX2_VAL, connection2.readValue());
+
+        //Zero out the second connection
+        connection2.writeValue(ZERO_VAL);
+
+        //Check that the connections are back to zero
+        assertEquals(ZERO_VAL, connection.readValue());
+        assertEquals(ZERO_VAL, connection2.readValue());
 
     }
 
