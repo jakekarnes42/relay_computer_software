@@ -12,7 +12,7 @@ public class ReadableHardwareConnection extends SoftwareComponent implements Rea
     private final MCP23017 mcp23017;
     private final MCP23017Pin[] inputPins;
 
-    public ReadableHardwareConnection(String name, MCP23017 mcp23017, MCP23017Pin[] inputPins) {
+    public ReadableHardwareConnection(String name, MCP23017 mcp23017, MCP23017Pin... inputPins) {
         super(name, inputPins.length);
         this.mcp23017 = mcp23017;
         this.inputPins = inputPins;

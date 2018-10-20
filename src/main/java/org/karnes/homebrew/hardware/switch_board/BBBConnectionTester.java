@@ -1,7 +1,9 @@
-package org.karnes.homebrew.hardware;
+package org.karnes.homebrew.hardware.switch_board;
 
 
-import org.karnes.homebrew.bitset.FixedBitSet;
+import org.karnes.homebrew.hardware.I2CBus;
+import org.karnes.homebrew.hardware.MCP23017;
+import org.karnes.homebrew.hardware.MCP23017Address;
 
 /**
  * Tester class for the BBB Connection Test board Rev B

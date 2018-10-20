@@ -11,7 +11,7 @@ public class WritableHardwareConnection extends SoftwareComponent implements Wri
     private final MCP23017 mcp23017;
     private final MCP23017Pin[] outputPins;
 
-    public WritableHardwareConnection(String name, MCP23017 mcp23017, MCP23017Pin[] outputPins) {
+    public WritableHardwareConnection(String name, MCP23017 mcp23017, MCP23017Pin... outputPins) {
         super(name, outputPins.length);
         this.mcp23017 = mcp23017;
         this.outputPins = outputPins;

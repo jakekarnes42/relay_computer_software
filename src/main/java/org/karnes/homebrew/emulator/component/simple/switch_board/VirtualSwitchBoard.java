@@ -1,4 +1,4 @@
-package org.karnes.homebrew.hardware.switch_board;
+package org.karnes.homebrew.emulator.component.simple.switch_board;
 
 import org.karnes.homebrew.emulator.component.SoftwareComponent;
 import org.karnes.homebrew.emulator.component.bus.Bus;

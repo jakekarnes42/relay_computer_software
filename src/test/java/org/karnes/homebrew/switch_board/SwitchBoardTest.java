@@ -1,10 +1,12 @@
-package org.karnes.homebrew.hardware.switch_board;
+package org.karnes.homebrew.switch_board;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalBidirectionalConnection;
 import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalReadableConnection;
 import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalWritableConnection;
+import org.karnes.homebrew.emulator.component.simple.switch_board.SwitchBoard;
+import org.karnes.homebrew.emulator.component.simple.switch_board.VirtualSwitchBoard;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

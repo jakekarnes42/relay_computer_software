@@ -9,7 +9,7 @@ import java.util.Arrays;
  * <p>
  * TODO: this needs a nicer interface. It works, but let's make this "better"
  */
-class MCP23017 {
+public class MCP23017 {
 
     private final I2CBus bus;
     private final MCP23017Address address;
@@ -146,7 +146,7 @@ class MCP23017 {
 
 }
 
-enum MCP23017Pin {
+public enum MCP23017Pin {
 
     GPIOA_0(MCP23017Port.A, (byte) 0),
     GPIOA_1(MCP23017Port.A, (byte) 1),
@@ -197,7 +197,7 @@ enum MCP23017Port {
     }
 }
 
-enum MCP23017Address {
+public enum MCP23017Address {
     ADDR0(0x20),
     ADDR1(0x21),
     ADDR2(0x22),
