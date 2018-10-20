@@ -80,11 +80,11 @@ public class Bus extends SoftwareComponent {
     public BidirectionalConnection createBidirectionalConnection() {
         DuplexSoftwareConnection duplexConnection = new DuplexSoftwareConnection(getName() + " Duplex Connection", getWidth(), createReadableConnection(), createWritableConnection());
 
-        BidirectionalConnection busSideConnection = duplexConnection.getConnectionA();
+        BidirectionalConnection busSideConnection = duplexConnection.getBusSideConnection();
         addReadableConnection(busSideConnection);
         addWritableConnection(busSideConnection);
 
-        BidirectionalConnection otherSideConnection = duplexConnection.getConnectionB();
+        BidirectionalConnection otherSideConnection = duplexConnection.getOtherSideConnection();
         return otherSideConnection;
     }
 

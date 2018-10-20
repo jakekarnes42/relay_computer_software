@@ -5,9 +5,6 @@ import org.karnes.homebrew.emulator.component.SoftwareComponent;
 
 /**
  * A {@link Connection} made of two {@link SoftwareConnection}s.
- * <p>
- * Writes made to ConnectionA, are readable from ConnectionB.
- * Writes made to ConnectionB, are readable from ConnectionA.
  */
 public class DuplexSoftwareConnection extends SoftwareComponent {
     private final BusSideConnection connectionA;
@@ -27,11 +24,21 @@ public class DuplexSoftwareConnection extends SoftwareComponent {
         lastValue = new FixedBitSet(width);
     }
 
-    public BidirectionalConnection getConnectionA() {
+    /**
+     * The connection which should be used by the Bus.
+     *
+     * @return a BidirectionalConnection
+     */
+    public BidirectionalConnection getBusSideConnection() {
         return connectionA;
     }
 
-    public BidirectionalConnection getConnectionB() {
+    /**
+     * The connection which should be given to the "other side" or other component to use
+     *
+     * @return a BidirectionalConnection
+     */
+    public BidirectionalConnection getOtherSideConnection() {
         return connectionB;
     }
 
@@ -42,7 +49,7 @@ public class DuplexSoftwareConnection extends SoftwareComponent {
 
     private class BusSideConnection extends SoftwareComponent implements BidirectionalConnection {
 
-        public BusSideConnection(String name, int width) {
+        private BusSideConnection(String name, int width) {
             super(name, width);
         }
 
@@ -64,7 +71,7 @@ public class DuplexSoftwareConnection extends SoftwareComponent {
 
     private class OtherSideConnection extends SoftwareComponent implements BidirectionalConnection {
 
-        public OtherSideConnection(String name, int width) {
+        private OtherSideConnection(String name, int width) {
             super(name, width);
         }
 

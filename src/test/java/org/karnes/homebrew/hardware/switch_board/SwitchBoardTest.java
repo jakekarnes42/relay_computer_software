@@ -2,10 +2,9 @@ package org.karnes.homebrew.hardware.switch_board;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.karnes.homebrew.bitset.FixedBitSet;
-import org.karnes.homebrew.emulator.component.bus.connection.BidirectionalConnection;
-import org.karnes.homebrew.emulator.component.bus.connection.ReadableConnection;
-import org.karnes.homebrew.emulator.component.bus.connection.WritableConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalBidirectionalConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalReadableConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalWritableConnection;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SwitchBoardTest {
 
     private SwitchBoard board;
-    private ReadableConnection readConnection;
-    private BidirectionalConnection bidirectionalConnection;
-    private WritableConnection writeConnection;
+    private SignalReadableConnection readConnection;
+    private SignalBidirectionalConnection bidirectionalConnection;
+    private SignalWritableConnection writeConnection;
 
     @BeforeEach
     void setUp() {
@@ -33,8 +32,7 @@ public class SwitchBoardTest {
         assertTrue(board.LED0Status());
 
         //We should be able to read that the switch is on.
-        FixedBitSet readValue = readConnection.readValue();
-        assertTrue(readValue.get(0));
+        assertTrue(readConnection.readSignal());
 
         //turn it back off
         board.disableSwitch0();
@@ -43,8 +41,7 @@ public class SwitchBoardTest {
         assertFalse(board.LED0Status());
 
         //We should be able to read that the switch is off
-        readValue = readConnection.readValue();
-        assertFalse(readValue.get(0));
+        assertFalse(readConnection.readSignal());
     }
 
     @Test
@@ -53,13 +50,13 @@ public class SwitchBoardTest {
         assertFalse(board.LED1Status());
 
         //We should be able to turn LED1  on
-        writeConnection.writeValue(new FixedBitSet("1"));
+        writeConnection.writeSignal(true);
 
         //LED 1 should be on now
         assertTrue(board.LED1Status());
 
         //We should be able to turn LED1 back off
-        writeConnection.writeValue(new FixedBitSet("0"));
+        writeConnection.writeSignal(false);
 
         //LED 1 should be off again
         assertFalse(board.LED1Status());
@@ -77,8 +74,7 @@ public class SwitchBoardTest {
         assertTrue(board.LED2Status());
 
         //We should be able to read that the switch is on
-        FixedBitSet readValue = bidirectionalConnection.readValue();
-        assertTrue(readValue.get(0));
+        assertTrue(bidirectionalConnection.readSignal());
 
         //We flip switch 1 off
         board.disableSwitch1();
@@ -87,39 +83,35 @@ public class SwitchBoardTest {
         assertFalse(board.LED2Status());
 
         //We should be able to read that the switch is off
-        readValue = bidirectionalConnection.readValue();
-        assertFalse(readValue.get(0));
+        assertFalse(bidirectionalConnection.readSignal());
 
         //We should be able to turn the LED on by writing to it
-        bidirectionalConnection.writeValue(new FixedBitSet("1"));
+        bidirectionalConnection.writeSignal(true);
 
         //LED 2 should be on now
         assertTrue(board.LED2Status());
 
         //We should be able to read that the LED is on
-        readValue = bidirectionalConnection.readValue();
-        assertTrue(readValue.get(0));
+        assertTrue(bidirectionalConnection.readSignal());
 
         //We should be able to turn the LED off again by writing to it
-        bidirectionalConnection.writeValue(new FixedBitSet("0"));
+        bidirectionalConnection.writeSignal(false);
 
         //LED 2 should be off now
         assertFalse(board.LED2Status());
 
         //We should be able to read that the LED is off
-        readValue = bidirectionalConnection.readValue();
-        assertFalse(readValue.get(0));
+        assertFalse(bidirectionalConnection.readSignal());
 
         //We should be able to turn on both the switch and write to it
         board.enableSwitch1();
-        bidirectionalConnection.writeValue(new FixedBitSet("1"));
+        bidirectionalConnection.writeSignal(true);
 
         //LED 2 should be on now
         assertTrue(board.LED2Status());
 
         //We should be able to read that the LED is on
-        readValue = bidirectionalConnection.readValue();
-        assertTrue(readValue.get(0));
+        assertTrue(bidirectionalConnection.readSignal());
 
         //If we turn the switch off, the LED should stay on
         board.disableSwitch1();
@@ -128,19 +120,17 @@ public class SwitchBoardTest {
         assertTrue(board.LED2Status());
 
         //We should still be able to read that the LED is on
-        readValue = bidirectionalConnection.readValue();
-        assertTrue(readValue.get(0));
+        assertTrue(bidirectionalConnection.readSignal());
 
         //We'll turn the switch on, and turn the write off
         board.enableSwitch1();
-        bidirectionalConnection.writeValue(new FixedBitSet("0"));
+        bidirectionalConnection.writeSignal(false);
 
         //LED 2 should still be on
         assertTrue(board.LED2Status());
 
         //We should still be able to read that the LED is on
-        readValue = bidirectionalConnection.readValue();
-        assertTrue(readValue.get(0));
+        assertTrue(bidirectionalConnection.readSignal());
 
         //We flip switch 1 off one last time
         board.disableSwitch1();

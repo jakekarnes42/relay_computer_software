@@ -1,19 +1,19 @@
 package org.karnes.homebrew.hardware.switch_board;
 
 import org.karnes.homebrew.emulator.component.Component;
-import org.karnes.homebrew.emulator.component.bus.connection.BidirectionalConnection;
-import org.karnes.homebrew.emulator.component.bus.connection.ReadableConnection;
-import org.karnes.homebrew.emulator.component.bus.connection.WritableConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalBidirectionalConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalReadableConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalWritableConnection;
 
 /**
  * Represents the physical or virtual BBB Connector Test Board Rev B
  */
 public interface SwitchBoard extends Component {
-    ReadableConnection getReadConnection();
+    SignalReadableConnection getReadConnection();
 
-    WritableConnection getWriteConnection();
+    SignalWritableConnection getWriteConnection();
 
-    BidirectionalConnection getBidirectionalConnection();
+    SignalBidirectionalConnection getBidirectionalConnection();
 
     boolean LED0Status();
 

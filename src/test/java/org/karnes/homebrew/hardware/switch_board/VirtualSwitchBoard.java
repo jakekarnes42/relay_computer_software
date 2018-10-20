@@ -2,9 +2,9 @@ package org.karnes.homebrew.hardware.switch_board;
 
 import org.karnes.homebrew.emulator.component.SoftwareComponent;
 import org.karnes.homebrew.emulator.component.bus.Bus;
-import org.karnes.homebrew.emulator.component.bus.connection.BidirectionalConnection;
 import org.karnes.homebrew.emulator.component.bus.connection.ReadableConnection;
 import org.karnes.homebrew.emulator.component.bus.connection.WritableConnection;
+import org.karnes.homebrew.emulator.component.bus.connection.signal.*;
 import org.karnes.homebrew.emulator.component.simple.LED;
 import org.karnes.homebrew.emulator.component.simple.Switch;
 
@@ -53,19 +53,19 @@ public class VirtualSwitchBoard extends SoftwareComponent implements SwitchBoard
     }
 
     @Override
-    public ReadableConnection getReadConnection() {
-        return led0Bus.createReadableConnection();
+    public SignalReadableConnection getReadConnection() {
+        return new SignalReadableConnectionWrapper(led0Bus.createReadableConnection());
     }
 
 
     @Override
-    public WritableConnection getWriteConnection() {
-        return led1Bus.createWritableConnection();
+    public SignalWritableConnection getWriteConnection() {
+        return new SignalWritableConnectionWrapper(led1Bus.createWritableConnection());
     }
 
     @Override
-    public BidirectionalConnection getBidirectionalConnection() {
-        return led2Bus.createBidirectionalConnection();
+    public SignalBidirectionalConnection getBidirectionalConnection() {
+        return new SignalBidirectionalConnectionWrapper(led2Bus.createBidirectionalConnection());
     }
 
     @Override
@@ -110,7 +110,7 @@ public class VirtualSwitchBoard extends SoftwareComponent implements SwitchBoard
         updateBuses();
     }
 
-    private void updateBuses(){
+    private void updateBuses() {
         led0Bus.update();
         led1Bus.update();
         led2Bus.update();
