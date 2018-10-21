@@ -2,29 +2,31 @@ package org.karnes.homebrew.assemblr.parse.asm;
 
 import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewBaseVisitor;
 import org.karnes.homebrew.assemblr.parse.asm.antlr.AsmHomeBrewParser;
+import org.karnes.homebrew.bitset.FixedBitSet;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.karnes.homebrew.Util.literalToChar;
+import static java.lang.Short.SIZE;
+import static org.karnes.homebrew.Util.literalToFixedBitSet;
 
 /**
  * Parent class which executes the assembler directives. Subclasses can re-use this functionality so they don't need to handle it themselves
  */
 public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
 
-    protected Map<String, Character> symbolTable = new HashMap<>();
+    protected Map<String, FixedBitSet> symbolTable = new HashMap<>();
 
-    protected short[] memory = new short[Character.MAX_VALUE];
+    protected FixedBitSet[] memory = new FixedBitSet[Character.MAX_VALUE];
 
     //Woah! Let's use JavaScript. This is so terrible for so many reasons.
     //Yo dawg, I heard you like Javascript in your Java in your assembler in your assembly
     private ScriptEngineManager manager = new ScriptEngineManager();
     protected ScriptEngine engine = manager.getEngineByName("js");
 
-    protected char lastJSResult = 0;
+    protected FixedBitSet lastJSResult = new FixedBitSet(SIZE);
 
     protected char codePointer = 0;
 
@@ -41,7 +43,7 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
             visitJsExpression(ctx.jsExpression());
 
             //Update codePointer to whatever our result was
-            codePointer = lastJSResult;
+            codePointer = lastJSResult.toChar();
         } catch (Exception exc) {
             throw new IllegalStateException("Cannot handle ORG directive execution.", exc);
         }
@@ -68,13 +70,14 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
         strValue = strValue.substring(1, strValue.length() - 1);
 
         //Store each character in the string into memory
-        strValue.chars().forEach(c -> storeValueInMem((char) c));
+        strValue.chars().mapToObj(c -> FixedBitSet.fromChar((char) c)).forEach(bs -> storeValueInMem(bs));
 
         return null;
     }
 
     @Override
     public Void visitJsExpression(AsmHomeBrewParser.JsExpressionContext ctx) {
+        //TODO: revisit this whole thing. It's a mess
         try {
             String jsExpr = ctx.getText();
             //Inject our code pointer into the $ variable within JS
@@ -85,16 +88,18 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
             if (result == null) {
                 //Do nothing?
             } else if (result instanceof String) {
+                //How should a String result be handled?
                 String resultStr = (String) result;
                 if (resultStr.length() == 1) {
-                    lastJSResult = resultStr.charAt(0);
+                    char c = resultStr.charAt(0);
+                    lastJSResult = FixedBitSet.fromChar(c);
                 } else {
-                    lastJSResult = (char) (Integer.parseUnsignedInt(resultStr));
+                    lastJSResult = literalToFixedBitSet(resultStr);
                 }
             } else if (result instanceof Double) {
-                lastJSResult = (char) ((Double) result).intValue();
+                lastJSResult = FixedBitSet.fromChar((char) ((Double) result).intValue());
             } else if (result instanceof Integer) {
-                lastJSResult = (char) ((Integer) result).intValue();
+                lastJSResult = FixedBitSet.fromChar((char) ((Integer) result).intValue());
             } else {
                 throw new IllegalArgumentException("Cannot process JS result type: " + result);
             }
@@ -105,7 +110,7 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
         return null;
     }
 
-    protected char getValue(AsmHomeBrewParser.ValueContext valueContext) {
+    protected FixedBitSet getValue(AsmHomeBrewParser.ValueContext valueContext) {
         //Check if our memory target is a label
         if (valueContext.label() != null) {
             String targetLabel = valueContext.label().getText();
@@ -116,7 +121,7 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
             return symbolTable.get(targetLabel);
         } else if (valueContext.number() != null) {
             String targetLiteralText = valueContext.number().getText();
-            return literalToChar(targetLiteralText);
+            return literalToFixedBitSet(targetLiteralText);
         } else {
             visitJsExpression(valueContext.jsExpression());
             return lastJSResult;
@@ -124,11 +129,16 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
     }
 
     protected void storeValueInMem(char value) {
-        //Cast to short and move on.
-        storeValueInMem((short) value);
+        //Cast and move on
+        storeValueInMem(FixedBitSet.fromChar(value));
     }
 
     protected void storeValueInMem(short value) {
+        //Cast to short and move on.
+        storeValueInMem(FixedBitSet.fromShort(value));
+    }
+
+    protected void storeValueInMem(FixedBitSet value) {
         //Store it
         memory[codePointer] = value;
 

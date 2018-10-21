@@ -2947,7 +2947,7 @@ INTER:
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
 		DW	NAMEQ,QDUP		;?defined
 		DW	QBRAN,INTE1
-		DW	AT,DOLIT,{COMPO},ANDD	;?compile only lexicon bits
+		DW	AT,DOLIT,{COMPO},ANDD	;?compile only lexicon bitSet
 	DW	ABORQ, {" compile only".length}		;;Write the function label and the length of the string
 	DS  " compile only"                      ; Write the string
 		DW	EXECU,EXIT		;execute defined word
@@ -3898,7 +3898,7 @@ DOTID:
 	CALL	SP, DOLST				;;Call doList and push the current PC into the data stack (SP)
 		DW	QDUP			;if zero no name
 		DW	QBRAN,DOTI1
-		DW	COUNT,DOLIT,0x01F,ANDD	;mask lexicon bits
+		DW	COUNT,DOLIT,0x01F,ANDD	;mask lexicon bitSet
 		DW	UTYPE,EXIT		;display name string
 	DOTI1: DW	DOTQP, {" noName".length}		;;Write the function label and the length of the string
 	DS  " noName"                      ; Write the string

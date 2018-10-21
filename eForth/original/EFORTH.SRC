@@ -28,12 +28,12 @@
 
 \ Header: token(ptr)  link(la)  name(na)
  \
-  \ Count-byte and Lexicon bits  ioxn nnnn
+  \ Count-byte and Lexicon bitSet  ioxn nnnn
   \   i - immediate
   \   o - compile-only
   \   x - tag
   \   n - string length  (31 characters MAX)
-  \ Compiler does not set bits in the NAME string
+  \ Compiler does not set bitSet in the NAME string
   \ 0 < la na < .. < la na <    va < CONTEXT       @
   \ 0 < FORTH < .. < vl va < vl va < CURRENT CELL+ @
 
@@ -577,7 +577,7 @@ DUP USER CP       1 CELL+ \ dictionary code pointer
   DUP @ >R          \ va a  \ count byte & 1st char
   CELL+ SWAP        \ a' va
   BEGIN @ DUP       \ a' na na
-    IF DUP @ [ =MASK ] LITERAL AND  R@ XOR \ ignore lexicon bits
+    IF DUP @ [ =MASK ] LITERAL AND  R@ XOR \ ignore lexicon bitSet
       IF CELL+ -1 ELSE CELL+ temp @ SAME? THEN
     ELSE R> DROP EXIT
     THEN

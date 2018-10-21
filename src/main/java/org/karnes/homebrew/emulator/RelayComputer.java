@@ -193,7 +193,8 @@ public class RelayComputer {
                     unknownInstruction(INST);
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException("Found illegal instruction. Loaded from mem address: " + Integer.toUnsignedString(PC - 1), e);
+            throw new IllegalArgumentException("Found illegal instruction:" +Integer.toBinaryString(INST)+
+                    " Loaded from mem address: " + Integer.toUnsignedString(PC - 1), e);
         }
     }
 
@@ -3913,1554 +3914,1554 @@ public class RelayComputer {
         }
     }
 
-
     /*
-     * AND: Bit-wise AND two registers together, storing into the destination register
+     * XOR: Bit-wise XOR two registers together, storing into the destination register
      */
-    protected void executeANDInstruction() {
+    protected void executeXORInstruction() {
         switch (INST) {
-            case 0b0001_100_000_000_000: //AND AX AX AX (AX & AX -> AX)
-                AX = aluAnd(AX, AX);
+            case 0b0001_100_000_000_000: //XOR AX AX AX (AX ^ AX -> AX)
+                AX = aluXor(AX, AX);
                 break;
-            case 0b0001_100_000_000_001: //AND AX BX AX (AX & BX -> AX)
-                AX = aluAnd(AX, BX);
+            case 0b0001_100_000_000_001: //XOR AX BX AX (AX ^ BX -> AX)
+                AX = aluXor(AX, BX);
                 break;
-            case 0b0001_100_000_000_010: //AND AX CX AX (AX & CX -> AX)
-                AX = aluAnd(AX, CX);
+            case 0b0001_100_000_000_010: //XOR AX CX AX (AX ^ CX -> AX)
+                AX = aluXor(AX, CX);
                 break;
-            case 0b0001_100_000_000_011: //AND AX DX AX (AX & DX -> AX)
-                AX = aluAnd(AX, DX);
+            case 0b0001_100_000_000_011: //XOR AX DX AX (AX ^ DX -> AX)
+                AX = aluXor(AX, DX);
                 break;
-            case 0b0001_100_000_000_100: //AND AX EX AX (AX & EX -> AX)
-                AX = aluAnd(AX, EX);
+            case 0b0001_100_000_000_100: //XOR AX EX AX (AX ^ EX -> AX)
+                AX = aluXor(AX, EX);
                 break;
-            case 0b0001_100_000_000_101: //AND AX SP AX (AX & SP -> AX)
-                AX = aluAnd(AX, SP);
+            case 0b0001_100_000_000_101: //XOR AX SP AX (AX ^ SP -> AX)
+                AX = aluXor(AX, SP);
                 break;
-            case 0b0001_100_000_000_110: //AND AX RP AX (AX & RP -> AX)
-                AX = aluAnd(AX, RP);
+            case 0b0001_100_000_000_110: //XOR AX RP AX (AX ^ RP -> AX)
+                AX = aluXor(AX, RP);
                 break;
-            case 0b0001_100_000_000_111: //AND AX PC AX (AX & PC -> AX)
-                AX = aluAnd(AX, PC);
+            case 0b0001_100_000_000_111: //XOR AX PC AX (AX ^ PC -> AX)
+                AX = aluXor(AX, PC);
                 break;
-            case 0b0001_100_001_000_000: //AND AX AX BX (AX & AX -> BX)
-                BX = aluAnd(AX, AX);
+            case 0b0001_100_001_000_000: //XOR AX AX BX (AX ^ AX -> BX)
+                BX = aluXor(AX, AX);
                 break;
-            case 0b0001_100_001_000_001: //AND AX BX BX (AX & BX -> BX)
-                BX = aluAnd(AX, BX);
+            case 0b0001_100_001_000_001: //XOR AX BX BX (AX ^ BX -> BX)
+                BX = aluXor(AX, BX);
                 break;
-            case 0b0001_100_001_000_010: //AND AX CX BX (AX & CX -> BX)
-                BX = aluAnd(AX, CX);
+            case 0b0001_100_001_000_010: //XOR AX CX BX (AX ^ CX -> BX)
+                BX = aluXor(AX, CX);
                 break;
-            case 0b0001_100_001_000_011: //AND AX DX BX (AX & DX -> BX)
-                BX = aluAnd(AX, DX);
+            case 0b0001_100_001_000_011: //XOR AX DX BX (AX ^ DX -> BX)
+                BX = aluXor(AX, DX);
                 break;
-            case 0b0001_100_001_000_100: //AND AX EX BX (AX & EX -> BX)
-                BX = aluAnd(AX, EX);
+            case 0b0001_100_001_000_100: //XOR AX EX BX (AX ^ EX -> BX)
+                BX = aluXor(AX, EX);
                 break;
-            case 0b0001_100_001_000_101: //AND AX SP BX (AX & SP -> BX)
-                BX = aluAnd(AX, SP);
+            case 0b0001_100_001_000_101: //XOR AX SP BX (AX ^ SP -> BX)
+                BX = aluXor(AX, SP);
                 break;
-            case 0b0001_100_001_000_110: //AND AX RP BX (AX & RP -> BX)
-                BX = aluAnd(AX, RP);
+            case 0b0001_100_001_000_110: //XOR AX RP BX (AX ^ RP -> BX)
+                BX = aluXor(AX, RP);
                 break;
-            case 0b0001_100_001_000_111: //AND AX PC BX (AX & PC -> BX)
-                BX = aluAnd(AX, PC);
+            case 0b0001_100_001_000_111: //XOR AX PC BX (AX ^ PC -> BX)
+                BX = aluXor(AX, PC);
                 break;
-            case 0b0001_100_010_000_000: //AND AX AX CX (AX & AX -> CX)
-                CX = aluAnd(AX, AX);
+            case 0b0001_100_010_000_000: //XOR AX AX CX (AX ^ AX -> CX)
+                CX = aluXor(AX, AX);
                 break;
-            case 0b0001_100_010_000_001: //AND AX BX CX (AX & BX -> CX)
-                CX = aluAnd(AX, BX);
+            case 0b0001_100_010_000_001: //XOR AX BX CX (AX ^ BX -> CX)
+                CX = aluXor(AX, BX);
                 break;
-            case 0b0001_100_010_000_010: //AND AX CX CX (AX & CX -> CX)
-                CX = aluAnd(AX, CX);
+            case 0b0001_100_010_000_010: //XOR AX CX CX (AX ^ CX -> CX)
+                CX = aluXor(AX, CX);
                 break;
-            case 0b0001_100_010_000_011: //AND AX DX CX (AX & DX -> CX)
-                CX = aluAnd(AX, DX);
+            case 0b0001_100_010_000_011: //XOR AX DX CX (AX ^ DX -> CX)
+                CX = aluXor(AX, DX);
                 break;
-            case 0b0001_100_010_000_100: //AND AX EX CX (AX & EX -> CX)
-                CX = aluAnd(AX, EX);
+            case 0b0001_100_010_000_100: //XOR AX EX CX (AX ^ EX -> CX)
+                CX = aluXor(AX, EX);
                 break;
-            case 0b0001_100_010_000_101: //AND AX SP CX (AX & SP -> CX)
-                CX = aluAnd(AX, SP);
+            case 0b0001_100_010_000_101: //XOR AX SP CX (AX ^ SP -> CX)
+                CX = aluXor(AX, SP);
                 break;
-            case 0b0001_100_010_000_110: //AND AX RP CX (AX & RP -> CX)
-                CX = aluAnd(AX, RP);
+            case 0b0001_100_010_000_110: //XOR AX RP CX (AX ^ RP -> CX)
+                CX = aluXor(AX, RP);
                 break;
-            case 0b0001_100_010_000_111: //AND AX PC CX (AX & PC -> CX)
-                CX = aluAnd(AX, PC);
+            case 0b0001_100_010_000_111: //XOR AX PC CX (AX ^ PC -> CX)
+                CX = aluXor(AX, PC);
                 break;
-            case 0b0001_100_011_000_000: //AND AX AX DX (AX & AX -> DX)
-                DX = aluAnd(AX, AX);
+            case 0b0001_100_011_000_000: //XOR AX AX DX (AX ^ AX -> DX)
+                DX = aluXor(AX, AX);
                 break;
-            case 0b0001_100_011_000_001: //AND AX BX DX (AX & BX -> DX)
-                DX = aluAnd(AX, BX);
+            case 0b0001_100_011_000_001: //XOR AX BX DX (AX ^ BX -> DX)
+                DX = aluXor(AX, BX);
                 break;
-            case 0b0001_100_011_000_010: //AND AX CX DX (AX & CX -> DX)
-                DX = aluAnd(AX, CX);
+            case 0b0001_100_011_000_010: //XOR AX CX DX (AX ^ CX -> DX)
+                DX = aluXor(AX, CX);
                 break;
-            case 0b0001_100_011_000_011: //AND AX DX DX (AX & DX -> DX)
-                DX = aluAnd(AX, DX);
+            case 0b0001_100_011_000_011: //XOR AX DX DX (AX ^ DX -> DX)
+                DX = aluXor(AX, DX);
                 break;
-            case 0b0001_100_011_000_100: //AND AX EX DX (AX & EX -> DX)
-                DX = aluAnd(AX, EX);
+            case 0b0001_100_011_000_100: //XOR AX EX DX (AX ^ EX -> DX)
+                DX = aluXor(AX, EX);
                 break;
-            case 0b0001_100_011_000_101: //AND AX SP DX (AX & SP -> DX)
-                DX = aluAnd(AX, SP);
+            case 0b0001_100_011_000_101: //XOR AX SP DX (AX ^ SP -> DX)
+                DX = aluXor(AX, SP);
                 break;
-            case 0b0001_100_011_000_110: //AND AX RP DX (AX & RP -> DX)
-                DX = aluAnd(AX, RP);
+            case 0b0001_100_011_000_110: //XOR AX RP DX (AX ^ RP -> DX)
+                DX = aluXor(AX, RP);
                 break;
-            case 0b0001_100_011_000_111: //AND AX PC DX (AX & PC -> DX)
-                DX = aluAnd(AX, PC);
+            case 0b0001_100_011_000_111: //XOR AX PC DX (AX ^ PC -> DX)
+                DX = aluXor(AX, PC);
                 break;
-            case 0b0001_100_100_000_000: //AND AX AX EX (AX & AX -> EX)
-                EX = aluAnd(AX, AX);
+            case 0b0001_100_100_000_000: //XOR AX AX EX (AX ^ AX -> EX)
+                EX = aluXor(AX, AX);
                 break;
-            case 0b0001_100_100_000_001: //AND AX EX SP (AX & BX -EXSP)
-                EX = aluAnd(AX, BX);
+            case 0b0001_100_100_000_001: //XOR AX EX SP (AX ^ BX -EXSP)
+                EX = aluXor(AX, BX);
                 break;
-            case 0b0001_100_100_000_010: //AND AX EX SP (AX & CX -EXSP)
-                EX = aluAnd(AX, CX);
+            case 0b0001_100_100_000_010: //XOR AX EX SP (AX ^ CX -EXSP)
+                EX = aluXor(AX, CX);
                 break;
-            case 0b0001_100_100_000_011: //AND AX EX SP (AX & DX -EXSP)
-                EX = aluAnd(AX, DX);
+            case 0b0001_100_100_000_011: //XOR AX EX SP (AX ^ DX -EXSP)
+                EX = aluXor(AX, DX);
                 break;
-            case 0b0001_100_100_000_100: //AND AX EX SP (AX & EX -EXSP)
-                EX = aluAnd(AX, EX);
+            case 0b0001_100_100_000_100: //XOR AX EX SP (AX ^ EX -EXSP)
+                EX = aluXor(AX, EX);
                 break;
-            case 0b0001_100_100_000_101: //AND AX EX SP (AX & SP -EXSP)
-                EX = aluAnd(AX, SP);
+            case 0b0001_100_100_000_101: //XOR AX EX SP (AX ^ SP -EXSP)
+                EX = aluXor(AX, SP);
                 break;
-            case 0b0001_100_100_000_110: //AND AX EX SP (AX & RP -EXSP)
-                EX = aluAnd(AX, RP);
+            case 0b0001_100_100_000_110: //XOR AX EX SP (AX ^ RP -EXSP)
+                EX = aluXor(AX, RP);
                 break;
-            case 0b0001_100_100_000_111: //AND AX EX SP (AX & PC -EXSP)
-                EX = aluAnd(AX, PC);
+            case 0b0001_100_100_000_111: //XOR AX EX SP (AX ^ PC -EXSP)
+                EX = aluXor(AX, PC);
                 break;
-            case 0b0001_100_101_000_000: //AND AX AX SP (AX & AX -> SP)
-                SP = aluAnd(AX, AX);
+            case 0b0001_100_101_000_000: //XOR AX AX SP (AX ^ AX -> SP)
+                SP = aluXor(AX, AX);
                 break;
-            case 0b0001_100_101_000_001: //AND AX BX SP (AX & BX -> SP)
-                SP = aluAnd(AX, BX);
+            case 0b0001_100_101_000_001: //XOR AX BX SP (AX ^ BX -> SP)
+                SP = aluXor(AX, BX);
                 break;
-            case 0b0001_100_101_000_010: //AND AX CX SP (AX & CX -> SP)
-                SP = aluAnd(AX, CX);
+            case 0b0001_100_101_000_010: //XOR AX CX SP (AX ^ CX -> SP)
+                SP = aluXor(AX, CX);
                 break;
-            case 0b0001_100_101_000_011: //AND AX DX SP (AX & DX -> SP)
-                SP = aluAnd(AX, DX);
+            case 0b0001_100_101_000_011: //XOR AX DX SP (AX ^ DX -> SP)
+                SP = aluXor(AX, DX);
                 break;
-            case 0b0001_100_101_000_100: //AND AX EX SP (AX & EX -> SP)
-                SP = aluAnd(AX, EX);
+            case 0b0001_100_101_000_100: //XOR AX EX SP (AX ^ EX -> SP)
+                SP = aluXor(AX, EX);
                 break;
-            case 0b0001_100_101_000_101: //AND AX SP SP (AX & SP -> SP)
-                SP = aluAnd(AX, SP);
+            case 0b0001_100_101_000_101: //XOR AX SP SP (AX ^ SP -> SP)
+                SP = aluXor(AX, SP);
                 break;
-            case 0b0001_100_101_000_110: //AND AX RP SP (AX & RP -> SP)
-                SP = aluAnd(AX, RP);
+            case 0b0001_100_101_000_110: //XOR AX RP SP (AX ^ RP -> SP)
+                SP = aluXor(AX, RP);
                 break;
-            case 0b0001_100_101_000_111: //AND AX PC SP (AX & PC -> SP)
-                SP = aluAnd(AX, PC);
+            case 0b0001_100_101_000_111: //XOR AX PC SP (AX ^ PC -> SP)
+                SP = aluXor(AX, PC);
                 break;
-            case 0b0001_100_110_000_000: //AND AX AX RP (AX & AX -> RP)
-                RP = aluAnd(AX, AX);
+            case 0b0001_100_110_000_000: //XOR AX AX RP (AX ^ AX -> RP)
+                RP = aluXor(AX, AX);
                 break;
-            case 0b0001_100_110_000_001: //AND AX BX RP (AX & BX -> RP)
-                RP = aluAnd(AX, BX);
+            case 0b0001_100_110_000_001: //XOR AX BX RP (AX ^ BX -> RP)
+                RP = aluXor(AX, BX);
                 break;
-            case 0b0001_100_110_000_010: //AND AX CX RP (AX & CX -> RP)
-                RP = aluAnd(AX, CX);
+            case 0b0001_100_110_000_010: //XOR AX CX RP (AX ^ CX -> RP)
+                RP = aluXor(AX, CX);
                 break;
-            case 0b0001_100_110_000_011: //AND AX DX RP (AX & DX -> RP)
-                RP = aluAnd(AX, DX);
+            case 0b0001_100_110_000_011: //XOR AX DX RP (AX ^ DX -> RP)
+                RP = aluXor(AX, DX);
                 break;
-            case 0b0001_100_110_000_100: //AND AX EX RP (AX & EX -> RP)
-                RP = aluAnd(AX, EX);
+            case 0b0001_100_110_000_100: //XOR AX EX RP (AX ^ EX -> RP)
+                RP = aluXor(AX, EX);
                 break;
-            case 0b0001_100_110_000_101: //AND AX SP RP (AX & SP -> RP)
-                RP = aluAnd(AX, SP);
+            case 0b0001_100_110_000_101: //XOR AX SP RP (AX ^ SP -> RP)
+                RP = aluXor(AX, SP);
                 break;
-            case 0b0001_100_110_000_110: //AND AX RP RP (AX & RP -> RP)
-                RP = aluAnd(AX, RP);
+            case 0b0001_100_110_000_110: //XOR AX RP RP (AX ^ RP -> RP)
+                RP = aluXor(AX, RP);
                 break;
-            case 0b0001_100_110_000_111: //AND AX PC RP (AX & PC -> RP)
-                RP = aluAnd(AX, PC);
+            case 0b0001_100_110_000_111: //XOR AX PC RP (AX ^ PC -> RP)
+                RP = aluXor(AX, PC);
                 break;
-            case 0b0001_100_111_000_000: //AND AX AX PC (AX & AX -> PC)
-                PC = aluAnd(AX, AX);
+            case 0b0001_100_111_000_000: //XOR AX AX PC (AX ^ AX -> PC)
+                PC = aluXor(AX, AX);
                 break;
-            case 0b0001_100_111_000_001: //AND AX BX PC (AX & BX -> PC)
-                PC = aluAnd(AX, BX);
+            case 0b0001_100_111_000_001: //XOR AX BX PC (AX ^ BX -> PC)
+                PC = aluXor(AX, BX);
                 break;
-            case 0b0001_100_111_000_010: //AND AX CX PC (AX & CX -> PC)
-                PC = aluAnd(AX, CX);
+            case 0b0001_100_111_000_010: //XOR AX CX PC (AX ^ CX -> PC)
+                PC = aluXor(AX, CX);
                 break;
-            case 0b0001_100_111_000_011: //AND AX DX PC (AX & DX -> PC)
-                PC = aluAnd(AX, DX);
+            case 0b0001_100_111_000_011: //XOR AX DX PC (AX ^ DX -> PC)
+                PC = aluXor(AX, DX);
                 break;
-            case 0b0001_100_111_000_100: //AND AX EX PC (AX & EX -> PC)
-                PC = aluAnd(AX, EX);
+            case 0b0001_100_111_000_100: //XOR AX EX PC (AX ^ EX -> PC)
+                PC = aluXor(AX, EX);
                 break;
-            case 0b0001_100_111_000_101: //AND AX SP PC (AX & SP -> PC)
-                PC = aluAnd(AX, SP);
+            case 0b0001_100_111_000_101: //XOR AX SP PC (AX ^ SP -> PC)
+                PC = aluXor(AX, SP);
                 break;
-            case 0b0001_100_111_000_110: //AND AX RP PC (AX & RP -> PC)
-                PC = aluAnd(AX, RP);
+            case 0b0001_100_111_000_110: //XOR AX RP PC (AX ^ RP -> PC)
+                PC = aluXor(AX, RP);
                 break;
-            case 0b0001_100_111_000_111: //AND AX PC PC (AX & PC -> PC)
-                PC = aluAnd(AX, PC);
+            case 0b0001_100_111_000_111: //XOR AX PC PC (AX ^ PC -> PC)
+                PC = aluXor(AX, PC);
                 break;
-            case 0b0001_100_000_001_000: //AND BX AX AX (BX & AX -> AX)
-                AX = aluAnd(BX, AX);
+            case 0b0001_100_000_001_000: //XOR BX AX AX (BX ^ AX -> AX)
+                AX = aluXor(BX, AX);
                 break;
-            case 0b0001_100_000_001_001: //AND BX BX AX (BX & BX -> AX)
-                AX = aluAnd(BX, BX);
+            case 0b0001_100_000_001_001: //XOR BX BX AX (BX ^ BX -> AX)
+                AX = aluXor(BX, BX);
                 break;
-            case 0b0001_100_000_001_010: //AND BX CX AX (BX & CX -> AX)
-                AX = aluAnd(BX, CX);
+            case 0b0001_100_000_001_010: //XOR BX CX AX (BX ^ CX -> AX)
+                AX = aluXor(BX, CX);
                 break;
-            case 0b0001_100_000_001_011: //AND BX DX AX (BX & DX -> AX)
-                AX = aluAnd(BX, DX);
+            case 0b0001_100_000_001_011: //XOR BX DX AX (BX ^ DX -> AX)
+                AX = aluXor(BX, DX);
                 break;
-            case 0b0001_100_000_001_100: //AND BX EX AX (BX & EX -> AX)
-                AX = aluAnd(BX, EX);
+            case 0b0001_100_000_001_100: //XOR BX EX AX (BX ^ EX -> AX)
+                AX = aluXor(BX, EX);
                 break;
-            case 0b0001_100_000_001_101: //AND BX SP AX (BX & SP -> AX)
-                AX = aluAnd(BX, SP);
+            case 0b0001_100_000_001_101: //XOR BX SP AX (BX ^ SP -> AX)
+                AX = aluXor(BX, SP);
                 break;
-            case 0b0001_100_000_001_110: //AND BX RP AX (BX & RP -> AX)
-                AX = aluAnd(BX, RP);
+            case 0b0001_100_000_001_110: //XOR BX RP AX (BX ^ RP -> AX)
+                AX = aluXor(BX, RP);
                 break;
-            case 0b0001_100_000_001_111: //AND BX PC AX (BX & PC -> AX)
-                AX = aluAnd(BX, PC);
+            case 0b0001_100_000_001_111: //XOR BX PC AX (BX ^ PC -> AX)
+                AX = aluXor(BX, PC);
                 break;
-            case 0b0001_100_001_001_000: //AND BX AX BX (BX & AX -> BX)
-                BX = aluAnd(BX, AX);
+            case 0b0001_100_001_001_000: //XOR BX AX BX (BX ^ AX -> BX)
+                BX = aluXor(BX, AX);
                 break;
-            case 0b0001_100_001_001_001: //AND BX BX BX (BX & BX -> BX)
-                BX = aluAnd(BX, BX);
+            case 0b0001_100_001_001_001: //XOR BX BX BX (BX ^ BX -> BX)
+                BX = aluXor(BX, BX);
                 break;
-            case 0b0001_100_001_001_010: //AND BX CX BX (BX & CX -> BX)
-                BX = aluAnd(BX, CX);
+            case 0b0001_100_001_001_010: //XOR BX CX BX (BX ^ CX -> BX)
+                BX = aluXor(BX, CX);
                 break;
-            case 0b0001_100_001_001_011: //AND BX DX BX (BX & DX -> BX)
-                BX = aluAnd(BX, DX);
+            case 0b0001_100_001_001_011: //XOR BX DX BX (BX ^ DX -> BX)
+                BX = aluXor(BX, DX);
                 break;
-            case 0b0001_100_001_001_100: //AND BX EX BX (BX & EX -> BX)
-                BX = aluAnd(BX, EX);
+            case 0b0001_100_001_001_100: //XOR BX EX BX (BX ^ EX -> BX)
+                BX = aluXor(BX, EX);
                 break;
-            case 0b0001_100_001_001_101: //AND BX SP BX (BX & SP -> BX)
-                BX = aluAnd(BX, SP);
+            case 0b0001_100_001_001_101: //XOR BX SP BX (BX ^ SP -> BX)
+                BX = aluXor(BX, SP);
                 break;
-            case 0b0001_100_001_001_110: //AND BX RP BX (BX & RP -> BX)
-                BX = aluAnd(BX, RP);
+            case 0b0001_100_001_001_110: //XOR BX RP BX (BX ^ RP -> BX)
+                BX = aluXor(BX, RP);
                 break;
-            case 0b0001_100_001_001_111: //AND BX PC BX (BX & PC -> BX)
-                BX = aluAnd(BX, PC);
+            case 0b0001_100_001_001_111: //XOR BX PC BX (BX ^ PC -> BX)
+                BX = aluXor(BX, PC);
                 break;
-            case 0b0001_100_010_001_000: //AND BX AX CX (BX & AX -> CX)
-                CX = aluAnd(BX, AX);
+            case 0b0001_100_010_001_000: //XOR BX AX CX (BX ^ AX -> CX)
+                CX = aluXor(BX, AX);
                 break;
-            case 0b0001_100_010_001_001: //AND BX BX CX (BX & BX -> CX)
-                CX = aluAnd(BX, BX);
+            case 0b0001_100_010_001_001: //XOR BX BX CX (BX ^ BX -> CX)
+                CX = aluXor(BX, BX);
                 break;
-            case 0b0001_100_010_001_010: //AND BX CX CX (BX & CX -> CX)
-                CX = aluAnd(BX, CX);
+            case 0b0001_100_010_001_010: //XOR BX CX CX (BX ^ CX -> CX)
+                CX = aluXor(BX, CX);
                 break;
-            case 0b0001_100_010_001_011: //AND BX DX CX (BX & DX -> CX)
-                CX = aluAnd(BX, DX);
+            case 0b0001_100_010_001_011: //XOR BX DX CX (BX ^ DX -> CX)
+                CX = aluXor(BX, DX);
                 break;
-            case 0b0001_100_010_001_100: //AND BX EX CX (BX & EX -> CX)
-                CX = aluAnd(BX, EX);
+            case 0b0001_100_010_001_100: //XOR BX EX CX (BX ^ EX -> CX)
+                CX = aluXor(BX, EX);
                 break;
-            case 0b0001_100_010_001_101: //AND BX SP CX (BX & SP -> CX)
-                CX = aluAnd(BX, SP);
+            case 0b0001_100_010_001_101: //XOR BX SP CX (BX ^ SP -> CX)
+                CX = aluXor(BX, SP);
                 break;
-            case 0b0001_100_010_001_110: //AND BX RP CX (BX & RP -> CX)
-                CX = aluAnd(BX, RP);
+            case 0b0001_100_010_001_110: //XOR BX RP CX (BX ^ RP -> CX)
+                CX = aluXor(BX, RP);
                 break;
-            case 0b0001_100_010_001_111: //AND BX PC CX (BX & PC -> CX)
-                CX = aluAnd(BX, PC);
+            case 0b0001_100_010_001_111: //XOR BX PC CX (BX ^ PC -> CX)
+                CX = aluXor(BX, PC);
                 break;
-            case 0b0001_100_011_001_000: //AND BX AX DX (BX & AX -> DX)
-                DX = aluAnd(BX, AX);
+            case 0b0001_100_011_001_000: //XOR BX AX DX (BX ^ AX -> DX)
+                DX = aluXor(BX, AX);
                 break;
-            case 0b0001_100_011_001_001: //AND BX BX DX (BX & BX -> DX)
-                DX = aluAnd(BX, BX);
+            case 0b0001_100_011_001_001: //XOR BX BX DX (BX ^ BX -> DX)
+                DX = aluXor(BX, BX);
                 break;
-            case 0b0001_100_011_001_010: //AND BX CX DX (BX & CX -> DX)
-                DX = aluAnd(BX, CX);
+            case 0b0001_100_011_001_010: //XOR BX CX DX (BX ^ CX -> DX)
+                DX = aluXor(BX, CX);
                 break;
-            case 0b0001_100_011_001_011: //AND BX DX DX (BX & DX -> DX)
-                DX = aluAnd(BX, DX);
+            case 0b0001_100_011_001_011: //XOR BX DX DX (BX ^ DX -> DX)
+                DX = aluXor(BX, DX);
                 break;
-            case 0b0001_100_011_001_100: //AND BX EX DX (BX & EX -> DX)
-                DX = aluAnd(BX, EX);
+            case 0b0001_100_011_001_100: //XOR BX EX DX (BX ^ EX -> DX)
+                DX = aluXor(BX, EX);
                 break;
-            case 0b0001_100_011_001_101: //AND BX SP DX (BX & SP -> DX)
-                DX = aluAnd(BX, SP);
+            case 0b0001_100_011_001_101: //XOR BX SP DX (BX ^ SP -> DX)
+                DX = aluXor(BX, SP);
                 break;
-            case 0b0001_100_011_001_110: //AND BX RP DX (BX & RP -> DX)
-                DX = aluAnd(BX, RP);
+            case 0b0001_100_011_001_110: //XOR BX RP DX (BX ^ RP -> DX)
+                DX = aluXor(BX, RP);
                 break;
-            case 0b0001_100_011_001_111: //AND BX PC DX (BX & PC -> DX)
-                DX = aluAnd(BX, PC);
+            case 0b0001_100_011_001_111: //XOR BX PC DX (BX ^ PC -> DX)
+                DX = aluXor(BX, PC);
                 break;
-            case 0b0001_100_100_001_000: //AND BX AX EX (BX & AX -> EX)
-                EX = aluAnd(BX, AX);
+            case 0b0001_100_100_001_000: //XOR BX AX EX (BX ^ AX -> EX)
+                EX = aluXor(BX, AX);
                 break;
-            case 0b0001_100_100_001_001: //AND BX EX SP (BX & BX -> SP)
-                EX = aluAnd(BX, BX);
+            case 0b0001_100_100_001_001: //XOR BX EX SP (BX ^ BX -> SP)
+                EX = aluXor(BX, BX);
                 break;
-            case 0b0001_100_100_001_010: //AND BX EX SP (BX & CX -> SP)
-                EX = aluAnd(BX, CX);
+            case 0b0001_100_100_001_010: //XOR BX EX SP (BX ^ CX -> SP)
+                EX = aluXor(BX, CX);
                 break;
-            case 0b0001_100_100_001_011: //AND BX EX SP (BX & DX -> SP)
-                EX = aluAnd(BX, DX);
+            case 0b0001_100_100_001_011: //XOR BX EX SP (BX ^ DX -> SP)
+                EX = aluXor(BX, DX);
                 break;
-            case 0b0001_100_100_001_100: //AND BX EX SP (BX & EX -> SP)
-                EX = aluAnd(BX, EX);
+            case 0b0001_100_100_001_100: //XOR BX EX SP (BX ^ EX -> SP)
+                EX = aluXor(BX, EX);
                 break;
-            case 0b0001_100_100_001_101: //AND BX EX SP (BX & SP -> SP)
-                EX = aluAnd(BX, SP);
+            case 0b0001_100_100_001_101: //XOR BX EX SP (BX ^ SP -> SP)
+                EX = aluXor(BX, SP);
                 break;
-            case 0b0001_100_100_001_110: //AND BX EX SP (BX & RP -> SP)
-                EX = aluAnd(BX, RP);
+            case 0b0001_100_100_001_110: //XOR BX EX SP (BX ^ RP -> SP)
+                EX = aluXor(BX, RP);
                 break;
-            case 0b0001_100_100_001_111: //AND BX EX SP (BX & PC -> SP)
-                EX = aluAnd(BX, PC);
+            case 0b0001_100_100_001_111: //XOR BX EX SP (BX ^ PC -> SP)
+                EX = aluXor(BX, PC);
                 break;
-            case 0b0001_100_101_001_000: //AND BX AX SP (BX & AX -> SP)
-                SP = aluAnd(BX, AX);
+            case 0b0001_100_101_001_000: //XOR BX AX SP (BX ^ AX -> SP)
+                SP = aluXor(BX, AX);
                 break;
-            case 0b0001_100_101_001_001: //AND BX BX SP (BX & BX -> SP)
-                SP = aluAnd(BX, BX);
+            case 0b0001_100_101_001_001: //XOR BX BX SP (BX ^ BX -> SP)
+                SP = aluXor(BX, BX);
                 break;
-            case 0b0001_100_101_001_010: //AND BX CX SP (BX & CX -> SP)
-                SP = aluAnd(BX, CX);
+            case 0b0001_100_101_001_010: //XOR BX CX SP (BX ^ CX -> SP)
+                SP = aluXor(BX, CX);
                 break;
-            case 0b0001_100_101_001_011: //AND BX DX SP (BX & DX -> SP)
-                SP = aluAnd(BX, DX);
+            case 0b0001_100_101_001_011: //XOR BX DX SP (BX ^ DX -> SP)
+                SP = aluXor(BX, DX);
                 break;
-            case 0b0001_100_101_001_100: //AND BX EX SP (BX & EX -> SP)
-                SP = aluAnd(BX, EX);
+            case 0b0001_100_101_001_100: //XOR BX EX SP (BX ^ EX -> SP)
+                SP = aluXor(BX, EX);
                 break;
-            case 0b0001_100_101_001_101: //AND BX SP SP (BX & SP -> SP)
-                SP = aluAnd(BX, SP);
+            case 0b0001_100_101_001_101: //XOR BX SP SP (BX ^ SP -> SP)
+                SP = aluXor(BX, SP);
                 break;
-            case 0b0001_100_101_001_110: //AND BX RP SP (BX & RP -> SP)
-                SP = aluAnd(BX, RP);
+            case 0b0001_100_101_001_110: //XOR BX RP SP (BX ^ RP -> SP)
+                SP = aluXor(BX, RP);
                 break;
-            case 0b0001_100_101_001_111: //AND BX PC SP (BX & PC -> SP)
-                SP = aluAnd(BX, PC);
+            case 0b0001_100_101_001_111: //XOR BX PC SP (BX ^ PC -> SP)
+                SP = aluXor(BX, PC);
                 break;
-            case 0b0001_100_110_001_000: //AND BX AX RP (BX & AX -> RP)
-                RP = aluAnd(BX, AX);
+            case 0b0001_100_110_001_000: //XOR BX AX RP (BX ^ AX -> RP)
+                RP = aluXor(BX, AX);
                 break;
-            case 0b0001_100_110_001_001: //AND BX BX RP (BX & BX -> RP)
-                RP = aluAnd(BX, BX);
+            case 0b0001_100_110_001_001: //XOR BX BX RP (BX ^ BX -> RP)
+                RP = aluXor(BX, BX);
                 break;
-            case 0b0001_100_110_001_010: //AND BX CX RP (BX & CX -> RP)
-                RP = aluAnd(BX, CX);
+            case 0b0001_100_110_001_010: //XOR BX CX RP (BX ^ CX -> RP)
+                RP = aluXor(BX, CX);
                 break;
-            case 0b0001_100_110_001_011: //AND BX DX RP (BX & DX -> RP)
-                RP = aluAnd(BX, DX);
+            case 0b0001_100_110_001_011: //XOR BX DX RP (BX ^ DX -> RP)
+                RP = aluXor(BX, DX);
                 break;
-            case 0b0001_100_110_001_100: //AND BX EX RP (BX & EX -> RP)
-                RP = aluAnd(BX, EX);
+            case 0b0001_100_110_001_100: //XOR BX EX RP (BX ^ EX -> RP)
+                RP = aluXor(BX, EX);
                 break;
-            case 0b0001_100_110_001_101: //AND BX SP RP (BX & SP -> RP)
-                RP = aluAnd(BX, SP);
+            case 0b0001_100_110_001_101: //XOR BX SP RP (BX ^ SP -> RP)
+                RP = aluXor(BX, SP);
                 break;
-            case 0b0001_100_110_001_110: //AND BX RP RP (BX & RP -> RP)
-                RP = aluAnd(BX, RP);
+            case 0b0001_100_110_001_110: //XOR BX RP RP (BX ^ RP -> RP)
+                RP = aluXor(BX, RP);
                 break;
-            case 0b0001_100_110_001_111: //AND BX PC RP (BX & PC -> RP)
-                RP = aluAnd(BX, PC);
+            case 0b0001_100_110_001_111: //XOR BX PC RP (BX ^ PC -> RP)
+                RP = aluXor(BX, PC);
                 break;
-            case 0b0001_100_111_001_000: //AND BX AX PC (BX & AX -> PC)
-                PC = aluAnd(BX, AX);
+            case 0b0001_100_111_001_000: //XOR BX AX PC (BX ^ AX -> PC)
+                PC = aluXor(BX, AX);
                 break;
-            case 0b0001_100_111_001_001: //AND BX BX PC (BX & BX -> PC)
-                PC = aluAnd(BX, BX);
+            case 0b0001_100_111_001_001: //XOR BX BX PC (BX ^ BX -> PC)
+                PC = aluXor(BX, BX);
                 break;
-            case 0b0001_100_111_001_010: //AND BX CX PC (BX & CX -> PC)
-                PC = aluAnd(BX, CX);
+            case 0b0001_100_111_001_010: //XOR BX CX PC (BX ^ CX -> PC)
+                PC = aluXor(BX, CX);
                 break;
-            case 0b0001_100_111_001_011: //AND BX DX PC (BX & DX -> PC)
-                PC = aluAnd(BX, DX);
+            case 0b0001_100_111_001_011: //XOR BX DX PC (BX ^ DX -> PC)
+                PC = aluXor(BX, DX);
                 break;
-            case 0b0001_100_111_001_100: //AND BX EX PC (BX & EX -> PC)
-                PC = aluAnd(BX, EX);
+            case 0b0001_100_111_001_100: //XOR BX EX PC (BX ^ EX -> PC)
+                PC = aluXor(BX, EX);
                 break;
-            case 0b0001_100_111_001_101: //AND BX SP PC (BX & SP -> PC)
-                PC = aluAnd(BX, SP);
+            case 0b0001_100_111_001_101: //XOR BX SP PC (BX ^ SP -> PC)
+                PC = aluXor(BX, SP);
                 break;
-            case 0b0001_100_111_001_110: //AND BX RP PC (BX & RP -> PC)
-                PC = aluAnd(BX, RP);
+            case 0b0001_100_111_001_110: //XOR BX RP PC (BX ^ RP -> PC)
+                PC = aluXor(BX, RP);
                 break;
-            case 0b0001_100_111_001_111: //AND BX PC PC (BX & PC -> PC)
-                PC = aluAnd(BX, PC);
+            case 0b0001_100_111_001_111: //XOR BX PC PC (BX ^ PC -> PC)
+                PC = aluXor(BX, PC);
                 break;
-            case 0b0001_100_000_010_000: //AND CX AX AX (CX & AX -> AX)
-                AX = aluAnd(CX, AX);
+            case 0b0001_100_000_010_000: //XOR CX AX AX (CX ^ AX -> AX)
+                AX = aluXor(CX, AX);
                 break;
-            case 0b0001_100_000_010_001: //AND CX BX AX (CX & BX -> AX)
-                AX = aluAnd(CX, BX);
+            case 0b0001_100_000_010_001: //XOR CX BX AX (CX ^ BX -> AX)
+                AX = aluXor(CX, BX);
                 break;
-            case 0b0001_100_000_010_010: //AND CX CX AX (CX & CX -> AX)
-                AX = aluAnd(CX, CX);
+            case 0b0001_100_000_010_010: //XOR CX CX AX (CX ^ CX -> AX)
+                AX = aluXor(CX, CX);
                 break;
-            case 0b0001_100_000_010_011: //AND CX DX AX (CX & DX -> AX)
-                AX = aluAnd(CX, DX);
+            case 0b0001_100_000_010_011: //XOR CX DX AX (CX ^ DX -> AX)
+                AX = aluXor(CX, DX);
                 break;
-            case 0b0001_100_000_010_100: //AND CX EX AX (CX & EX -> AX)
-                AX = aluAnd(CX, EX);
+            case 0b0001_100_000_010_100: //XOR CX EX AX (CX ^ EX -> AX)
+                AX = aluXor(CX, EX);
                 break;
-            case 0b0001_100_000_010_101: //AND CX SP AX (CX & SP -> AX)
-                AX = aluAnd(CX, SP);
+            case 0b0001_100_000_010_101: //XOR CX SP AX (CX ^ SP -> AX)
+                AX = aluXor(CX, SP);
                 break;
-            case 0b0001_100_000_010_110: //AND CX RP AX (CX & RP -> AX)
-                AX = aluAnd(CX, RP);
+            case 0b0001_100_000_010_110: //XOR CX RP AX (CX ^ RP -> AX)
+                AX = aluXor(CX, RP);
                 break;
-            case 0b0001_100_000_010_111: //AND CX PC AX (CX & PC -> AX)
-                AX = aluAnd(CX, PC);
+            case 0b0001_100_000_010_111: //XOR CX PC AX (CX ^ PC -> AX)
+                AX = aluXor(CX, PC);
                 break;
-            case 0b0001_100_001_010_000: //AND CX AX BX (CX & AX -> BX)
-                BX = aluAnd(CX, AX);
+            case 0b0001_100_001_010_000: //XOR CX AX BX (CX ^ AX -> BX)
+                BX = aluXor(CX, AX);
                 break;
-            case 0b0001_100_001_010_001: //AND CX BX BX (CX & BX -> BX)
-                BX = aluAnd(CX, BX);
+            case 0b0001_100_001_010_001: //XOR CX BX BX (CX ^ BX -> BX)
+                BX = aluXor(CX, BX);
                 break;
-            case 0b0001_100_001_010_010: //AND CX CX BX (CX & CX -> BX)
-                BX = aluAnd(CX, CX);
+            case 0b0001_100_001_010_010: //XOR CX CX BX (CX ^ CX -> BX)
+                BX = aluXor(CX, CX);
                 break;
-            case 0b0001_100_001_010_011: //AND CX DX BX (CX & DX -> BX)
-                BX = aluAnd(CX, DX);
+            case 0b0001_100_001_010_011: //XOR CX DX BX (CX ^ DX -> BX)
+                BX = aluXor(CX, DX);
                 break;
-            case 0b0001_100_001_010_100: //AND CX EX BX (CX & EX -> BX)
-                BX = aluAnd(CX, EX);
+            case 0b0001_100_001_010_100: //XOR CX EX BX (CX ^ EX -> BX)
+                BX = aluXor(CX, EX);
                 break;
-            case 0b0001_100_001_010_101: //AND CX SP BX (CX & SP -> BX)
-                BX = aluAnd(CX, SP);
+            case 0b0001_100_001_010_101: //XOR CX SP BX (CX ^ SP -> BX)
+                BX = aluXor(CX, SP);
                 break;
-            case 0b0001_100_001_010_110: //AND CX RP BX (CX & RP -> BX)
-                BX = aluAnd(CX, RP);
+            case 0b0001_100_001_010_110: //XOR CX RP BX (CX ^ RP -> BX)
+                BX = aluXor(CX, RP);
                 break;
-            case 0b0001_100_001_010_111: //AND CX PC BX (CX & PC -> BX)
-                BX = aluAnd(CX, PC);
+            case 0b0001_100_001_010_111: //XOR CX PC BX (CX ^ PC -> BX)
+                BX = aluXor(CX, PC);
                 break;
-            case 0b0001_100_010_010_000: //AND CX AX CX (CX & AX -> CX)
-                CX = aluAnd(CX, AX);
+            case 0b0001_100_010_010_000: //XOR CX AX CX (CX ^ AX -> CX)
+                CX = aluXor(CX, AX);
                 break;
-            case 0b0001_100_010_010_001: //AND CX BX CX (CX & BX -> CX)
-                CX = aluAnd(CX, BX);
+            case 0b0001_100_010_010_001: //XOR CX BX CX (CX ^ BX -> CX)
+                CX = aluXor(CX, BX);
                 break;
-            case 0b0001_100_010_010_010: //AND CX CX CX (CX & CX -> CX)
-                CX = aluAnd(CX, CX);
+            case 0b0001_100_010_010_010: //XOR CX CX CX (CX ^ CX -> CX)
+                CX = aluXor(CX, CX);
                 break;
-            case 0b0001_100_010_010_011: //AND CX DX CX (CX & DX -> CX)
-                CX = aluAnd(CX, DX);
+            case 0b0001_100_010_010_011: //XOR CX DX CX (CX ^ DX -> CX)
+                CX = aluXor(CX, DX);
                 break;
-            case 0b0001_100_010_010_100: //AND CX EX CX (CX & EX -> CX)
-                CX = aluAnd(CX, EX);
+            case 0b0001_100_010_010_100: //XOR CX EX CX (CX ^ EX -> CX)
+                CX = aluXor(CX, EX);
                 break;
-            case 0b0001_100_010_010_101: //AND CX SP CX (CX & SP -> CX)
-                CX = aluAnd(CX, SP);
+            case 0b0001_100_010_010_101: //XOR CX SP CX (CX ^ SP -> CX)
+                CX = aluXor(CX, SP);
                 break;
-            case 0b0001_100_010_010_110: //AND CX RP CX (CX & RP -> CX)
-                CX = aluAnd(CX, RP);
+            case 0b0001_100_010_010_110: //XOR CX RP CX (CX ^ RP -> CX)
+                CX = aluXor(CX, RP);
                 break;
-            case 0b0001_100_010_010_111: //AND CX PC CX (CX & PC -> CX)
-                CX = aluAnd(CX, PC);
+            case 0b0001_100_010_010_111: //XOR CX PC CX (CX ^ PC -> CX)
+                CX = aluXor(CX, PC);
                 break;
-            case 0b0001_100_011_010_000: //AND CX AX DX (CX & AX -> DX)
-                DX = aluAnd(CX, AX);
+            case 0b0001_100_011_010_000: //XOR CX AX DX (CX ^ AX -> DX)
+                DX = aluXor(CX, AX);
                 break;
-            case 0b0001_100_011_010_001: //AND CX BX DX (CX & BX -> DX)
-                DX = aluAnd(CX, BX);
+            case 0b0001_100_011_010_001: //XOR CX BX DX (CX ^ BX -> DX)
+                DX = aluXor(CX, BX);
                 break;
-            case 0b0001_100_011_010_010: //AND CX CX DX (CX & CX -> DX)
-                DX = aluAnd(CX, CX);
+            case 0b0001_100_011_010_010: //XOR CX CX DX (CX ^ CX -> DX)
+                DX = aluXor(CX, CX);
                 break;
-            case 0b0001_100_011_010_011: //AND CX DX DX (CX & DX -> DX)
-                DX = aluAnd(CX, DX);
+            case 0b0001_100_011_010_011: //XOR CX DX DX (CX ^ DX -> DX)
+                DX = aluXor(CX, DX);
                 break;
-            case 0b0001_100_011_010_100: //AND CX EX DX (CX & EX -> DX)
-                DX = aluAnd(CX, EX);
+            case 0b0001_100_011_010_100: //XOR CX EX DX (CX ^ EX -> DX)
+                DX = aluXor(CX, EX);
                 break;
-            case 0b0001_100_011_010_101: //AND CX SP DX (CX & SP -> DX)
-                DX = aluAnd(CX, SP);
+            case 0b0001_100_011_010_101: //XOR CX SP DX (CX ^ SP -> DX)
+                DX = aluXor(CX, SP);
                 break;
-            case 0b0001_100_011_010_110: //AND CX RP DX (CX & RP -> DX)
-                DX = aluAnd(CX, RP);
+            case 0b0001_100_011_010_110: //XOR CX RP DX (CX ^ RP -> DX)
+                DX = aluXor(CX, RP);
                 break;
-            case 0b0001_100_011_010_111: //AND CX PC DX (CX & PC -> DX)
-                DX = aluAnd(CX, PC);
+            case 0b0001_100_011_010_111: //XOR CX PC DX (CX ^ PC -> DX)
+                DX = aluXor(CX, PC);
                 break;
-            case 0b0001_100_100_010_000: //AND CX AX EX (CX & AX -> EX)
-                EX = aluAnd(CX, AX);
+            case 0b0001_100_100_010_000: //XOR CX AX EX (CX ^ AX -> EX)
+                EX = aluXor(CX, AX);
                 break;
-            case 0b0001_100_100_010_001: //AND CX EX SP (CX & BX -> SP)
-                EX = aluAnd(CX, BX);
+            case 0b0001_100_100_010_001: //XOR CX EX SP (CX ^ BX -> SP)
+                EX = aluXor(CX, BX);
                 break;
-            case 0b0001_100_100_010_010: //AND CX EX SP (CX & CX -> SP)
-                EX = aluAnd(CX, CX);
+            case 0b0001_100_100_010_010: //XOR CX EX SP (CX ^ CX -> SP)
+                EX = aluXor(CX, CX);
                 break;
-            case 0b0001_100_100_010_011: //AND CX EX SP (CX & DX -> SP)
-                EX = aluAnd(CX, DX);
+            case 0b0001_100_100_010_011: //XOR CX EX SP (CX ^ DX -> SP)
+                EX = aluXor(CX, DX);
                 break;
-            case 0b0001_100_100_010_100: //AND CX EX SP (CX & EX -> SP)
-                EX = aluAnd(CX, EX);
+            case 0b0001_100_100_010_100: //XOR CX EX SP (CX ^ EX -> SP)
+                EX = aluXor(CX, EX);
                 break;
-            case 0b0001_100_100_010_101: //AND CX EX SP (CX & SP -> SP)
-                EX = aluAnd(CX, SP);
+            case 0b0001_100_100_010_101: //XOR CX EX SP (CX ^ SP -> SP)
+                EX = aluXor(CX, SP);
                 break;
-            case 0b0001_100_100_010_110: //AND CX EX SP (CX & RP -> SP)
-                EX = aluAnd(CX, RP);
+            case 0b0001_100_100_010_110: //XOR CX EX SP (CX ^ RP -> SP)
+                EX = aluXor(CX, RP);
                 break;
-            case 0b0001_100_100_010_111: //AND CX EX SP (CX & PC -> SP)
-                EX = aluAnd(CX, PC);
+            case 0b0001_100_100_010_111: //XOR CX EX SP (CX ^ PC -> SP)
+                EX = aluXor(CX, PC);
                 break;
-            case 0b0001_100_101_010_000: //AND CX AX SP (CX & AX -> SP)
-                SP = aluAnd(CX, AX);
+            case 0b0001_100_101_010_000: //XOR CX AX SP (CX ^ AX -> SP)
+                SP = aluXor(CX, AX);
                 break;
-            case 0b0001_100_101_010_001: //AND CX BX SP (CX & BX -> SP)
-                SP = aluAnd(CX, BX);
+            case 0b0001_100_101_010_001: //XOR CX BX SP (CX ^ BX -> SP)
+                SP = aluXor(CX, BX);
                 break;
-            case 0b0001_100_101_010_010: //AND CX CX SP (CX & CX -> SP)
-                SP = aluAnd(CX, CX);
+            case 0b0001_100_101_010_010: //XOR CX CX SP (CX ^ CX -> SP)
+                SP = aluXor(CX, CX);
                 break;
-            case 0b0001_100_101_010_011: //AND CX DX SP (CX & DX -> SP)
-                SP = aluAnd(CX, DX);
+            case 0b0001_100_101_010_011: //XOR CX DX SP (CX ^ DX -> SP)
+                SP = aluXor(CX, DX);
                 break;
-            case 0b0001_100_101_010_100: //AND CX EX SP (CX & EX -> SP)
-                SP = aluAnd(CX, EX);
+            case 0b0001_100_101_010_100: //XOR CX EX SP (CX ^ EX -> SP)
+                SP = aluXor(CX, EX);
                 break;
-            case 0b0001_100_101_010_101: //AND CX SP SP (CX & SP -> SP)
-                SP = aluAnd(CX, SP);
+            case 0b0001_100_101_010_101: //XOR CX SP SP (CX ^ SP -> SP)
+                SP = aluXor(CX, SP);
                 break;
-            case 0b0001_100_101_010_110: //AND CX RP SP (CX & RP -> SP)
-                SP = aluAnd(CX, RP);
+            case 0b0001_100_101_010_110: //XOR CX RP SP (CX ^ RP -> SP)
+                SP = aluXor(CX, RP);
                 break;
-            case 0b0001_100_101_010_111: //AND CX PC SP (CX & PC -> SP)
-                SP = aluAnd(CX, PC);
+            case 0b0001_100_101_010_111: //XOR CX PC SP (CX ^ PC -> SP)
+                SP = aluXor(CX, PC);
                 break;
-            case 0b0001_100_110_010_000: //AND CX AX RP (CX & AX -> RP)
-                RP = aluAnd(CX, AX);
+            case 0b0001_100_110_010_000: //XOR CX AX RP (CX ^ AX -> RP)
+                RP = aluXor(CX, AX);
                 break;
-            case 0b0001_100_110_010_001: //AND CX BX RP (CX & BX -> RP)
-                RP = aluAnd(CX, BX);
+            case 0b0001_100_110_010_001: //XOR CX BX RP (CX ^ BX -> RP)
+                RP = aluXor(CX, BX);
                 break;
-            case 0b0001_100_110_010_010: //AND CX CX RP (CX & CX -> RP)
-                RP = aluAnd(CX, CX);
+            case 0b0001_100_110_010_010: //XOR CX CX RP (CX ^ CX -> RP)
+                RP = aluXor(CX, CX);
                 break;
-            case 0b0001_100_110_010_011: //AND CX DX RP (CX & DX -> RP)
-                RP = aluAnd(CX, DX);
+            case 0b0001_100_110_010_011: //XOR CX DX RP (CX ^ DX -> RP)
+                RP = aluXor(CX, DX);
                 break;
-            case 0b0001_100_110_010_100: //AND CX EX RP (CX & EX -> RP)
-                RP = aluAnd(CX, EX);
+            case 0b0001_100_110_010_100: //XOR CX EX RP (CX ^ EX -> RP)
+                RP = aluXor(CX, EX);
                 break;
-            case 0b0001_100_110_010_101: //AND CX SP RP (CX & SP -> RP)
-                RP = aluAnd(CX, SP);
+            case 0b0001_100_110_010_101: //XOR CX SP RP (CX ^ SP -> RP)
+                RP = aluXor(CX, SP);
                 break;
-            case 0b0001_100_110_010_110: //AND CX RP RP (CX & RP -> RP)
-                RP = aluAnd(CX, RP);
+            case 0b0001_100_110_010_110: //XOR CX RP RP (CX ^ RP -> RP)
+                RP = aluXor(CX, RP);
                 break;
-            case 0b0001_100_110_010_111: //AND CX PC RP (CX & PC -> RP)
-                RP = aluAnd(CX, PC);
+            case 0b0001_100_110_010_111: //XOR CX PC RP (CX ^ PC -> RP)
+                RP = aluXor(CX, PC);
                 break;
-            case 0b0001_100_111_010_000: //AND CX AX PC (CX & AX -> PC)
-                PC = aluAnd(CX, AX);
+            case 0b0001_100_111_010_000: //XOR CX AX PC (CX ^ AX -> PC)
+                PC = aluXor(CX, AX);
                 break;
-            case 0b0001_100_111_010_001: //AND CX BX PC (CX & BX -> PC)
-                PC = aluAnd(CX, BX);
+            case 0b0001_100_111_010_001: //XOR CX BX PC (CX ^ BX -> PC)
+                PC = aluXor(CX, BX);
                 break;
-            case 0b0001_100_111_010_010: //AND CX CX PC (CX & CX -> PC)
-                PC = aluAnd(CX, CX);
+            case 0b0001_100_111_010_010: //XOR CX CX PC (CX ^ CX -> PC)
+                PC = aluXor(CX, CX);
                 break;
-            case 0b0001_100_111_010_011: //AND CX DX PC (CX & DX -> PC)
-                PC = aluAnd(CX, DX);
+            case 0b0001_100_111_010_011: //XOR CX DX PC (CX ^ DX -> PC)
+                PC = aluXor(CX, DX);
                 break;
-            case 0b0001_100_111_010_100: //AND CX EX PC (CX & EX -> PC)
-                PC = aluAnd(CX, EX);
+            case 0b0001_100_111_010_100: //XOR CX EX PC (CX ^ EX -> PC)
+                PC = aluXor(CX, EX);
                 break;
-            case 0b0001_100_111_010_101: //AND CX SP PC (CX & SP -> PC)
-                PC = aluAnd(CX, SP);
+            case 0b0001_100_111_010_101: //XOR CX SP PC (CX ^ SP -> PC)
+                PC = aluXor(CX, SP);
                 break;
-            case 0b0001_100_111_010_110: //AND CX RP PC (CX & RP -> PC)
-                PC = aluAnd(CX, RP);
+            case 0b0001_100_111_010_110: //XOR CX RP PC (CX ^ RP -> PC)
+                PC = aluXor(CX, RP);
                 break;
-            case 0b0001_100_111_010_111: //AND CX PC PC (CX & PC -> PC)
-                PC = aluAnd(CX, PC);
+            case 0b0001_100_111_010_111: //XOR CX PC PC (CX ^ PC -> PC)
+                PC = aluXor(CX, PC);
                 break;
-            case 0b0001_100_000_011_000: //AND DX AX AX (DX & AX -> AX)
-                AX = aluAnd(DX, AX);
+            case 0b0001_100_000_011_000: //XOR DX AX AX (DX ^ AX -> AX)
+                AX = aluXor(DX, AX);
                 break;
-            case 0b0001_100_000_011_001: //AND DX BX AX (DX & BX -> AX)
-                AX = aluAnd(DX, BX);
+            case 0b0001_100_000_011_001: //XOR DX BX AX (DX ^ BX -> AX)
+                AX = aluXor(DX, BX);
                 break;
-            case 0b0001_100_000_011_010: //AND DX CX AX (DX & CX -> AX)
-                AX = aluAnd(DX, CX);
+            case 0b0001_100_000_011_010: //XOR DX CX AX (DX ^ CX -> AX)
+                AX = aluXor(DX, CX);
                 break;
-            case 0b0001_100_000_011_011: //AND DX DX AX (DX & DX -> AX)
-                AX = aluAnd(DX, DX);
+            case 0b0001_100_000_011_011: //XOR DX DX AX (DX ^ DX -> AX)
+                AX = aluXor(DX, DX);
                 break;
-            case 0b0001_100_000_011_100: //AND DX EX AX (DX & EX -> AX)
-                AX = aluAnd(DX, EX);
+            case 0b0001_100_000_011_100: //XOR DX EX AX (DX ^ EX -> AX)
+                AX = aluXor(DX, EX);
                 break;
-            case 0b0001_100_000_011_101: //AND DX SP AX (DX & SP -> AX)
-                AX = aluAnd(DX, SP);
+            case 0b0001_100_000_011_101: //XOR DX SP AX (DX ^ SP -> AX)
+                AX = aluXor(DX, SP);
                 break;
-            case 0b0001_100_000_011_110: //AND DX RP AX (DX & RP -> AX)
-                AX = aluAnd(DX, RP);
+            case 0b0001_100_000_011_110: //XOR DX RP AX (DX ^ RP -> AX)
+                AX = aluXor(DX, RP);
                 break;
-            case 0b0001_100_000_011_111: //AND DX PC AX (DX & PC -> AX)
-                AX = aluAnd(DX, PC);
+            case 0b0001_100_000_011_111: //XOR DX PC AX (DX ^ PC -> AX)
+                AX = aluXor(DX, PC);
                 break;
-            case 0b0001_100_001_011_000: //AND DX AX BX (DX & AX -> BX)
-                BX = aluAnd(DX, AX);
+            case 0b0001_100_001_011_000: //XOR DX AX BX (DX ^ AX -> BX)
+                BX = aluXor(DX, AX);
                 break;
-            case 0b0001_100_001_011_001: //AND DX BX BX (DX & BX -> BX)
-                BX = aluAnd(DX, BX);
+            case 0b0001_100_001_011_001: //XOR DX BX BX (DX ^ BX -> BX)
+                BX = aluXor(DX, BX);
                 break;
-            case 0b0001_100_001_011_010: //AND DX CX BX (DX & CX -> BX)
-                BX = aluAnd(DX, CX);
+            case 0b0001_100_001_011_010: //XOR DX CX BX (DX ^ CX -> BX)
+                BX = aluXor(DX, CX);
                 break;
-            case 0b0001_100_001_011_011: //AND DX DX BX (DX & DX -> BX)
-                BX = aluAnd(DX, DX);
+            case 0b0001_100_001_011_011: //XOR DX DX BX (DX ^ DX -> BX)
+                BX = aluXor(DX, DX);
                 break;
-            case 0b0001_100_001_011_100: //AND DX EX BX (DX & EX -> BX)
-                BX = aluAnd(DX, EX);
+            case 0b0001_100_001_011_100: //XOR DX EX BX (DX ^ EX -> BX)
+                BX = aluXor(DX, EX);
                 break;
-            case 0b0001_100_001_011_101: //AND DX SP BX (DX & SP -> BX)
-                BX = aluAnd(DX, SP);
+            case 0b0001_100_001_011_101: //XOR DX SP BX (DX ^ SP -> BX)
+                BX = aluXor(DX, SP);
                 break;
-            case 0b0001_100_001_011_110: //AND DX RP BX (DX & RP -> BX)
-                BX = aluAnd(DX, RP);
+            case 0b0001_100_001_011_110: //XOR DX RP BX (DX ^ RP -> BX)
+                BX = aluXor(DX, RP);
                 break;
-            case 0b0001_100_001_011_111: //AND DX PC BX (DX & PC -> BX)
-                BX = aluAnd(DX, PC);
+            case 0b0001_100_001_011_111: //XOR DX PC BX (DX ^ PC -> BX)
+                BX = aluXor(DX, PC);
                 break;
-            case 0b0001_100_010_011_000: //AND DX AX CX (DX & AX -> CX)
-                CX = aluAnd(DX, AX);
+            case 0b0001_100_010_011_000: //XOR DX AX CX (DX ^ AX -> CX)
+                CX = aluXor(DX, AX);
                 break;
-            case 0b0001_100_010_011_001: //AND DX BX CX (DX & BX -> CX)
-                CX = aluAnd(DX, BX);
+            case 0b0001_100_010_011_001: //XOR DX BX CX (DX ^ BX -> CX)
+                CX = aluXor(DX, BX);
                 break;
-            case 0b0001_100_010_011_010: //AND DX CX CX (DX & CX -> CX)
-                CX = aluAnd(DX, CX);
+            case 0b0001_100_010_011_010: //XOR DX CX CX (DX ^ CX -> CX)
+                CX = aluXor(DX, CX);
                 break;
-            case 0b0001_100_010_011_011: //AND DX DX CX (DX & DX -> CX)
-                CX = aluAnd(DX, DX);
+            case 0b0001_100_010_011_011: //XOR DX DX CX (DX ^ DX -> CX)
+                CX = aluXor(DX, DX);
                 break;
-            case 0b0001_100_010_011_100: //AND DX EX CX (DX & EX -> CX)
-                CX = aluAnd(DX, EX);
+            case 0b0001_100_010_011_100: //XOR DX EX CX (DX ^ EX -> CX)
+                CX = aluXor(DX, EX);
                 break;
-            case 0b0001_100_010_011_101: //AND DX SP CX (DX & SP -> CX)
-                CX = aluAnd(DX, SP);
+            case 0b0001_100_010_011_101: //XOR DX SP CX (DX ^ SP -> CX)
+                CX = aluXor(DX, SP);
                 break;
-            case 0b0001_100_010_011_110: //AND DX RP CX (DX & RP -> CX)
-                CX = aluAnd(DX, RP);
+            case 0b0001_100_010_011_110: //XOR DX RP CX (DX ^ RP -> CX)
+                CX = aluXor(DX, RP);
                 break;
-            case 0b0001_100_010_011_111: //AND DX PC CX (DX & PC -> CX)
-                CX = aluAnd(DX, PC);
+            case 0b0001_100_010_011_111: //XOR DX PC CX (DX ^ PC -> CX)
+                CX = aluXor(DX, PC);
                 break;
-            case 0b0001_100_011_011_000: //AND DX AX DX (DX & AX -> DX)
-                DX = aluAnd(DX, AX);
+            case 0b0001_100_011_011_000: //XOR DX AX DX (DX ^ AX -> DX)
+                DX = aluXor(DX, AX);
                 break;
-            case 0b0001_100_011_011_001: //AND DX BX DX (DX & BX -> DX)
-                DX = aluAnd(DX, BX);
+            case 0b0001_100_011_011_001: //XOR DX BX DX (DX ^ BX -> DX)
+                DX = aluXor(DX, BX);
                 break;
-            case 0b0001_100_011_011_010: //AND DX CX DX (DX & CX -> DX)
-                DX = aluAnd(DX, CX);
+            case 0b0001_100_011_011_010: //XOR DX CX DX (DX ^ CX -> DX)
+                DX = aluXor(DX, CX);
                 break;
-            case 0b0001_100_011_011_011: //AND DX DX DX (DX & DX -> DX)
-                DX = aluAnd(DX, DX);
+            case 0b0001_100_011_011_011: //XOR DX DX DX (DX ^ DX -> DX)
+                DX = aluXor(DX, DX);
                 break;
-            case 0b0001_100_011_011_100: //AND DX EX DX (DX & EX -> DX)
-                DX = aluAnd(DX, EX);
+            case 0b0001_100_011_011_100: //XOR DX EX DX (DX ^ EX -> DX)
+                DX = aluXor(DX, EX);
                 break;
-            case 0b0001_100_011_011_101: //AND DX SP DX (DX & SP -> DX)
-                DX = aluAnd(DX, SP);
+            case 0b0001_100_011_011_101: //XOR DX SP DX (DX ^ SP -> DX)
+                DX = aluXor(DX, SP);
                 break;
-            case 0b0001_100_011_011_110: //AND DX RP DX (DX & RP -> DX)
-                DX = aluAnd(DX, RP);
+            case 0b0001_100_011_011_110: //XOR DX RP DX (DX ^ RP -> DX)
+                DX = aluXor(DX, RP);
                 break;
-            case 0b0001_100_011_011_111: //AND DX PC DX (DX & PC -> DX)
-                DX = aluAnd(DX, PC);
+            case 0b0001_100_011_011_111: //XOR DX PC DX (DX ^ PC -> DX)
+                DX = aluXor(DX, PC);
                 break;
-            case 0b0001_100_100_011_000: //AND DX AX EX (DX & AX -> EX)
-                EX = aluAnd(DX, AX);
+            case 0b0001_100_100_011_000: //XOR DX AX EX (DX ^ AX -> EX)
+                EX = aluXor(DX, AX);
                 break;
-            case 0b0001_100_100_011_001: //AND DX EX SP (DX & BX -> SP)
-                EX = aluAnd(DX, BX);
+            case 0b0001_100_100_011_001: //XOR DX EX SP (DX ^ BX -> SP)
+                EX = aluXor(DX, BX);
                 break;
-            case 0b0001_100_100_011_010: //AND DX EX SP (DX & CX -> SP)
-                EX = aluAnd(DX, CX);
+            case 0b0001_100_100_011_010: //XOR DX EX SP (DX ^ CX -> SP)
+                EX = aluXor(DX, CX);
                 break;
-            case 0b0001_100_100_011_011: //AND DX EX SP (DX & DX -> SP)
-                EX = aluAnd(DX, DX);
+            case 0b0001_100_100_011_011: //XOR DX EX SP (DX ^ DX -> SP)
+                EX = aluXor(DX, DX);
                 break;
-            case 0b0001_100_100_011_100: //AND DX EX SP (DX & EX -> SP)
-                EX = aluAnd(DX, EX);
+            case 0b0001_100_100_011_100: //XOR DX EX SP (DX ^ EX -> SP)
+                EX = aluXor(DX, EX);
                 break;
-            case 0b0001_100_100_011_101: //AND DX EX SP (DX & SP -> SP)
-                EX = aluAnd(DX, SP);
+            case 0b0001_100_100_011_101: //XOR DX EX SP (DX ^ SP -> SP)
+                EX = aluXor(DX, SP);
                 break;
-            case 0b0001_100_100_011_110: //AND DX EX SP (DX & RP -> SP)
-                EX = aluAnd(DX, RP);
+            case 0b0001_100_100_011_110: //XOR DX EX SP (DX ^ RP -> SP)
+                EX = aluXor(DX, RP);
                 break;
-            case 0b0001_100_100_011_111: //AND DX EX SP (DX & PC -> SP)
-                EX = aluAnd(DX, PC);
+            case 0b0001_100_100_011_111: //XOR DX EX SP (DX ^ PC -> SP)
+                EX = aluXor(DX, PC);
                 break;
-            case 0b0001_100_101_011_000: //AND DX AX SP (DX & AX -> SP)
-                SP = aluAnd(DX, AX);
+            case 0b0001_100_101_011_000: //XOR DX AX SP (DX ^ AX -> SP)
+                SP = aluXor(DX, AX);
                 break;
-            case 0b0001_100_101_011_001: //AND DX BX SP (DX & BX -> SP)
-                SP = aluAnd(DX, BX);
+            case 0b0001_100_101_011_001: //XOR DX BX SP (DX ^ BX -> SP)
+                SP = aluXor(DX, BX);
                 break;
-            case 0b0001_100_101_011_010: //AND DX CX SP (DX & CX -> SP)
-                SP = aluAnd(DX, CX);
+            case 0b0001_100_101_011_010: //XOR DX CX SP (DX ^ CX -> SP)
+                SP = aluXor(DX, CX);
                 break;
-            case 0b0001_100_101_011_011: //AND DX DX SP (DX & DX -> SP)
-                SP = aluAnd(DX, DX);
+            case 0b0001_100_101_011_011: //XOR DX DX SP (DX ^ DX -> SP)
+                SP = aluXor(DX, DX);
                 break;
-            case 0b0001_100_101_011_100: //AND DX EX SP (DX & EX -> SP)
-                SP = aluAnd(DX, EX);
+            case 0b0001_100_101_011_100: //XOR DX EX SP (DX ^ EX -> SP)
+                SP = aluXor(DX, EX);
                 break;
-            case 0b0001_100_101_011_101: //AND DX SP SP (DX & SP -> SP)
-                SP = aluAnd(DX, SP);
+            case 0b0001_100_101_011_101: //XOR DX SP SP (DX ^ SP -> SP)
+                SP = aluXor(DX, SP);
                 break;
-            case 0b0001_100_101_011_110: //AND DX RP SP (DX & RP -> SP)
-                SP = aluAnd(DX, RP);
+            case 0b0001_100_101_011_110: //XOR DX RP SP (DX ^ RP -> SP)
+                SP = aluXor(DX, RP);
                 break;
-            case 0b0001_100_101_011_111: //AND DX PC SP (DX & PC -> SP)
-                SP = aluAnd(DX, PC);
+            case 0b0001_100_101_011_111: //XOR DX PC SP (DX ^ PC -> SP)
+                SP = aluXor(DX, PC);
                 break;
-            case 0b0001_100_110_011_000: //AND DX AX RP (DX & AX -> RP)
-                RP = aluAnd(DX, AX);
+            case 0b0001_100_110_011_000: //XOR DX AX RP (DX ^ AX -> RP)
+                RP = aluXor(DX, AX);
                 break;
-            case 0b0001_100_110_011_001: //AND DX BX RP (DX & BX -> RP)
-                RP = aluAnd(DX, BX);
+            case 0b0001_100_110_011_001: //XOR DX BX RP (DX ^ BX -> RP)
+                RP = aluXor(DX, BX);
                 break;
-            case 0b0001_100_110_011_010: //AND DX CX RP (DX & CX -> RP)
-                RP = aluAnd(DX, CX);
+            case 0b0001_100_110_011_010: //XOR DX CX RP (DX ^ CX -> RP)
+                RP = aluXor(DX, CX);
                 break;
-            case 0b0001_100_110_011_011: //AND DX DX RP (DX & DX -> RP)
-                RP = aluAnd(DX, DX);
+            case 0b0001_100_110_011_011: //XOR DX DX RP (DX ^ DX -> RP)
+                RP = aluXor(DX, DX);
                 break;
-            case 0b0001_100_110_011_100: //AND DX EX RP (DX & EX -> RP)
-                RP = aluAnd(DX, EX);
+            case 0b0001_100_110_011_100: //XOR DX EX RP (DX ^ EX -> RP)
+                RP = aluXor(DX, EX);
                 break;
-            case 0b0001_100_110_011_101: //AND DX SP RP (DX & SP -> RP)
-                RP = aluAnd(DX, SP);
+            case 0b0001_100_110_011_101: //XOR DX SP RP (DX ^ SP -> RP)
+                RP = aluXor(DX, SP);
                 break;
-            case 0b0001_100_110_011_110: //AND DX RP RP (DX & RP -> RP)
-                RP = aluAnd(DX, RP);
+            case 0b0001_100_110_011_110: //XOR DX RP RP (DX ^ RP -> RP)
+                RP = aluXor(DX, RP);
                 break;
-            case 0b0001_100_110_011_111: //AND DX PC RP (DX & PC -> RP)
-                RP = aluAnd(DX, PC);
+            case 0b0001_100_110_011_111: //XOR DX PC RP (DX ^ PC -> RP)
+                RP = aluXor(DX, PC);
                 break;
-            case 0b0001_100_111_011_000: //AND DX AX PC (DX & AX -> PC)
-                PC = aluAnd(DX, AX);
+            case 0b0001_100_111_011_000: //XOR DX AX PC (DX ^ AX -> PC)
+                PC = aluXor(DX, AX);
                 break;
-            case 0b0001_100_111_011_001: //AND DX BX PC (DX & BX -> PC)
-                PC = aluAnd(DX, BX);
+            case 0b0001_100_111_011_001: //XOR DX BX PC (DX ^ BX -> PC)
+                PC = aluXor(DX, BX);
                 break;
-            case 0b0001_100_111_011_010: //AND DX CX PC (DX & CX -> PC)
-                PC = aluAnd(DX, CX);
+            case 0b0001_100_111_011_010: //XOR DX CX PC (DX ^ CX -> PC)
+                PC = aluXor(DX, CX);
                 break;
-            case 0b0001_100_111_011_011: //AND DX DX PC (DX & DX -> PC)
-                PC = aluAnd(DX, DX);
+            case 0b0001_100_111_011_011: //XOR DX DX PC (DX ^ DX -> PC)
+                PC = aluXor(DX, DX);
                 break;
-            case 0b0001_100_111_011_100: //AND DX EX PC (DX & EX -> PC)
-                PC = aluAnd(DX, EX);
+            case 0b0001_100_111_011_100: //XOR DX EX PC (DX ^ EX -> PC)
+                PC = aluXor(DX, EX);
                 break;
-            case 0b0001_100_111_011_101: //AND DX SP PC (DX & SP -> PC)
-                PC = aluAnd(DX, SP);
+            case 0b0001_100_111_011_101: //XOR DX SP PC (DX ^ SP -> PC)
+                PC = aluXor(DX, SP);
                 break;
-            case 0b0001_100_111_011_110: //AND DX RP PC (DX & RP -> PC)
-                PC = aluAnd(DX, RP);
+            case 0b0001_100_111_011_110: //XOR DX RP PC (DX ^ RP -> PC)
+                PC = aluXor(DX, RP);
                 break;
-            case 0b0001_100_111_011_111: //AND DX PC PC (DX & PC -> PC)
-                PC = aluAnd(DX, PC);
+            case 0b0001_100_111_011_111: //XOR DX PC PC (DX ^ PC -> PC)
+                PC = aluXor(DX, PC);
                 break;
-            case 0b0001_100_000_100_000: //AND EX AX AX (EX & AX -> AX)
-                AX = aluAnd(EX, AX);
+            case 0b0001_100_000_100_000: //XOR EX AX AX (EX ^ AX -> AX)
+                AX = aluXor(EX, AX);
                 break;
-            case 0b0001_100_000_100_001: //AND EX BX AX (EX & BX -> AX)
-                AX = aluAnd(EX, BX);
+            case 0b0001_100_000_100_001: //XOR EX BX AX (EX ^ BX -> AX)
+                AX = aluXor(EX, BX);
                 break;
-            case 0b0001_100_000_100_010: //AND EX CX AX (EX & CX -> AX)
-                AX = aluAnd(EX, CX);
+            case 0b0001_100_000_100_010: //XOR EX CX AX (EX ^ CX -> AX)
+                AX = aluXor(EX, CX);
                 break;
-            case 0b0001_100_000_100_011: //AND EX DX AX (EX & DX -> AX)
-                AX = aluAnd(EX, DX);
+            case 0b0001_100_000_100_011: //XOR EX DX AX (EX ^ DX -> AX)
+                AX = aluXor(EX, DX);
                 break;
-            case 0b0001_100_000_100_100: //AND EX EX AX (EX & EX -> AX)
-                AX = aluAnd(EX, EX);
+            case 0b0001_100_000_100_100: //XOR EX EX AX (EX ^ EX -> AX)
+                AX = aluXor(EX, EX);
                 break;
-            case 0b0001_100_000_100_101: //AND EX SP AX (EX & SP -> AX)
-                AX = aluAnd(EX, SP);
+            case 0b0001_100_000_100_101: //XOR EX SP AX (EX ^ SP -> AX)
+                AX = aluXor(EX, SP);
                 break;
-            case 0b0001_100_000_100_110: //AND EX RP AX (EX & RP -> AX)
-                AX = aluAnd(EX, RP);
+            case 0b0001_100_000_100_110: //XOR EX RP AX (EX ^ RP -> AX)
+                AX = aluXor(EX, RP);
                 break;
-            case 0b0001_100_000_100_111: //AND EX PC AX (EX & PC -> AX)
-                AX = aluAnd(EX, PC);
+            case 0b0001_100_000_100_111: //XOR EX PC AX (EX ^ PC -> AX)
+                AX = aluXor(EX, PC);
                 break;
-            case 0b0001_100_001_100_000: //AND EX AX BX (EX & AX -> BX)
-                BX = aluAnd(EX, AX);
+            case 0b0001_100_001_100_000: //XOR EX AX BX (EX ^ AX -> BX)
+                BX = aluXor(EX, AX);
                 break;
-            case 0b0001_100_001_100_001: //AND EX BX BX (EX & BX -> BX)
-                BX = aluAnd(EX, BX);
+            case 0b0001_100_001_100_001: //XOR EX BX BX (EX ^ BX -> BX)
+                BX = aluXor(EX, BX);
                 break;
-            case 0b0001_100_001_100_010: //AND EX CX BX (EX & CX -> BX)
-                BX = aluAnd(EX, CX);
+            case 0b0001_100_001_100_010: //XOR EX CX BX (EX ^ CX -> BX)
+                BX = aluXor(EX, CX);
                 break;
-            case 0b0001_100_001_100_011: //AND EX DX BX (EX & DX -> BX)
-                BX = aluAnd(EX, DX);
+            case 0b0001_100_001_100_011: //XOR EX DX BX (EX ^ DX -> BX)
+                BX = aluXor(EX, DX);
                 break;
-            case 0b0001_100_001_100_100: //AND EX EX BX (EX & EX -> BX)
-                BX = aluAnd(EX, EX);
+            case 0b0001_100_001_100_100: //XOR EX EX BX (EX ^ EX -> BX)
+                BX = aluXor(EX, EX);
                 break;
-            case 0b0001_100_001_100_101: //AND EX SP BX (EX & SP -> BX)
-                BX = aluAnd(EX, SP);
+            case 0b0001_100_001_100_101: //XOR EX SP BX (EX ^ SP -> BX)
+                BX = aluXor(EX, SP);
                 break;
-            case 0b0001_100_001_100_110: //AND EX RP BX (EX & RP -> BX)
-                BX = aluAnd(EX, RP);
+            case 0b0001_100_001_100_110: //XOR EX RP BX (EX ^ RP -> BX)
+                BX = aluXor(EX, RP);
                 break;
-            case 0b0001_100_001_100_111: //AND EX PC BX (EX & PC -> BX)
-                BX = aluAnd(EX, PC);
+            case 0b0001_100_001_100_111: //XOR EX PC BX (EX ^ PC -> BX)
+                BX = aluXor(EX, PC);
                 break;
-            case 0b0001_100_010_100_000: //AND EX AX CX (EX & AX -> CX)
-                CX = aluAnd(EX, AX);
+            case 0b0001_100_010_100_000: //XOR EX AX CX (EX ^ AX -> CX)
+                CX = aluXor(EX, AX);
                 break;
-            case 0b0001_100_010_100_001: //AND EX BX CX (EX & BX -> CX)
-                CX = aluAnd(EX, BX);
+            case 0b0001_100_010_100_001: //XOR EX BX CX (EX ^ BX -> CX)
+                CX = aluXor(EX, BX);
                 break;
-            case 0b0001_100_010_100_010: //AND EX CX CX (EX & CX -> CX)
-                CX = aluAnd(EX, CX);
+            case 0b0001_100_010_100_010: //XOR EX CX CX (EX ^ CX -> CX)
+                CX = aluXor(EX, CX);
                 break;
-            case 0b0001_100_010_100_011: //AND EX DX CX (EX & DX -> CX)
-                CX = aluAnd(EX, DX);
+            case 0b0001_100_010_100_011: //XOR EX DX CX (EX ^ DX -> CX)
+                CX = aluXor(EX, DX);
                 break;
-            case 0b0001_100_010_100_100: //AND EX EX CX (EX & EX -> CX)
-                CX = aluAnd(EX, EX);
+            case 0b0001_100_010_100_100: //XOR EX EX CX (EX ^ EX -> CX)
+                CX = aluXor(EX, EX);
                 break;
-            case 0b0001_100_010_100_101: //AND EX SP CX (EX & SP -> CX)
-                CX = aluAnd(EX, SP);
+            case 0b0001_100_010_100_101: //XOR EX SP CX (EX ^ SP -> CX)
+                CX = aluXor(EX, SP);
                 break;
-            case 0b0001_100_010_100_110: //AND EX RP CX (EX & RP -> CX)
-                CX = aluAnd(EX, RP);
+            case 0b0001_100_010_100_110: //XOR EX RP CX (EX ^ RP -> CX)
+                CX = aluXor(EX, RP);
                 break;
-            case 0b0001_100_010_100_111: //AND EX PC CX (EX & PC -> CX)
-                CX = aluAnd(EX, PC);
+            case 0b0001_100_010_100_111: //XOR EX PC CX (EX ^ PC -> CX)
+                CX = aluXor(EX, PC);
                 break;
-            case 0b0001_100_011_100_000: //AND EX AX DX (EX & AX -> DX)
-                DX = aluAnd(EX, AX);
+            case 0b0001_100_011_100_000: //XOR EX AX DX (EX ^ AX -> DX)
+                DX = aluXor(EX, AX);
                 break;
-            case 0b0001_100_011_100_001: //AND EX BX DX (EX & BX -> DX)
-                DX = aluAnd(EX, BX);
+            case 0b0001_100_011_100_001: //XOR EX BX DX (EX ^ BX -> DX)
+                DX = aluXor(EX, BX);
                 break;
-            case 0b0001_100_011_100_010: //AND EX CX DX (EX & CX -> DX)
-                DX = aluAnd(EX, CX);
+            case 0b0001_100_011_100_010: //XOR EX CX DX (EX ^ CX -> DX)
+                DX = aluXor(EX, CX);
                 break;
-            case 0b0001_100_011_100_011: //AND EX DX DX (EX & DX -> DX)
-                DX = aluAnd(EX, DX);
+            case 0b0001_100_011_100_011: //XOR EX DX DX (EX ^ DX -> DX)
+                DX = aluXor(EX, DX);
                 break;
-            case 0b0001_100_011_100_100: //AND EX EX DX (EX & EX -> DX)
-                DX = aluAnd(EX, EX);
+            case 0b0001_100_011_100_100: //XOR EX EX DX (EX ^ EX -> DX)
+                DX = aluXor(EX, EX);
                 break;
-            case 0b0001_100_011_100_101: //AND EX SP DX (EX & SP -> DX)
-                DX = aluAnd(EX, SP);
+            case 0b0001_100_011_100_101: //XOR EX SP DX (EX ^ SP -> DX)
+                DX = aluXor(EX, SP);
                 break;
-            case 0b0001_100_011_100_110: //AND EX RP DX (EX & RP -> DX)
-                DX = aluAnd(EX, RP);
+            case 0b0001_100_011_100_110: //XOR EX RP DX (EX ^ RP -> DX)
+                DX = aluXor(EX, RP);
                 break;
-            case 0b0001_100_011_100_111: //AND EX PC DX (EX & PC -> DX)
-                DX = aluAnd(EX, PC);
+            case 0b0001_100_011_100_111: //XOR EX PC DX (EX ^ PC -> DX)
+                DX = aluXor(EX, PC);
                 break;
-            case 0b0001_100_100_100_000: //AND EX AX EX (EX & AX -> EX)
-                EX = aluAnd(EX, AX);
+            case 0b0001_100_100_100_000: //XOR EX AX EX (EX ^ AX -> EX)
+                EX = aluXor(EX, AX);
                 break;
-            case 0b0001_100_100_100_001: //AND EX EX SP (EX & BX -> SP)
-                EX = aluAnd(EX, BX);
+            case 0b0001_100_100_100_001: //XOR EX EX SP (EX ^ BX -> SP)
+                EX = aluXor(EX, BX);
                 break;
-            case 0b0001_100_100_100_010: //AND EX EX SP (EX & CX -> SP)
-                EX = aluAnd(EX, CX);
+            case 0b0001_100_100_100_010: //XOR EX EX SP (EX ^ CX -> SP)
+                EX = aluXor(EX, CX);
                 break;
-            case 0b0001_100_100_100_011: //AND EX EX SP (EX & DX -> SP)
-                EX = aluAnd(EX, DX);
+            case 0b0001_100_100_100_011: //XOR EX EX SP (EX ^ DX -> SP)
+                EX = aluXor(EX, DX);
                 break;
-            case 0b0001_100_100_100_100: //AND EX EX SP (EX & EX -> SP)
-                EX = aluAnd(EX, EX);
+            case 0b0001_100_100_100_100: //XOR EX EX SP (EX ^ EX -> SP)
+                EX = aluXor(EX, EX);
                 break;
-            case 0b0001_100_100_100_101: //AND EX EX SP (EX & SP -> SP)
-                EX = aluAnd(EX, SP);
+            case 0b0001_100_100_100_101: //XOR EX EX SP (EX ^ SP -> SP)
+                EX = aluXor(EX, SP);
                 break;
-            case 0b0001_100_100_100_110: //AND EX EX SP (EX & RP -> SP)
-                EX = aluAnd(EX, RP);
+            case 0b0001_100_100_100_110: //XOR EX EX SP (EX ^ RP -> SP)
+                EX = aluXor(EX, RP);
                 break;
-            case 0b0001_100_100_100_111: //AND EX EX SP (EX & PC -> SP)
-                EX = aluAnd(EX, PC);
+            case 0b0001_100_100_100_111: //XOR EX EX SP (EX ^ PC -> SP)
+                EX = aluXor(EX, PC);
                 break;
-            case 0b0001_100_101_100_000: //AND EX AX SP (EX & AX -> SP)
-                SP = aluAnd(EX, AX);
+            case 0b0001_100_101_100_000: //XOR EX AX SP (EX ^ AX -> SP)
+                SP = aluXor(EX, AX);
                 break;
-            case 0b0001_100_101_100_001: //AND EX BX SP (EX & BX -> SP)
-                SP = aluAnd(EX, BX);
+            case 0b0001_100_101_100_001: //XOR EX BX SP (EX ^ BX -> SP)
+                SP = aluXor(EX, BX);
                 break;
-            case 0b0001_100_101_100_010: //AND EX CX SP (EX & CX -> SP)
-                SP = aluAnd(EX, CX);
+            case 0b0001_100_101_100_010: //XOR EX CX SP (EX ^ CX -> SP)
+                SP = aluXor(EX, CX);
                 break;
-            case 0b0001_100_101_100_011: //AND EX DX SP (EX & DX -> SP)
-                SP = aluAnd(EX, DX);
+            case 0b0001_100_101_100_011: //XOR EX DX SP (EX ^ DX -> SP)
+                SP = aluXor(EX, DX);
                 break;
-            case 0b0001_100_101_100_100: //AND EX EX SP (EX & EX -> SP)
-                SP = aluAnd(EX, EX);
+            case 0b0001_100_101_100_100: //XOR EX EX SP (EX ^ EX -> SP)
+                SP = aluXor(EX, EX);
                 break;
-            case 0b0001_100_101_100_101: //AND EX SP SP (EX & SP -> SP)
-                SP = aluAnd(EX, SP);
+            case 0b0001_100_101_100_101: //XOR EX SP SP (EX ^ SP -> SP)
+                SP = aluXor(EX, SP);
                 break;
-            case 0b0001_100_101_100_110: //AND EX RP SP (EX & RP -> SP)
-                SP = aluAnd(EX, RP);
+            case 0b0001_100_101_100_110: //XOR EX RP SP (EX ^ RP -> SP)
+                SP = aluXor(EX, RP);
                 break;
-            case 0b0001_100_101_100_111: //AND EX PC SP (EX & PC -> SP)
-                SP = aluAnd(EX, PC);
+            case 0b0001_100_101_100_111: //XOR EX PC SP (EX ^ PC -> SP)
+                SP = aluXor(EX, PC);
                 break;
-            case 0b0001_100_110_100_000: //AND EX AX RP (EX & AX -> RP)
-                RP = aluAnd(EX, AX);
+            case 0b0001_100_110_100_000: //XOR EX AX RP (EX ^ AX -> RP)
+                RP = aluXor(EX, AX);
                 break;
-            case 0b0001_100_110_100_001: //AND EX BX RP (EX & BX -> RP)
-                RP = aluAnd(EX, BX);
+            case 0b0001_100_110_100_001: //XOR EX BX RP (EX ^ BX -> RP)
+                RP = aluXor(EX, BX);
                 break;
-            case 0b0001_100_110_100_010: //AND EX CX RP (EX & CX -> RP)
-                RP = aluAnd(EX, CX);
+            case 0b0001_100_110_100_010: //XOR EX CX RP (EX ^ CX -> RP)
+                RP = aluXor(EX, CX);
                 break;
-            case 0b0001_100_110_100_011: //AND EX DX RP (EX & DX -> RP)
-                RP = aluAnd(EX, DX);
+            case 0b0001_100_110_100_011: //XOR EX DX RP (EX ^ DX -> RP)
+                RP = aluXor(EX, DX);
                 break;
-            case 0b0001_100_110_100_100: //AND EX EX RP (EX & EX -> RP)
-                RP = aluAnd(EX, EX);
+            case 0b0001_100_110_100_100: //XOR EX EX RP (EX ^ EX -> RP)
+                RP = aluXor(EX, EX);
                 break;
-            case 0b0001_100_110_100_101: //AND EX SP RP (EX & SP -> RP)
-                RP = aluAnd(EX, SP);
+            case 0b0001_100_110_100_101: //XOR EX SP RP (EX ^ SP -> RP)
+                RP = aluXor(EX, SP);
                 break;
-            case 0b0001_100_110_100_110: //AND EX RP RP (EX & RP -> RP)
-                RP = aluAnd(EX, RP);
+            case 0b0001_100_110_100_110: //XOR EX RP RP (EX ^ RP -> RP)
+                RP = aluXor(EX, RP);
                 break;
-            case 0b0001_100_110_100_111: //AND EX PC RP (EX & PC -> RP)
-                RP = aluAnd(EX, PC);
+            case 0b0001_100_110_100_111: //XOR EX PC RP (EX ^ PC -> RP)
+                RP = aluXor(EX, PC);
                 break;
-            case 0b0001_100_111_100_000: //AND EX AX PC (EX & AX -> PC)
-                PC = aluAnd(EX, AX);
+            case 0b0001_100_111_100_000: //XOR EX AX PC (EX ^ AX -> PC)
+                PC = aluXor(EX, AX);
                 break;
-            case 0b0001_100_111_100_001: //AND EX BX PC (EX & BX -> PC)
-                PC = aluAnd(EX, BX);
+            case 0b0001_100_111_100_001: //XOR EX BX PC (EX ^ BX -> PC)
+                PC = aluXor(EX, BX);
                 break;
-            case 0b0001_100_111_100_010: //AND EX CX PC (EX & CX -> PC)
-                PC = aluAnd(EX, CX);
+            case 0b0001_100_111_100_010: //XOR EX CX PC (EX ^ CX -> PC)
+                PC = aluXor(EX, CX);
                 break;
-            case 0b0001_100_111_100_011: //AND EX DX PC (EX & DX -> PC)
-                PC = aluAnd(EX, DX);
+            case 0b0001_100_111_100_011: //XOR EX DX PC (EX ^ DX -> PC)
+                PC = aluXor(EX, DX);
                 break;
-            case 0b0001_100_111_100_100: //AND EX EX PC (EX & EX -> PC)
-                PC = aluAnd(EX, EX);
+            case 0b0001_100_111_100_100: //XOR EX EX PC (EX ^ EX -> PC)
+                PC = aluXor(EX, EX);
                 break;
-            case 0b0001_100_111_100_101: //AND EX SP PC (EX & SP -> PC)
-                PC = aluAnd(EX, SP);
+            case 0b0001_100_111_100_101: //XOR EX SP PC (EX ^ SP -> PC)
+                PC = aluXor(EX, SP);
                 break;
-            case 0b0001_100_111_100_110: //AND EX RP PC (EX & RP -> PC)
-                PC = aluAnd(EX, RP);
+            case 0b0001_100_111_100_110: //XOR EX RP PC (EX ^ RP -> PC)
+                PC = aluXor(EX, RP);
                 break;
-            case 0b0001_100_111_100_111: //AND EX PC PC (EX & PC -> PC)
-                PC = aluAnd(EX, PC);
+            case 0b0001_100_111_100_111: //XOR EX PC PC (EX ^ PC -> PC)
+                PC = aluXor(EX, PC);
                 break;
-            case 0b0001_100_000_101_000: //AND SP AX AX (SP & AX -> AX)
-                AX = aluAnd(SP, AX);
+            case 0b0001_100_000_101_000: //XOR SP AX AX (SP ^ AX -> AX)
+                AX = aluXor(SP, AX);
                 break;
-            case 0b0001_100_000_101_001: //AND SP BX AX (SP & BX -> AX)
-                AX = aluAnd(SP, BX);
+            case 0b0001_100_000_101_001: //XOR SP BX AX (SP ^ BX -> AX)
+                AX = aluXor(SP, BX);
                 break;
-            case 0b0001_100_000_101_010: //AND SP CX AX (SP & CX -> AX)
-                AX = aluAnd(SP, CX);
+            case 0b0001_100_000_101_010: //XOR SP CX AX (SP ^ CX -> AX)
+                AX = aluXor(SP, CX);
                 break;
-            case 0b0001_100_000_101_011: //AND SP DX AX (SP & DX -> AX)
-                AX = aluAnd(SP, DX);
+            case 0b0001_100_000_101_011: //XOR SP DX AX (SP ^ DX -> AX)
+                AX = aluXor(SP, DX);
                 break;
-            case 0b0001_100_000_101_100: //AND SP EX AX (SP & EX -> AX)
-                AX = aluAnd(SP, EX);
+            case 0b0001_100_000_101_100: //XOR SP EX AX (SP ^ EX -> AX)
+                AX = aluXor(SP, EX);
                 break;
-            case 0b0001_100_000_101_101: //AND SP SP AX (SP & SP -> AX)
-                AX = aluAnd(SP, SP);
+            case 0b0001_100_000_101_101: //XOR SP SP AX (SP ^ SP -> AX)
+                AX = aluXor(SP, SP);
                 break;
-            case 0b0001_100_000_101_110: //AND SP RP AX (SP & RP -> AX)
-                AX = aluAnd(SP, RP);
+            case 0b0001_100_000_101_110: //XOR SP RP AX (SP ^ RP -> AX)
+                AX = aluXor(SP, RP);
                 break;
-            case 0b0001_100_000_101_111: //AND SP PC AX (SP & PC -> AX)
-                AX = aluAnd(SP, PC);
+            case 0b0001_100_000_101_111: //XOR SP PC AX (SP ^ PC -> AX)
+                AX = aluXor(SP, PC);
                 break;
-            case 0b0001_100_001_101_000: //AND SP AX BX (SP & AX -> BX)
-                BX = aluAnd(SP, AX);
+            case 0b0001_100_001_101_000: //XOR SP AX BX (SP ^ AX -> BX)
+                BX = aluXor(SP, AX);
                 break;
-            case 0b0001_100_001_101_001: //AND SP BX BX (SP & BX -> BX)
-                BX = aluAnd(SP, BX);
+            case 0b0001_100_001_101_001: //XOR SP BX BX (SP ^ BX -> BX)
+                BX = aluXor(SP, BX);
                 break;
-            case 0b0001_100_001_101_010: //AND SP CX BX (SP & CX -> BX)
-                BX = aluAnd(SP, CX);
+            case 0b0001_100_001_101_010: //XOR SP CX BX (SP ^ CX -> BX)
+                BX = aluXor(SP, CX);
                 break;
-            case 0b0001_100_001_101_011: //AND SP DX BX (SP & DX -> BX)
-                BX = aluAnd(SP, DX);
+            case 0b0001_100_001_101_011: //XOR SP DX BX (SP ^ DX -> BX)
+                BX = aluXor(SP, DX);
                 break;
-            case 0b0001_100_001_101_100: //AND SP EX BX (SP & EX -> BX)
-                BX = aluAnd(SP, EX);
+            case 0b0001_100_001_101_100: //XOR SP EX BX (SP ^ EX -> BX)
+                BX = aluXor(SP, EX);
                 break;
-            case 0b0001_100_001_101_101: //AND SP SP BX (SP & SP -> BX)
-                BX = aluAnd(SP, SP);
+            case 0b0001_100_001_101_101: //XOR SP SP BX (SP ^ SP -> BX)
+                BX = aluXor(SP, SP);
                 break;
-            case 0b0001_100_001_101_110: //AND SP RP BX (SP & RP -> BX)
-                BX = aluAnd(SP, RP);
+            case 0b0001_100_001_101_110: //XOR SP RP BX (SP ^ RP -> BX)
+                BX = aluXor(SP, RP);
                 break;
-            case 0b0001_100_001_101_111: //AND SP PC BX (SP & PC -> BX)
-                BX = aluAnd(SP, PC);
+            case 0b0001_100_001_101_111: //XOR SP PC BX (SP ^ PC -> BX)
+                BX = aluXor(SP, PC);
                 break;
-            case 0b0001_100_010_101_000: //AND SP AX CX (SP & AX -> CX)
-                CX = aluAnd(SP, AX);
+            case 0b0001_100_010_101_000: //XOR SP AX CX (SP ^ AX -> CX)
+                CX = aluXor(SP, AX);
                 break;
-            case 0b0001_100_010_101_001: //AND SP BX CX (SP & BX -> CX)
-                CX = aluAnd(SP, BX);
+            case 0b0001_100_010_101_001: //XOR SP BX CX (SP ^ BX -> CX)
+                CX = aluXor(SP, BX);
                 break;
-            case 0b0001_100_010_101_010: //AND SP CX CX (SP & CX -> CX)
-                CX = aluAnd(SP, CX);
+            case 0b0001_100_010_101_010: //XOR SP CX CX (SP ^ CX -> CX)
+                CX = aluXor(SP, CX);
                 break;
-            case 0b0001_100_010_101_011: //AND SP DX CX (SP & DX -> CX)
-                CX = aluAnd(SP, DX);
+            case 0b0001_100_010_101_011: //XOR SP DX CX (SP ^ DX -> CX)
+                CX = aluXor(SP, DX);
                 break;
-            case 0b0001_100_010_101_100: //AND SP EX CX (SP & EX -> CX)
-                CX = aluAnd(SP, EX);
+            case 0b0001_100_010_101_100: //XOR SP EX CX (SP ^ EX -> CX)
+                CX = aluXor(SP, EX);
                 break;
-            case 0b0001_100_010_101_101: //AND SP SP CX (SP & SP -> CX)
-                CX = aluAnd(SP, SP);
+            case 0b0001_100_010_101_101: //XOR SP SP CX (SP ^ SP -> CX)
+                CX = aluXor(SP, SP);
                 break;
-            case 0b0001_100_010_101_110: //AND SP RP CX (SP & RP -> CX)
-                CX = aluAnd(SP, RP);
+            case 0b0001_100_010_101_110: //XOR SP RP CX (SP ^ RP -> CX)
+                CX = aluXor(SP, RP);
                 break;
-            case 0b0001_100_010_101_111: //AND SP PC CX (SP & PC -> CX)
-                CX = aluAnd(SP, PC);
+            case 0b0001_100_010_101_111: //XOR SP PC CX (SP ^ PC -> CX)
+                CX = aluXor(SP, PC);
                 break;
-            case 0b0001_100_011_101_000: //AND SP AX DX (SP & AX -> DX)
-                DX = aluAnd(SP, AX);
+            case 0b0001_100_011_101_000: //XOR SP AX DX (SP ^ AX -> DX)
+                DX = aluXor(SP, AX);
                 break;
-            case 0b0001_100_011_101_001: //AND SP BX DX (SP & BX -> DX)
-                DX = aluAnd(SP, BX);
+            case 0b0001_100_011_101_001: //XOR SP BX DX (SP ^ BX -> DX)
+                DX = aluXor(SP, BX);
                 break;
-            case 0b0001_100_011_101_010: //AND SP CX DX (SP & CX -> DX)
-                DX = aluAnd(SP, CX);
+            case 0b0001_100_011_101_010: //XOR SP CX DX (SP ^ CX -> DX)
+                DX = aluXor(SP, CX);
                 break;
-            case 0b0001_100_011_101_011: //AND SP DX DX (SP & DX -> DX)
-                DX = aluAnd(SP, DX);
+            case 0b0001_100_011_101_011: //XOR SP DX DX (SP ^ DX -> DX)
+                DX = aluXor(SP, DX);
                 break;
-            case 0b0001_100_011_101_100: //AND SP EX DX (SP & EX -> DX)
-                DX = aluAnd(SP, EX);
+            case 0b0001_100_011_101_100: //XOR SP EX DX (SP ^ EX -> DX)
+                DX = aluXor(SP, EX);
                 break;
-            case 0b0001_100_011_101_101: //AND SP SP DX (SP & SP -> DX)
-                DX = aluAnd(SP, SP);
+            case 0b0001_100_011_101_101: //XOR SP SP DX (SP ^ SP -> DX)
+                DX = aluXor(SP, SP);
                 break;
-            case 0b0001_100_011_101_110: //AND SP RP DX (SP & RP -> DX)
-                DX = aluAnd(SP, RP);
+            case 0b0001_100_011_101_110: //XOR SP RP DX (SP ^ RP -> DX)
+                DX = aluXor(SP, RP);
                 break;
-            case 0b0001_100_011_101_111: //AND SP PC DX (SP & PC -> DX)
-                DX = aluAnd(SP, PC);
+            case 0b0001_100_011_101_111: //XOR SP PC DX (SP ^ PC -> DX)
+                DX = aluXor(SP, PC);
                 break;
-            case 0b0001_100_100_101_000: //AND SP AX EX (SP & AX -> EX)
-                EX = aluAnd(SP, AX);
+            case 0b0001_100_100_101_000: //XOR SP AX EX (SP ^ AX -> EX)
+                EX = aluXor(SP, AX);
                 break;
-            case 0b0001_100_100_101_001: //AND SP EX SP (SP & BX -> SP)
-                EX = aluAnd(SP, BX);
+            case 0b0001_100_100_101_001: //XOR SP EX SP (SP ^ BX -> SP)
+                EX = aluXor(SP, BX);
                 break;
-            case 0b0001_100_100_101_010: //AND SP EX SP (SP & CX -> SP)
-                EX = aluAnd(SP, CX);
+            case 0b0001_100_100_101_010: //XOR SP EX SP (SP ^ CX -> SP)
+                EX = aluXor(SP, CX);
                 break;
-            case 0b0001_100_100_101_011: //AND SP EX SP (SP & DX -> SP)
-                EX = aluAnd(SP, DX);
+            case 0b0001_100_100_101_011: //XOR SP EX SP (SP ^ DX -> SP)
+                EX = aluXor(SP, DX);
                 break;
-            case 0b0001_100_100_101_100: //AND SP EX SP (SP & EX -> SP)
-                EX = aluAnd(SP, EX);
+            case 0b0001_100_100_101_100: //XOR SP EX SP (SP ^ EX -> SP)
+                EX = aluXor(SP, EX);
                 break;
-            case 0b0001_100_100_101_101: //AND SP EX SP (SP & SP -> SP)
-                EX = aluAnd(SP, SP);
+            case 0b0001_100_100_101_101: //XOR SP EX SP (SP ^ SP -> SP)
+                EX = aluXor(SP, SP);
                 break;
-            case 0b0001_100_100_101_110: //AND SP EX SP (SP & RP -> SP)
-                EX = aluAnd(SP, RP);
+            case 0b0001_100_100_101_110: //XOR SP EX SP (SP ^ RP -> SP)
+                EX = aluXor(SP, RP);
                 break;
-            case 0b0001_100_100_101_111: //AND SP EX SP (SP & PC -> SP)
-                EX = aluAnd(SP, PC);
+            case 0b0001_100_100_101_111: //XOR SP EX SP (SP ^ PC -> SP)
+                EX = aluXor(SP, PC);
                 break;
-            case 0b0001_100_101_101_000: //AND SP AX SP (SP & AX -> SP)
-                SP = aluAnd(SP, AX);
+            case 0b0001_100_101_101_000: //XOR SP AX SP (SP ^ AX -> SP)
+                SP = aluXor(SP, AX);
                 break;
-            case 0b0001_100_101_101_001: //AND SP BX SP (SP & BX -> SP)
-                SP = aluAnd(SP, BX);
+            case 0b0001_100_101_101_001: //XOR SP BX SP (SP ^ BX -> SP)
+                SP = aluXor(SP, BX);
                 break;
-            case 0b0001_100_101_101_010: //AND SP CX SP (SP & CX -> SP)
-                SP = aluAnd(SP, CX);
+            case 0b0001_100_101_101_010: //XOR SP CX SP (SP ^ CX -> SP)
+                SP = aluXor(SP, CX);
                 break;
-            case 0b0001_100_101_101_011: //AND SP DX SP (SP & DX -> SP)
-                SP = aluAnd(SP, DX);
+            case 0b0001_100_101_101_011: //XOR SP DX SP (SP ^ DX -> SP)
+                SP = aluXor(SP, DX);
                 break;
-            case 0b0001_100_101_101_100: //AND SP EX SP (SP & EX -> SP)
-                SP = aluAnd(SP, EX);
+            case 0b0001_100_101_101_100: //XOR SP EX SP (SP ^ EX -> SP)
+                SP = aluXor(SP, EX);
                 break;
-            case 0b0001_100_101_101_101: //AND SP SP SP (SP & SP -> SP)
-                SP = aluAnd(SP, SP);
+            case 0b0001_100_101_101_101: //XOR SP SP SP (SP ^ SP -> SP)
+                SP = aluXor(SP, SP);
                 break;
-            case 0b0001_100_101_101_110: //AND SP RP SP (SP & RP -> SP)
-                SP = aluAnd(SP, RP);
+            case 0b0001_100_101_101_110: //XOR SP RP SP (SP ^ RP -> SP)
+                SP = aluXor(SP, RP);
                 break;
-            case 0b0001_100_101_101_111: //AND SP PC SP (SP & PC -> SP)
-                SP = aluAnd(SP, PC);
+            case 0b0001_100_101_101_111: //XOR SP PC SP (SP ^ PC -> SP)
+                SP = aluXor(SP, PC);
                 break;
-            case 0b0001_100_110_101_000: //AND SP AX RP (SP & AX -> RP)
-                RP = aluAnd(SP, AX);
+            case 0b0001_100_110_101_000: //XOR SP AX RP (SP ^ AX -> RP)
+                RP = aluXor(SP, AX);
                 break;
-            case 0b0001_100_110_101_001: //AND SP BX RP (SP & BX -> RP)
-                RP = aluAnd(SP, BX);
+            case 0b0001_100_110_101_001: //XOR SP BX RP (SP ^ BX -> RP)
+                RP = aluXor(SP, BX);
                 break;
-            case 0b0001_100_110_101_010: //AND SP CX RP (SP & CX -> RP)
-                RP = aluAnd(SP, CX);
+            case 0b0001_100_110_101_010: //XOR SP CX RP (SP ^ CX -> RP)
+                RP = aluXor(SP, CX);
                 break;
-            case 0b0001_100_110_101_011: //AND SP DX RP (SP & DX -> RP)
-                RP = aluAnd(SP, DX);
+            case 0b0001_100_110_101_011: //XOR SP DX RP (SP ^ DX -> RP)
+                RP = aluXor(SP, DX);
                 break;
-            case 0b0001_100_110_101_100: //AND SP EX RP (SP & EX -> RP)
-                RP = aluAnd(SP, EX);
+            case 0b0001_100_110_101_100: //XOR SP EX RP (SP ^ EX -> RP)
+                RP = aluXor(SP, EX);
                 break;
-            case 0b0001_100_110_101_101: //AND SP SP RP (SP & SP -> RP)
-                RP = aluAnd(SP, SP);
+            case 0b0001_100_110_101_101: //XOR SP SP RP (SP ^ SP -> RP)
+                RP = aluXor(SP, SP);
                 break;
-            case 0b0001_100_110_101_110: //AND SP RP RP (SP & RP -> RP)
-                RP = aluAnd(SP, RP);
+            case 0b0001_100_110_101_110: //XOR SP RP RP (SP ^ RP -> RP)
+                RP = aluXor(SP, RP);
                 break;
-            case 0b0001_100_110_101_111: //AND SP PC RP (SP & PC -> RP)
-                RP = aluAnd(SP, PC);
+            case 0b0001_100_110_101_111: //XOR SP PC RP (SP ^ PC -> RP)
+                RP = aluXor(SP, PC);
                 break;
-            case 0b0001_100_111_101_000: //AND SP AX PC (SP & AX -> PC)
-                PC = aluAnd(SP, AX);
+            case 0b0001_100_111_101_000: //XOR SP AX PC (SP ^ AX -> PC)
+                PC = aluXor(SP, AX);
                 break;
-            case 0b0001_100_111_101_001: //AND SP BX PC (SP & BX -> PC)
-                PC = aluAnd(SP, BX);
+            case 0b0001_100_111_101_001: //XOR SP BX PC (SP ^ BX -> PC)
+                PC = aluXor(SP, BX);
                 break;
-            case 0b0001_100_111_101_010: //AND SP CX PC (SP & CX -> PC)
-                PC = aluAnd(SP, CX);
+            case 0b0001_100_111_101_010: //XOR SP CX PC (SP ^ CX -> PC)
+                PC = aluXor(SP, CX);
                 break;
-            case 0b0001_100_111_101_011: //AND SP DX PC (SP & DX -> PC)
-                PC = aluAnd(SP, DX);
+            case 0b0001_100_111_101_011: //XOR SP DX PC (SP ^ DX -> PC)
+                PC = aluXor(SP, DX);
                 break;
-            case 0b0001_100_111_101_100: //AND SP EX PC (SP & EX -> PC)
-                PC = aluAnd(SP, EX);
+            case 0b0001_100_111_101_100: //XOR SP EX PC (SP ^ EX -> PC)
+                PC = aluXor(SP, EX);
                 break;
-            case 0b0001_100_111_101_101: //AND SP SP PC (SP & SP -> PC)
-                PC = aluAnd(SP, SP);
+            case 0b0001_100_111_101_101: //XOR SP SP PC (SP ^ SP -> PC)
+                PC = aluXor(SP, SP);
                 break;
-            case 0b0001_100_111_101_110: //AND SP RP PC (SP & RP -> PC)
-                PC = aluAnd(SP, RP);
+            case 0b0001_100_111_101_110: //XOR SP RP PC (SP ^ RP -> PC)
+                PC = aluXor(SP, RP);
                 break;
-            case 0b0001_100_111_101_111: //AND SP PC PC (SP & PC -> PC)
-                PC = aluAnd(SP, PC);
+            case 0b0001_100_111_101_111: //XOR SP PC PC (SP ^ PC -> PC)
+                PC = aluXor(SP, PC);
                 break;
-            case 0b0001_100_000_110_000: //AND RP AX AX (RP & AX -> AX)
-                AX = aluAnd(RP, AX);
+            case 0b0001_100_000_110_000: //XOR RP AX AX (RP ^ AX -> AX)
+                AX = aluXor(RP, AX);
                 break;
-            case 0b0001_100_000_110_001: //AND RP BX AX (RP & BX -> AX)
-                AX = aluAnd(RP, BX);
+            case 0b0001_100_000_110_001: //XOR RP BX AX (RP ^ BX -> AX)
+                AX = aluXor(RP, BX);
                 break;
-            case 0b0001_100_000_110_010: //AND RP CX AX (RP & CX -> AX)
-                AX = aluAnd(RP, CX);
+            case 0b0001_100_000_110_010: //XOR RP CX AX (RP ^ CX -> AX)
+                AX = aluXor(RP, CX);
                 break;
-            case 0b0001_100_000_110_011: //AND RP DX AX (RP & DX -> AX)
-                AX = aluAnd(RP, DX);
+            case 0b0001_100_000_110_011: //XOR RP DX AX (RP ^ DX -> AX)
+                AX = aluXor(RP, DX);
                 break;
-            case 0b0001_100_000_110_100: //AND RP EX AX (RP & EX -> AX)
-                AX = aluAnd(RP, EX);
+            case 0b0001_100_000_110_100: //XOR RP EX AX (RP ^ EX -> AX)
+                AX = aluXor(RP, EX);
                 break;
-            case 0b0001_100_000_110_101: //AND RP SP AX (RP & SP -> AX)
-                AX = aluAnd(RP, SP);
+            case 0b0001_100_000_110_101: //XOR RP SP AX (RP ^ SP -> AX)
+                AX = aluXor(RP, SP);
                 break;
-            case 0b0001_100_000_110_110: //AND RP RP AX (RP & RP -> AX)
-                AX = aluAnd(RP, RP);
+            case 0b0001_100_000_110_110: //XOR RP RP AX (RP ^ RP -> AX)
+                AX = aluXor(RP, RP);
                 break;
-            case 0b0001_100_000_110_111: //AND RP PC AX (RP & PC -> AX)
-                AX = aluAnd(RP, PC);
+            case 0b0001_100_000_110_111: //XOR RP PC AX (RP ^ PC -> AX)
+                AX = aluXor(RP, PC);
                 break;
-            case 0b0001_100_001_110_000: //AND RP AX BX (RP & AX -> BX)
-                BX = aluAnd(RP, AX);
+            case 0b0001_100_001_110_000: //XOR RP AX BX (RP ^ AX -> BX)
+                BX = aluXor(RP, AX);
                 break;
-            case 0b0001_100_001_110_001: //AND RP BX BX (RP & BX -> BX)
-                BX = aluAnd(RP, BX);
+            case 0b0001_100_001_110_001: //XOR RP BX BX (RP ^ BX -> BX)
+                BX = aluXor(RP, BX);
                 break;
-            case 0b0001_100_001_110_010: //AND RP CX BX (RP & CX -> BX)
-                BX = aluAnd(RP, CX);
+            case 0b0001_100_001_110_010: //XOR RP CX BX (RP ^ CX -> BX)
+                BX = aluXor(RP, CX);
                 break;
-            case 0b0001_100_001_110_011: //AND RP DX BX (RP & DX -> BX)
-                BX = aluAnd(RP, DX);
+            case 0b0001_100_001_110_011: //XOR RP DX BX (RP ^ DX -> BX)
+                BX = aluXor(RP, DX);
                 break;
-            case 0b0001_100_001_110_100: //AND RP EX BX (RP & EX -> BX)
-                BX = aluAnd(RP, EX);
+            case 0b0001_100_001_110_100: //XOR RP EX BX (RP ^ EX -> BX)
+                BX = aluXor(RP, EX);
                 break;
-            case 0b0001_100_001_110_101: //AND RP SP BX (RP & SP -> BX)
-                BX = aluAnd(RP, SP);
+            case 0b0001_100_001_110_101: //XOR RP SP BX (RP ^ SP -> BX)
+                BX = aluXor(RP, SP);
                 break;
-            case 0b0001_100_001_110_110: //AND RP RP BX (RP & RP -> BX)
-                BX = aluAnd(RP, RP);
+            case 0b0001_100_001_110_110: //XOR RP RP BX (RP ^ RP -> BX)
+                BX = aluXor(RP, RP);
                 break;
-            case 0b0001_100_001_110_111: //AND RP PC BX (RP & PC -> BX)
-                BX = aluAnd(RP, PC);
+            case 0b0001_100_001_110_111: //XOR RP PC BX (RP ^ PC -> BX)
+                BX = aluXor(RP, PC);
                 break;
-            case 0b0001_100_010_110_000: //AND RP AX CX (RP & AX -> CX)
-                CX = aluAnd(RP, AX);
+            case 0b0001_100_010_110_000: //XOR RP AX CX (RP ^ AX -> CX)
+                CX = aluXor(RP, AX);
                 break;
-            case 0b0001_100_010_110_001: //AND RP BX CX (RP & BX -> CX)
-                CX = aluAnd(RP, BX);
+            case 0b0001_100_010_110_001: //XOR RP BX CX (RP ^ BX -> CX)
+                CX = aluXor(RP, BX);
                 break;
-            case 0b0001_100_010_110_010: //AND RP CX CX (RP & CX -> CX)
-                CX = aluAnd(RP, CX);
+            case 0b0001_100_010_110_010: //XOR RP CX CX (RP ^ CX -> CX)
+                CX = aluXor(RP, CX);
                 break;
-            case 0b0001_100_010_110_011: //AND RP DX CX (RP & DX -> CX)
-                CX = aluAnd(RP, DX);
+            case 0b0001_100_010_110_011: //XOR RP DX CX (RP ^ DX -> CX)
+                CX = aluXor(RP, DX);
                 break;
-            case 0b0001_100_010_110_100: //AND RP EX CX (RP & EX -> CX)
-                CX = aluAnd(RP, EX);
+            case 0b0001_100_010_110_100: //XOR RP EX CX (RP ^ EX -> CX)
+                CX = aluXor(RP, EX);
                 break;
-            case 0b0001_100_010_110_101: //AND RP SP CX (RP & SP -> CX)
-                CX = aluAnd(RP, SP);
+            case 0b0001_100_010_110_101: //XOR RP SP CX (RP ^ SP -> CX)
+                CX = aluXor(RP, SP);
                 break;
-            case 0b0001_100_010_110_110: //AND RP RP CX (RP & RP -> CX)
-                CX = aluAnd(RP, RP);
+            case 0b0001_100_010_110_110: //XOR RP RP CX (RP ^ RP -> CX)
+                CX = aluXor(RP, RP);
                 break;
-            case 0b0001_100_010_110_111: //AND RP PC CX (RP & PC -> CX)
-                CX = aluAnd(RP, PC);
+            case 0b0001_100_010_110_111: //XOR RP PC CX (RP ^ PC -> CX)
+                CX = aluXor(RP, PC);
                 break;
-            case 0b0001_100_011_110_000: //AND RP AX DX (RP & AX -> DX)
-                DX = aluAnd(RP, AX);
+            case 0b0001_100_011_110_000: //XOR RP AX DX (RP ^ AX -> DX)
+                DX = aluXor(RP, AX);
                 break;
-            case 0b0001_100_011_110_001: //AND RP BX DX (RP & BX -> DX)
-                DX = aluAnd(RP, BX);
+            case 0b0001_100_011_110_001: //XOR RP BX DX (RP ^ BX -> DX)
+                DX = aluXor(RP, BX);
                 break;
-            case 0b0001_100_011_110_010: //AND RP CX DX (RP & CX -> DX)
-                DX = aluAnd(RP, CX);
+            case 0b0001_100_011_110_010: //XOR RP CX DX (RP ^ CX -> DX)
+                DX = aluXor(RP, CX);
                 break;
-            case 0b0001_100_011_110_011: //AND RP DX DX (RP & DX -> DX)
-                DX = aluAnd(RP, DX);
+            case 0b0001_100_011_110_011: //XOR RP DX DX (RP ^ DX -> DX)
+                DX = aluXor(RP, DX);
                 break;
-            case 0b0001_100_011_110_100: //AND RP EX DX (RP & EX -> DX)
-                DX = aluAnd(RP, EX);
+            case 0b0001_100_011_110_100: //XOR RP EX DX (RP ^ EX -> DX)
+                DX = aluXor(RP, EX);
                 break;
-            case 0b0001_100_011_110_101: //AND RP SP DX (RP & SP -> DX)
-                DX = aluAnd(RP, SP);
+            case 0b0001_100_011_110_101: //XOR RP SP DX (RP ^ SP -> DX)
+                DX = aluXor(RP, SP);
                 break;
-            case 0b0001_100_011_110_110: //AND RP RP DX (RP & RP -> DX)
-                DX = aluAnd(RP, RP);
+            case 0b0001_100_011_110_110: //XOR RP RP DX (RP ^ RP -> DX)
+                DX = aluXor(RP, RP);
                 break;
-            case 0b0001_100_011_110_111: //AND RP PC DX (RP & PC -> DX)
-                DX = aluAnd(RP, PC);
+            case 0b0001_100_011_110_111: //XOR RP PC DX (RP ^ PC -> DX)
+                DX = aluXor(RP, PC);
                 break;
-            case 0b0001_100_100_110_000: //AND RP AX EX (RP & AX -> EX)
-                EX = aluAnd(RP, AX);
+            case 0b0001_100_100_110_000: //XOR RP AX EX (RP ^ AX -> EX)
+                EX = aluXor(RP, AX);
                 break;
-            case 0b0001_100_100_110_001: //AND RP EX SP (RP & BX -> SP)
-                EX = aluAnd(RP, BX);
+            case 0b0001_100_100_110_001: //XOR RP EX SP (RP ^ BX -> SP)
+                EX = aluXor(RP, BX);
                 break;
-            case 0b0001_100_100_110_010: //AND RP EX SP (RP & CX -> SP)
-                EX = aluAnd(RP, CX);
+            case 0b0001_100_100_110_010: //XOR RP EX SP (RP ^ CX -> SP)
+                EX = aluXor(RP, CX);
                 break;
-            case 0b0001_100_100_110_011: //AND RP EX SP (RP & DX -> SP)
-                EX = aluAnd(RP, DX);
+            case 0b0001_100_100_110_011: //XOR RP EX SP (RP ^ DX -> SP)
+                EX = aluXor(RP, DX);
                 break;
-            case 0b0001_100_100_110_100: //AND RP EX SP (RP & EX -> SP)
-                EX = aluAnd(RP, EX);
+            case 0b0001_100_100_110_100: //XOR RP EX SP (RP ^ EX -> SP)
+                EX = aluXor(RP, EX);
                 break;
-            case 0b0001_100_100_110_101: //AND RP EX SP (RP & SP -> SP)
-                EX = aluAnd(RP, SP);
+            case 0b0001_100_100_110_101: //XOR RP EX SP (RP ^ SP -> SP)
+                EX = aluXor(RP, SP);
                 break;
-            case 0b0001_100_100_110_110: //AND RP EX SP (RP & RP -> SP)
-                EX = aluAnd(RP, RP);
+            case 0b0001_100_100_110_110: //XOR RP EX SP (RP ^ RP -> SP)
+                EX = aluXor(RP, RP);
                 break;
-            case 0b0001_100_100_110_111: //AND RP EX SP (RP & PC -> SP)
-                EX = aluAnd(RP, PC);
+            case 0b0001_100_100_110_111: //XOR RP EX SP (RP ^ PC -> SP)
+                EX = aluXor(RP, PC);
                 break;
-            case 0b0001_100_101_110_000: //AND RP AX SP (RP & AX -> SP)
-                SP = aluAnd(RP, AX);
+            case 0b0001_100_101_110_000: //XOR RP AX SP (RP ^ AX -> SP)
+                SP = aluXor(RP, AX);
                 break;
-            case 0b0001_100_101_110_001: //AND RP BX SP (RP & BX -> SP)
-                SP = aluAnd(RP, BX);
+            case 0b0001_100_101_110_001: //XOR RP BX SP (RP ^ BX -> SP)
+                SP = aluXor(RP, BX);
                 break;
-            case 0b0001_100_101_110_010: //AND RP CX SP (RP & CX -> SP)
-                SP = aluAnd(RP, CX);
+            case 0b0001_100_101_110_010: //XOR RP CX SP (RP ^ CX -> SP)
+                SP = aluXor(RP, CX);
                 break;
-            case 0b0001_100_101_110_011: //AND RP DX SP (RP & DX -> SP)
-                SP = aluAnd(RP, DX);
+            case 0b0001_100_101_110_011: //XOR RP DX SP (RP ^ DX -> SP)
+                SP = aluXor(RP, DX);
                 break;
-            case 0b0001_100_101_110_100: //AND RP EX SP (RP & EX -> SP)
-                SP = aluAnd(RP, EX);
+            case 0b0001_100_101_110_100: //XOR RP EX SP (RP ^ EX -> SP)
+                SP = aluXor(RP, EX);
                 break;
-            case 0b0001_100_101_110_101: //AND RP SP SP (RP & SP -> SP)
-                SP = aluAnd(RP, SP);
+            case 0b0001_100_101_110_101: //XOR RP SP SP (RP ^ SP -> SP)
+                SP = aluXor(RP, SP);
                 break;
-            case 0b0001_100_101_110_110: //AND RP RP SP (RP & RP -> SP)
-                SP = aluAnd(RP, RP);
+            case 0b0001_100_101_110_110: //XOR RP RP SP (RP ^ RP -> SP)
+                SP = aluXor(RP, RP);
                 break;
-            case 0b0001_100_101_110_111: //AND RP PC SP (RP & PC -> SP)
-                SP = aluAnd(RP, PC);
+            case 0b0001_100_101_110_111: //XOR RP PC SP (RP ^ PC -> SP)
+                SP = aluXor(RP, PC);
                 break;
-            case 0b0001_100_110_110_000: //AND RP AX RP (RP & AX -> RP)
-                RP = aluAnd(RP, AX);
+            case 0b0001_100_110_110_000: //XOR RP AX RP (RP ^ AX -> RP)
+                RP = aluXor(RP, AX);
                 break;
-            case 0b0001_100_110_110_001: //AND RP BX RP (RP & BX -> RP)
-                RP = aluAnd(RP, BX);
+            case 0b0001_100_110_110_001: //XOR RP BX RP (RP ^ BX -> RP)
+                RP = aluXor(RP, BX);
                 break;
-            case 0b0001_100_110_110_010: //AND RP CX RP (RP & CX -> RP)
-                RP = aluAnd(RP, CX);
+            case 0b0001_100_110_110_010: //XOR RP CX RP (RP ^ CX -> RP)
+                RP = aluXor(RP, CX);
                 break;
-            case 0b0001_100_110_110_011: //AND RP DX RP (RP & DX -> RP)
-                RP = aluAnd(RP, DX);
+            case 0b0001_100_110_110_011: //XOR RP DX RP (RP ^ DX -> RP)
+                RP = aluXor(RP, DX);
                 break;
-            case 0b0001_100_110_110_100: //AND RP EX RP (RP & EX -> RP)
-                RP = aluAnd(RP, EX);
+            case 0b0001_100_110_110_100: //XOR RP EX RP (RP ^ EX -> RP)
+                RP = aluXor(RP, EX);
                 break;
-            case 0b0001_100_110_110_101: //AND RP SP RP (RP & SP -> RP)
-                RP = aluAnd(RP, SP);
+            case 0b0001_100_110_110_101: //XOR RP SP RP (RP ^ SP -> RP)
+                RP = aluXor(RP, SP);
                 break;
-            case 0b0001_100_110_110_110: //AND RP RP RP (RP & RP -> RP)
-                RP = aluAnd(RP, RP);
+            case 0b0001_100_110_110_110: //XOR RP RP RP (RP ^ RP -> RP)
+                RP = aluXor(RP, RP);
                 break;
-            case 0b0001_100_110_110_111: //AND RP PC RP (RP & PC -> RP)
-                RP = aluAnd(RP, PC);
+            case 0b0001_100_110_110_111: //XOR RP PC RP (RP ^ PC -> RP)
+                RP = aluXor(RP, PC);
                 break;
-            case 0b0001_100_111_110_000: //AND RP AX PC (RP & AX -> PC)
-                PC = aluAnd(RP, AX);
+            case 0b0001_100_111_110_000: //XOR RP AX PC (RP ^ AX -> PC)
+                PC = aluXor(RP, AX);
                 break;
-            case 0b0001_100_111_110_001: //AND RP BX PC (RP & BX -> PC)
-                PC = aluAnd(RP, BX);
+            case 0b0001_100_111_110_001: //XOR RP BX PC (RP ^ BX -> PC)
+                PC = aluXor(RP, BX);
                 break;
-            case 0b0001_100_111_110_010: //AND RP CX PC (RP & CX -> PC)
-                PC = aluAnd(RP, CX);
+            case 0b0001_100_111_110_010: //XOR RP CX PC (RP ^ CX -> PC)
+                PC = aluXor(RP, CX);
                 break;
-            case 0b0001_100_111_110_011: //AND RP DX PC (RP & DX -> PC)
-                PC = aluAnd(RP, DX);
+            case 0b0001_100_111_110_011: //XOR RP DX PC (RP ^ DX -> PC)
+                PC = aluXor(RP, DX);
                 break;
-            case 0b0001_100_111_110_100: //AND RP EX PC (RP & EX -> PC)
-                PC = aluAnd(RP, EX);
+            case 0b0001_100_111_110_100: //XOR RP EX PC (RP ^ EX -> PC)
+                PC = aluXor(RP, EX);
                 break;
-            case 0b0001_100_111_110_101: //AND RP SP PC (RP & SP -> PC)
-                PC = aluAnd(RP, SP);
+            case 0b0001_100_111_110_101: //XOR RP SP PC (RP ^ SP -> PC)
+                PC = aluXor(RP, SP);
                 break;
-            case 0b0001_100_111_110_110: //AND RP RP PC (RP & RP -> PC)
-                PC = aluAnd(RP, RP);
+            case 0b0001_100_111_110_110: //XOR RP RP PC (RP ^ RP -> PC)
+                PC = aluXor(RP, RP);
                 break;
-            case 0b0001_100_111_110_111: //AND RP PC PC (RP & PC -> PC)
-                PC = aluAnd(RP, PC);
+            case 0b0001_100_111_110_111: //XOR RP PC PC (RP ^ PC -> PC)
+                PC = aluXor(RP, PC);
                 break;
-            case 0b0001_100_000_111_000: //AND PC AX AX (PC & AX -> AX)
-                AX = aluAnd(PC, AX);
+            case 0b0001_100_000_111_000: //XOR PC AX AX (PC ^ AX -> AX)
+                AX = aluXor(PC, AX);
                 break;
-            case 0b0001_100_000_111_001: //AND PC BX AX (PC & BX -> AX)
-                AX = aluAnd(PC, BX);
+            case 0b0001_100_000_111_001: //XOR PC BX AX (PC ^ BX -> AX)
+                AX = aluXor(PC, BX);
                 break;
-            case 0b0001_100_000_111_010: //AND PC CX AX (PC & CX -> AX)
-                AX = aluAnd(PC, CX);
+            case 0b0001_100_000_111_010: //XOR PC CX AX (PC ^ CX -> AX)
+                AX = aluXor(PC, CX);
                 break;
-            case 0b0001_100_000_111_011: //AND PC DX AX (PC & DX -> AX)
-                AX = aluAnd(PC, DX);
+            case 0b0001_100_000_111_011: //XOR PC DX AX (PC ^ DX -> AX)
+                AX = aluXor(PC, DX);
                 break;
-            case 0b0001_100_000_111_100: //AND PC EX AX (PC & EX -> AX)
-                AX = aluAnd(PC, EX);
+            case 0b0001_100_000_111_100: //XOR PC EX AX (PC ^ EX -> AX)
+                AX = aluXor(PC, EX);
                 break;
-            case 0b0001_100_000_111_101: //AND PC SP AX (PC & SP -> AX)
-                AX = aluAnd(PC, SP);
+            case 0b0001_100_000_111_101: //XOR PC SP AX (PC ^ SP -> AX)
+                AX = aluXor(PC, SP);
                 break;
-            case 0b0001_100_000_111_110: //AND PC RP AX (PC & RP -> AX)
-                AX = aluAnd(PC, RP);
+            case 0b0001_100_000_111_110: //XOR PC RP AX (PC ^ RP -> AX)
+                AX = aluXor(PC, RP);
                 break;
-            case 0b0001_100_000_111_111: //AND PC PC AX (PC & PC -> AX)
-                AX = aluAnd(PC, PC);
+            case 0b0001_100_000_111_111: //XOR PC PC AX (PC ^ PC -> AX)
+                AX = aluXor(PC, PC);
                 break;
-            case 0b0001_100_001_111_000: //AND PC AX BX (PC & AX -> BX)
-                BX = aluAnd(PC, AX);
+            case 0b0001_100_001_111_000: //XOR PC AX BX (PC ^ AX -> BX)
+                BX = aluXor(PC, AX);
                 break;
-            case 0b0001_100_001_111_001: //AND PC BX BX (PC & BX -> BX)
-                BX = aluAnd(PC, BX);
+            case 0b0001_100_001_111_001: //XOR PC BX BX (PC ^ BX -> BX)
+                BX = aluXor(PC, BX);
                 break;
-            case 0b0001_100_001_111_010: //AND PC CX BX (PC & CX -> BX)
-                BX = aluAnd(PC, CX);
+            case 0b0001_100_001_111_010: //XOR PC CX BX (PC ^ CX -> BX)
+                BX = aluXor(PC, CX);
                 break;
-            case 0b0001_100_001_111_011: //AND PC DX BX (PC & DX -> BX)
-                BX = aluAnd(PC, DX);
+            case 0b0001_100_001_111_011: //XOR PC DX BX (PC ^ DX -> BX)
+                BX = aluXor(PC, DX);
                 break;
-            case 0b0001_100_001_111_100: //AND PC EX BX (PC & EX -> BX)
-                BX = aluAnd(PC, EX);
+            case 0b0001_100_001_111_100: //XOR PC EX BX (PC ^ EX -> BX)
+                BX = aluXor(PC, EX);
                 break;
-            case 0b0001_100_001_111_101: //AND PC SP BX (PC & SP -> BX)
-                BX = aluAnd(PC, SP);
+            case 0b0001_100_001_111_101: //XOR PC SP BX (PC ^ SP -> BX)
+                BX = aluXor(PC, SP);
                 break;
-            case 0b0001_100_001_111_110: //AND PC RP BX (PC & RP -> BX)
-                BX = aluAnd(PC, RP);
+            case 0b0001_100_001_111_110: //XOR PC RP BX (PC ^ RP -> BX)
+                BX = aluXor(PC, RP);
                 break;
-            case 0b0001_100_001_111_111: //AND PC PC BX (PC & PC -> BX)
-                BX = aluAnd(PC, PC);
+            case 0b0001_100_001_111_111: //XOR PC PC BX (PC ^ PC -> BX)
+                BX = aluXor(PC, PC);
                 break;
-            case 0b0001_100_010_111_000: //AND PC AX CX (PC & AX -> CX)
-                CX = aluAnd(PC, AX);
+            case 0b0001_100_010_111_000: //XOR PC AX CX (PC ^ AX -> CX)
+                CX = aluXor(PC, AX);
                 break;
-            case 0b0001_100_010_111_001: //AND PC BX CX (PC & BX -> CX)
-                CX = aluAnd(PC, BX);
+            case 0b0001_100_010_111_001: //XOR PC BX CX (PC ^ BX -> CX)
+                CX = aluXor(PC, BX);
                 break;
-            case 0b0001_100_010_111_010: //AND PC CX CX (PC & CX -> CX)
-                CX = aluAnd(PC, CX);
+            case 0b0001_100_010_111_010: //XOR PC CX CX (PC ^ CX -> CX)
+                CX = aluXor(PC, CX);
                 break;
-            case 0b0001_100_010_111_011: //AND PC DX CX (PC & DX -> CX)
-                CX = aluAnd(PC, DX);
+            case 0b0001_100_010_111_011: //XOR PC DX CX (PC ^ DX -> CX)
+                CX = aluXor(PC, DX);
                 break;
-            case 0b0001_100_010_111_100: //AND PC EX CX (PC & EX -> CX)
-                CX = aluAnd(PC, EX);
+            case 0b0001_100_010_111_100: //XOR PC EX CX (PC ^ EX -> CX)
+                CX = aluXor(PC, EX);
                 break;
-            case 0b0001_100_010_111_101: //AND PC SP CX (PC & SP -> CX)
-                CX = aluAnd(PC, SP);
+            case 0b0001_100_010_111_101: //XOR PC SP CX (PC ^ SP -> CX)
+                CX = aluXor(PC, SP);
                 break;
-            case 0b0001_100_010_111_110: //AND PC RP CX (PC & RP -> CX)
-                CX = aluAnd(PC, RP);
+            case 0b0001_100_010_111_110: //XOR PC RP CX (PC ^ RP -> CX)
+                CX = aluXor(PC, RP);
                 break;
-            case 0b0001_100_010_111_111: //AND PC PC CX (PC & PC -> CX)
-                CX = aluAnd(PC, PC);
+            case 0b0001_100_010_111_111: //XOR PC PC CX (PC ^ PC -> CX)
+                CX = aluXor(PC, PC);
                 break;
-            case 0b0001_100_011_111_000: //AND PC AX DX (PC & AX -> DX)
-                DX = aluAnd(PC, AX);
+            case 0b0001_100_011_111_000: //XOR PC AX DX (PC ^ AX -> DX)
+                DX = aluXor(PC, AX);
                 break;
-            case 0b0001_100_011_111_001: //AND PC BX DX (PC & BX -> DX)
-                DX = aluAnd(PC, BX);
+            case 0b0001_100_011_111_001: //XOR PC BX DX (PC ^ BX -> DX)
+                DX = aluXor(PC, BX);
                 break;
-            case 0b0001_100_011_111_010: //AND PC CX DX (PC & CX -> DX)
-                DX = aluAnd(PC, CX);
+            case 0b0001_100_011_111_010: //XOR PC CX DX (PC ^ CX -> DX)
+                DX = aluXor(PC, CX);
                 break;
-            case 0b0001_100_011_111_011: //AND PC DX DX (PC & DX -> DX)
-                DX = aluAnd(PC, DX);
+            case 0b0001_100_011_111_011: //XOR PC DX DX (PC ^ DX -> DX)
+                DX = aluXor(PC, DX);
                 break;
-            case 0b0001_100_011_111_100: //AND PC EX DX (PC & EX -> DX)
-                DX = aluAnd(PC, EX);
+            case 0b0001_100_011_111_100: //XOR PC EX DX (PC ^ EX -> DX)
+                DX = aluXor(PC, EX);
                 break;
-            case 0b0001_100_011_111_101: //AND PC SP DX (PC & SP -> DX)
-                DX = aluAnd(PC, SP);
+            case 0b0001_100_011_111_101: //XOR PC SP DX (PC ^ SP -> DX)
+                DX = aluXor(PC, SP);
                 break;
-            case 0b0001_100_011_111_110: //AND PC RP DX (PC & RP -> DX)
-                DX = aluAnd(PC, RP);
+            case 0b0001_100_011_111_110: //XOR PC RP DX (PC ^ RP -> DX)
+                DX = aluXor(PC, RP);
                 break;
-            case 0b0001_100_011_111_111: //AND PC PC DX (PC & PC -> DX)
-                DX = aluAnd(PC, PC);
+            case 0b0001_100_011_111_111: //XOR PC PC DX (PC ^ PC -> DX)
+                DX = aluXor(PC, PC);
                 break;
-            case 0b0001_100_100_111_000: //AND PC AX EX (PC & AX -> EX)
-                EX = aluAnd(PC, AX);
+            case 0b0001_100_100_111_000: //XOR PC AX EX (PC ^ AX -> EX)
+                EX = aluXor(PC, AX);
                 break;
-            case 0b0001_100_100_111_001: //AND PC EX SP (PC & BX -> SP)
-                EX = aluAnd(PC, BX);
+            case 0b0001_100_100_111_001: //XOR PC EX SP (PC ^ BX -> SP)
+                EX = aluXor(PC, BX);
                 break;
-            case 0b0001_100_100_111_010: //AND PC EX SP (PC & CX -> SP)
-                EX = aluAnd(PC, CX);
+            case 0b0001_100_100_111_010: //XOR PC EX SP (PC ^ CX -> SP)
+                EX = aluXor(PC, CX);
                 break;
-            case 0b0001_100_100_111_011: //AND PC EX SP (PC & DX -> SP)
-                EX = aluAnd(PC, DX);
+            case 0b0001_100_100_111_011: //XOR PC EX SP (PC ^ DX -> SP)
+                EX = aluXor(PC, DX);
                 break;
-            case 0b0001_100_100_111_100: //AND PC EX SP (PC & EX -> SP)
-                EX = aluAnd(PC, EX);
+            case 0b0001_100_100_111_100: //XOR PC EX SP (PC ^ EX -> SP)
+                EX = aluXor(PC, EX);
                 break;
-            case 0b0001_100_100_111_101: //AND PC EX SP (PC & SP -> SP)
-                EX = aluAnd(PC, SP);
+            case 0b0001_100_100_111_101: //XOR PC EX SP (PC ^ SP -> SP)
+                EX = aluXor(PC, SP);
                 break;
-            case 0b0001_100_100_111_110: //AND PC EX SP (PC & RP -> SP)
-                EX = aluAnd(PC, RP);
+            case 0b0001_100_100_111_110: //XOR PC EX SP (PC ^ RP -> SP)
+                EX = aluXor(PC, RP);
                 break;
-            case 0b0001_100_100_111_111: //AND PC EX SP (PC & PC -> SP)
-                EX = aluAnd(PC, PC);
+            case 0b0001_100_100_111_111: //XOR PC EX SP (PC ^ PC -> SP)
+                EX = aluXor(PC, PC);
                 break;
-            case 0b0001_100_101_111_000: //AND PC AX SP (PC & AX -> SP)
-                SP = aluAnd(PC, AX);
+            case 0b0001_100_101_111_000: //XOR PC AX SP (PC ^ AX -> SP)
+                SP = aluXor(PC, AX);
                 break;
-            case 0b0001_100_101_111_001: //AND PC BX SP (PC & BX -> SP)
-                SP = aluAnd(PC, BX);
+            case 0b0001_100_101_111_001: //XOR PC BX SP (PC ^ BX -> SP)
+                SP = aluXor(PC, BX);
                 break;
-            case 0b0001_100_101_111_010: //AND PC CX SP (PC & CX -> SP)
-                SP = aluAnd(PC, CX);
+            case 0b0001_100_101_111_010: //XOR PC CX SP (PC ^ CX -> SP)
+                SP = aluXor(PC, CX);
                 break;
-            case 0b0001_100_101_111_011: //AND PC DX SP (PC & DX -> SP)
-                SP = aluAnd(PC, DX);
+            case 0b0001_100_101_111_011: //XOR PC DX SP (PC ^ DX -> SP)
+                SP = aluXor(PC, DX);
                 break;
-            case 0b0001_100_101_111_100: //AND PC EX SP (PC & EX -> SP)
-                SP = aluAnd(PC, EX);
+            case 0b0001_100_101_111_100: //XOR PC EX SP (PC ^ EX -> SP)
+                SP = aluXor(PC, EX);
                 break;
-            case 0b0001_100_101_111_101: //AND PC SP SP (PC & SP -> SP)
-                SP = aluAnd(PC, SP);
+            case 0b0001_100_101_111_101: //XOR PC SP SP (PC ^ SP -> SP)
+                SP = aluXor(PC, SP);
                 break;
-            case 0b0001_100_101_111_110: //AND PC RP SP (PC & RP -> SP)
-                SP = aluAnd(PC, RP);
+            case 0b0001_100_101_111_110: //XOR PC RP SP (PC ^ RP -> SP)
+                SP = aluXor(PC, RP);
                 break;
-            case 0b0001_100_101_111_111: //AND PC PC SP (PC & PC -> SP)
-                SP = aluAnd(PC, PC);
+            case 0b0001_100_101_111_111: //XOR PC PC SP (PC ^ PC -> SP)
+                SP = aluXor(PC, PC);
                 break;
-            case 0b0001_100_110_111_000: //AND PC AX RP (PC & AX -> RP)
-                RP = aluAnd(PC, AX);
+            case 0b0001_100_110_111_000: //XOR PC AX RP (PC ^ AX -> RP)
+                RP = aluXor(PC, AX);
                 break;
-            case 0b0001_100_110_111_001: //AND PC BX RP (PC & BX -> RP)
-                RP = aluAnd(PC, BX);
+            case 0b0001_100_110_111_001: //XOR PC BX RP (PC ^ BX -> RP)
+                RP = aluXor(PC, BX);
                 break;
-            case 0b0001_100_110_111_010: //AND PC CX RP (PC & CX -> RP)
-                RP = aluAnd(PC, CX);
+            case 0b0001_100_110_111_010: //XOR PC CX RP (PC ^ CX -> RP)
+                RP = aluXor(PC, CX);
                 break;
-            case 0b0001_100_110_111_011: //AND PC DX RP (PC & DX -> RP)
-                RP = aluAnd(PC, DX);
+            case 0b0001_100_110_111_011: //XOR PC DX RP (PC ^ DX -> RP)
+                RP = aluXor(PC, DX);
                 break;
-            case 0b0001_100_110_111_100: //AND PC EX RP (PC & EX -> RP)
-                RP = aluAnd(PC, EX);
+            case 0b0001_100_110_111_100: //XOR PC EX RP (PC ^ EX -> RP)
+                RP = aluXor(PC, EX);
                 break;
-            case 0b0001_100_110_111_101: //AND PC SP RP (PC & SP -> RP)
-                RP = aluAnd(PC, SP);
+            case 0b0001_100_110_111_101: //XOR PC SP RP (PC ^ SP -> RP)
+                RP = aluXor(PC, SP);
                 break;
-            case 0b0001_100_110_111_110: //AND PC RP RP (PC & RP -> RP)
-                RP = aluAnd(PC, RP);
+            case 0b0001_100_110_111_110: //XOR PC RP RP (PC ^ RP -> RP)
+                RP = aluXor(PC, RP);
                 break;
-            case 0b0001_100_110_111_111: //AND PC PC RP (PC & PC -> RP)
-                RP = aluAnd(PC, PC);
+            case 0b0001_100_110_111_111: //XOR PC PC RP (PC ^ PC -> RP)
+                RP = aluXor(PC, PC);
                 break;
-            case 0b0001_100_111_111_000: //AND PC AX PC (PC & AX -> PC)
-                PC = aluAnd(PC, AX);
+            case 0b0001_100_111_111_000: //XOR PC AX PC (PC ^ AX -> PC)
+                PC = aluXor(PC, AX);
                 break;
-            case 0b0001_100_111_111_001: //AND PC BX PC (PC & BX -> PC)
-                PC = aluAnd(PC, BX);
+            case 0b0001_100_111_111_001: //XOR PC BX PC (PC ^ BX -> PC)
+                PC = aluXor(PC, BX);
                 break;
-            case 0b0001_100_111_111_010: //AND PC CX PC (PC & CX -> PC)
-                PC = aluAnd(PC, CX);
+            case 0b0001_100_111_111_010: //XOR PC CX PC (PC ^ CX -> PC)
+                PC = aluXor(PC, CX);
                 break;
-            case 0b0001_100_111_111_011: //AND PC DX PC (PC & DX -> PC)
-                PC = aluAnd(PC, DX);
+            case 0b0001_100_111_111_011: //XOR PC DX PC (PC ^ DX -> PC)
+                PC = aluXor(PC, DX);
                 break;
-            case 0b0001_100_111_111_100: //AND PC EX PC (PC & EX -> PC)
-                PC = aluAnd(PC, EX);
+            case 0b0001_100_111_111_100: //XOR PC EX PC (PC ^ EX -> PC)
+                PC = aluXor(PC, EX);
                 break;
-            case 0b0001_100_111_111_101: //AND PC SP PC (PC & SP -> PC)
-                PC = aluAnd(PC, SP);
+            case 0b0001_100_111_111_101: //XOR PC SP PC (PC ^ SP -> PC)
+                PC = aluXor(PC, SP);
                 break;
-            case 0b0001_100_111_111_110: //AND PC RP PC (PC & RP -> PC)
-                PC = aluAnd(PC, RP);
+            case 0b0001_100_111_111_110: //XOR PC RP PC (PC ^ RP -> PC)
+                PC = aluXor(PC, RP);
                 break;
-            case 0b0001_100_111_111_111: //AND PC PC PC (PC & PC -> PC)
-                PC = aluAnd(PC, PC);
+            case 0b0001_100_111_111_111: //XOR PC PC PC (PC ^ PC -> PC)
+                PC = aluXor(PC, PC);
                 break;
-
             default:
                 unknownInstruction(INST);
                 break;
+
         }
     }
+
 
     /*
      * OR: Bit-wise OR two registers together, storing into the destination register
@@ -7011,1552 +7012,1554 @@ public class RelayComputer {
     }
 
     /*
-     * XOR: Bit-wise XOR two registers together, storing into the destination register
+     * AND: Bit-wise AND two registers together, storing into the destination register
      */
-    protected void executeXORInstruction() {
+    protected void executeANDInstruction() {
         switch (INST) {
-            case 0b0001_110_000_000_000: //XOR AX AX AX (AX ^ AX -> AX)
-                AX = aluXor(AX, AX);
+            case 0b0001_110_000_000_000: //AND AX AX AX (AX & AX -> AX)
+                AX = aluAnd(AX, AX);
                 break;
-            case 0b0001_110_000_000_001: //XOR AX BX AX (AX ^ BX -> AX)
-                AX = aluXor(AX, BX);
+            case 0b0001_110_000_000_001: //AND AX BX AX (AX & BX -> AX)
+                AX = aluAnd(AX, BX);
                 break;
-            case 0b0001_110_000_000_010: //XOR AX CX AX (AX ^ CX -> AX)
-                AX = aluXor(AX, CX);
+            case 0b0001_110_000_000_010: //AND AX CX AX (AX & CX -> AX)
+                AX = aluAnd(AX, CX);
                 break;
-            case 0b0001_110_000_000_011: //XOR AX DX AX (AX ^ DX -> AX)
-                AX = aluXor(AX, DX);
+            case 0b0001_110_000_000_011: //AND AX DX AX (AX & DX -> AX)
+                AX = aluAnd(AX, DX);
                 break;
-            case 0b0001_110_000_000_100: //XOR AX EX AX (AX ^ EX -> AX)
-                AX = aluXor(AX, EX);
+            case 0b0001_110_000_000_100: //AND AX EX AX (AX & EX -> AX)
+                AX = aluAnd(AX, EX);
                 break;
-            case 0b0001_110_000_000_101: //XOR AX SP AX (AX ^ SP -> AX)
-                AX = aluXor(AX, SP);
+            case 0b0001_110_000_000_101: //AND AX SP AX (AX & SP -> AX)
+                AX = aluAnd(AX, SP);
                 break;
-            case 0b0001_110_000_000_110: //XOR AX RP AX (AX ^ RP -> AX)
-                AX = aluXor(AX, RP);
+            case 0b0001_110_000_000_110: //AND AX RP AX (AX & RP -> AX)
+                AX = aluAnd(AX, RP);
                 break;
-            case 0b0001_110_000_000_111: //XOR AX PC AX (AX ^ PC -> AX)
-                AX = aluXor(AX, PC);
+            case 0b0001_110_000_000_111: //AND AX PC AX (AX & PC -> AX)
+                AX = aluAnd(AX, PC);
                 break;
-            case 0b0001_110_001_000_000: //XOR AX AX BX (AX ^ AX -> BX)
-                BX = aluXor(AX, AX);
+            case 0b0001_110_001_000_000: //AND AX AX BX (AX & AX -> BX)
+                BX = aluAnd(AX, AX);
                 break;
-            case 0b0001_110_001_000_001: //XOR AX BX BX (AX ^ BX -> BX)
-                BX = aluXor(AX, BX);
+            case 0b0001_110_001_000_001: //AND AX BX BX (AX & BX -> BX)
+                BX = aluAnd(AX, BX);
                 break;
-            case 0b0001_110_001_000_010: //XOR AX CX BX (AX ^ CX -> BX)
-                BX = aluXor(AX, CX);
+            case 0b0001_110_001_000_010: //AND AX CX BX (AX & CX -> BX)
+                BX = aluAnd(AX, CX);
                 break;
-            case 0b0001_110_001_000_011: //XOR AX DX BX (AX ^ DX -> BX)
-                BX = aluXor(AX, DX);
+            case 0b0001_110_001_000_011: //AND AX DX BX (AX & DX -> BX)
+                BX = aluAnd(AX, DX);
                 break;
-            case 0b0001_110_001_000_100: //XOR AX EX BX (AX ^ EX -> BX)
-                BX = aluXor(AX, EX);
+            case 0b0001_110_001_000_100: //AND AX EX BX (AX & EX -> BX)
+                BX = aluAnd(AX, EX);
                 break;
-            case 0b0001_110_001_000_101: //XOR AX SP BX (AX ^ SP -> BX)
-                BX = aluXor(AX, SP);
+            case 0b0001_110_001_000_101: //AND AX SP BX (AX & SP -> BX)
+                BX = aluAnd(AX, SP);
                 break;
-            case 0b0001_110_001_000_110: //XOR AX RP BX (AX ^ RP -> BX)
-                BX = aluXor(AX, RP);
+            case 0b0001_110_001_000_110: //AND AX RP BX (AX & RP -> BX)
+                BX = aluAnd(AX, RP);
                 break;
-            case 0b0001_110_001_000_111: //XOR AX PC BX (AX ^ PC -> BX)
-                BX = aluXor(AX, PC);
+            case 0b0001_110_001_000_111: //AND AX PC BX (AX & PC -> BX)
+                BX = aluAnd(AX, PC);
                 break;
-            case 0b0001_110_010_000_000: //XOR AX AX CX (AX ^ AX -> CX)
-                CX = aluXor(AX, AX);
+            case 0b0001_110_010_000_000: //AND AX AX CX (AX & AX -> CX)
+                CX = aluAnd(AX, AX);
                 break;
-            case 0b0001_110_010_000_001: //XOR AX BX CX (AX ^ BX -> CX)
-                CX = aluXor(AX, BX);
+            case 0b0001_110_010_000_001: //AND AX BX CX (AX & BX -> CX)
+                CX = aluAnd(AX, BX);
                 break;
-            case 0b0001_110_010_000_010: //XOR AX CX CX (AX ^ CX -> CX)
-                CX = aluXor(AX, CX);
+            case 0b0001_110_010_000_010: //AND AX CX CX (AX & CX -> CX)
+                CX = aluAnd(AX, CX);
                 break;
-            case 0b0001_110_010_000_011: //XOR AX DX CX (AX ^ DX -> CX)
-                CX = aluXor(AX, DX);
+            case 0b0001_110_010_000_011: //AND AX DX CX (AX & DX -> CX)
+                CX = aluAnd(AX, DX);
                 break;
-            case 0b0001_110_010_000_100: //XOR AX EX CX (AX ^ EX -> CX)
-                CX = aluXor(AX, EX);
+            case 0b0001_110_010_000_100: //AND AX EX CX (AX & EX -> CX)
+                CX = aluAnd(AX, EX);
                 break;
-            case 0b0001_110_010_000_101: //XOR AX SP CX (AX ^ SP -> CX)
-                CX = aluXor(AX, SP);
+            case 0b0001_110_010_000_101: //AND AX SP CX (AX & SP -> CX)
+                CX = aluAnd(AX, SP);
                 break;
-            case 0b0001_110_010_000_110: //XOR AX RP CX (AX ^ RP -> CX)
-                CX = aluXor(AX, RP);
+            case 0b0001_110_010_000_110: //AND AX RP CX (AX & RP -> CX)
+                CX = aluAnd(AX, RP);
                 break;
-            case 0b0001_110_010_000_111: //XOR AX PC CX (AX ^ PC -> CX)
-                CX = aluXor(AX, PC);
+            case 0b0001_110_010_000_111: //AND AX PC CX (AX & PC -> CX)
+                CX = aluAnd(AX, PC);
                 break;
-            case 0b0001_110_011_000_000: //XOR AX AX DX (AX ^ AX -> DX)
-                DX = aluXor(AX, AX);
+            case 0b0001_110_011_000_000: //AND AX AX DX (AX & AX -> DX)
+                DX = aluAnd(AX, AX);
                 break;
-            case 0b0001_110_011_000_001: //XOR AX BX DX (AX ^ BX -> DX)
-                DX = aluXor(AX, BX);
+            case 0b0001_110_011_000_001: //AND AX BX DX (AX & BX -> DX)
+                DX = aluAnd(AX, BX);
                 break;
-            case 0b0001_110_011_000_010: //XOR AX CX DX (AX ^ CX -> DX)
-                DX = aluXor(AX, CX);
+            case 0b0001_110_011_000_010: //AND AX CX DX (AX & CX -> DX)
+                DX = aluAnd(AX, CX);
                 break;
-            case 0b0001_110_011_000_011: //XOR AX DX DX (AX ^ DX -> DX)
-                DX = aluXor(AX, DX);
+            case 0b0001_110_011_000_011: //AND AX DX DX (AX & DX -> DX)
+                DX = aluAnd(AX, DX);
                 break;
-            case 0b0001_110_011_000_100: //XOR AX EX DX (AX ^ EX -> DX)
-                DX = aluXor(AX, EX);
+            case 0b0001_110_011_000_100: //AND AX EX DX (AX & EX -> DX)
+                DX = aluAnd(AX, EX);
                 break;
-            case 0b0001_110_011_000_101: //XOR AX SP DX (AX ^ SP -> DX)
-                DX = aluXor(AX, SP);
+            case 0b0001_110_011_000_101: //AND AX SP DX (AX & SP -> DX)
+                DX = aluAnd(AX, SP);
                 break;
-            case 0b0001_110_011_000_110: //XOR AX RP DX (AX ^ RP -> DX)
-                DX = aluXor(AX, RP);
+            case 0b0001_110_011_000_110: //AND AX RP DX (AX & RP -> DX)
+                DX = aluAnd(AX, RP);
                 break;
-            case 0b0001_110_011_000_111: //XOR AX PC DX (AX ^ PC -> DX)
-                DX = aluXor(AX, PC);
+            case 0b0001_110_011_000_111: //AND AX PC DX (AX & PC -> DX)
+                DX = aluAnd(AX, PC);
                 break;
-            case 0b0001_110_100_000_000: //XOR AX AX EX (AX ^ AX -> EX)
-                EX = aluXor(AX, AX);
+            case 0b0001_110_100_000_000: //AND AX AX EX (AX & AX -> EX)
+                EX = aluAnd(AX, AX);
                 break;
-            case 0b0001_110_100_000_001: //XOR AX EX SP (AX ^ BX -EXSP)
-                EX = aluXor(AX, BX);
+            case 0b0001_110_100_000_001: //AND AX EX SP (AX & BX -EXSP)
+                EX = aluAnd(AX, BX);
                 break;
-            case 0b0001_110_100_000_010: //XOR AX EX SP (AX ^ CX -EXSP)
-                EX = aluXor(AX, CX);
+            case 0b0001_110_100_000_010: //AND AX EX SP (AX & CX -EXSP)
+                EX = aluAnd(AX, CX);
                 break;
-            case 0b0001_110_100_000_011: //XOR AX EX SP (AX ^ DX -EXSP)
-                EX = aluXor(AX, DX);
+            case 0b0001_110_100_000_011: //AND AX EX SP (AX & DX -EXSP)
+                EX = aluAnd(AX, DX);
                 break;
-            case 0b0001_110_100_000_100: //XOR AX EX SP (AX ^ EX -EXSP)
-                EX = aluXor(AX, EX);
+            case 0b0001_110_100_000_100: //AND AX EX SP (AX & EX -EXSP)
+                EX = aluAnd(AX, EX);
                 break;
-            case 0b0001_110_100_000_101: //XOR AX EX SP (AX ^ SP -EXSP)
-                EX = aluXor(AX, SP);
+            case 0b0001_110_100_000_101: //AND AX EX SP (AX & SP -EXSP)
+                EX = aluAnd(AX, SP);
                 break;
-            case 0b0001_110_100_000_110: //XOR AX EX SP (AX ^ RP -EXSP)
-                EX = aluXor(AX, RP);
+            case 0b0001_110_100_000_110: //AND AX EX SP (AX & RP -EXSP)
+                EX = aluAnd(AX, RP);
                 break;
-            case 0b0001_110_100_000_111: //XOR AX EX SP (AX ^ PC -EXSP)
-                EX = aluXor(AX, PC);
+            case 0b0001_110_100_000_111: //AND AX EX SP (AX & PC -EXSP)
+                EX = aluAnd(AX, PC);
                 break;
-            case 0b0001_110_101_000_000: //XOR AX AX SP (AX ^ AX -> SP)
-                SP = aluXor(AX, AX);
+            case 0b0001_110_101_000_000: //AND AX AX SP (AX & AX -> SP)
+                SP = aluAnd(AX, AX);
                 break;
-            case 0b0001_110_101_000_001: //XOR AX BX SP (AX ^ BX -> SP)
-                SP = aluXor(AX, BX);
+            case 0b0001_110_101_000_001: //AND AX BX SP (AX & BX -> SP)
+                SP = aluAnd(AX, BX);
                 break;
-            case 0b0001_110_101_000_010: //XOR AX CX SP (AX ^ CX -> SP)
-                SP = aluXor(AX, CX);
+            case 0b0001_110_101_000_010: //AND AX CX SP (AX & CX -> SP)
+                SP = aluAnd(AX, CX);
                 break;
-            case 0b0001_110_101_000_011: //XOR AX DX SP (AX ^ DX -> SP)
-                SP = aluXor(AX, DX);
+            case 0b0001_110_101_000_011: //AND AX DX SP (AX & DX -> SP)
+                SP = aluAnd(AX, DX);
                 break;
-            case 0b0001_110_101_000_100: //XOR AX EX SP (AX ^ EX -> SP)
-                SP = aluXor(AX, EX);
+            case 0b0001_110_101_000_100: //AND AX EX SP (AX & EX -> SP)
+                SP = aluAnd(AX, EX);
                 break;
-            case 0b0001_110_101_000_101: //XOR AX SP SP (AX ^ SP -> SP)
-                SP = aluXor(AX, SP);
+            case 0b0001_110_101_000_101: //AND AX SP SP (AX & SP -> SP)
+                SP = aluAnd(AX, SP);
                 break;
-            case 0b0001_110_101_000_110: //XOR AX RP SP (AX ^ RP -> SP)
-                SP = aluXor(AX, RP);
+            case 0b0001_110_101_000_110: //AND AX RP SP (AX & RP -> SP)
+                SP = aluAnd(AX, RP);
                 break;
-            case 0b0001_110_101_000_111: //XOR AX PC SP (AX ^ PC -> SP)
-                SP = aluXor(AX, PC);
+            case 0b0001_110_101_000_111: //AND AX PC SP (AX & PC -> SP)
+                SP = aluAnd(AX, PC);
                 break;
-            case 0b0001_110_110_000_000: //XOR AX AX RP (AX ^ AX -> RP)
-                RP = aluXor(AX, AX);
+            case 0b0001_110_110_000_000: //AND AX AX RP (AX & AX -> RP)
+                RP = aluAnd(AX, AX);
                 break;
-            case 0b0001_110_110_000_001: //XOR AX BX RP (AX ^ BX -> RP)
-                RP = aluXor(AX, BX);
+            case 0b0001_110_110_000_001: //AND AX BX RP (AX & BX -> RP)
+                RP = aluAnd(AX, BX);
                 break;
-            case 0b0001_110_110_000_010: //XOR AX CX RP (AX ^ CX -> RP)
-                RP = aluXor(AX, CX);
+            case 0b0001_110_110_000_010: //AND AX CX RP (AX & CX -> RP)
+                RP = aluAnd(AX, CX);
                 break;
-            case 0b0001_110_110_000_011: //XOR AX DX RP (AX ^ DX -> RP)
-                RP = aluXor(AX, DX);
+            case 0b0001_110_110_000_011: //AND AX DX RP (AX & DX -> RP)
+                RP = aluAnd(AX, DX);
                 break;
-            case 0b0001_110_110_000_100: //XOR AX EX RP (AX ^ EX -> RP)
-                RP = aluXor(AX, EX);
+            case 0b0001_110_110_000_100: //AND AX EX RP (AX & EX -> RP)
+                RP = aluAnd(AX, EX);
                 break;
-            case 0b0001_110_110_000_101: //XOR AX SP RP (AX ^ SP -> RP)
-                RP = aluXor(AX, SP);
+            case 0b0001_110_110_000_101: //AND AX SP RP (AX & SP -> RP)
+                RP = aluAnd(AX, SP);
                 break;
-            case 0b0001_110_110_000_110: //XOR AX RP RP (AX ^ RP -> RP)
-                RP = aluXor(AX, RP);
+            case 0b0001_110_110_000_110: //AND AX RP RP (AX & RP -> RP)
+                RP = aluAnd(AX, RP);
                 break;
-            case 0b0001_110_110_000_111: //XOR AX PC RP (AX ^ PC -> RP)
-                RP = aluXor(AX, PC);
+            case 0b0001_110_110_000_111: //AND AX PC RP (AX & PC -> RP)
+                RP = aluAnd(AX, PC);
                 break;
-            case 0b0001_110_111_000_000: //XOR AX AX PC (AX ^ AX -> PC)
-                PC = aluXor(AX, AX);
+            case 0b0001_110_111_000_000: //AND AX AX PC (AX & AX -> PC)
+                PC = aluAnd(AX, AX);
                 break;
-            case 0b0001_110_111_000_001: //XOR AX BX PC (AX ^ BX -> PC)
-                PC = aluXor(AX, BX);
+            case 0b0001_110_111_000_001: //AND AX BX PC (AX & BX -> PC)
+                PC = aluAnd(AX, BX);
                 break;
-            case 0b0001_110_111_000_010: //XOR AX CX PC (AX ^ CX -> PC)
-                PC = aluXor(AX, CX);
+            case 0b0001_110_111_000_010: //AND AX CX PC (AX & CX -> PC)
+                PC = aluAnd(AX, CX);
                 break;
-            case 0b0001_110_111_000_011: //XOR AX DX PC (AX ^ DX -> PC)
-                PC = aluXor(AX, DX);
+            case 0b0001_110_111_000_011: //AND AX DX PC (AX & DX -> PC)
+                PC = aluAnd(AX, DX);
                 break;
-            case 0b0001_110_111_000_100: //XOR AX EX PC (AX ^ EX -> PC)
-                PC = aluXor(AX, EX);
+            case 0b0001_110_111_000_100: //AND AX EX PC (AX & EX -> PC)
+                PC = aluAnd(AX, EX);
                 break;
-            case 0b0001_110_111_000_101: //XOR AX SP PC (AX ^ SP -> PC)
-                PC = aluXor(AX, SP);
+            case 0b0001_110_111_000_101: //AND AX SP PC (AX & SP -> PC)
+                PC = aluAnd(AX, SP);
                 break;
-            case 0b0001_110_111_000_110: //XOR AX RP PC (AX ^ RP -> PC)
-                PC = aluXor(AX, RP);
+            case 0b0001_110_111_000_110: //AND AX RP PC (AX & RP -> PC)
+                PC = aluAnd(AX, RP);
                 break;
-            case 0b0001_110_111_000_111: //XOR AX PC PC (AX ^ PC -> PC)
-                PC = aluXor(AX, PC);
+            case 0b0001_110_111_000_111: //AND AX PC PC (AX & PC -> PC)
+                PC = aluAnd(AX, PC);
                 break;
-            case 0b0001_110_000_001_000: //XOR BX AX AX (BX ^ AX -> AX)
-                AX = aluXor(BX, AX);
+            case 0b0001_110_000_001_000: //AND BX AX AX (BX & AX -> AX)
+                AX = aluAnd(BX, AX);
                 break;
-            case 0b0001_110_000_001_001: //XOR BX BX AX (BX ^ BX -> AX)
-                AX = aluXor(BX, BX);
+            case 0b0001_110_000_001_001: //AND BX BX AX (BX & BX -> AX)
+                AX = aluAnd(BX, BX);
                 break;
-            case 0b0001_110_000_001_010: //XOR BX CX AX (BX ^ CX -> AX)
-                AX = aluXor(BX, CX);
+            case 0b0001_110_000_001_010: //AND BX CX AX (BX & CX -> AX)
+                AX = aluAnd(BX, CX);
                 break;
-            case 0b0001_110_000_001_011: //XOR BX DX AX (BX ^ DX -> AX)
-                AX = aluXor(BX, DX);
+            case 0b0001_110_000_001_011: //AND BX DX AX (BX & DX -> AX)
+                AX = aluAnd(BX, DX);
                 break;
-            case 0b0001_110_000_001_100: //XOR BX EX AX (BX ^ EX -> AX)
-                AX = aluXor(BX, EX);
+            case 0b0001_110_000_001_100: //AND BX EX AX (BX & EX -> AX)
+                AX = aluAnd(BX, EX);
                 break;
-            case 0b0001_110_000_001_101: //XOR BX SP AX (BX ^ SP -> AX)
-                AX = aluXor(BX, SP);
+            case 0b0001_110_000_001_101: //AND BX SP AX (BX & SP -> AX)
+                AX = aluAnd(BX, SP);
                 break;
-            case 0b0001_110_000_001_110: //XOR BX RP AX (BX ^ RP -> AX)
-                AX = aluXor(BX, RP);
+            case 0b0001_110_000_001_110: //AND BX RP AX (BX & RP -> AX)
+                AX = aluAnd(BX, RP);
                 break;
-            case 0b0001_110_000_001_111: //XOR BX PC AX (BX ^ PC -> AX)
-                AX = aluXor(BX, PC);
+            case 0b0001_110_000_001_111: //AND BX PC AX (BX & PC -> AX)
+                AX = aluAnd(BX, PC);
                 break;
-            case 0b0001_110_001_001_000: //XOR BX AX BX (BX ^ AX -> BX)
-                BX = aluXor(BX, AX);
+            case 0b0001_110_001_001_000: //AND BX AX BX (BX & AX -> BX)
+                BX = aluAnd(BX, AX);
                 break;
-            case 0b0001_110_001_001_001: //XOR BX BX BX (BX ^ BX -> BX)
-                BX = aluXor(BX, BX);
+            case 0b0001_110_001_001_001: //AND BX BX BX (BX & BX -> BX)
+                BX = aluAnd(BX, BX);
                 break;
-            case 0b0001_110_001_001_010: //XOR BX CX BX (BX ^ CX -> BX)
-                BX = aluXor(BX, CX);
+            case 0b0001_110_001_001_010: //AND BX CX BX (BX & CX -> BX)
+                BX = aluAnd(BX, CX);
                 break;
-            case 0b0001_110_001_001_011: //XOR BX DX BX (BX ^ DX -> BX)
-                BX = aluXor(BX, DX);
+            case 0b0001_110_001_001_011: //AND BX DX BX (BX & DX -> BX)
+                BX = aluAnd(BX, DX);
                 break;
-            case 0b0001_110_001_001_100: //XOR BX EX BX (BX ^ EX -> BX)
-                BX = aluXor(BX, EX);
+            case 0b0001_110_001_001_100: //AND BX EX BX (BX & EX -> BX)
+                BX = aluAnd(BX, EX);
                 break;
-            case 0b0001_110_001_001_101: //XOR BX SP BX (BX ^ SP -> BX)
-                BX = aluXor(BX, SP);
+            case 0b0001_110_001_001_101: //AND BX SP BX (BX & SP -> BX)
+                BX = aluAnd(BX, SP);
                 break;
-            case 0b0001_110_001_001_110: //XOR BX RP BX (BX ^ RP -> BX)
-                BX = aluXor(BX, RP);
+            case 0b0001_110_001_001_110: //AND BX RP BX (BX & RP -> BX)
+                BX = aluAnd(BX, RP);
                 break;
-            case 0b0001_110_001_001_111: //XOR BX PC BX (BX ^ PC -> BX)
-                BX = aluXor(BX, PC);
+            case 0b0001_110_001_001_111: //AND BX PC BX (BX & PC -> BX)
+                BX = aluAnd(BX, PC);
                 break;
-            case 0b0001_110_010_001_000: //XOR BX AX CX (BX ^ AX -> CX)
-                CX = aluXor(BX, AX);
+            case 0b0001_110_010_001_000: //AND BX AX CX (BX & AX -> CX)
+                CX = aluAnd(BX, AX);
                 break;
-            case 0b0001_110_010_001_001: //XOR BX BX CX (BX ^ BX -> CX)
-                CX = aluXor(BX, BX);
+            case 0b0001_110_010_001_001: //AND BX BX CX (BX & BX -> CX)
+                CX = aluAnd(BX, BX);
                 break;
-            case 0b0001_110_010_001_010: //XOR BX CX CX (BX ^ CX -> CX)
-                CX = aluXor(BX, CX);
+            case 0b0001_110_010_001_010: //AND BX CX CX (BX & CX -> CX)
+                CX = aluAnd(BX, CX);
                 break;
-            case 0b0001_110_010_001_011: //XOR BX DX CX (BX ^ DX -> CX)
-                CX = aluXor(BX, DX);
+            case 0b0001_110_010_001_011: //AND BX DX CX (BX & DX -> CX)
+                CX = aluAnd(BX, DX);
                 break;
-            case 0b0001_110_010_001_100: //XOR BX EX CX (BX ^ EX -> CX)
-                CX = aluXor(BX, EX);
+            case 0b0001_110_010_001_100: //AND BX EX CX (BX & EX -> CX)
+                CX = aluAnd(BX, EX);
                 break;
-            case 0b0001_110_010_001_101: //XOR BX SP CX (BX ^ SP -> CX)
-                CX = aluXor(BX, SP);
+            case 0b0001_110_010_001_101: //AND BX SP CX (BX & SP -> CX)
+                CX = aluAnd(BX, SP);
                 break;
-            case 0b0001_110_010_001_110: //XOR BX RP CX (BX ^ RP -> CX)
-                CX = aluXor(BX, RP);
+            case 0b0001_110_010_001_110: //AND BX RP CX (BX & RP -> CX)
+                CX = aluAnd(BX, RP);
                 break;
-            case 0b0001_110_010_001_111: //XOR BX PC CX (BX ^ PC -> CX)
-                CX = aluXor(BX, PC);
+            case 0b0001_110_010_001_111: //AND BX PC CX (BX & PC -> CX)
+                CX = aluAnd(BX, PC);
                 break;
-            case 0b0001_110_011_001_000: //XOR BX AX DX (BX ^ AX -> DX)
-                DX = aluXor(BX, AX);
+            case 0b0001_110_011_001_000: //AND BX AX DX (BX & AX -> DX)
+                DX = aluAnd(BX, AX);
                 break;
-            case 0b0001_110_011_001_001: //XOR BX BX DX (BX ^ BX -> DX)
-                DX = aluXor(BX, BX);
+            case 0b0001_110_011_001_001: //AND BX BX DX (BX & BX -> DX)
+                DX = aluAnd(BX, BX);
                 break;
-            case 0b0001_110_011_001_010: //XOR BX CX DX (BX ^ CX -> DX)
-                DX = aluXor(BX, CX);
+            case 0b0001_110_011_001_010: //AND BX CX DX (BX & CX -> DX)
+                DX = aluAnd(BX, CX);
                 break;
-            case 0b0001_110_011_001_011: //XOR BX DX DX (BX ^ DX -> DX)
-                DX = aluXor(BX, DX);
+            case 0b0001_110_011_001_011: //AND BX DX DX (BX & DX -> DX)
+                DX = aluAnd(BX, DX);
                 break;
-            case 0b0001_110_011_001_100: //XOR BX EX DX (BX ^ EX -> DX)
-                DX = aluXor(BX, EX);
+            case 0b0001_110_011_001_100: //AND BX EX DX (BX & EX -> DX)
+                DX = aluAnd(BX, EX);
                 break;
-            case 0b0001_110_011_001_101: //XOR BX SP DX (BX ^ SP -> DX)
-                DX = aluXor(BX, SP);
+            case 0b0001_110_011_001_101: //AND BX SP DX (BX & SP -> DX)
+                DX = aluAnd(BX, SP);
                 break;
-            case 0b0001_110_011_001_110: //XOR BX RP DX (BX ^ RP -> DX)
-                DX = aluXor(BX, RP);
+            case 0b0001_110_011_001_110: //AND BX RP DX (BX & RP -> DX)
+                DX = aluAnd(BX, RP);
                 break;
-            case 0b0001_110_011_001_111: //XOR BX PC DX (BX ^ PC -> DX)
-                DX = aluXor(BX, PC);
+            case 0b0001_110_011_001_111: //AND BX PC DX (BX & PC -> DX)
+                DX = aluAnd(BX, PC);
                 break;
-            case 0b0001_110_100_001_000: //XOR BX AX EX (BX ^ AX -> EX)
-                EX = aluXor(BX, AX);
+            case 0b0001_110_100_001_000: //AND BX AX EX (BX & AX -> EX)
+                EX = aluAnd(BX, AX);
                 break;
-            case 0b0001_110_100_001_001: //XOR BX EX SP (BX ^ BX -> SP)
-                EX = aluXor(BX, BX);
+            case 0b0001_110_100_001_001: //AND BX EX SP (BX & BX -> SP)
+                EX = aluAnd(BX, BX);
                 break;
-            case 0b0001_110_100_001_010: //XOR BX EX SP (BX ^ CX -> SP)
-                EX = aluXor(BX, CX);
+            case 0b0001_110_100_001_010: //AND BX EX SP (BX & CX -> SP)
+                EX = aluAnd(BX, CX);
                 break;
-            case 0b0001_110_100_001_011: //XOR BX EX SP (BX ^ DX -> SP)
-                EX = aluXor(BX, DX);
+            case 0b0001_110_100_001_011: //AND BX EX SP (BX & DX -> SP)
+                EX = aluAnd(BX, DX);
                 break;
-            case 0b0001_110_100_001_100: //XOR BX EX SP (BX ^ EX -> SP)
-                EX = aluXor(BX, EX);
+            case 0b0001_110_100_001_100: //AND BX EX SP (BX & EX -> SP)
+                EX = aluAnd(BX, EX);
                 break;
-            case 0b0001_110_100_001_101: //XOR BX EX SP (BX ^ SP -> SP)
-                EX = aluXor(BX, SP);
+            case 0b0001_110_100_001_101: //AND BX EX SP (BX & SP -> SP)
+                EX = aluAnd(BX, SP);
                 break;
-            case 0b0001_110_100_001_110: //XOR BX EX SP (BX ^ RP -> SP)
-                EX = aluXor(BX, RP);
+            case 0b0001_110_100_001_110: //AND BX EX SP (BX & RP -> SP)
+                EX = aluAnd(BX, RP);
                 break;
-            case 0b0001_110_100_001_111: //XOR BX EX SP (BX ^ PC -> SP)
-                EX = aluXor(BX, PC);
+            case 0b0001_110_100_001_111: //AND BX EX SP (BX & PC -> SP)
+                EX = aluAnd(BX, PC);
                 break;
-            case 0b0001_110_101_001_000: //XOR BX AX SP (BX ^ AX -> SP)
-                SP = aluXor(BX, AX);
+            case 0b0001_110_101_001_000: //AND BX AX SP (BX & AX -> SP)
+                SP = aluAnd(BX, AX);
                 break;
-            case 0b0001_110_101_001_001: //XOR BX BX SP (BX ^ BX -> SP)
-                SP = aluXor(BX, BX);
+            case 0b0001_110_101_001_001: //AND BX BX SP (BX & BX -> SP)
+                SP = aluAnd(BX, BX);
                 break;
-            case 0b0001_110_101_001_010: //XOR BX CX SP (BX ^ CX -> SP)
-                SP = aluXor(BX, CX);
+            case 0b0001_110_101_001_010: //AND BX CX SP (BX & CX -> SP)
+                SP = aluAnd(BX, CX);
                 break;
-            case 0b0001_110_101_001_011: //XOR BX DX SP (BX ^ DX -> SP)
-                SP = aluXor(BX, DX);
+            case 0b0001_110_101_001_011: //AND BX DX SP (BX & DX -> SP)
+                SP = aluAnd(BX, DX);
                 break;
-            case 0b0001_110_101_001_100: //XOR BX EX SP (BX ^ EX -> SP)
-                SP = aluXor(BX, EX);
+            case 0b0001_110_101_001_100: //AND BX EX SP (BX & EX -> SP)
+                SP = aluAnd(BX, EX);
                 break;
-            case 0b0001_110_101_001_101: //XOR BX SP SP (BX ^ SP -> SP)
-                SP = aluXor(BX, SP);
+            case 0b0001_110_101_001_101: //AND BX SP SP (BX & SP -> SP)
+                SP = aluAnd(BX, SP);
                 break;
-            case 0b0001_110_101_001_110: //XOR BX RP SP (BX ^ RP -> SP)
-                SP = aluXor(BX, RP);
+            case 0b0001_110_101_001_110: //AND BX RP SP (BX & RP -> SP)
+                SP = aluAnd(BX, RP);
                 break;
-            case 0b0001_110_101_001_111: //XOR BX PC SP (BX ^ PC -> SP)
-                SP = aluXor(BX, PC);
+            case 0b0001_110_101_001_111: //AND BX PC SP (BX & PC -> SP)
+                SP = aluAnd(BX, PC);
                 break;
-            case 0b0001_110_110_001_000: //XOR BX AX RP (BX ^ AX -> RP)
-                RP = aluXor(BX, AX);
+            case 0b0001_110_110_001_000: //AND BX AX RP (BX & AX -> RP)
+                RP = aluAnd(BX, AX);
                 break;
-            case 0b0001_110_110_001_001: //XOR BX BX RP (BX ^ BX -> RP)
-                RP = aluXor(BX, BX);
+            case 0b0001_110_110_001_001: //AND BX BX RP (BX & BX -> RP)
+                RP = aluAnd(BX, BX);
                 break;
-            case 0b0001_110_110_001_010: //XOR BX CX RP (BX ^ CX -> RP)
-                RP = aluXor(BX, CX);
+            case 0b0001_110_110_001_010: //AND BX CX RP (BX & CX -> RP)
+                RP = aluAnd(BX, CX);
                 break;
-            case 0b0001_110_110_001_011: //XOR BX DX RP (BX ^ DX -> RP)
-                RP = aluXor(BX, DX);
+            case 0b0001_110_110_001_011: //AND BX DX RP (BX & DX -> RP)
+                RP = aluAnd(BX, DX);
                 break;
-            case 0b0001_110_110_001_100: //XOR BX EX RP (BX ^ EX -> RP)
-                RP = aluXor(BX, EX);
+            case 0b0001_110_110_001_100: //AND BX EX RP (BX & EX -> RP)
+                RP = aluAnd(BX, EX);
                 break;
-            case 0b0001_110_110_001_101: //XOR BX SP RP (BX ^ SP -> RP)
-                RP = aluXor(BX, SP);
+            case 0b0001_110_110_001_101: //AND BX SP RP (BX & SP -> RP)
+                RP = aluAnd(BX, SP);
                 break;
-            case 0b0001_110_110_001_110: //XOR BX RP RP (BX ^ RP -> RP)
-                RP = aluXor(BX, RP);
+            case 0b0001_110_110_001_110: //AND BX RP RP (BX & RP -> RP)
+                RP = aluAnd(BX, RP);
                 break;
-            case 0b0001_110_110_001_111: //XOR BX PC RP (BX ^ PC -> RP)
-                RP = aluXor(BX, PC);
+            case 0b0001_110_110_001_111: //AND BX PC RP (BX & PC -> RP)
+                RP = aluAnd(BX, PC);
                 break;
-            case 0b0001_110_111_001_000: //XOR BX AX PC (BX ^ AX -> PC)
-                PC = aluXor(BX, AX);
+            case 0b0001_110_111_001_000: //AND BX AX PC (BX & AX -> PC)
+                PC = aluAnd(BX, AX);
                 break;
-            case 0b0001_110_111_001_001: //XOR BX BX PC (BX ^ BX -> PC)
-                PC = aluXor(BX, BX);
+            case 0b0001_110_111_001_001: //AND BX BX PC (BX & BX -> PC)
+                PC = aluAnd(BX, BX);
                 break;
-            case 0b0001_110_111_001_010: //XOR BX CX PC (BX ^ CX -> PC)
-                PC = aluXor(BX, CX);
+            case 0b0001_110_111_001_010: //AND BX CX PC (BX & CX -> PC)
+                PC = aluAnd(BX, CX);
                 break;
-            case 0b0001_110_111_001_011: //XOR BX DX PC (BX ^ DX -> PC)
-                PC = aluXor(BX, DX);
+            case 0b0001_110_111_001_011: //AND BX DX PC (BX & DX -> PC)
+                PC = aluAnd(BX, DX);
                 break;
-            case 0b0001_110_111_001_100: //XOR BX EX PC (BX ^ EX -> PC)
-                PC = aluXor(BX, EX);
+            case 0b0001_110_111_001_100: //AND BX EX PC (BX & EX -> PC)
+                PC = aluAnd(BX, EX);
                 break;
-            case 0b0001_110_111_001_101: //XOR BX SP PC (BX ^ SP -> PC)
-                PC = aluXor(BX, SP);
+            case 0b0001_110_111_001_101: //AND BX SP PC (BX & SP -> PC)
+                PC = aluAnd(BX, SP);
                 break;
-            case 0b0001_110_111_001_110: //XOR BX RP PC (BX ^ RP -> PC)
-                PC = aluXor(BX, RP);
+            case 0b0001_110_111_001_110: //AND BX RP PC (BX & RP -> PC)
+                PC = aluAnd(BX, RP);
                 break;
-            case 0b0001_110_111_001_111: //XOR BX PC PC (BX ^ PC -> PC)
-                PC = aluXor(BX, PC);
+            case 0b0001_110_111_001_111: //AND BX PC PC (BX & PC -> PC)
+                PC = aluAnd(BX, PC);
                 break;
-            case 0b0001_110_000_010_000: //XOR CX AX AX (CX ^ AX -> AX)
-                AX = aluXor(CX, AX);
+            case 0b0001_110_000_010_000: //AND CX AX AX (CX & AX -> AX)
+                AX = aluAnd(CX, AX);
                 break;
-            case 0b0001_110_000_010_001: //XOR CX BX AX (CX ^ BX -> AX)
-                AX = aluXor(CX, BX);
+            case 0b0001_110_000_010_001: //AND CX BX AX (CX & BX -> AX)
+                AX = aluAnd(CX, BX);
                 break;
-            case 0b0001_110_000_010_010: //XOR CX CX AX (CX ^ CX -> AX)
-                AX = aluXor(CX, CX);
+            case 0b0001_110_000_010_010: //AND CX CX AX (CX & CX -> AX)
+                AX = aluAnd(CX, CX);
                 break;
-            case 0b0001_110_000_010_011: //XOR CX DX AX (CX ^ DX -> AX)
-                AX = aluXor(CX, DX);
+            case 0b0001_110_000_010_011: //AND CX DX AX (CX & DX -> AX)
+                AX = aluAnd(CX, DX);
                 break;
-            case 0b0001_110_000_010_100: //XOR CX EX AX (CX ^ EX -> AX)
-                AX = aluXor(CX, EX);
+            case 0b0001_110_000_010_100: //AND CX EX AX (CX & EX -> AX)
+                AX = aluAnd(CX, EX);
                 break;
-            case 0b0001_110_000_010_101: //XOR CX SP AX (CX ^ SP -> AX)
-                AX = aluXor(CX, SP);
+            case 0b0001_110_000_010_101: //AND CX SP AX (CX & SP -> AX)
+                AX = aluAnd(CX, SP);
                 break;
-            case 0b0001_110_000_010_110: //XOR CX RP AX (CX ^ RP -> AX)
-                AX = aluXor(CX, RP);
+            case 0b0001_110_000_010_110: //AND CX RP AX (CX & RP -> AX)
+                AX = aluAnd(CX, RP);
                 break;
-            case 0b0001_110_000_010_111: //XOR CX PC AX (CX ^ PC -> AX)
-                AX = aluXor(CX, PC);
+            case 0b0001_110_000_010_111: //AND CX PC AX (CX & PC -> AX)
+                AX = aluAnd(CX, PC);
                 break;
-            case 0b0001_110_001_010_000: //XOR CX AX BX (CX ^ AX -> BX)
-                BX = aluXor(CX, AX);
+            case 0b0001_110_001_010_000: //AND CX AX BX (CX & AX -> BX)
+                BX = aluAnd(CX, AX);
                 break;
-            case 0b0001_110_001_010_001: //XOR CX BX BX (CX ^ BX -> BX)
-                BX = aluXor(CX, BX);
+            case 0b0001_110_001_010_001: //AND CX BX BX (CX & BX -> BX)
+                BX = aluAnd(CX, BX);
                 break;
-            case 0b0001_110_001_010_010: //XOR CX CX BX (CX ^ CX -> BX)
-                BX = aluXor(CX, CX);
+            case 0b0001_110_001_010_010: //AND CX CX BX (CX & CX -> BX)
+                BX = aluAnd(CX, CX);
                 break;
-            case 0b0001_110_001_010_011: //XOR CX DX BX (CX ^ DX -> BX)
-                BX = aluXor(CX, DX);
+            case 0b0001_110_001_010_011: //AND CX DX BX (CX & DX -> BX)
+                BX = aluAnd(CX, DX);
                 break;
-            case 0b0001_110_001_010_100: //XOR CX EX BX (CX ^ EX -> BX)
-                BX = aluXor(CX, EX);
+            case 0b0001_110_001_010_100: //AND CX EX BX (CX & EX -> BX)
+                BX = aluAnd(CX, EX);
                 break;
-            case 0b0001_110_001_010_101: //XOR CX SP BX (CX ^ SP -> BX)
-                BX = aluXor(CX, SP);
+            case 0b0001_110_001_010_101: //AND CX SP BX (CX & SP -> BX)
+                BX = aluAnd(CX, SP);
                 break;
-            case 0b0001_110_001_010_110: //XOR CX RP BX (CX ^ RP -> BX)
-                BX = aluXor(CX, RP);
+            case 0b0001_110_001_010_110: //AND CX RP BX (CX & RP -> BX)
+                BX = aluAnd(CX, RP);
                 break;
-            case 0b0001_110_001_010_111: //XOR CX PC BX (CX ^ PC -> BX)
-                BX = aluXor(CX, PC);
+            case 0b0001_110_001_010_111: //AND CX PC BX (CX & PC -> BX)
+                BX = aluAnd(CX, PC);
                 break;
-            case 0b0001_110_010_010_000: //XOR CX AX CX (CX ^ AX -> CX)
-                CX = aluXor(CX, AX);
+            case 0b0001_110_010_010_000: //AND CX AX CX (CX & AX -> CX)
+                CX = aluAnd(CX, AX);
                 break;
-            case 0b0001_110_010_010_001: //XOR CX BX CX (CX ^ BX -> CX)
-                CX = aluXor(CX, BX);
+            case 0b0001_110_010_010_001: //AND CX BX CX (CX & BX -> CX)
+                CX = aluAnd(CX, BX);
                 break;
-            case 0b0001_110_010_010_010: //XOR CX CX CX (CX ^ CX -> CX)
-                CX = aluXor(CX, CX);
+            case 0b0001_110_010_010_010: //AND CX CX CX (CX & CX -> CX)
+                CX = aluAnd(CX, CX);
                 break;
-            case 0b0001_110_010_010_011: //XOR CX DX CX (CX ^ DX -> CX)
-                CX = aluXor(CX, DX);
+            case 0b0001_110_010_010_011: //AND CX DX CX (CX & DX -> CX)
+                CX = aluAnd(CX, DX);
                 break;
-            case 0b0001_110_010_010_100: //XOR CX EX CX (CX ^ EX -> CX)
-                CX = aluXor(CX, EX);
+            case 0b0001_110_010_010_100: //AND CX EX CX (CX & EX -> CX)
+                CX = aluAnd(CX, EX);
                 break;
-            case 0b0001_110_010_010_101: //XOR CX SP CX (CX ^ SP -> CX)
-                CX = aluXor(CX, SP);
+            case 0b0001_110_010_010_101: //AND CX SP CX (CX & SP -> CX)
+                CX = aluAnd(CX, SP);
                 break;
-            case 0b0001_110_010_010_110: //XOR CX RP CX (CX ^ RP -> CX)
-                CX = aluXor(CX, RP);
+            case 0b0001_110_010_010_110: //AND CX RP CX (CX & RP -> CX)
+                CX = aluAnd(CX, RP);
                 break;
-            case 0b0001_110_010_010_111: //XOR CX PC CX (CX ^ PC -> CX)
-                CX = aluXor(CX, PC);
+            case 0b0001_110_010_010_111: //AND CX PC CX (CX & PC -> CX)
+                CX = aluAnd(CX, PC);
                 break;
-            case 0b0001_110_011_010_000: //XOR CX AX DX (CX ^ AX -> DX)
-                DX = aluXor(CX, AX);
+            case 0b0001_110_011_010_000: //AND CX AX DX (CX & AX -> DX)
+                DX = aluAnd(CX, AX);
                 break;
-            case 0b0001_110_011_010_001: //XOR CX BX DX (CX ^ BX -> DX)
-                DX = aluXor(CX, BX);
+            case 0b0001_110_011_010_001: //AND CX BX DX (CX & BX -> DX)
+                DX = aluAnd(CX, BX);
                 break;
-            case 0b0001_110_011_010_010: //XOR CX CX DX (CX ^ CX -> DX)
-                DX = aluXor(CX, CX);
+            case 0b0001_110_011_010_010: //AND CX CX DX (CX & CX -> DX)
+                DX = aluAnd(CX, CX);
                 break;
-            case 0b0001_110_011_010_011: //XOR CX DX DX (CX ^ DX -> DX)
-                DX = aluXor(CX, DX);
+            case 0b0001_110_011_010_011: //AND CX DX DX (CX & DX -> DX)
+                DX = aluAnd(CX, DX);
                 break;
-            case 0b0001_110_011_010_100: //XOR CX EX DX (CX ^ EX -> DX)
-                DX = aluXor(CX, EX);
+            case 0b0001_110_011_010_100: //AND CX EX DX (CX & EX -> DX)
+                DX = aluAnd(CX, EX);
                 break;
-            case 0b0001_110_011_010_101: //XOR CX SP DX (CX ^ SP -> DX)
-                DX = aluXor(CX, SP);
+            case 0b0001_110_011_010_101: //AND CX SP DX (CX & SP -> DX)
+                DX = aluAnd(CX, SP);
                 break;
-            case 0b0001_110_011_010_110: //XOR CX RP DX (CX ^ RP -> DX)
-                DX = aluXor(CX, RP);
+            case 0b0001_110_011_010_110: //AND CX RP DX (CX & RP -> DX)
+                DX = aluAnd(CX, RP);
                 break;
-            case 0b0001_110_011_010_111: //XOR CX PC DX (CX ^ PC -> DX)
-                DX = aluXor(CX, PC);
+            case 0b0001_110_011_010_111: //AND CX PC DX (CX & PC -> DX)
+                DX = aluAnd(CX, PC);
                 break;
-            case 0b0001_110_100_010_000: //XOR CX AX EX (CX ^ AX -> EX)
-                EX = aluXor(CX, AX);
+            case 0b0001_110_100_010_000: //AND CX AX EX (CX & AX -> EX)
+                EX = aluAnd(CX, AX);
                 break;
-            case 0b0001_110_100_010_001: //XOR CX EX SP (CX ^ BX -> SP)
-                EX = aluXor(CX, BX);
+            case 0b0001_110_100_010_001: //AND CX EX SP (CX & BX -> SP)
+                EX = aluAnd(CX, BX);
                 break;
-            case 0b0001_110_100_010_010: //XOR CX EX SP (CX ^ CX -> SP)
-                EX = aluXor(CX, CX);
+            case 0b0001_110_100_010_010: //AND CX EX SP (CX & CX -> SP)
+                EX = aluAnd(CX, CX);
                 break;
-            case 0b0001_110_100_010_011: //XOR CX EX SP (CX ^ DX -> SP)
-                EX = aluXor(CX, DX);
+            case 0b0001_110_100_010_011: //AND CX EX SP (CX & DX -> SP)
+                EX = aluAnd(CX, DX);
                 break;
-            case 0b0001_110_100_010_100: //XOR CX EX SP (CX ^ EX -> SP)
-                EX = aluXor(CX, EX);
+            case 0b0001_110_100_010_100: //AND CX EX SP (CX & EX -> SP)
+                EX = aluAnd(CX, EX);
                 break;
-            case 0b0001_110_100_010_101: //XOR CX EX SP (CX ^ SP -> SP)
-                EX = aluXor(CX, SP);
+            case 0b0001_110_100_010_101: //AND CX EX SP (CX & SP -> SP)
+                EX = aluAnd(CX, SP);
                 break;
-            case 0b0001_110_100_010_110: //XOR CX EX SP (CX ^ RP -> SP)
-                EX = aluXor(CX, RP);
+            case 0b0001_110_100_010_110: //AND CX EX SP (CX & RP -> SP)
+                EX = aluAnd(CX, RP);
                 break;
-            case 0b0001_110_100_010_111: //XOR CX EX SP (CX ^ PC -> SP)
-                EX = aluXor(CX, PC);
+            case 0b0001_110_100_010_111: //AND CX EX SP (CX & PC -> SP)
+                EX = aluAnd(CX, PC);
                 break;
-            case 0b0001_110_101_010_000: //XOR CX AX SP (CX ^ AX -> SP)
-                SP = aluXor(CX, AX);
+            case 0b0001_110_101_010_000: //AND CX AX SP (CX & AX -> SP)
+                SP = aluAnd(CX, AX);
                 break;
-            case 0b0001_110_101_010_001: //XOR CX BX SP (CX ^ BX -> SP)
-                SP = aluXor(CX, BX);
+            case 0b0001_110_101_010_001: //AND CX BX SP (CX & BX -> SP)
+                SP = aluAnd(CX, BX);
                 break;
-            case 0b0001_110_101_010_010: //XOR CX CX SP (CX ^ CX -> SP)
-                SP = aluXor(CX, CX);
+            case 0b0001_110_101_010_010: //AND CX CX SP (CX & CX -> SP)
+                SP = aluAnd(CX, CX);
                 break;
-            case 0b0001_110_101_010_011: //XOR CX DX SP (CX ^ DX -> SP)
-                SP = aluXor(CX, DX);
+            case 0b0001_110_101_010_011: //AND CX DX SP (CX & DX -> SP)
+                SP = aluAnd(CX, DX);
                 break;
-            case 0b0001_110_101_010_100: //XOR CX EX SP (CX ^ EX -> SP)
-                SP = aluXor(CX, EX);
+            case 0b0001_110_101_010_100: //AND CX EX SP (CX & EX -> SP)
+                SP = aluAnd(CX, EX);
                 break;
-            case 0b0001_110_101_010_101: //XOR CX SP SP (CX ^ SP -> SP)
-                SP = aluXor(CX, SP);
+            case 0b0001_110_101_010_101: //AND CX SP SP (CX & SP -> SP)
+                SP = aluAnd(CX, SP);
                 break;
-            case 0b0001_110_101_010_110: //XOR CX RP SP (CX ^ RP -> SP)
-                SP = aluXor(CX, RP);
+            case 0b0001_110_101_010_110: //AND CX RP SP (CX & RP -> SP)
+                SP = aluAnd(CX, RP);
                 break;
-            case 0b0001_110_101_010_111: //XOR CX PC SP (CX ^ PC -> SP)
-                SP = aluXor(CX, PC);
+            case 0b0001_110_101_010_111: //AND CX PC SP (CX & PC -> SP)
+                SP = aluAnd(CX, PC);
                 break;
-            case 0b0001_110_110_010_000: //XOR CX AX RP (CX ^ AX -> RP)
-                RP = aluXor(CX, AX);
+            case 0b0001_110_110_010_000: //AND CX AX RP (CX & AX -> RP)
+                RP = aluAnd(CX, AX);
                 break;
-            case 0b0001_110_110_010_001: //XOR CX BX RP (CX ^ BX -> RP)
-                RP = aluXor(CX, BX);
+            case 0b0001_110_110_010_001: //AND CX BX RP (CX & BX -> RP)
+                RP = aluAnd(CX, BX);
                 break;
-            case 0b0001_110_110_010_010: //XOR CX CX RP (CX ^ CX -> RP)
-                RP = aluXor(CX, CX);
+            case 0b0001_110_110_010_010: //AND CX CX RP (CX & CX -> RP)
+                RP = aluAnd(CX, CX);
                 break;
-            case 0b0001_110_110_010_011: //XOR CX DX RP (CX ^ DX -> RP)
-                RP = aluXor(CX, DX);
+            case 0b0001_110_110_010_011: //AND CX DX RP (CX & DX -> RP)
+                RP = aluAnd(CX, DX);
                 break;
-            case 0b0001_110_110_010_100: //XOR CX EX RP (CX ^ EX -> RP)
-                RP = aluXor(CX, EX);
+            case 0b0001_110_110_010_100: //AND CX EX RP (CX & EX -> RP)
+                RP = aluAnd(CX, EX);
                 break;
-            case 0b0001_110_110_010_101: //XOR CX SP RP (CX ^ SP -> RP)
-                RP = aluXor(CX, SP);
+            case 0b0001_110_110_010_101: //AND CX SP RP (CX & SP -> RP)
+                RP = aluAnd(CX, SP);
                 break;
-            case 0b0001_110_110_010_110: //XOR CX RP RP (CX ^ RP -> RP)
-                RP = aluXor(CX, RP);
+            case 0b0001_110_110_010_110: //AND CX RP RP (CX & RP -> RP)
+                RP = aluAnd(CX, RP);
                 break;
-            case 0b0001_110_110_010_111: //XOR CX PC RP (CX ^ PC -> RP)
-                RP = aluXor(CX, PC);
+            case 0b0001_110_110_010_111: //AND CX PC RP (CX & PC -> RP)
+                RP = aluAnd(CX, PC);
                 break;
-            case 0b0001_110_111_010_000: //XOR CX AX PC (CX ^ AX -> PC)
-                PC = aluXor(CX, AX);
+            case 0b0001_110_111_010_000: //AND CX AX PC (CX & AX -> PC)
+                PC = aluAnd(CX, AX);
                 break;
-            case 0b0001_110_111_010_001: //XOR CX BX PC (CX ^ BX -> PC)
-                PC = aluXor(CX, BX);
+            case 0b0001_110_111_010_001: //AND CX BX PC (CX & BX -> PC)
+                PC = aluAnd(CX, BX);
                 break;
-            case 0b0001_110_111_010_010: //XOR CX CX PC (CX ^ CX -> PC)
-                PC = aluXor(CX, CX);
+            case 0b0001_110_111_010_010: //AND CX CX PC (CX & CX -> PC)
+                PC = aluAnd(CX, CX);
                 break;
-            case 0b0001_110_111_010_011: //XOR CX DX PC (CX ^ DX -> PC)
-                PC = aluXor(CX, DX);
+            case 0b0001_110_111_010_011: //AND CX DX PC (CX & DX -> PC)
+                PC = aluAnd(CX, DX);
                 break;
-            case 0b0001_110_111_010_100: //XOR CX EX PC (CX ^ EX -> PC)
-                PC = aluXor(CX, EX);
+            case 0b0001_110_111_010_100: //AND CX EX PC (CX & EX -> PC)
+                PC = aluAnd(CX, EX);
                 break;
-            case 0b0001_110_111_010_101: //XOR CX SP PC (CX ^ SP -> PC)
-                PC = aluXor(CX, SP);
+            case 0b0001_110_111_010_101: //AND CX SP PC (CX & SP -> PC)
+                PC = aluAnd(CX, SP);
                 break;
-            case 0b0001_110_111_010_110: //XOR CX RP PC (CX ^ RP -> PC)
-                PC = aluXor(CX, RP);
+            case 0b0001_110_111_010_110: //AND CX RP PC (CX & RP -> PC)
+                PC = aluAnd(CX, RP);
                 break;
-            case 0b0001_110_111_010_111: //XOR CX PC PC (CX ^ PC -> PC)
-                PC = aluXor(CX, PC);
+            case 0b0001_110_111_010_111: //AND CX PC PC (CX & PC -> PC)
+                PC = aluAnd(CX, PC);
                 break;
-            case 0b0001_110_000_011_000: //XOR DX AX AX (DX ^ AX -> AX)
-                AX = aluXor(DX, AX);
+            case 0b0001_110_000_011_000: //AND DX AX AX (DX & AX -> AX)
+                AX = aluAnd(DX, AX);
                 break;
-            case 0b0001_110_000_011_001: //XOR DX BX AX (DX ^ BX -> AX)
-                AX = aluXor(DX, BX);
+            case 0b0001_110_000_011_001: //AND DX BX AX (DX & BX -> AX)
+                AX = aluAnd(DX, BX);
                 break;
-            case 0b0001_110_000_011_010: //XOR DX CX AX (DX ^ CX -> AX)
-                AX = aluXor(DX, CX);
+            case 0b0001_110_000_011_010: //AND DX CX AX (DX & CX -> AX)
+                AX = aluAnd(DX, CX);
                 break;
-            case 0b0001_110_000_011_011: //XOR DX DX AX (DX ^ DX -> AX)
-                AX = aluXor(DX, DX);
+            case 0b0001_110_000_011_011: //AND DX DX AX (DX & DX -> AX)
+                AX = aluAnd(DX, DX);
                 break;
-            case 0b0001_110_000_011_100: //XOR DX EX AX (DX ^ EX -> AX)
-                AX = aluXor(DX, EX);
+            case 0b0001_110_000_011_100: //AND DX EX AX (DX & EX -> AX)
+                AX = aluAnd(DX, EX);
                 break;
-            case 0b0001_110_000_011_101: //XOR DX SP AX (DX ^ SP -> AX)
-                AX = aluXor(DX, SP);
+            case 0b0001_110_000_011_101: //AND DX SP AX (DX & SP -> AX)
+                AX = aluAnd(DX, SP);
                 break;
-            case 0b0001_110_000_011_110: //XOR DX RP AX (DX ^ RP -> AX)
-                AX = aluXor(DX, RP);
+            case 0b0001_110_000_011_110: //AND DX RP AX (DX & RP -> AX)
+                AX = aluAnd(DX, RP);
                 break;
-            case 0b0001_110_000_011_111: //XOR DX PC AX (DX ^ PC -> AX)
-                AX = aluXor(DX, PC);
+            case 0b0001_110_000_011_111: //AND DX PC AX (DX & PC -> AX)
+                AX = aluAnd(DX, PC);
                 break;
-            case 0b0001_110_001_011_000: //XOR DX AX BX (DX ^ AX -> BX)
-                BX = aluXor(DX, AX);
+            case 0b0001_110_001_011_000: //AND DX AX BX (DX & AX -> BX)
+                BX = aluAnd(DX, AX);
                 break;
-            case 0b0001_110_001_011_001: //XOR DX BX BX (DX ^ BX -> BX)
-                BX = aluXor(DX, BX);
+            case 0b0001_110_001_011_001: //AND DX BX BX (DX & BX -> BX)
+                BX = aluAnd(DX, BX);
                 break;
-            case 0b0001_110_001_011_010: //XOR DX CX BX (DX ^ CX -> BX)
-                BX = aluXor(DX, CX);
+            case 0b0001_110_001_011_010: //AND DX CX BX (DX & CX -> BX)
+                BX = aluAnd(DX, CX);
                 break;
-            case 0b0001_110_001_011_011: //XOR DX DX BX (DX ^ DX -> BX)
-                BX = aluXor(DX, DX);
+            case 0b0001_110_001_011_011: //AND DX DX BX (DX & DX -> BX)
+                BX = aluAnd(DX, DX);
                 break;
-            case 0b0001_110_001_011_100: //XOR DX EX BX (DX ^ EX -> BX)
-                BX = aluXor(DX, EX);
+            case 0b0001_110_001_011_100: //AND DX EX BX (DX & EX -> BX)
+                BX = aluAnd(DX, EX);
                 break;
-            case 0b0001_110_001_011_101: //XOR DX SP BX (DX ^ SP -> BX)
-                BX = aluXor(DX, SP);
+            case 0b0001_110_001_011_101: //AND DX SP BX (DX & SP -> BX)
+                BX = aluAnd(DX, SP);
                 break;
-            case 0b0001_110_001_011_110: //XOR DX RP BX (DX ^ RP -> BX)
-                BX = aluXor(DX, RP);
+            case 0b0001_110_001_011_110: //AND DX RP BX (DX & RP -> BX)
+                BX = aluAnd(DX, RP);
                 break;
-            case 0b0001_110_001_011_111: //XOR DX PC BX (DX ^ PC -> BX)
-                BX = aluXor(DX, PC);
+            case 0b0001_110_001_011_111: //AND DX PC BX (DX & PC -> BX)
+                BX = aluAnd(DX, PC);
                 break;
-            case 0b0001_110_010_011_000: //XOR DX AX CX (DX ^ AX -> CX)
-                CX = aluXor(DX, AX);
+            case 0b0001_110_010_011_000: //AND DX AX CX (DX & AX -> CX)
+                CX = aluAnd(DX, AX);
                 break;
-            case 0b0001_110_010_011_001: //XOR DX BX CX (DX ^ BX -> CX)
-                CX = aluXor(DX, BX);
+            case 0b0001_110_010_011_001: //AND DX BX CX (DX & BX -> CX)
+                CX = aluAnd(DX, BX);
                 break;
-            case 0b0001_110_010_011_010: //XOR DX CX CX (DX ^ CX -> CX)
-                CX = aluXor(DX, CX);
+            case 0b0001_110_010_011_010: //AND DX CX CX (DX & CX -> CX)
+                CX = aluAnd(DX, CX);
                 break;
-            case 0b0001_110_010_011_011: //XOR DX DX CX (DX ^ DX -> CX)
-                CX = aluXor(DX, DX);
+            case 0b0001_110_010_011_011: //AND DX DX CX (DX & DX -> CX)
+                CX = aluAnd(DX, DX);
                 break;
-            case 0b0001_110_010_011_100: //XOR DX EX CX (DX ^ EX -> CX)
-                CX = aluXor(DX, EX);
+            case 0b0001_110_010_011_100: //AND DX EX CX (DX & EX -> CX)
+                CX = aluAnd(DX, EX);
                 break;
-            case 0b0001_110_010_011_101: //XOR DX SP CX (DX ^ SP -> CX)
-                CX = aluXor(DX, SP);
+            case 0b0001_110_010_011_101: //AND DX SP CX (DX & SP -> CX)
+                CX = aluAnd(DX, SP);
                 break;
-            case 0b0001_110_010_011_110: //XOR DX RP CX (DX ^ RP -> CX)
-                CX = aluXor(DX, RP);
+            case 0b0001_110_010_011_110: //AND DX RP CX (DX & RP -> CX)
+                CX = aluAnd(DX, RP);
                 break;
-            case 0b0001_110_010_011_111: //XOR DX PC CX (DX ^ PC -> CX)
-                CX = aluXor(DX, PC);
+            case 0b0001_110_010_011_111: //AND DX PC CX (DX & PC -> CX)
+                CX = aluAnd(DX, PC);
                 break;
-            case 0b0001_110_011_011_000: //XOR DX AX DX (DX ^ AX -> DX)
-                DX = aluXor(DX, AX);
+            case 0b0001_110_011_011_000: //AND DX AX DX (DX & AX -> DX)
+                DX = aluAnd(DX, AX);
                 break;
-            case 0b0001_110_011_011_001: //XOR DX BX DX (DX ^ BX -> DX)
-                DX = aluXor(DX, BX);
+            case 0b0001_110_011_011_001: //AND DX BX DX (DX & BX -> DX)
+                DX = aluAnd(DX, BX);
                 break;
-            case 0b0001_110_011_011_010: //XOR DX CX DX (DX ^ CX -> DX)
-                DX = aluXor(DX, CX);
+            case 0b0001_110_011_011_010: //AND DX CX DX (DX & CX -> DX)
+                DX = aluAnd(DX, CX);
                 break;
-            case 0b0001_110_011_011_011: //XOR DX DX DX (DX ^ DX -> DX)
-                DX = aluXor(DX, DX);
+            case 0b0001_110_011_011_011: //AND DX DX DX (DX & DX -> DX)
+                DX = aluAnd(DX, DX);
                 break;
-            case 0b0001_110_011_011_100: //XOR DX EX DX (DX ^ EX -> DX)
-                DX = aluXor(DX, EX);
+            case 0b0001_110_011_011_100: //AND DX EX DX (DX & EX -> DX)
+                DX = aluAnd(DX, EX);
                 break;
-            case 0b0001_110_011_011_101: //XOR DX SP DX (DX ^ SP -> DX)
-                DX = aluXor(DX, SP);
+            case 0b0001_110_011_011_101: //AND DX SP DX (DX & SP -> DX)
+                DX = aluAnd(DX, SP);
                 break;
-            case 0b0001_110_011_011_110: //XOR DX RP DX (DX ^ RP -> DX)
-                DX = aluXor(DX, RP);
+            case 0b0001_110_011_011_110: //AND DX RP DX (DX & RP -> DX)
+                DX = aluAnd(DX, RP);
                 break;
-            case 0b0001_110_011_011_111: //XOR DX PC DX (DX ^ PC -> DX)
-                DX = aluXor(DX, PC);
+            case 0b0001_110_011_011_111: //AND DX PC DX (DX & PC -> DX)
+                DX = aluAnd(DX, PC);
                 break;
-            case 0b0001_110_100_011_000: //XOR DX AX EX (DX ^ AX -> EX)
-                EX = aluXor(DX, AX);
+            case 0b0001_110_100_011_000: //AND DX AX EX (DX & AX -> EX)
+                EX = aluAnd(DX, AX);
                 break;
-            case 0b0001_110_100_011_001: //XOR DX EX SP (DX ^ BX -> SP)
-                EX = aluXor(DX, BX);
+            case 0b0001_110_100_011_001: //AND DX EX SP (DX & BX -> SP)
+                EX = aluAnd(DX, BX);
                 break;
-            case 0b0001_110_100_011_010: //XOR DX EX SP (DX ^ CX -> SP)
-                EX = aluXor(DX, CX);
+            case 0b0001_110_100_011_010: //AND DX EX SP (DX & CX -> SP)
+                EX = aluAnd(DX, CX);
                 break;
-            case 0b0001_110_100_011_011: //XOR DX EX SP (DX ^ DX -> SP)
-                EX = aluXor(DX, DX);
+            case 0b0001_110_100_011_011: //AND DX EX SP (DX & DX -> SP)
+                EX = aluAnd(DX, DX);
                 break;
-            case 0b0001_110_100_011_100: //XOR DX EX SP (DX ^ EX -> SP)
-                EX = aluXor(DX, EX);
+            case 0b0001_110_100_011_100: //AND DX EX SP (DX & EX -> SP)
+                EX = aluAnd(DX, EX);
                 break;
-            case 0b0001_110_100_011_101: //XOR DX EX SP (DX ^ SP -> SP)
-                EX = aluXor(DX, SP);
+            case 0b0001_110_100_011_101: //AND DX EX SP (DX & SP -> SP)
+                EX = aluAnd(DX, SP);
                 break;
-            case 0b0001_110_100_011_110: //XOR DX EX SP (DX ^ RP -> SP)
-                EX = aluXor(DX, RP);
+            case 0b0001_110_100_011_110: //AND DX EX SP (DX & RP -> SP)
+                EX = aluAnd(DX, RP);
                 break;
-            case 0b0001_110_100_011_111: //XOR DX EX SP (DX ^ PC -> SP)
-                EX = aluXor(DX, PC);
+            case 0b0001_110_100_011_111: //AND DX EX SP (DX & PC -> SP)
+                EX = aluAnd(DX, PC);
                 break;
-            case 0b0001_110_101_011_000: //XOR DX AX SP (DX ^ AX -> SP)
-                SP = aluXor(DX, AX);
+            case 0b0001_110_101_011_000: //AND DX AX SP (DX & AX -> SP)
+                SP = aluAnd(DX, AX);
                 break;
-            case 0b0001_110_101_011_001: //XOR DX BX SP (DX ^ BX -> SP)
-                SP = aluXor(DX, BX);
+            case 0b0001_110_101_011_001: //AND DX BX SP (DX & BX -> SP)
+                SP = aluAnd(DX, BX);
                 break;
-            case 0b0001_110_101_011_010: //XOR DX CX SP (DX ^ CX -> SP)
-                SP = aluXor(DX, CX);
+            case 0b0001_110_101_011_010: //AND DX CX SP (DX & CX -> SP)
+                SP = aluAnd(DX, CX);
                 break;
-            case 0b0001_110_101_011_011: //XOR DX DX SP (DX ^ DX -> SP)
-                SP = aluXor(DX, DX);
+            case 0b0001_110_101_011_011: //AND DX DX SP (DX & DX -> SP)
+                SP = aluAnd(DX, DX);
                 break;
-            case 0b0001_110_101_011_100: //XOR DX EX SP (DX ^ EX -> SP)
-                SP = aluXor(DX, EX);
+            case 0b0001_110_101_011_100: //AND DX EX SP (DX & EX -> SP)
+                SP = aluAnd(DX, EX);
                 break;
-            case 0b0001_110_101_011_101: //XOR DX SP SP (DX ^ SP -> SP)
-                SP = aluXor(DX, SP);
+            case 0b0001_110_101_011_101: //AND DX SP SP (DX & SP -> SP)
+                SP = aluAnd(DX, SP);
                 break;
-            case 0b0001_110_101_011_110: //XOR DX RP SP (DX ^ RP -> SP)
-                SP = aluXor(DX, RP);
+            case 0b0001_110_101_011_110: //AND DX RP SP (DX & RP -> SP)
+                SP = aluAnd(DX, RP);
                 break;
-            case 0b0001_110_101_011_111: //XOR DX PC SP (DX ^ PC -> SP)
-                SP = aluXor(DX, PC);
+            case 0b0001_110_101_011_111: //AND DX PC SP (DX & PC -> SP)
+                SP = aluAnd(DX, PC);
                 break;
-            case 0b0001_110_110_011_000: //XOR DX AX RP (DX ^ AX -> RP)
-                RP = aluXor(DX, AX);
+            case 0b0001_110_110_011_000: //AND DX AX RP (DX & AX -> RP)
+                RP = aluAnd(DX, AX);
                 break;
-            case 0b0001_110_110_011_001: //XOR DX BX RP (DX ^ BX -> RP)
-                RP = aluXor(DX, BX);
+            case 0b0001_110_110_011_001: //AND DX BX RP (DX & BX -> RP)
+                RP = aluAnd(DX, BX);
                 break;
-            case 0b0001_110_110_011_010: //XOR DX CX RP (DX ^ CX -> RP)
-                RP = aluXor(DX, CX);
+            case 0b0001_110_110_011_010: //AND DX CX RP (DX & CX -> RP)
+                RP = aluAnd(DX, CX);
                 break;
-            case 0b0001_110_110_011_011: //XOR DX DX RP (DX ^ DX -> RP)
-                RP = aluXor(DX, DX);
+            case 0b0001_110_110_011_011: //AND DX DX RP (DX & DX -> RP)
+                RP = aluAnd(DX, DX);
                 break;
-            case 0b0001_110_110_011_100: //XOR DX EX RP (DX ^ EX -> RP)
-                RP = aluXor(DX, EX);
+            case 0b0001_110_110_011_100: //AND DX EX RP (DX & EX -> RP)
+                RP = aluAnd(DX, EX);
                 break;
-            case 0b0001_110_110_011_101: //XOR DX SP RP (DX ^ SP -> RP)
-                RP = aluXor(DX, SP);
+            case 0b0001_110_110_011_101: //AND DX SP RP (DX & SP -> RP)
+                RP = aluAnd(DX, SP);
                 break;
-            case 0b0001_110_110_011_110: //XOR DX RP RP (DX ^ RP -> RP)
-                RP = aluXor(DX, RP);
+            case 0b0001_110_110_011_110: //AND DX RP RP (DX & RP -> RP)
+                RP = aluAnd(DX, RP);
                 break;
-            case 0b0001_110_110_011_111: //XOR DX PC RP (DX ^ PC -> RP)
-                RP = aluXor(DX, PC);
+            case 0b0001_110_110_011_111: //AND DX PC RP (DX & PC -> RP)
+                RP = aluAnd(DX, PC);
                 break;
-            case 0b0001_110_111_011_000: //XOR DX AX PC (DX ^ AX -> PC)
-                PC = aluXor(DX, AX);
+            case 0b0001_110_111_011_000: //AND DX AX PC (DX & AX -> PC)
+                PC = aluAnd(DX, AX);
                 break;
-            case 0b0001_110_111_011_001: //XOR DX BX PC (DX ^ BX -> PC)
-                PC = aluXor(DX, BX);
+            case 0b0001_110_111_011_001: //AND DX BX PC (DX & BX -> PC)
+                PC = aluAnd(DX, BX);
                 break;
-            case 0b0001_110_111_011_010: //XOR DX CX PC (DX ^ CX -> PC)
-                PC = aluXor(DX, CX);
+            case 0b0001_110_111_011_010: //AND DX CX PC (DX & CX -> PC)
+                PC = aluAnd(DX, CX);
                 break;
-            case 0b0001_110_111_011_011: //XOR DX DX PC (DX ^ DX -> PC)
-                PC = aluXor(DX, DX);
+            case 0b0001_110_111_011_011: //AND DX DX PC (DX & DX -> PC)
+                PC = aluAnd(DX, DX);
                 break;
-            case 0b0001_110_111_011_100: //XOR DX EX PC (DX ^ EX -> PC)
-                PC = aluXor(DX, EX);
+            case 0b0001_110_111_011_100: //AND DX EX PC (DX & EX -> PC)
+                PC = aluAnd(DX, EX);
                 break;
-            case 0b0001_110_111_011_101: //XOR DX SP PC (DX ^ SP -> PC)
-                PC = aluXor(DX, SP);
+            case 0b0001_110_111_011_101: //AND DX SP PC (DX & SP -> PC)
+                PC = aluAnd(DX, SP);
                 break;
-            case 0b0001_110_111_011_110: //XOR DX RP PC (DX ^ RP -> PC)
-                PC = aluXor(DX, RP);
+            case 0b0001_110_111_011_110: //AND DX RP PC (DX & RP -> PC)
+                PC = aluAnd(DX, RP);
                 break;
-            case 0b0001_110_111_011_111: //XOR DX PC PC (DX ^ PC -> PC)
-                PC = aluXor(DX, PC);
+            case 0b0001_110_111_011_111: //AND DX PC PC (DX & PC -> PC)
+                PC = aluAnd(DX, PC);
                 break;
-            case 0b0001_110_000_100_000: //XOR EX AX AX (EX ^ AX -> AX)
-                AX = aluXor(EX, AX);
+            case 0b0001_110_000_100_000: //AND EX AX AX (EX & AX -> AX)
+                AX = aluAnd(EX, AX);
                 break;
-            case 0b0001_110_000_100_001: //XOR EX BX AX (EX ^ BX -> AX)
-                AX = aluXor(EX, BX);
+            case 0b0001_110_000_100_001: //AND EX BX AX (EX & BX -> AX)
+                AX = aluAnd(EX, BX);
                 break;
-            case 0b0001_110_000_100_010: //XOR EX CX AX (EX ^ CX -> AX)
-                AX = aluXor(EX, CX);
+            case 0b0001_110_000_100_010: //AND EX CX AX (EX & CX -> AX)
+                AX = aluAnd(EX, CX);
                 break;
-            case 0b0001_110_000_100_011: //XOR EX DX AX (EX ^ DX -> AX)
-                AX = aluXor(EX, DX);
+            case 0b0001_110_000_100_011: //AND EX DX AX (EX & DX -> AX)
+                AX = aluAnd(EX, DX);
                 break;
-            case 0b0001_110_000_100_100: //XOR EX EX AX (EX ^ EX -> AX)
-                AX = aluXor(EX, EX);
+            case 0b0001_110_000_100_100: //AND EX EX AX (EX & EX -> AX)
+                AX = aluAnd(EX, EX);
                 break;
-            case 0b0001_110_000_100_101: //XOR EX SP AX (EX ^ SP -> AX)
-                AX = aluXor(EX, SP);
+            case 0b0001_110_000_100_101: //AND EX SP AX (EX & SP -> AX)
+                AX = aluAnd(EX, SP);
                 break;
-            case 0b0001_110_000_100_110: //XOR EX RP AX (EX ^ RP -> AX)
-                AX = aluXor(EX, RP);
+            case 0b0001_110_000_100_110: //AND EX RP AX (EX & RP -> AX)
+                AX = aluAnd(EX, RP);
                 break;
-            case 0b0001_110_000_100_111: //XOR EX PC AX (EX ^ PC -> AX)
-                AX = aluXor(EX, PC);
+            case 0b0001_110_000_100_111: //AND EX PC AX (EX & PC -> AX)
+                AX = aluAnd(EX, PC);
                 break;
-            case 0b0001_110_001_100_000: //XOR EX AX BX (EX ^ AX -> BX)
-                BX = aluXor(EX, AX);
+            case 0b0001_110_001_100_000: //AND EX AX BX (EX & AX -> BX)
+                BX = aluAnd(EX, AX);
                 break;
-            case 0b0001_110_001_100_001: //XOR EX BX BX (EX ^ BX -> BX)
-                BX = aluXor(EX, BX);
+            case 0b0001_110_001_100_001: //AND EX BX BX (EX & BX -> BX)
+                BX = aluAnd(EX, BX);
                 break;
-            case 0b0001_110_001_100_010: //XOR EX CX BX (EX ^ CX -> BX)
-                BX = aluXor(EX, CX);
+            case 0b0001_110_001_100_010: //AND EX CX BX (EX & CX -> BX)
+                BX = aluAnd(EX, CX);
                 break;
-            case 0b0001_110_001_100_011: //XOR EX DX BX (EX ^ DX -> BX)
-                BX = aluXor(EX, DX);
+            case 0b0001_110_001_100_011: //AND EX DX BX (EX & DX -> BX)
+                BX = aluAnd(EX, DX);
                 break;
-            case 0b0001_110_001_100_100: //XOR EX EX BX (EX ^ EX -> BX)
-                BX = aluXor(EX, EX);
+            case 0b0001_110_001_100_100: //AND EX EX BX (EX & EX -> BX)
+                BX = aluAnd(EX, EX);
                 break;
-            case 0b0001_110_001_100_101: //XOR EX SP BX (EX ^ SP -> BX)
-                BX = aluXor(EX, SP);
+            case 0b0001_110_001_100_101: //AND EX SP BX (EX & SP -> BX)
+                BX = aluAnd(EX, SP);
                 break;
-            case 0b0001_110_001_100_110: //XOR EX RP BX (EX ^ RP -> BX)
-                BX = aluXor(EX, RP);
+            case 0b0001_110_001_100_110: //AND EX RP BX (EX & RP -> BX)
+                BX = aluAnd(EX, RP);
                 break;
-            case 0b0001_110_001_100_111: //XOR EX PC BX (EX ^ PC -> BX)
-                BX = aluXor(EX, PC);
+            case 0b0001_110_001_100_111: //AND EX PC BX (EX & PC -> BX)
+                BX = aluAnd(EX, PC);
                 break;
-            case 0b0001_110_010_100_000: //XOR EX AX CX (EX ^ AX -> CX)
-                CX = aluXor(EX, AX);
+            case 0b0001_110_010_100_000: //AND EX AX CX (EX & AX -> CX)
+                CX = aluAnd(EX, AX);
                 break;
-            case 0b0001_110_010_100_001: //XOR EX BX CX (EX ^ BX -> CX)
-                CX = aluXor(EX, BX);
+            case 0b0001_110_010_100_001: //AND EX BX CX (EX & BX -> CX)
+                CX = aluAnd(EX, BX);
                 break;
-            case 0b0001_110_010_100_010: //XOR EX CX CX (EX ^ CX -> CX)
-                CX = aluXor(EX, CX);
+            case 0b0001_110_010_100_010: //AND EX CX CX (EX & CX -> CX)
+                CX = aluAnd(EX, CX);
                 break;
-            case 0b0001_110_010_100_011: //XOR EX DX CX (EX ^ DX -> CX)
-                CX = aluXor(EX, DX);
+            case 0b0001_110_010_100_011: //AND EX DX CX (EX & DX -> CX)
+                CX = aluAnd(EX, DX);
                 break;
-            case 0b0001_110_010_100_100: //XOR EX EX CX (EX ^ EX -> CX)
-                CX = aluXor(EX, EX);
+            case 0b0001_110_010_100_100: //AND EX EX CX (EX & EX -> CX)
+                CX = aluAnd(EX, EX);
                 break;
-            case 0b0001_110_010_100_101: //XOR EX SP CX (EX ^ SP -> CX)
-                CX = aluXor(EX, SP);
+            case 0b0001_110_010_100_101: //AND EX SP CX (EX & SP -> CX)
+                CX = aluAnd(EX, SP);
                 break;
-            case 0b0001_110_010_100_110: //XOR EX RP CX (EX ^ RP -> CX)
-                CX = aluXor(EX, RP);
+            case 0b0001_110_010_100_110: //AND EX RP CX (EX & RP -> CX)
+                CX = aluAnd(EX, RP);
                 break;
-            case 0b0001_110_010_100_111: //XOR EX PC CX (EX ^ PC -> CX)
-                CX = aluXor(EX, PC);
+            case 0b0001_110_010_100_111: //AND EX PC CX (EX & PC -> CX)
+                CX = aluAnd(EX, PC);
                 break;
-            case 0b0001_110_011_100_000: //XOR EX AX DX (EX ^ AX -> DX)
-                DX = aluXor(EX, AX);
+            case 0b0001_110_011_100_000: //AND EX AX DX (EX & AX -> DX)
+                DX = aluAnd(EX, AX);
                 break;
-            case 0b0001_110_011_100_001: //XOR EX BX DX (EX ^ BX -> DX)
-                DX = aluXor(EX, BX);
+            case 0b0001_110_011_100_001: //AND EX BX DX (EX & BX -> DX)
+                DX = aluAnd(EX, BX);
                 break;
-            case 0b0001_110_011_100_010: //XOR EX CX DX (EX ^ CX -> DX)
-                DX = aluXor(EX, CX);
+            case 0b0001_110_011_100_010: //AND EX CX DX (EX & CX -> DX)
+                DX = aluAnd(EX, CX);
                 break;
-            case 0b0001_110_011_100_011: //XOR EX DX DX (EX ^ DX -> DX)
-                DX = aluXor(EX, DX);
+            case 0b0001_110_011_100_011: //AND EX DX DX (EX & DX -> DX)
+                DX = aluAnd(EX, DX);
                 break;
-            case 0b0001_110_011_100_100: //XOR EX EX DX (EX ^ EX -> DX)
-                DX = aluXor(EX, EX);
+            case 0b0001_110_011_100_100: //AND EX EX DX (EX & EX -> DX)
+                DX = aluAnd(EX, EX);
                 break;
-            case 0b0001_110_011_100_101: //XOR EX SP DX (EX ^ SP -> DX)
-                DX = aluXor(EX, SP);
+            case 0b0001_110_011_100_101: //AND EX SP DX (EX & SP -> DX)
+                DX = aluAnd(EX, SP);
                 break;
-            case 0b0001_110_011_100_110: //XOR EX RP DX (EX ^ RP -> DX)
-                DX = aluXor(EX, RP);
+            case 0b0001_110_011_100_110: //AND EX RP DX (EX & RP -> DX)
+                DX = aluAnd(EX, RP);
                 break;
-            case 0b0001_110_011_100_111: //XOR EX PC DX (EX ^ PC -> DX)
-                DX = aluXor(EX, PC);
+            case 0b0001_110_011_100_111: //AND EX PC DX (EX & PC -> DX)
+                DX = aluAnd(EX, PC);
                 break;
-            case 0b0001_110_100_100_000: //XOR EX AX EX (EX ^ AX -> EX)
-                EX = aluXor(EX, AX);
+            case 0b0001_110_100_100_000: //AND EX AX EX (EX & AX -> EX)
+                EX = aluAnd(EX, AX);
                 break;
-            case 0b0001_110_100_100_001: //XOR EX EX SP (EX ^ BX -> SP)
-                EX = aluXor(EX, BX);
+            case 0b0001_110_100_100_001: //AND EX EX SP (EX & BX -> SP)
+                EX = aluAnd(EX, BX);
                 break;
-            case 0b0001_110_100_100_010: //XOR EX EX SP (EX ^ CX -> SP)
-                EX = aluXor(EX, CX);
+            case 0b0001_110_100_100_010: //AND EX EX SP (EX & CX -> SP)
+                EX = aluAnd(EX, CX);
                 break;
-            case 0b0001_110_100_100_011: //XOR EX EX SP (EX ^ DX -> SP)
-                EX = aluXor(EX, DX);
+            case 0b0001_110_100_100_011: //AND EX EX SP (EX & DX -> SP)
+                EX = aluAnd(EX, DX);
                 break;
-            case 0b0001_110_100_100_100: //XOR EX EX SP (EX ^ EX -> SP)
-                EX = aluXor(EX, EX);
+            case 0b0001_110_100_100_100: //AND EX EX SP (EX & EX -> SP)
+                EX = aluAnd(EX, EX);
                 break;
-            case 0b0001_110_100_100_101: //XOR EX EX SP (EX ^ SP -> SP)
-                EX = aluXor(EX, SP);
+            case 0b0001_110_100_100_101: //AND EX EX SP (EX & SP -> SP)
+                EX = aluAnd(EX, SP);
                 break;
-            case 0b0001_110_100_100_110: //XOR EX EX SP (EX ^ RP -> SP)
-                EX = aluXor(EX, RP);
+            case 0b0001_110_100_100_110: //AND EX EX SP (EX & RP -> SP)
+                EX = aluAnd(EX, RP);
                 break;
-            case 0b0001_110_100_100_111: //XOR EX EX SP (EX ^ PC -> SP)
-                EX = aluXor(EX, PC);
+            case 0b0001_110_100_100_111: //AND EX EX SP (EX & PC -> SP)
+                EX = aluAnd(EX, PC);
                 break;
-            case 0b0001_110_101_100_000: //XOR EX AX SP (EX ^ AX -> SP)
-                SP = aluXor(EX, AX);
+            case 0b0001_110_101_100_000: //AND EX AX SP (EX & AX -> SP)
+                SP = aluAnd(EX, AX);
                 break;
-            case 0b0001_110_101_100_001: //XOR EX BX SP (EX ^ BX -> SP)
-                SP = aluXor(EX, BX);
+            case 0b0001_110_101_100_001: //AND EX BX SP (EX & BX -> SP)
+                SP = aluAnd(EX, BX);
                 break;
-            case 0b0001_110_101_100_010: //XOR EX CX SP (EX ^ CX -> SP)
-                SP = aluXor(EX, CX);
+            case 0b0001_110_101_100_010: //AND EX CX SP (EX & CX -> SP)
+                SP = aluAnd(EX, CX);
                 break;
-            case 0b0001_110_101_100_011: //XOR EX DX SP (EX ^ DX -> SP)
-                SP = aluXor(EX, DX);
+            case 0b0001_110_101_100_011: //AND EX DX SP (EX & DX -> SP)
+                SP = aluAnd(EX, DX);
                 break;
-            case 0b0001_110_101_100_100: //XOR EX EX SP (EX ^ EX -> SP)
-                SP = aluXor(EX, EX);
+            case 0b0001_110_101_100_100: //AND EX EX SP (EX & EX -> SP)
+                SP = aluAnd(EX, EX);
                 break;
-            case 0b0001_110_101_100_101: //XOR EX SP SP (EX ^ SP -> SP)
-                SP = aluXor(EX, SP);
+            case 0b0001_110_101_100_101: //AND EX SP SP (EX & SP -> SP)
+                SP = aluAnd(EX, SP);
                 break;
-            case 0b0001_110_101_100_110: //XOR EX RP SP (EX ^ RP -> SP)
-                SP = aluXor(EX, RP);
+            case 0b0001_110_101_100_110: //AND EX RP SP (EX & RP -> SP)
+                SP = aluAnd(EX, RP);
                 break;
-            case 0b0001_110_101_100_111: //XOR EX PC SP (EX ^ PC -> SP)
-                SP = aluXor(EX, PC);
+            case 0b0001_110_101_100_111: //AND EX PC SP (EX & PC -> SP)
+                SP = aluAnd(EX, PC);
                 break;
-            case 0b0001_110_110_100_000: //XOR EX AX RP (EX ^ AX -> RP)
-                RP = aluXor(EX, AX);
+            case 0b0001_110_110_100_000: //AND EX AX RP (EX & AX -> RP)
+                RP = aluAnd(EX, AX);
                 break;
-            case 0b0001_110_110_100_001: //XOR EX BX RP (EX ^ BX -> RP)
-                RP = aluXor(EX, BX);
+            case 0b0001_110_110_100_001: //AND EX BX RP (EX & BX -> RP)
+                RP = aluAnd(EX, BX);
                 break;
-            case 0b0001_110_110_100_010: //XOR EX CX RP (EX ^ CX -> RP)
-                RP = aluXor(EX, CX);
+            case 0b0001_110_110_100_010: //AND EX CX RP (EX & CX -> RP)
+                RP = aluAnd(EX, CX);
                 break;
-            case 0b0001_110_110_100_011: //XOR EX DX RP (EX ^ DX -> RP)
-                RP = aluXor(EX, DX);
+            case 0b0001_110_110_100_011: //AND EX DX RP (EX & DX -> RP)
+                RP = aluAnd(EX, DX);
                 break;
-            case 0b0001_110_110_100_100: //XOR EX EX RP (EX ^ EX -> RP)
-                RP = aluXor(EX, EX);
+            case 0b0001_110_110_100_100: //AND EX EX RP (EX & EX -> RP)
+                RP = aluAnd(EX, EX);
                 break;
-            case 0b0001_110_110_100_101: //XOR EX SP RP (EX ^ SP -> RP)
-                RP = aluXor(EX, SP);
+            case 0b0001_110_110_100_101: //AND EX SP RP (EX & SP -> RP)
+                RP = aluAnd(EX, SP);
                 break;
-            case 0b0001_110_110_100_110: //XOR EX RP RP (EX ^ RP -> RP)
-                RP = aluXor(EX, RP);
+            case 0b0001_110_110_100_110: //AND EX RP RP (EX & RP -> RP)
+                RP = aluAnd(EX, RP);
                 break;
-            case 0b0001_110_110_100_111: //XOR EX PC RP (EX ^ PC -> RP)
-                RP = aluXor(EX, PC);
+            case 0b0001_110_110_100_111: //AND EX PC RP (EX & PC -> RP)
+                RP = aluAnd(EX, PC);
                 break;
-            case 0b0001_110_111_100_000: //XOR EX AX PC (EX ^ AX -> PC)
-                PC = aluXor(EX, AX);
+            case 0b0001_110_111_100_000: //AND EX AX PC (EX & AX -> PC)
+                PC = aluAnd(EX, AX);
                 break;
-            case 0b0001_110_111_100_001: //XOR EX BX PC (EX ^ BX -> PC)
-                PC = aluXor(EX, BX);
+            case 0b0001_110_111_100_001: //AND EX BX PC (EX & BX -> PC)
+                PC = aluAnd(EX, BX);
                 break;
-            case 0b0001_110_111_100_010: //XOR EX CX PC (EX ^ CX -> PC)
-                PC = aluXor(EX, CX);
+            case 0b0001_110_111_100_010: //AND EX CX PC (EX & CX -> PC)
+                PC = aluAnd(EX, CX);
                 break;
-            case 0b0001_110_111_100_011: //XOR EX DX PC (EX ^ DX -> PC)
-                PC = aluXor(EX, DX);
+            case 0b0001_110_111_100_011: //AND EX DX PC (EX & DX -> PC)
+                PC = aluAnd(EX, DX);
                 break;
-            case 0b0001_110_111_100_100: //XOR EX EX PC (EX ^ EX -> PC)
-                PC = aluXor(EX, EX);
+            case 0b0001_110_111_100_100: //AND EX EX PC (EX & EX -> PC)
+                PC = aluAnd(EX, EX);
                 break;
-            case 0b0001_110_111_100_101: //XOR EX SP PC (EX ^ SP -> PC)
-                PC = aluXor(EX, SP);
+            case 0b0001_110_111_100_101: //AND EX SP PC (EX & SP -> PC)
+                PC = aluAnd(EX, SP);
                 break;
-            case 0b0001_110_111_100_110: //XOR EX RP PC (EX ^ RP -> PC)
-                PC = aluXor(EX, RP);
+            case 0b0001_110_111_100_110: //AND EX RP PC (EX & RP -> PC)
+                PC = aluAnd(EX, RP);
                 break;
-            case 0b0001_110_111_100_111: //XOR EX PC PC (EX ^ PC -> PC)
-                PC = aluXor(EX, PC);
+            case 0b0001_110_111_100_111: //AND EX PC PC (EX & PC -> PC)
+                PC = aluAnd(EX, PC);
                 break;
-            case 0b0001_110_000_101_000: //XOR SP AX AX (SP ^ AX -> AX)
-                AX = aluXor(SP, AX);
+            case 0b0001_110_000_101_000: //AND SP AX AX (SP & AX -> AX)
+                AX = aluAnd(SP, AX);
                 break;
-            case 0b0001_110_000_101_001: //XOR SP BX AX (SP ^ BX -> AX)
-                AX = aluXor(SP, BX);
+            case 0b0001_110_000_101_001: //AND SP BX AX (SP & BX -> AX)
+                AX = aluAnd(SP, BX);
                 break;
-            case 0b0001_110_000_101_010: //XOR SP CX AX (SP ^ CX -> AX)
-                AX = aluXor(SP, CX);
+            case 0b0001_110_000_101_010: //AND SP CX AX (SP & CX -> AX)
+                AX = aluAnd(SP, CX);
                 break;
-            case 0b0001_110_000_101_011: //XOR SP DX AX (SP ^ DX -> AX)
-                AX = aluXor(SP, DX);
+            case 0b0001_110_000_101_011: //AND SP DX AX (SP & DX -> AX)
+                AX = aluAnd(SP, DX);
                 break;
-            case 0b0001_110_000_101_100: //XOR SP EX AX (SP ^ EX -> AX)
-                AX = aluXor(SP, EX);
+            case 0b0001_110_000_101_100: //AND SP EX AX (SP & EX -> AX)
+                AX = aluAnd(SP, EX);
                 break;
-            case 0b0001_110_000_101_101: //XOR SP SP AX (SP ^ SP -> AX)
-                AX = aluXor(SP, SP);
+            case 0b0001_110_000_101_101: //AND SP SP AX (SP & SP -> AX)
+                AX = aluAnd(SP, SP);
                 break;
-            case 0b0001_110_000_101_110: //XOR SP RP AX (SP ^ RP -> AX)
-                AX = aluXor(SP, RP);
+            case 0b0001_110_000_101_110: //AND SP RP AX (SP & RP -> AX)
+                AX = aluAnd(SP, RP);
                 break;
-            case 0b0001_110_000_101_111: //XOR SP PC AX (SP ^ PC -> AX)
-                AX = aluXor(SP, PC);
+            case 0b0001_110_000_101_111: //AND SP PC AX (SP & PC -> AX)
+                AX = aluAnd(SP, PC);
                 break;
-            case 0b0001_110_001_101_000: //XOR SP AX BX (SP ^ AX -> BX)
-                BX = aluXor(SP, AX);
+            case 0b0001_110_001_101_000: //AND SP AX BX (SP & AX -> BX)
+                BX = aluAnd(SP, AX);
                 break;
-            case 0b0001_110_001_101_001: //XOR SP BX BX (SP ^ BX -> BX)
-                BX = aluXor(SP, BX);
+            case 0b0001_110_001_101_001: //AND SP BX BX (SP & BX -> BX)
+                BX = aluAnd(SP, BX);
                 break;
-            case 0b0001_110_001_101_010: //XOR SP CX BX (SP ^ CX -> BX)
-                BX = aluXor(SP, CX);
+            case 0b0001_110_001_101_010: //AND SP CX BX (SP & CX -> BX)
+                BX = aluAnd(SP, CX);
                 break;
-            case 0b0001_110_001_101_011: //XOR SP DX BX (SP ^ DX -> BX)
-                BX = aluXor(SP, DX);
+            case 0b0001_110_001_101_011: //AND SP DX BX (SP & DX -> BX)
+                BX = aluAnd(SP, DX);
                 break;
-            case 0b0001_110_001_101_100: //XOR SP EX BX (SP ^ EX -> BX)
-                BX = aluXor(SP, EX);
+            case 0b0001_110_001_101_100: //AND SP EX BX (SP & EX -> BX)
+                BX = aluAnd(SP, EX);
                 break;
-            case 0b0001_110_001_101_101: //XOR SP SP BX (SP ^ SP -> BX)
-                BX = aluXor(SP, SP);
+            case 0b0001_110_001_101_101: //AND SP SP BX (SP & SP -> BX)
+                BX = aluAnd(SP, SP);
                 break;
-            case 0b0001_110_001_101_110: //XOR SP RP BX (SP ^ RP -> BX)
-                BX = aluXor(SP, RP);
+            case 0b0001_110_001_101_110: //AND SP RP BX (SP & RP -> BX)
+                BX = aluAnd(SP, RP);
                 break;
-            case 0b0001_110_001_101_111: //XOR SP PC BX (SP ^ PC -> BX)
-                BX = aluXor(SP, PC);
+            case 0b0001_110_001_101_111: //AND SP PC BX (SP & PC -> BX)
+                BX = aluAnd(SP, PC);
                 break;
-            case 0b0001_110_010_101_000: //XOR SP AX CX (SP ^ AX -> CX)
-                CX = aluXor(SP, AX);
+            case 0b0001_110_010_101_000: //AND SP AX CX (SP & AX -> CX)
+                CX = aluAnd(SP, AX);
                 break;
-            case 0b0001_110_010_101_001: //XOR SP BX CX (SP ^ BX -> CX)
-                CX = aluXor(SP, BX);
+            case 0b0001_110_010_101_001: //AND SP BX CX (SP & BX -> CX)
+                CX = aluAnd(SP, BX);
                 break;
-            case 0b0001_110_010_101_010: //XOR SP CX CX (SP ^ CX -> CX)
-                CX = aluXor(SP, CX);
+            case 0b0001_110_010_101_010: //AND SP CX CX (SP & CX -> CX)
+                CX = aluAnd(SP, CX);
                 break;
-            case 0b0001_110_010_101_011: //XOR SP DX CX (SP ^ DX -> CX)
-                CX = aluXor(SP, DX);
+            case 0b0001_110_010_101_011: //AND SP DX CX (SP & DX -> CX)
+                CX = aluAnd(SP, DX);
                 break;
-            case 0b0001_110_010_101_100: //XOR SP EX CX (SP ^ EX -> CX)
-                CX = aluXor(SP, EX);
+            case 0b0001_110_010_101_100: //AND SP EX CX (SP & EX -> CX)
+                CX = aluAnd(SP, EX);
                 break;
-            case 0b0001_110_010_101_101: //XOR SP SP CX (SP ^ SP -> CX)
-                CX = aluXor(SP, SP);
+            case 0b0001_110_010_101_101: //AND SP SP CX (SP & SP -> CX)
+                CX = aluAnd(SP, SP);
                 break;
-            case 0b0001_110_010_101_110: //XOR SP RP CX (SP ^ RP -> CX)
-                CX = aluXor(SP, RP);
+            case 0b0001_110_010_101_110: //AND SP RP CX (SP & RP -> CX)
+                CX = aluAnd(SP, RP);
                 break;
-            case 0b0001_110_010_101_111: //XOR SP PC CX (SP ^ PC -> CX)
-                CX = aluXor(SP, PC);
+            case 0b0001_110_010_101_111: //AND SP PC CX (SP & PC -> CX)
+                CX = aluAnd(SP, PC);
                 break;
-            case 0b0001_110_011_101_000: //XOR SP AX DX (SP ^ AX -> DX)
-                DX = aluXor(SP, AX);
+            case 0b0001_110_011_101_000: //AND SP AX DX (SP & AX -> DX)
+                DX = aluAnd(SP, AX);
                 break;
-            case 0b0001_110_011_101_001: //XOR SP BX DX (SP ^ BX -> DX)
-                DX = aluXor(SP, BX);
+            case 0b0001_110_011_101_001: //AND SP BX DX (SP & BX -> DX)
+                DX = aluAnd(SP, BX);
                 break;
-            case 0b0001_110_011_101_010: //XOR SP CX DX (SP ^ CX -> DX)
-                DX = aluXor(SP, CX);
+            case 0b0001_110_011_101_010: //AND SP CX DX (SP & CX -> DX)
+                DX = aluAnd(SP, CX);
                 break;
-            case 0b0001_110_011_101_011: //XOR SP DX DX (SP ^ DX -> DX)
-                DX = aluXor(SP, DX);
+            case 0b0001_110_011_101_011: //AND SP DX DX (SP & DX -> DX)
+                DX = aluAnd(SP, DX);
                 break;
-            case 0b0001_110_011_101_100: //XOR SP EX DX (SP ^ EX -> DX)
-                DX = aluXor(SP, EX);
+            case 0b0001_110_011_101_100: //AND SP EX DX (SP & EX -> DX)
+                DX = aluAnd(SP, EX);
                 break;
-            case 0b0001_110_011_101_101: //XOR SP SP DX (SP ^ SP -> DX)
-                DX = aluXor(SP, SP);
+            case 0b0001_110_011_101_101: //AND SP SP DX (SP & SP -> DX)
+                DX = aluAnd(SP, SP);
                 break;
-            case 0b0001_110_011_101_110: //XOR SP RP DX (SP ^ RP -> DX)
-                DX = aluXor(SP, RP);
+            case 0b0001_110_011_101_110: //AND SP RP DX (SP & RP -> DX)
+                DX = aluAnd(SP, RP);
                 break;
-            case 0b0001_110_011_101_111: //XOR SP PC DX (SP ^ PC -> DX)
-                DX = aluXor(SP, PC);
+            case 0b0001_110_011_101_111: //AND SP PC DX (SP & PC -> DX)
+                DX = aluAnd(SP, PC);
                 break;
-            case 0b0001_110_100_101_000: //XOR SP AX EX (SP ^ AX -> EX)
-                EX = aluXor(SP, AX);
+            case 0b0001_110_100_101_000: //AND SP AX EX (SP & AX -> EX)
+                EX = aluAnd(SP, AX);
                 break;
-            case 0b0001_110_100_101_001: //XOR SP EX SP (SP ^ BX -> SP)
-                EX = aluXor(SP, BX);
+            case 0b0001_110_100_101_001: //AND SP EX SP (SP & BX -> SP)
+                EX = aluAnd(SP, BX);
                 break;
-            case 0b0001_110_100_101_010: //XOR SP EX SP (SP ^ CX -> SP)
-                EX = aluXor(SP, CX);
+            case 0b0001_110_100_101_010: //AND SP EX SP (SP & CX -> SP)
+                EX = aluAnd(SP, CX);
                 break;
-            case 0b0001_110_100_101_011: //XOR SP EX SP (SP ^ DX -> SP)
-                EX = aluXor(SP, DX);
+            case 0b0001_110_100_101_011: //AND SP EX SP (SP & DX -> SP)
+                EX = aluAnd(SP, DX);
                 break;
-            case 0b0001_110_100_101_100: //XOR SP EX SP (SP ^ EX -> SP)
-                EX = aluXor(SP, EX);
+            case 0b0001_110_100_101_100: //AND SP EX SP (SP & EX -> SP)
+                EX = aluAnd(SP, EX);
                 break;
-            case 0b0001_110_100_101_101: //XOR SP EX SP (SP ^ SP -> SP)
-                EX = aluXor(SP, SP);
+            case 0b0001_110_100_101_101: //AND SP EX SP (SP & SP -> SP)
+                EX = aluAnd(SP, SP);
                 break;
-            case 0b0001_110_100_101_110: //XOR SP EX SP (SP ^ RP -> SP)
-                EX = aluXor(SP, RP);
+            case 0b0001_110_100_101_110: //AND SP EX SP (SP & RP -> SP)
+                EX = aluAnd(SP, RP);
                 break;
-            case 0b0001_110_100_101_111: //XOR SP EX SP (SP ^ PC -> SP)
-                EX = aluXor(SP, PC);
+            case 0b0001_110_100_101_111: //AND SP EX SP (SP & PC -> SP)
+                EX = aluAnd(SP, PC);
                 break;
-            case 0b0001_110_101_101_000: //XOR SP AX SP (SP ^ AX -> SP)
-                SP = aluXor(SP, AX);
+            case 0b0001_110_101_101_000: //AND SP AX SP (SP & AX -> SP)
+                SP = aluAnd(SP, AX);
                 break;
-            case 0b0001_110_101_101_001: //XOR SP BX SP (SP ^ BX -> SP)
-                SP = aluXor(SP, BX);
+            case 0b0001_110_101_101_001: //AND SP BX SP (SP & BX -> SP)
+                SP = aluAnd(SP, BX);
                 break;
-            case 0b0001_110_101_101_010: //XOR SP CX SP (SP ^ CX -> SP)
-                SP = aluXor(SP, CX);
+            case 0b0001_110_101_101_010: //AND SP CX SP (SP & CX -> SP)
+                SP = aluAnd(SP, CX);
                 break;
-            case 0b0001_110_101_101_011: //XOR SP DX SP (SP ^ DX -> SP)
-                SP = aluXor(SP, DX);
+            case 0b0001_110_101_101_011: //AND SP DX SP (SP & DX -> SP)
+                SP = aluAnd(SP, DX);
                 break;
-            case 0b0001_110_101_101_100: //XOR SP EX SP (SP ^ EX -> SP)
-                SP = aluXor(SP, EX);
+            case 0b0001_110_101_101_100: //AND SP EX SP (SP & EX -> SP)
+                SP = aluAnd(SP, EX);
                 break;
-            case 0b0001_110_101_101_101: //XOR SP SP SP (SP ^ SP -> SP)
-                SP = aluXor(SP, SP);
+            case 0b0001_110_101_101_101: //AND SP SP SP (SP & SP -> SP)
+                SP = aluAnd(SP, SP);
                 break;
-            case 0b0001_110_101_101_110: //XOR SP RP SP (SP ^ RP -> SP)
-                SP = aluXor(SP, RP);
+            case 0b0001_110_101_101_110: //AND SP RP SP (SP & RP -> SP)
+                SP = aluAnd(SP, RP);
                 break;
-            case 0b0001_110_101_101_111: //XOR SP PC SP (SP ^ PC -> SP)
-                SP = aluXor(SP, PC);
+            case 0b0001_110_101_101_111: //AND SP PC SP (SP & PC -> SP)
+                SP = aluAnd(SP, PC);
                 break;
-            case 0b0001_110_110_101_000: //XOR SP AX RP (SP ^ AX -> RP)
-                RP = aluXor(SP, AX);
+            case 0b0001_110_110_101_000: //AND SP AX RP (SP & AX -> RP)
+                RP = aluAnd(SP, AX);
                 break;
-            case 0b0001_110_110_101_001: //XOR SP BX RP (SP ^ BX -> RP)
-                RP = aluXor(SP, BX);
+            case 0b0001_110_110_101_001: //AND SP BX RP (SP & BX -> RP)
+                RP = aluAnd(SP, BX);
                 break;
-            case 0b0001_110_110_101_010: //XOR SP CX RP (SP ^ CX -> RP)
-                RP = aluXor(SP, CX);
+            case 0b0001_110_110_101_010: //AND SP CX RP (SP & CX -> RP)
+                RP = aluAnd(SP, CX);
                 break;
-            case 0b0001_110_110_101_011: //XOR SP DX RP (SP ^ DX -> RP)
-                RP = aluXor(SP, DX);
+            case 0b0001_110_110_101_011: //AND SP DX RP (SP & DX -> RP)
+                RP = aluAnd(SP, DX);
                 break;
-            case 0b0001_110_110_101_100: //XOR SP EX RP (SP ^ EX -> RP)
-                RP = aluXor(SP, EX);
+            case 0b0001_110_110_101_100: //AND SP EX RP (SP & EX -> RP)
+                RP = aluAnd(SP, EX);
                 break;
-            case 0b0001_110_110_101_101: //XOR SP SP RP (SP ^ SP -> RP)
-                RP = aluXor(SP, SP);
+            case 0b0001_110_110_101_101: //AND SP SP RP (SP & SP -> RP)
+                RP = aluAnd(SP, SP);
                 break;
-            case 0b0001_110_110_101_110: //XOR SP RP RP (SP ^ RP -> RP)
-                RP = aluXor(SP, RP);
+            case 0b0001_110_110_101_110: //AND SP RP RP (SP & RP -> RP)
+                RP = aluAnd(SP, RP);
                 break;
-            case 0b0001_110_110_101_111: //XOR SP PC RP (SP ^ PC -> RP)
-                RP = aluXor(SP, PC);
+            case 0b0001_110_110_101_111: //AND SP PC RP (SP & PC -> RP)
+                RP = aluAnd(SP, PC);
                 break;
-            case 0b0001_110_111_101_000: //XOR SP AX PC (SP ^ AX -> PC)
-                PC = aluXor(SP, AX);
+            case 0b0001_110_111_101_000: //AND SP AX PC (SP & AX -> PC)
+                PC = aluAnd(SP, AX);
                 break;
-            case 0b0001_110_111_101_001: //XOR SP BX PC (SP ^ BX -> PC)
-                PC = aluXor(SP, BX);
+            case 0b0001_110_111_101_001: //AND SP BX PC (SP & BX -> PC)
+                PC = aluAnd(SP, BX);
                 break;
-            case 0b0001_110_111_101_010: //XOR SP CX PC (SP ^ CX -> PC)
-                PC = aluXor(SP, CX);
+            case 0b0001_110_111_101_010: //AND SP CX PC (SP & CX -> PC)
+                PC = aluAnd(SP, CX);
                 break;
-            case 0b0001_110_111_101_011: //XOR SP DX PC (SP ^ DX -> PC)
-                PC = aluXor(SP, DX);
+            case 0b0001_110_111_101_011: //AND SP DX PC (SP & DX -> PC)
+                PC = aluAnd(SP, DX);
                 break;
-            case 0b0001_110_111_101_100: //XOR SP EX PC (SP ^ EX -> PC)
-                PC = aluXor(SP, EX);
+            case 0b0001_110_111_101_100: //AND SP EX PC (SP & EX -> PC)
+                PC = aluAnd(SP, EX);
                 break;
-            case 0b0001_110_111_101_101: //XOR SP SP PC (SP ^ SP -> PC)
-                PC = aluXor(SP, SP);
+            case 0b0001_110_111_101_101: //AND SP SP PC (SP & SP -> PC)
+                PC = aluAnd(SP, SP);
                 break;
-            case 0b0001_110_111_101_110: //XOR SP RP PC (SP ^ RP -> PC)
-                PC = aluXor(SP, RP);
+            case 0b0001_110_111_101_110: //AND SP RP PC (SP & RP -> PC)
+                PC = aluAnd(SP, RP);
                 break;
-            case 0b0001_110_111_101_111: //XOR SP PC PC (SP ^ PC -> PC)
-                PC = aluXor(SP, PC);
+            case 0b0001_110_111_101_111: //AND SP PC PC (SP & PC -> PC)
+                PC = aluAnd(SP, PC);
                 break;
-            case 0b0001_110_000_110_000: //XOR RP AX AX (RP ^ AX -> AX)
-                AX = aluXor(RP, AX);
+            case 0b0001_110_000_110_000: //AND RP AX AX (RP & AX -> AX)
+                AX = aluAnd(RP, AX);
                 break;
-            case 0b0001_110_000_110_001: //XOR RP BX AX (RP ^ BX -> AX)
-                AX = aluXor(RP, BX);
+            case 0b0001_110_000_110_001: //AND RP BX AX (RP & BX -> AX)
+                AX = aluAnd(RP, BX);
                 break;
-            case 0b0001_110_000_110_010: //XOR RP CX AX (RP ^ CX -> AX)
-                AX = aluXor(RP, CX);
+            case 0b0001_110_000_110_010: //AND RP CX AX (RP & CX -> AX)
+                AX = aluAnd(RP, CX);
                 break;
-            case 0b0001_110_000_110_011: //XOR RP DX AX (RP ^ DX -> AX)
-                AX = aluXor(RP, DX);
+            case 0b0001_110_000_110_011: //AND RP DX AX (RP & DX -> AX)
+                AX = aluAnd(RP, DX);
                 break;
-            case 0b0001_110_000_110_100: //XOR RP EX AX (RP ^ EX -> AX)
-                AX = aluXor(RP, EX);
+            case 0b0001_110_000_110_100: //AND RP EX AX (RP & EX -> AX)
+                AX = aluAnd(RP, EX);
                 break;
-            case 0b0001_110_000_110_101: //XOR RP SP AX (RP ^ SP -> AX)
-                AX = aluXor(RP, SP);
+            case 0b0001_110_000_110_101: //AND RP SP AX (RP & SP -> AX)
+                AX = aluAnd(RP, SP);
                 break;
-            case 0b0001_110_000_110_110: //XOR RP RP AX (RP ^ RP -> AX)
-                AX = aluXor(RP, RP);
+            case 0b0001_110_000_110_110: //AND RP RP AX (RP & RP -> AX)
+                AX = aluAnd(RP, RP);
                 break;
-            case 0b0001_110_000_110_111: //XOR RP PC AX (RP ^ PC -> AX)
-                AX = aluXor(RP, PC);
+            case 0b0001_110_000_110_111: //AND RP PC AX (RP & PC -> AX)
+                AX = aluAnd(RP, PC);
                 break;
-            case 0b0001_110_001_110_000: //XOR RP AX BX (RP ^ AX -> BX)
-                BX = aluXor(RP, AX);
+            case 0b0001_110_001_110_000: //AND RP AX BX (RP & AX -> BX)
+                BX = aluAnd(RP, AX);
                 break;
-            case 0b0001_110_001_110_001: //XOR RP BX BX (RP ^ BX -> BX)
-                BX = aluXor(RP, BX);
+            case 0b0001_110_001_110_001: //AND RP BX BX (RP & BX -> BX)
+                BX = aluAnd(RP, BX);
                 break;
-            case 0b0001_110_001_110_010: //XOR RP CX BX (RP ^ CX -> BX)
-                BX = aluXor(RP, CX);
+            case 0b0001_110_001_110_010: //AND RP CX BX (RP & CX -> BX)
+                BX = aluAnd(RP, CX);
                 break;
-            case 0b0001_110_001_110_011: //XOR RP DX BX (RP ^ DX -> BX)
-                BX = aluXor(RP, DX);
+            case 0b0001_110_001_110_011: //AND RP DX BX (RP & DX -> BX)
+                BX = aluAnd(RP, DX);
                 break;
-            case 0b0001_110_001_110_100: //XOR RP EX BX (RP ^ EX -> BX)
-                BX = aluXor(RP, EX);
+            case 0b0001_110_001_110_100: //AND RP EX BX (RP & EX -> BX)
+                BX = aluAnd(RP, EX);
                 break;
-            case 0b0001_110_001_110_101: //XOR RP SP BX (RP ^ SP -> BX)
-                BX = aluXor(RP, SP);
+            case 0b0001_110_001_110_101: //AND RP SP BX (RP & SP -> BX)
+                BX = aluAnd(RP, SP);
                 break;
-            case 0b0001_110_001_110_110: //XOR RP RP BX (RP ^ RP -> BX)
-                BX = aluXor(RP, RP);
+            case 0b0001_110_001_110_110: //AND RP RP BX (RP & RP -> BX)
+                BX = aluAnd(RP, RP);
                 break;
-            case 0b0001_110_001_110_111: //XOR RP PC BX (RP ^ PC -> BX)
-                BX = aluXor(RP, PC);
+            case 0b0001_110_001_110_111: //AND RP PC BX (RP & PC -> BX)
+                BX = aluAnd(RP, PC);
                 break;
-            case 0b0001_110_010_110_000: //XOR RP AX CX (RP ^ AX -> CX)
-                CX = aluXor(RP, AX);
+            case 0b0001_110_010_110_000: //AND RP AX CX (RP & AX -> CX)
+                CX = aluAnd(RP, AX);
                 break;
-            case 0b0001_110_010_110_001: //XOR RP BX CX (RP ^ BX -> CX)
-                CX = aluXor(RP, BX);
+            case 0b0001_110_010_110_001: //AND RP BX CX (RP & BX -> CX)
+                CX = aluAnd(RP, BX);
                 break;
-            case 0b0001_110_010_110_010: //XOR RP CX CX (RP ^ CX -> CX)
-                CX = aluXor(RP, CX);
+            case 0b0001_110_010_110_010: //AND RP CX CX (RP & CX -> CX)
+                CX = aluAnd(RP, CX);
                 break;
-            case 0b0001_110_010_110_011: //XOR RP DX CX (RP ^ DX -> CX)
-                CX = aluXor(RP, DX);
+            case 0b0001_110_010_110_011: //AND RP DX CX (RP & DX -> CX)
+                CX = aluAnd(RP, DX);
                 break;
-            case 0b0001_110_010_110_100: //XOR RP EX CX (RP ^ EX -> CX)
-                CX = aluXor(RP, EX);
+            case 0b0001_110_010_110_100: //AND RP EX CX (RP & EX -> CX)
+                CX = aluAnd(RP, EX);
                 break;
-            case 0b0001_110_010_110_101: //XOR RP SP CX (RP ^ SP -> CX)
-                CX = aluXor(RP, SP);
+            case 0b0001_110_010_110_101: //AND RP SP CX (RP & SP -> CX)
+                CX = aluAnd(RP, SP);
                 break;
-            case 0b0001_110_010_110_110: //XOR RP RP CX (RP ^ RP -> CX)
-                CX = aluXor(RP, RP);
+            case 0b0001_110_010_110_110: //AND RP RP CX (RP & RP -> CX)
+                CX = aluAnd(RP, RP);
                 break;
-            case 0b0001_110_010_110_111: //XOR RP PC CX (RP ^ PC -> CX)
-                CX = aluXor(RP, PC);
+            case 0b0001_110_010_110_111: //AND RP PC CX (RP & PC -> CX)
+                CX = aluAnd(RP, PC);
                 break;
-            case 0b0001_110_011_110_000: //XOR RP AX DX (RP ^ AX -> DX)
-                DX = aluXor(RP, AX);
+            case 0b0001_110_011_110_000: //AND RP AX DX (RP & AX -> DX)
+                DX = aluAnd(RP, AX);
                 break;
-            case 0b0001_110_011_110_001: //XOR RP BX DX (RP ^ BX -> DX)
-                DX = aluXor(RP, BX);
+            case 0b0001_110_011_110_001: //AND RP BX DX (RP & BX -> DX)
+                DX = aluAnd(RP, BX);
                 break;
-            case 0b0001_110_011_110_010: //XOR RP CX DX (RP ^ CX -> DX)
-                DX = aluXor(RP, CX);
+            case 0b0001_110_011_110_010: //AND RP CX DX (RP & CX -> DX)
+                DX = aluAnd(RP, CX);
                 break;
-            case 0b0001_110_011_110_011: //XOR RP DX DX (RP ^ DX -> DX)
-                DX = aluXor(RP, DX);
+            case 0b0001_110_011_110_011: //AND RP DX DX (RP & DX -> DX)
+                DX = aluAnd(RP, DX);
                 break;
-            case 0b0001_110_011_110_100: //XOR RP EX DX (RP ^ EX -> DX)
-                DX = aluXor(RP, EX);
+            case 0b0001_110_011_110_100: //AND RP EX DX (RP & EX -> DX)
+                DX = aluAnd(RP, EX);
                 break;
-            case 0b0001_110_011_110_101: //XOR RP SP DX (RP ^ SP -> DX)
-                DX = aluXor(RP, SP);
+            case 0b0001_110_011_110_101: //AND RP SP DX (RP & SP -> DX)
+                DX = aluAnd(RP, SP);
                 break;
-            case 0b0001_110_011_110_110: //XOR RP RP DX (RP ^ RP -> DX)
-                DX = aluXor(RP, RP);
+            case 0b0001_110_011_110_110: //AND RP RP DX (RP & RP -> DX)
+                DX = aluAnd(RP, RP);
                 break;
-            case 0b0001_110_011_110_111: //XOR RP PC DX (RP ^ PC -> DX)
-                DX = aluXor(RP, PC);
+            case 0b0001_110_011_110_111: //AND RP PC DX (RP & PC -> DX)
+                DX = aluAnd(RP, PC);
                 break;
-            case 0b0001_110_100_110_000: //XOR RP AX EX (RP ^ AX -> EX)
-                EX = aluXor(RP, AX);
+            case 0b0001_110_100_110_000: //AND RP AX EX (RP & AX -> EX)
+                EX = aluAnd(RP, AX);
                 break;
-            case 0b0001_110_100_110_001: //XOR RP EX SP (RP ^ BX -> SP)
-                EX = aluXor(RP, BX);
+            case 0b0001_110_100_110_001: //AND RP EX SP (RP & BX -> SP)
+                EX = aluAnd(RP, BX);
                 break;
-            case 0b0001_110_100_110_010: //XOR RP EX SP (RP ^ CX -> SP)
-                EX = aluXor(RP, CX);
+            case 0b0001_110_100_110_010: //AND RP EX SP (RP & CX -> SP)
+                EX = aluAnd(RP, CX);
                 break;
-            case 0b0001_110_100_110_011: //XOR RP EX SP (RP ^ DX -> SP)
-                EX = aluXor(RP, DX);
+            case 0b0001_110_100_110_011: //AND RP EX SP (RP & DX -> SP)
+                EX = aluAnd(RP, DX);
                 break;
-            case 0b0001_110_100_110_100: //XOR RP EX SP (RP ^ EX -> SP)
-                EX = aluXor(RP, EX);
+            case 0b0001_110_100_110_100: //AND RP EX SP (RP & EX -> SP)
+                EX = aluAnd(RP, EX);
                 break;
-            case 0b0001_110_100_110_101: //XOR RP EX SP (RP ^ SP -> SP)
-                EX = aluXor(RP, SP);
+            case 0b0001_110_100_110_101: //AND RP EX SP (RP & SP -> SP)
+                EX = aluAnd(RP, SP);
                 break;
-            case 0b0001_110_100_110_110: //XOR RP EX SP (RP ^ RP -> SP)
-                EX = aluXor(RP, RP);
+            case 0b0001_110_100_110_110: //AND RP EX SP (RP & RP -> SP)
+                EX = aluAnd(RP, RP);
                 break;
-            case 0b0001_110_100_110_111: //XOR RP EX SP (RP ^ PC -> SP)
-                EX = aluXor(RP, PC);
+            case 0b0001_110_100_110_111: //AND RP EX SP (RP & PC -> SP)
+                EX = aluAnd(RP, PC);
                 break;
-            case 0b0001_110_101_110_000: //XOR RP AX SP (RP ^ AX -> SP)
-                SP = aluXor(RP, AX);
+            case 0b0001_110_101_110_000: //AND RP AX SP (RP & AX -> SP)
+                SP = aluAnd(RP, AX);
                 break;
-            case 0b0001_110_101_110_001: //XOR RP BX SP (RP ^ BX -> SP)
-                SP = aluXor(RP, BX);
+            case 0b0001_110_101_110_001: //AND RP BX SP (RP & BX -> SP)
+                SP = aluAnd(RP, BX);
                 break;
-            case 0b0001_110_101_110_010: //XOR RP CX SP (RP ^ CX -> SP)
-                SP = aluXor(RP, CX);
+            case 0b0001_110_101_110_010: //AND RP CX SP (RP & CX -> SP)
+                SP = aluAnd(RP, CX);
                 break;
-            case 0b0001_110_101_110_011: //XOR RP DX SP (RP ^ DX -> SP)
-                SP = aluXor(RP, DX);
+            case 0b0001_110_101_110_011: //AND RP DX SP (RP & DX -> SP)
+                SP = aluAnd(RP, DX);
                 break;
-            case 0b0001_110_101_110_100: //XOR RP EX SP (RP ^ EX -> SP)
-                SP = aluXor(RP, EX);
+            case 0b0001_110_101_110_100: //AND RP EX SP (RP & EX -> SP)
+                SP = aluAnd(RP, EX);
                 break;
-            case 0b0001_110_101_110_101: //XOR RP SP SP (RP ^ SP -> SP)
-                SP = aluXor(RP, SP);
+            case 0b0001_110_101_110_101: //AND RP SP SP (RP & SP -> SP)
+                SP = aluAnd(RP, SP);
                 break;
-            case 0b0001_110_101_110_110: //XOR RP RP SP (RP ^ RP -> SP)
-                SP = aluXor(RP, RP);
+            case 0b0001_110_101_110_110: //AND RP RP SP (RP & RP -> SP)
+                SP = aluAnd(RP, RP);
                 break;
-            case 0b0001_110_101_110_111: //XOR RP PC SP (RP ^ PC -> SP)
-                SP = aluXor(RP, PC);
+            case 0b0001_110_101_110_111: //AND RP PC SP (RP & PC -> SP)
+                SP = aluAnd(RP, PC);
                 break;
-            case 0b0001_110_110_110_000: //XOR RP AX RP (RP ^ AX -> RP)
-                RP = aluXor(RP, AX);
+            case 0b0001_110_110_110_000: //AND RP AX RP (RP & AX -> RP)
+                RP = aluAnd(RP, AX);
                 break;
-            case 0b0001_110_110_110_001: //XOR RP BX RP (RP ^ BX -> RP)
-                RP = aluXor(RP, BX);
+            case 0b0001_110_110_110_001: //AND RP BX RP (RP & BX -> RP)
+                RP = aluAnd(RP, BX);
                 break;
-            case 0b0001_110_110_110_010: //XOR RP CX RP (RP ^ CX -> RP)
-                RP = aluXor(RP, CX);
+            case 0b0001_110_110_110_010: //AND RP CX RP (RP & CX -> RP)
+                RP = aluAnd(RP, CX);
                 break;
-            case 0b0001_110_110_110_011: //XOR RP DX RP (RP ^ DX -> RP)
-                RP = aluXor(RP, DX);
+            case 0b0001_110_110_110_011: //AND RP DX RP (RP & DX -> RP)
+                RP = aluAnd(RP, DX);
                 break;
-            case 0b0001_110_110_110_100: //XOR RP EX RP (RP ^ EX -> RP)
-                RP = aluXor(RP, EX);
+            case 0b0001_110_110_110_100: //AND RP EX RP (RP & EX -> RP)
+                RP = aluAnd(RP, EX);
                 break;
-            case 0b0001_110_110_110_101: //XOR RP SP RP (RP ^ SP -> RP)
-                RP = aluXor(RP, SP);
+            case 0b0001_110_110_110_101: //AND RP SP RP (RP & SP -> RP)
+                RP = aluAnd(RP, SP);
                 break;
-            case 0b0001_110_110_110_110: //XOR RP RP RP (RP ^ RP -> RP)
-                RP = aluXor(RP, RP);
+            case 0b0001_110_110_110_110: //AND RP RP RP (RP & RP -> RP)
+                RP = aluAnd(RP, RP);
                 break;
-            case 0b0001_110_110_110_111: //XOR RP PC RP (RP ^ PC -> RP)
-                RP = aluXor(RP, PC);
+            case 0b0001_110_110_110_111: //AND RP PC RP (RP & PC -> RP)
+                RP = aluAnd(RP, PC);
                 break;
-            case 0b0001_110_111_110_000: //XOR RP AX PC (RP ^ AX -> PC)
-                PC = aluXor(RP, AX);
+            case 0b0001_110_111_110_000: //AND RP AX PC (RP & AX -> PC)
+                PC = aluAnd(RP, AX);
                 break;
-            case 0b0001_110_111_110_001: //XOR RP BX PC (RP ^ BX -> PC)
-                PC = aluXor(RP, BX);
+            case 0b0001_110_111_110_001: //AND RP BX PC (RP & BX -> PC)
+                PC = aluAnd(RP, BX);
                 break;
-            case 0b0001_110_111_110_010: //XOR RP CX PC (RP ^ CX -> PC)
-                PC = aluXor(RP, CX);
+            case 0b0001_110_111_110_010: //AND RP CX PC (RP & CX -> PC)
+                PC = aluAnd(RP, CX);
                 break;
-            case 0b0001_110_111_110_011: //XOR RP DX PC (RP ^ DX -> PC)
-                PC = aluXor(RP, DX);
+            case 0b0001_110_111_110_011: //AND RP DX PC (RP & DX -> PC)
+                PC = aluAnd(RP, DX);
                 break;
-            case 0b0001_110_111_110_100: //XOR RP EX PC (RP ^ EX -> PC)
-                PC = aluXor(RP, EX);
+            case 0b0001_110_111_110_100: //AND RP EX PC (RP & EX -> PC)
+                PC = aluAnd(RP, EX);
                 break;
-            case 0b0001_110_111_110_101: //XOR RP SP PC (RP ^ SP -> PC)
-                PC = aluXor(RP, SP);
+            case 0b0001_110_111_110_101: //AND RP SP PC (RP & SP -> PC)
+                PC = aluAnd(RP, SP);
                 break;
-            case 0b0001_110_111_110_110: //XOR RP RP PC (RP ^ RP -> PC)
-                PC = aluXor(RP, RP);
+            case 0b0001_110_111_110_110: //AND RP RP PC (RP & RP -> PC)
+                PC = aluAnd(RP, RP);
                 break;
-            case 0b0001_110_111_110_111: //XOR RP PC PC (RP ^ PC -> PC)
-                PC = aluXor(RP, PC);
+            case 0b0001_110_111_110_111: //AND RP PC PC (RP & PC -> PC)
+                PC = aluAnd(RP, PC);
                 break;
-            case 0b0001_110_000_111_000: //XOR PC AX AX (PC ^ AX -> AX)
-                AX = aluXor(PC, AX);
+            case 0b0001_110_000_111_000: //AND PC AX AX (PC & AX -> AX)
+                AX = aluAnd(PC, AX);
                 break;
-            case 0b0001_110_000_111_001: //XOR PC BX AX (PC ^ BX -> AX)
-                AX = aluXor(PC, BX);
+            case 0b0001_110_000_111_001: //AND PC BX AX (PC & BX -> AX)
+                AX = aluAnd(PC, BX);
                 break;
-            case 0b0001_110_000_111_010: //XOR PC CX AX (PC ^ CX -> AX)
-                AX = aluXor(PC, CX);
+            case 0b0001_110_000_111_010: //AND PC CX AX (PC & CX -> AX)
+                AX = aluAnd(PC, CX);
                 break;
-            case 0b0001_110_000_111_011: //XOR PC DX AX (PC ^ DX -> AX)
-                AX = aluXor(PC, DX);
+            case 0b0001_110_000_111_011: //AND PC DX AX (PC & DX -> AX)
+                AX = aluAnd(PC, DX);
                 break;
-            case 0b0001_110_000_111_100: //XOR PC EX AX (PC ^ EX -> AX)
-                AX = aluXor(PC, EX);
+            case 0b0001_110_000_111_100: //AND PC EX AX (PC & EX -> AX)
+                AX = aluAnd(PC, EX);
                 break;
-            case 0b0001_110_000_111_101: //XOR PC SP AX (PC ^ SP -> AX)
-                AX = aluXor(PC, SP);
+            case 0b0001_110_000_111_101: //AND PC SP AX (PC & SP -> AX)
+                AX = aluAnd(PC, SP);
                 break;
-            case 0b0001_110_000_111_110: //XOR PC RP AX (PC ^ RP -> AX)
-                AX = aluXor(PC, RP);
+            case 0b0001_110_000_111_110: //AND PC RP AX (PC & RP -> AX)
+                AX = aluAnd(PC, RP);
                 break;
-            case 0b0001_110_000_111_111: //XOR PC PC AX (PC ^ PC -> AX)
-                AX = aluXor(PC, PC);
+            case 0b0001_110_000_111_111: //AND PC PC AX (PC & PC -> AX)
+                AX = aluAnd(PC, PC);
                 break;
-            case 0b0001_110_001_111_000: //XOR PC AX BX (PC ^ AX -> BX)
-                BX = aluXor(PC, AX);
+            case 0b0001_110_001_111_000: //AND PC AX BX (PC & AX -> BX)
+                BX = aluAnd(PC, AX);
                 break;
-            case 0b0001_110_001_111_001: //XOR PC BX BX (PC ^ BX -> BX)
-                BX = aluXor(PC, BX);
+            case 0b0001_110_001_111_001: //AND PC BX BX (PC & BX -> BX)
+                BX = aluAnd(PC, BX);
                 break;
-            case 0b0001_110_001_111_010: //XOR PC CX BX (PC ^ CX -> BX)
-                BX = aluXor(PC, CX);
+            case 0b0001_110_001_111_010: //AND PC CX BX (PC & CX -> BX)
+                BX = aluAnd(PC, CX);
                 break;
-            case 0b0001_110_001_111_011: //XOR PC DX BX (PC ^ DX -> BX)
-                BX = aluXor(PC, DX);
+            case 0b0001_110_001_111_011: //AND PC DX BX (PC & DX -> BX)
+                BX = aluAnd(PC, DX);
                 break;
-            case 0b0001_110_001_111_100: //XOR PC EX BX (PC ^ EX -> BX)
-                BX = aluXor(PC, EX);
+            case 0b0001_110_001_111_100: //AND PC EX BX (PC & EX -> BX)
+                BX = aluAnd(PC, EX);
                 break;
-            case 0b0001_110_001_111_101: //XOR PC SP BX (PC ^ SP -> BX)
-                BX = aluXor(PC, SP);
+            case 0b0001_110_001_111_101: //AND PC SP BX (PC & SP -> BX)
+                BX = aluAnd(PC, SP);
                 break;
-            case 0b0001_110_001_111_110: //XOR PC RP BX (PC ^ RP -> BX)
-                BX = aluXor(PC, RP);
+            case 0b0001_110_001_111_110: //AND PC RP BX (PC & RP -> BX)
+                BX = aluAnd(PC, RP);
                 break;
-            case 0b0001_110_001_111_111: //XOR PC PC BX (PC ^ PC -> BX)
-                BX = aluXor(PC, PC);
+            case 0b0001_110_001_111_111: //AND PC PC BX (PC & PC -> BX)
+                BX = aluAnd(PC, PC);
                 break;
-            case 0b0001_110_010_111_000: //XOR PC AX CX (PC ^ AX -> CX)
-                CX = aluXor(PC, AX);
+            case 0b0001_110_010_111_000: //AND PC AX CX (PC & AX -> CX)
+                CX = aluAnd(PC, AX);
                 break;
-            case 0b0001_110_010_111_001: //XOR PC BX CX (PC ^ BX -> CX)
-                CX = aluXor(PC, BX);
+            case 0b0001_110_010_111_001: //AND PC BX CX (PC & BX -> CX)
+                CX = aluAnd(PC, BX);
                 break;
-            case 0b0001_110_010_111_010: //XOR PC CX CX (PC ^ CX -> CX)
-                CX = aluXor(PC, CX);
+            case 0b0001_110_010_111_010: //AND PC CX CX (PC & CX -> CX)
+                CX = aluAnd(PC, CX);
                 break;
-            case 0b0001_110_010_111_011: //XOR PC DX CX (PC ^ DX -> CX)
-                CX = aluXor(PC, DX);
+            case 0b0001_110_010_111_011: //AND PC DX CX (PC & DX -> CX)
+                CX = aluAnd(PC, DX);
                 break;
-            case 0b0001_110_010_111_100: //XOR PC EX CX (PC ^ EX -> CX)
-                CX = aluXor(PC, EX);
+            case 0b0001_110_010_111_100: //AND PC EX CX (PC & EX -> CX)
+                CX = aluAnd(PC, EX);
                 break;
-            case 0b0001_110_010_111_101: //XOR PC SP CX (PC ^ SP -> CX)
-                CX = aluXor(PC, SP);
+            case 0b0001_110_010_111_101: //AND PC SP CX (PC & SP -> CX)
+                CX = aluAnd(PC, SP);
                 break;
-            case 0b0001_110_010_111_110: //XOR PC RP CX (PC ^ RP -> CX)
-                CX = aluXor(PC, RP);
+            case 0b0001_110_010_111_110: //AND PC RP CX (PC & RP -> CX)
+                CX = aluAnd(PC, RP);
                 break;
-            case 0b0001_110_010_111_111: //XOR PC PC CX (PC ^ PC -> CX)
-                CX = aluXor(PC, PC);
+            case 0b0001_110_010_111_111: //AND PC PC CX (PC & PC -> CX)
+                CX = aluAnd(PC, PC);
                 break;
-            case 0b0001_110_011_111_000: //XOR PC AX DX (PC ^ AX -> DX)
-                DX = aluXor(PC, AX);
+            case 0b0001_110_011_111_000: //AND PC AX DX (PC & AX -> DX)
+                DX = aluAnd(PC, AX);
                 break;
-            case 0b0001_110_011_111_001: //XOR PC BX DX (PC ^ BX -> DX)
-                DX = aluXor(PC, BX);
+            case 0b0001_110_011_111_001: //AND PC BX DX (PC & BX -> DX)
+                DX = aluAnd(PC, BX);
                 break;
-            case 0b0001_110_011_111_010: //XOR PC CX DX (PC ^ CX -> DX)
-                DX = aluXor(PC, CX);
+            case 0b0001_110_011_111_010: //AND PC CX DX (PC & CX -> DX)
+                DX = aluAnd(PC, CX);
                 break;
-            case 0b0001_110_011_111_011: //XOR PC DX DX (PC ^ DX -> DX)
-                DX = aluXor(PC, DX);
+            case 0b0001_110_011_111_011: //AND PC DX DX (PC & DX -> DX)
+                DX = aluAnd(PC, DX);
                 break;
-            case 0b0001_110_011_111_100: //XOR PC EX DX (PC ^ EX -> DX)
-                DX = aluXor(PC, EX);
+            case 0b0001_110_011_111_100: //AND PC EX DX (PC & EX -> DX)
+                DX = aluAnd(PC, EX);
                 break;
-            case 0b0001_110_011_111_101: //XOR PC SP DX (PC ^ SP -> DX)
-                DX = aluXor(PC, SP);
+            case 0b0001_110_011_111_101: //AND PC SP DX (PC & SP -> DX)
+                DX = aluAnd(PC, SP);
                 break;
-            case 0b0001_110_011_111_110: //XOR PC RP DX (PC ^ RP -> DX)
-                DX = aluXor(PC, RP);
+            case 0b0001_110_011_111_110: //AND PC RP DX (PC & RP -> DX)
+                DX = aluAnd(PC, RP);
                 break;
-            case 0b0001_110_011_111_111: //XOR PC PC DX (PC ^ PC -> DX)
-                DX = aluXor(PC, PC);
+            case 0b0001_110_011_111_111: //AND PC PC DX (PC & PC -> DX)
+                DX = aluAnd(PC, PC);
                 break;
-            case 0b0001_110_100_111_000: //XOR PC AX EX (PC ^ AX -> EX)
-                EX = aluXor(PC, AX);
+            case 0b0001_110_100_111_000: //AND PC AX EX (PC & AX -> EX)
+                EX = aluAnd(PC, AX);
                 break;
-            case 0b0001_110_100_111_001: //XOR PC EX SP (PC ^ BX -> SP)
-                EX = aluXor(PC, BX);
+            case 0b0001_110_100_111_001: //AND PC EX SP (PC & BX -> SP)
+                EX = aluAnd(PC, BX);
                 break;
-            case 0b0001_110_100_111_010: //XOR PC EX SP (PC ^ CX -> SP)
-                EX = aluXor(PC, CX);
+            case 0b0001_110_100_111_010: //AND PC EX SP (PC & CX -> SP)
+                EX = aluAnd(PC, CX);
                 break;
-            case 0b0001_110_100_111_011: //XOR PC EX SP (PC ^ DX -> SP)
-                EX = aluXor(PC, DX);
+            case 0b0001_110_100_111_011: //AND PC EX SP (PC & DX -> SP)
+                EX = aluAnd(PC, DX);
                 break;
-            case 0b0001_110_100_111_100: //XOR PC EX SP (PC ^ EX -> SP)
-                EX = aluXor(PC, EX);
+            case 0b0001_110_100_111_100: //AND PC EX SP (PC & EX -> SP)
+                EX = aluAnd(PC, EX);
                 break;
-            case 0b0001_110_100_111_101: //XOR PC EX SP (PC ^ SP -> SP)
-                EX = aluXor(PC, SP);
+            case 0b0001_110_100_111_101: //AND PC EX SP (PC & SP -> SP)
+                EX = aluAnd(PC, SP);
                 break;
-            case 0b0001_110_100_111_110: //XOR PC EX SP (PC ^ RP -> SP)
-                EX = aluXor(PC, RP);
+            case 0b0001_110_100_111_110: //AND PC EX SP (PC & RP -> SP)
+                EX = aluAnd(PC, RP);
                 break;
-            case 0b0001_110_100_111_111: //XOR PC EX SP (PC ^ PC -> SP)
-                EX = aluXor(PC, PC);
+            case 0b0001_110_100_111_111: //AND PC EX SP (PC & PC -> SP)
+                EX = aluAnd(PC, PC);
                 break;
-            case 0b0001_110_101_111_000: //XOR PC AX SP (PC ^ AX -> SP)
-                SP = aluXor(PC, AX);
+            case 0b0001_110_101_111_000: //AND PC AX SP (PC & AX -> SP)
+                SP = aluAnd(PC, AX);
                 break;
-            case 0b0001_110_101_111_001: //XOR PC BX SP (PC ^ BX -> SP)
-                SP = aluXor(PC, BX);
+            case 0b0001_110_101_111_001: //AND PC BX SP (PC & BX -> SP)
+                SP = aluAnd(PC, BX);
                 break;
-            case 0b0001_110_101_111_010: //XOR PC CX SP (PC ^ CX -> SP)
-                SP = aluXor(PC, CX);
+            case 0b0001_110_101_111_010: //AND PC CX SP (PC & CX -> SP)
+                SP = aluAnd(PC, CX);
                 break;
-            case 0b0001_110_101_111_011: //XOR PC DX SP (PC ^ DX -> SP)
-                SP = aluXor(PC, DX);
+            case 0b0001_110_101_111_011: //AND PC DX SP (PC & DX -> SP)
+                SP = aluAnd(PC, DX);
                 break;
-            case 0b0001_110_101_111_100: //XOR PC EX SP (PC ^ EX -> SP)
-                SP = aluXor(PC, EX);
+            case 0b0001_110_101_111_100: //AND PC EX SP (PC & EX -> SP)
+                SP = aluAnd(PC, EX);
                 break;
-            case 0b0001_110_101_111_101: //XOR PC SP SP (PC ^ SP -> SP)
-                SP = aluXor(PC, SP);
+            case 0b0001_110_101_111_101: //AND PC SP SP (PC & SP -> SP)
+                SP = aluAnd(PC, SP);
                 break;
-            case 0b0001_110_101_111_110: //XOR PC RP SP (PC ^ RP -> SP)
-                SP = aluXor(PC, RP);
+            case 0b0001_110_101_111_110: //AND PC RP SP (PC & RP -> SP)
+                SP = aluAnd(PC, RP);
                 break;
-            case 0b0001_110_101_111_111: //XOR PC PC SP (PC ^ PC -> SP)
-                SP = aluXor(PC, PC);
+            case 0b0001_110_101_111_111: //AND PC PC SP (PC & PC -> SP)
+                SP = aluAnd(PC, PC);
                 break;
-            case 0b0001_110_110_111_000: //XOR PC AX RP (PC ^ AX -> RP)
-                RP = aluXor(PC, AX);
+            case 0b0001_110_110_111_000: //AND PC AX RP (PC & AX -> RP)
+                RP = aluAnd(PC, AX);
                 break;
-            case 0b0001_110_110_111_001: //XOR PC BX RP (PC ^ BX -> RP)
-                RP = aluXor(PC, BX);
+            case 0b0001_110_110_111_001: //AND PC BX RP (PC & BX -> RP)
+                RP = aluAnd(PC, BX);
                 break;
-            case 0b0001_110_110_111_010: //XOR PC CX RP (PC ^ CX -> RP)
-                RP = aluXor(PC, CX);
+            case 0b0001_110_110_111_010: //AND PC CX RP (PC & CX -> RP)
+                RP = aluAnd(PC, CX);
                 break;
-            case 0b0001_110_110_111_011: //XOR PC DX RP (PC ^ DX -> RP)
-                RP = aluXor(PC, DX);
+            case 0b0001_110_110_111_011: //AND PC DX RP (PC & DX -> RP)
+                RP = aluAnd(PC, DX);
                 break;
-            case 0b0001_110_110_111_100: //XOR PC EX RP (PC ^ EX -> RP)
-                RP = aluXor(PC, EX);
+            case 0b0001_110_110_111_100: //AND PC EX RP (PC & EX -> RP)
+                RP = aluAnd(PC, EX);
                 break;
-            case 0b0001_110_110_111_101: //XOR PC SP RP (PC ^ SP -> RP)
-                RP = aluXor(PC, SP);
+            case 0b0001_110_110_111_101: //AND PC SP RP (PC & SP -> RP)
+                RP = aluAnd(PC, SP);
                 break;
-            case 0b0001_110_110_111_110: //XOR PC RP RP (PC ^ RP -> RP)
-                RP = aluXor(PC, RP);
+            case 0b0001_110_110_111_110: //AND PC RP RP (PC & RP -> RP)
+                RP = aluAnd(PC, RP);
                 break;
-            case 0b0001_110_110_111_111: //XOR PC PC RP (PC ^ PC -> RP)
-                RP = aluXor(PC, PC);
+            case 0b0001_110_110_111_111: //AND PC PC RP (PC & PC -> RP)
+                RP = aluAnd(PC, PC);
                 break;
-            case 0b0001_110_111_111_000: //XOR PC AX PC (PC ^ AX -> PC)
-                PC = aluXor(PC, AX);
+            case 0b0001_110_111_111_000: //AND PC AX PC (PC & AX -> PC)
+                PC = aluAnd(PC, AX);
                 break;
-            case 0b0001_110_111_111_001: //XOR PC BX PC (PC ^ BX -> PC)
-                PC = aluXor(PC, BX);
+            case 0b0001_110_111_111_001: //AND PC BX PC (PC & BX -> PC)
+                PC = aluAnd(PC, BX);
                 break;
-            case 0b0001_110_111_111_010: //XOR PC CX PC (PC ^ CX -> PC)
-                PC = aluXor(PC, CX);
+            case 0b0001_110_111_111_010: //AND PC CX PC (PC & CX -> PC)
+                PC = aluAnd(PC, CX);
                 break;
-            case 0b0001_110_111_111_011: //XOR PC DX PC (PC ^ DX -> PC)
-                PC = aluXor(PC, DX);
+            case 0b0001_110_111_111_011: //AND PC DX PC (PC & DX -> PC)
+                PC = aluAnd(PC, DX);
                 break;
-            case 0b0001_110_111_111_100: //XOR PC EX PC (PC ^ EX -> PC)
-                PC = aluXor(PC, EX);
+            case 0b0001_110_111_111_100: //AND PC EX PC (PC & EX -> PC)
+                PC = aluAnd(PC, EX);
                 break;
-            case 0b0001_110_111_111_101: //XOR PC SP PC (PC ^ SP -> PC)
-                PC = aluXor(PC, SP);
+            case 0b0001_110_111_111_101: //AND PC SP PC (PC & SP -> PC)
+                PC = aluAnd(PC, SP);
                 break;
-            case 0b0001_110_111_111_110: //XOR PC RP PC (PC ^ RP -> PC)
-                PC = aluXor(PC, RP);
+            case 0b0001_110_111_111_110: //AND PC RP PC (PC & RP -> PC)
+                PC = aluAnd(PC, RP);
                 break;
-            case 0b0001_110_111_111_111: //XOR PC PC PC (PC ^ PC -> PC)
-                PC = aluXor(PC, PC);
+            case 0b0001_110_111_111_111: //AND PC PC PC (PC & PC -> PC)
+                PC = aluAnd(PC, PC);
                 break;
+
             default:
                 unknownInstruction(INST);
                 break;
-
         }
     }
+
+
 
     /*
      * Negation. Binary NOT of a value.
@@ -8811,13 +8814,14 @@ public class RelayComputer {
         BigInteger instruction = BigInteger.valueOf(INST);
 
         boolean negateBit = instruction.testBit(4);
-        boolean zeroBit = instruction.testBit(3);
-        boolean signBit = instruction.testBit(2);
-        boolean overflowBit = instruction.testBit(1);
-        boolean carryBit = instruction.testBit(0);
 
-        //JMP ≡ (n) ⊕ ( (z ∧ zero_reg) ∨ (s ∧ sign_reg) ∨ (o ∧ overflow_reg) ∨ (c ∧ carry_reg) )
-        boolean shouldJump = (negateBit ^ ((zeroBit && zero) || (signBit && sign) || (overflowBit && overflow) || (carryBit && carry)));
+        boolean carryBit = instruction.testBit(3);
+        boolean overflowBit = instruction.testBit(2);
+        boolean signBit = instruction.testBit(1);
+        boolean zeroBit = instruction.testBit(0);
+
+        //JMP ≡ (n) ⊕ ( (c ∧ carry_reg) ∨ (o ∧ overflow_reg) ∨ (s ∧ sign_reg) ∨ (z ∧ zero_reg) )
+        boolean shouldJump = (negateBit ^ ((carryBit && carry) || (overflowBit && overflow) || (signBit && sign) || (zeroBit && zero)));
 
         if (shouldJump) {
             PC = load();
@@ -9626,12 +9630,7 @@ public class RelayComputer {
     }
 
     protected void testWordIn() {
-        if (ioDevice.hasWord()) {
-            zero = false;
-        } else {
-            //There is no input word
-            zero = true;
-        }
+        zero = !ioDevice.hasWord();
     }
 
     protected short wordIn() {
@@ -9639,12 +9638,7 @@ public class RelayComputer {
     }
 
     protected void testWordOut() {
-        if (ioDevice.canSendWord()) {
-            zero = false;
-        } else {
-            //There is no room for output word
-            zero = true;
-        }
+        zero = !ioDevice.canSendWord();
     }
 
     protected void wordOut(short sourceRegister) {
