@@ -16,13 +16,16 @@ public class ReadableHardwareConnection extends SoftwareComponent implements Rea
         super(name, inputPins.length);
         this.mcp23017 = mcp23017;
         this.inputPins = inputPins;
+
+        //Set these pins to input
+        mcp23017.setInput(inputPins);
     }
 
 
     @Override
     public FixedBitSet readValue() {
+        //TODO: need debouncing?
         FixedBitSet value = mcp23017.read(inputPins);
-        //TODO: do we need to de-bounce?
         return value;
     }
 

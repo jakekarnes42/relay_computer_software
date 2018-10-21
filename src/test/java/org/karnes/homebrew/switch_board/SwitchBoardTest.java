@@ -7,6 +7,7 @@ import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalReadab
 import org.karnes.homebrew.emulator.component.bus.connection.signal.SignalWritableConnection;
 import org.karnes.homebrew.emulator.component.simple.switch_board.SwitchBoard;
 import org.karnes.homebrew.emulator.component.simple.switch_board.VirtualSwitchBoard;
+import org.karnes.homebrew.hardware.switch_board.HardwareSwitchBoard;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,6 +22,7 @@ public class SwitchBoardTest {
     @BeforeEach
     void setUp() {
         board = new VirtualSwitchBoard();
+        //board = new HardwareSwitchBoard();
         readConnection = board.getReadConnection();
         bidirectionalConnection = board.getBidirectionalConnection();
         writeConnection = board.getWriteConnection();

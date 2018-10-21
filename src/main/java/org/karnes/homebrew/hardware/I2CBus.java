@@ -41,8 +41,8 @@ public class I2CBus {
         //Initialize the native lib
         mraa.init();
 
-        //Connect to bus i2c-2 on the Beagle Bone Black
-        i2c = new I2c(1);
+        //Connect to i2c bus on the Raspberry Pi
+        i2c = new I2c(1, true);
     }
 
 

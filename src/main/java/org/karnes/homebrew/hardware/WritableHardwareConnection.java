@@ -15,6 +15,9 @@ public class WritableHardwareConnection extends SoftwareComponent implements Wri
         super(name, outputPins.length);
         this.mcp23017 = mcp23017;
         this.outputPins = outputPins;
+
+        //set to output
+        mcp23017.setOutput(outputPins);
     }
 
     @Override

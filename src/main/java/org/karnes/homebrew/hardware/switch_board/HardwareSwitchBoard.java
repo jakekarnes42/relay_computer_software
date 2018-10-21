@@ -7,6 +7,26 @@ import org.karnes.homebrew.hardware.*;
 
 import java.util.Scanner;
 
+/**
+ * Tester class for the BBB Connection Test board Rev B
+ *
+ * <h2>Raspberry PI 3 B+ Setup</h2>
+ * First need to install Java. Next install <a href="https://github.com/intel-iot-devkit/mraa">MRAA</a>
+ *
+ * <h2>Board Setup</h2>
+ * <p>
+ * Power
+ * RPI 1 (VDD 3.3V) connected to 3.3V plug on board
+ * RPI 6 (3.3V) connected to 12V power supply's GND terminal
+ * RPI 9 (DGND) connected to GND plug on board
+ *
+ * <p>
+ * I2C lines:
+ * RPI 3 (I2C2_SDA) connected to SDA plug on board
+ * RPI 5 (I2C2_SCL) connected to SCL plug on board
+ *
+ * Probably need to add -Djava.library.path=/usr/lib/arm-linux-gnueabihf/ to VM options
+ */
 public class HardwareSwitchBoard extends SoftwareComponent implements SwitchBoard {
     private final Scanner userInput;
     private SignalReadableConnection readConnection;
@@ -107,7 +127,7 @@ public class HardwareSwitchBoard extends SoftwareComponent implements SwitchBoar
     }
 
     private void flipSwitch(String switchName, boolean enable) {
-        System.out.println("Please turn " + switchName + " " + (enable ? "ON" : "OFF") + " and press ENTER.");
+        System.out.println("Please turn " + switchName + " " + (enable ? "ON" : "OFF") + " and enter K");
         userInput.next();
     }
 
