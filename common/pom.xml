@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.karnes.relay</groupId>
-    <artifactId>computer</artifactId>
+    <artifactId>common</artifactId>
     <build>
         <plugins>
             <plugin>
@@ -23,13 +23,6 @@
     </build>
 
     <dependencies>
-        <!--Uses common module-->
-        <dependency>
-            <groupId>org.karnes.relay</groupId>
-            <artifactId>common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <!--JUnit 5 for testing-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -42,16 +35,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-        </dependency>
-
-        <!--ANTLR for assembly language handling-->
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4</artifactId>
         </dependency>
 
         <!-- MRAA for low-level hardware control -->
