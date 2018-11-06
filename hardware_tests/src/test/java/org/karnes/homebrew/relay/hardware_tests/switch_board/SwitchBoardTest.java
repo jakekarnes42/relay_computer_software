@@ -1,12 +1,12 @@
-package org.karnes.homebrew.relay.common.switch_board;
+package org.karnes.homebrew.relay.hardware_tests.switch_board;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.SignalBidirectionalConnection;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.SignalReadableConnection;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.SignalWritableConnection;
-import org.karnes.homebrew.relay.common.emulator.component.simple.switch_board.SwitchBoard;
-import org.karnes.homebrew.relay.common.emulator.component.simple.switch_board.VirtualSwitchBoard;
+import org.karnes.homebrew.relay.hardware_tests.switch_board.SwitchBoard;
+import org.karnes.homebrew.relay.hardware_tests.switch_board.VirtualSwitchBoard;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -1,8 +1,8 @@
-package org.karnes.homebrew.relay.common.hardware.switch_board;
+package org.karnes.homebrew.relay.hardware_tests.switch_board;
 
 import org.karnes.homebrew.relay.common.emulator.component.SoftwareComponent;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.*;
-import org.karnes.homebrew.relay.common.emulator.component.simple.switch_board.SwitchBoard;
+import org.karnes.homebrew.relay.hardware_tests.switch_board.SwitchBoard;
 import org.karnes.homebrew.relay.common.hardware.*;
 
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package org.karnes.homebrew.relay.common.emulator.component.simple.switch_board;
+package org.karnes.homebrew.relay.hardware_tests.switch_board;
 
 import org.karnes.homebrew.relay.common.emulator.component.Component;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.SignalBidirectionalConnection;

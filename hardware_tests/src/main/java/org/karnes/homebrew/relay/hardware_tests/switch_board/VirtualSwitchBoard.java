@@ -1,12 +1,12 @@
-package org.karnes.homebrew.relay.common.emulator.component.simple.switch_board;
+package org.karnes.homebrew.relay.hardware_tests.switch_board;
 
 import org.karnes.homebrew.relay.common.emulator.component.SoftwareComponent;
 import org.karnes.homebrew.relay.common.emulator.component.bus.Bus;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.ReadableConnection;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.WritableConnection;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.*;
-import org.karnes.homebrew.relay.common.emulator.component.simple.LED;
-import org.karnes.homebrew.relay.common.emulator.component.simple.Switch;
+import org.karnes.homebrew.relay.hardware_tests.simple.LED;
+import org.karnes.homebrew.relay.hardware_tests.simple.Switch;
 
 /**
  * Emulate the behavior of the BBB Connector Test Board Rev B
