@@ -2,11 +2,9 @@ package org.karnes.homebrew.relay.hardware_tests.switch_board;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.SignalBidirectionalConnection;
-import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.SignalReadableConnection;
-import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.SignalWritableConnection;
-import org.karnes.homebrew.relay.hardware_tests.switch_board.SwitchBoard;
-import org.karnes.homebrew.relay.hardware_tests.switch_board.VirtualSwitchBoard;
+import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.BidirectionalSignalConnection;
+import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.ReadableSignalConnection;
+import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.WritableSignalConnection;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SwitchBoardTest {
 
     private SwitchBoard board;
-    private SignalReadableConnection readConnection;
-    private SignalBidirectionalConnection bidirectionalConnection;
-    private SignalWritableConnection writeConnection;
+    private ReadableSignalConnection readConnection;
+    private BidirectionalSignalConnection bidirectionalConnection;
+    private WritableSignalConnection writeConnection;
 
     @BeforeEach
     void setUp() {

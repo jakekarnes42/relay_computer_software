@@ -7,17 +7,17 @@ import org.karnes.homebrew.relay.common.emulator.component.bus.connection.Bidire
 /**
  * A wrapper for a 1-bit {@link BidirectionalConnection} which provides allows for callers to read/write booleans with the readConnection.
  */
-public class SignalBidirectionalConnectionWrapper extends SoftwareComponent implements SignalBidirectionalConnection {
+public class BidirectionalSignalConnectionWrapper extends SoftwareComponent implements BidirectionalSignalConnection {
 
     private final BidirectionalConnection connection;
 
     /**
-     * Creates a new SignalBidirectionalConnection by wrapping an existing {@link BidirectionalConnection}.
+     * Creates a new BidirectionalSignalConnection by wrapping an existing {@link BidirectionalConnection}.
      *
      * @param connection The connection to be wrapped.
      * @throws IllegalArgumentException if {@code connection} isn't 1-bit in width.
      */
-    public SignalBidirectionalConnectionWrapper(BidirectionalConnection connection) throws IllegalArgumentException {
+    public BidirectionalSignalConnectionWrapper(BidirectionalConnection connection) throws IllegalArgumentException {
         super(connection.getName() + " - Signal Wrapper", 1);
         this.connection = connection;
 

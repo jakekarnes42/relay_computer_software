@@ -2,7 +2,6 @@ package org.karnes.homebrew.relay.hardware_tests.switch_board;
 
 import org.karnes.homebrew.relay.common.emulator.component.SoftwareComponent;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.*;
-import org.karnes.homebrew.relay.hardware_tests.switch_board.SwitchBoard;
 import org.karnes.homebrew.relay.common.hardware.*;
 
 import java.util.Scanner;
@@ -29,9 +28,9 @@ import java.util.Scanner;
  */
 public class HardwareSwitchBoard extends SoftwareComponent implements SwitchBoard {
     private final Scanner userInput;
-    private SignalReadableConnection readConnection;
-    private SignalWritableConnection writeConnection;
-    private SignalBidirectionalConnection bidirectionalConnection;
+    private ReadableSignalConnection readConnection;
+    private WritableSignalConnection writeConnection;
+    private BidirectionalSignalConnection bidirectionalConnection;
 
     /**
      * Creates a new HardwareSwitchBoard.
@@ -49,20 +48,20 @@ public class HardwareSwitchBoard extends SoftwareComponent implements SwitchBoar
         ReadableHardwareConnection readableHardwareConnection =
                 new ReadableHardwareConnection("HardwareSwitchBoard-ReadableConnection",
                         mcp23017, MCP23017Pin.GPIOA_0);
-        readConnection = new SignalReadableConnectionWrapper(readableHardwareConnection);
+        readConnection = new ReadableSignalConnectionWrapper(readableHardwareConnection);
 
         //Create the write connection
         WritableHardwareConnection writableHardwareConnection =
                 new WritableHardwareConnection("HardwareSwitchBoard-WritableConnection",
                         mcp23017, MCP23017Pin.GPIOA_7);
-        writeConnection = new SignalWritableConnectionWrapper(writableHardwareConnection);
+        writeConnection = new WritableSignalConnectionWrapper(writableHardwareConnection);
 
         //Create the bidirectional connection
         BidirectionalHardwareConnection bidirectionalHardwareConnection =
                 new BidirectionalHardwareConnection("HardwareSwitchBoard-BidirectionalConnection",
                         mcp23017, new MCP23017Pin[]{MCP23017Pin.GPIOB_0},
                         mcp23017, new MCP23017Pin[]{MCP23017Pin.GPIOB_7});
-        bidirectionalConnection = new SignalBidirectionalConnectionWrapper(bidirectionalHardwareConnection);
+        bidirectionalConnection = new BidirectionalSignalConnectionWrapper(bidirectionalHardwareConnection);
 
         // Setup ability to read user input
         userInput = new Scanner(System.in);
@@ -70,17 +69,17 @@ public class HardwareSwitchBoard extends SoftwareComponent implements SwitchBoar
     }
 
     @Override
-    public SignalReadableConnection getReadConnection() {
+    public ReadableSignalConnection getReadConnection() {
         return readConnection;
     }
 
     @Override
-    public SignalWritableConnection getWriteConnection() {
+    public WritableSignalConnection getWriteConnection() {
         return writeConnection;
     }
 
     @Override
-    public SignalBidirectionalConnection getBidirectionalConnection() {
+    public BidirectionalSignalConnection getBidirectionalConnection() {
         return bidirectionalConnection;
     }
 

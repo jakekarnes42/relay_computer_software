@@ -1,6 +1,6 @@
 package org.karnes.homebrew.relay.computer.run;
 
-import org.karnes.homebrew.relay.common.emulator.component.register.RegisterName;
+import org.karnes.homebrew.relay.computer.emulator.register.RegisterName;
 
 public class Helper {
 

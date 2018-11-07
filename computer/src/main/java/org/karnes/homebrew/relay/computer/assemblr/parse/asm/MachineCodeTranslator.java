@@ -2,8 +2,8 @@ package org.karnes.homebrew.relay.computer.assemblr.parse.asm;
 
 import org.karnes.homebrew.relay.computer.assemblr.parse.asm.antlr.AsmHomeBrewParser;
 import org.karnes.homebrew.relay.common.bitset.FixedBitSet;
-import org.karnes.homebrew.relay.common.emulator.component.register.RegisterName;
-import org.karnes.homebrew.relay.common.emulator.component.register.StackRegisterName;
+import org.karnes.homebrew.relay.computer.emulator.register.RegisterName;
+import org.karnes.homebrew.relay.computer.emulator.register.StackRegisterName;
 import org.karnes.homebrew.relay.computer.emulator.isa.*;
 
 import java.util.Map;

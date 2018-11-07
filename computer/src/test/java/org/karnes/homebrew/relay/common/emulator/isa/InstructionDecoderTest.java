@@ -3,8 +3,8 @@ package org.karnes.homebrew.relay.common.emulator.isa;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.karnes.homebrew.relay.common.bitset.FixedBitSet;
-import org.karnes.homebrew.relay.common.emulator.component.register.RegisterName;
-import org.karnes.homebrew.relay.common.emulator.component.register.StackRegisterName;
+import org.karnes.homebrew.relay.computer.emulator.register.RegisterName;
+import org.karnes.homebrew.relay.computer.emulator.register.StackRegisterName;
 import org.karnes.homebrew.relay.computer.emulator.isa.*;
 
 import static org.junit.jupiter.api.Assertions.*;

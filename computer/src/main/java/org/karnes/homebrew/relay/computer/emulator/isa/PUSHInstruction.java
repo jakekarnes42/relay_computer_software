@@ -1,8 +1,8 @@
 package org.karnes.homebrew.relay.computer.emulator.isa;
 
 import org.karnes.homebrew.relay.common.bitset.FixedBitSet;
-import org.karnes.homebrew.relay.common.emulator.component.register.RegisterName;
-import org.karnes.homebrew.relay.common.emulator.component.register.StackRegisterName;
+import org.karnes.homebrew.relay.computer.emulator.register.RegisterName;
+import org.karnes.homebrew.relay.computer.emulator.register.StackRegisterName;
 
 /**
  * Abstract class for instructions which require two registers argument. They may take more arguments (such as labels/values)

@@ -7,17 +7,17 @@ import org.karnes.homebrew.relay.common.emulator.component.bus.connection.Readab
 /**
  * A wrapper for a 1-bit {@link ReadableConnection} which provides allows for callers to read boolean output.
  */
-public class SignalReadableConnectionWrapper extends SoftwareComponent implements SignalReadableConnection {
+public class ReadableSignalConnectionWrapper extends SoftwareComponent implements ReadableSignalConnection {
 
     private final ReadableConnection connection;
 
     /**
-     * Creates a new SignalReadableConnection by wrapping an existing {@link ReadableConnection}.
+     * Creates a new ReadableSignalConnection by wrapping an existing {@link ReadableConnection}.
      *
      * @param connection The connection to be wrapped.
      * @throws IllegalArgumentException if {@code connection} isn't 1-bit in width.
      */
-    public SignalReadableConnectionWrapper(ReadableConnection connection) throws IllegalArgumentException {
+    public ReadableSignalConnectionWrapper(ReadableConnection connection) throws IllegalArgumentException {
         super(connection.getName() + " - Signal Wrapper", 1);
 
         if (connection.getWidth() != 1) {

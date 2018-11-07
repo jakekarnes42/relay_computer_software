@@ -5,8 +5,8 @@ import org.karnes.homebrew.relay.common.emulator.component.bus.connection.Bidire
 /**
  * A {@link BidirectionalConnection} that has a single bit width.
  *
- * @see SignalReadableConnection
- * @see SignalWritableConnection
+ * @see ReadableSignalConnection
+ * @see WritableSignalConnection
  */
-public interface SignalBidirectionalConnection extends BidirectionalConnection, SignalReadableConnection, SignalWritableConnection {
+public interface BidirectionalSignalConnection extends BidirectionalConnection, ReadableSignalConnection, WritableSignalConnection {
 }

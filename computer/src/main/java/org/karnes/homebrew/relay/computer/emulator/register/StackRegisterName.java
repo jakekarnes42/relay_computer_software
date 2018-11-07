@@ -1,4 +1,4 @@
-package org.karnes.homebrew.relay.common.emulator.component.register;
+package org.karnes.homebrew.relay.computer.emulator.register;
 
 import org.karnes.homebrew.relay.common.bitset.FixedBitSet;
 

@@ -53,19 +53,19 @@ public class VirtualSwitchBoard extends SoftwareComponent implements SwitchBoard
     }
 
     @Override
-    public SignalReadableConnection getReadConnection() {
-        return new SignalReadableConnectionWrapper(led0Bus.createReadableConnection());
+    public ReadableSignalConnection getReadConnection() {
+        return new ReadableSignalConnectionWrapper(led0Bus.createReadableConnection());
     }
 
 
     @Override
-    public SignalWritableConnection getWriteConnection() {
-        return new SignalWritableConnectionWrapper(led1Bus.createWritableConnection());
+    public WritableSignalConnection getWriteConnection() {
+        return new WritableSignalConnectionWrapper(led1Bus.createWritableConnection());
     }
 
     @Override
-    public SignalBidirectionalConnection getBidirectionalConnection() {
-        return new SignalBidirectionalConnectionWrapper(led2Bus.createBidirectionalConnection());
+    public BidirectionalSignalConnection getBidirectionalConnection() {
+        return new BidirectionalSignalConnectionWrapper(led2Bus.createBidirectionalConnection());
     }
 
     @Override
