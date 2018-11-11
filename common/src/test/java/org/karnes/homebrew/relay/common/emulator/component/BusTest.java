@@ -6,6 +6,7 @@ import org.karnes.homebrew.relay.common.emulator.component.bus.Bus;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.BidirectionalConnection;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.ReadableConnection;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.WritableConnection;
+import org.karnes.homebrew.relay.common.emulator.event.CapturingValueChangeHandler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -209,6 +210,100 @@ public class BusTest {
         //Check that the connections are back to zero
         assertEquals(ZERO_VAL, connection.readValue());
         assertEquals(ZERO_VAL, connection2.readValue());
+
+    }
+
+    @Test
+    public void testSimpleBusWithChangeHandler() {
+        //Create a new
+        Bus bus = new Bus("TestBus", DATA_WIDTH);
+        assertEquals("TestBus", bus.getName());
+        assertEquals(DATA_WIDTH, bus.getWidth());
+
+        //Create a new handler which we can inspect later
+        CapturingValueChangeHandler handler = new CapturingValueChangeHandler();
+
+        //Get a connection which reads from the bus with the change handler
+        ReadableConnection readConnection = bus.createReadableConnection(handler);
+
+        //Read from the bus through the read connection
+        assertEquals(ZERO_VAL, readConnection.readValue());
+
+        //Add a connection which writes to the bus
+        WritableConnection writeConnection = bus.createWritableConnection();
+        assertEquals(ZERO_VAL, readConnection.readValue());
+
+        //Write a new value to the bus
+        writeConnection.writeValue(ONES_VAL);
+
+        //Check that our handler got the update
+        assertEquals(ONES_VAL, handler.getLastValue());
+
+        //Check that we can still read the update
+        assertEquals(ONES_VAL, readConnection.readValue());
+
+    }
+
+    @Test
+    public void testMultiBidirectionalBusWithChangeHandlers() {
+        //Create a new
+        Bus bus = new Bus("TestBus", DATA_WIDTH);
+        assertEquals("TestBus", bus.getName());
+        assertEquals(DATA_WIDTH, bus.getWidth());
+
+        //Add 2 bidirectional connections with change handlers
+        CapturingValueChangeHandler handler = new CapturingValueChangeHandler();
+        BidirectionalConnection connection = bus.createBidirectionalConnection(handler);
+        CapturingValueChangeHandler handler2 = new CapturingValueChangeHandler();
+        BidirectionalConnection connection2 = bus.createBidirectionalConnection(handler2);
+
+        //Read from the bus through the connections
+        assertEquals(ZERO_VAL, connection.readValue());
+        assertEquals(ZERO_VAL, connection2.readValue());
+
+        //Write a new value through the first connection
+        connection.writeValue(MIX1_VAL);
+
+        //The handlers should have the change.
+        assertEquals(MIX1_VAL, handler.getLastValue());
+        assertEquals(MIX1_VAL, handler2.getLastValue());
+
+        //We should be able to read the change
+        assertEquals(MIX1_VAL, connection.readValue());
+        assertEquals(MIX1_VAL, connection2.readValue());
+
+        //Write a new value through the second connection
+        connection2.writeValue(MIX2_VAL);
+
+        //Check that the connections have the logical OR of the input values
+        assertEquals(ONES_VAL, connection.readValue());
+        assertEquals(ONES_VAL, connection2.readValue());
+
+        //The handlers should have the logical OR as well
+        assertEquals(ONES_VAL, handler.getLastValue());
+        assertEquals(ONES_VAL, handler2.getLastValue());
+
+        //Zero out the first connection
+        connection.writeValue(ZERO_VAL);
+
+        //Check that the connections have the only the second value
+        assertEquals(MIX2_VAL, connection.readValue());
+        assertEquals(MIX2_VAL, connection2.readValue());
+
+        //The handlers should have the only the second value too
+        assertEquals(MIX2_VAL, handler.getLastValue());
+        assertEquals(MIX2_VAL, handler2.getLastValue());
+
+        //Zero out the second connection
+        connection2.writeValue(ZERO_VAL);
+
+        //Check that the connections are back to zero
+        assertEquals(ZERO_VAL, connection.readValue());
+        assertEquals(ZERO_VAL, connection2.readValue());
+
+        //The handlers should be back to zero
+        assertEquals(ZERO_VAL, handler.getLastValue());
+        assertEquals(ZERO_VAL, handler2.getLastValue());
 
     }
 

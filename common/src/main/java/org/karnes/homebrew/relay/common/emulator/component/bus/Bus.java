@@ -3,6 +3,8 @@ package org.karnes.homebrew.relay.common.emulator.component.bus;
 import org.karnes.homebrew.relay.common.bitset.FixedBitSet;
 import org.karnes.homebrew.relay.common.emulator.component.SoftwareComponent;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.*;
+import org.karnes.homebrew.relay.common.emulator.event.NoopValueChangeHandler;
+import org.karnes.homebrew.relay.common.emulator.event.ValueChangeHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +44,24 @@ public class Bus extends SoftwareComponent {
     }
 
     /**
-     * Creates a new {@link ReadableConnection} from this Bus, which can be used to read the Bus' state.
+     * Creates a new {@link ReadableConnection} from this Bus, which can be used to read the Bus' state, without
+     * executing any logic when the Bus' value changes.
      *
      * @return The connection.
      */
     public ReadableConnection createReadableConnection() {
-        SoftwareConnection connection = new SoftwareConnection(getName() + " Readable Connection #" + readableConnections.size(), getWidth(), this::handleNewValue);
+        return createReadableConnection(new NoopValueChangeHandler());
+    }
+
+    /**
+     * Creates a new {@link ReadableConnection} from this Bus, which can be used to read the Bus' state, and will
+     * execute the provided logic when the Bus' value changes
+     *
+     * @return The connection.
+     */
+    public ReadableConnection createReadableConnection(ValueChangeHandler handler) {
+        SoftwareConnection connection = new SoftwareConnection(getName() + " Readable Connection #" +
+                readableConnections.size(), getWidth(), handler);
         addWritableConnection(connection);
         return connection;
     }
@@ -67,7 +81,8 @@ public class Bus extends SoftwareComponent {
      * @return The connection.
      */
     public WritableConnection createWritableConnection() {
-        SoftwareConnection connection = new SoftwareConnection(getName() + " Writable Connection #" + writableConnections.size(), getWidth(), this::handleNewValue);
+        SoftwareConnection connection = new SoftwareConnection(getName() + " Writable Connection #"
+                + writableConnections.size(), getWidth(), this::handleNewValue);
         addReadableConnection(connection);
         return connection;
     }
@@ -78,7 +93,17 @@ public class Bus extends SoftwareComponent {
      * @return The connection.
      */
     public BidirectionalConnection createBidirectionalConnection() {
-        DuplexSoftwareConnection duplexConnection = new DuplexSoftwareConnection(getName() + " Duplex Connection", getWidth(), createReadableConnection(), createWritableConnection());
+        return createBidirectionalConnection(new NoopValueChangeHandler());
+    }
+
+    /**
+     * Creates a new {@link BidirectionalConnection} which can be used to read from or write to the Bus.
+     *
+     * @return The connection.
+     */
+    public BidirectionalConnection createBidirectionalConnection(ValueChangeHandler handler) {
+        DuplexSoftwareConnection duplexConnection = new DuplexSoftwareConnection(getName() + " Duplex Connection",
+                getWidth(), createReadableConnection(handler), createWritableConnection());
 
         BidirectionalConnection busSideConnection = duplexConnection.getBusSideConnection();
         addReadableConnection(busSideConnection);
