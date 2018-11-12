@@ -14,6 +14,15 @@ public class BidirectionalHardwareConnection extends SoftwareComponent implement
     private final ReadableHardwareConnection readConnection;
     private final WritableHardwareConnection writeConnection;
 
+    /**
+     * Creates a new BidirectionalHardwareConnection
+     *
+     * @param name           The name of the connection.
+     * @param inputMCP23017  The input MCP23017.
+     * @param inputPins      The input pins.
+     * @param outputMCP23017 The output MCP23017.
+     * @param outputPins     The output pins.
+     */
     public BidirectionalHardwareConnection(String name, MCP23017 inputMCP23017, MCP23017Pin[] inputPins, MCP23017 outputMCP23017, MCP23017Pin[] outputPins) {
         super(name, inputPins.length);
         if (inputPins.length != outputPins.length) {
