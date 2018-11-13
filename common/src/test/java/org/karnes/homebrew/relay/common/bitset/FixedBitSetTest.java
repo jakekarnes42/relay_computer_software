@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.karnes.homebrew.relay.common.test.TestUtil;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -326,7 +327,7 @@ public class FixedBitSetTest {
     }
 
     private static Stream<Arguments> negateArgs() {
-        return zip(allBitSetSize3(), allBitSetSize3Descending());
+        return TestUtil.zip(allBitSetSize3(), allBitSetSize3Descending());
     }
 
     private static Stream<Arguments> getArgs() {
@@ -397,27 +398,6 @@ public class FixedBitSetTest {
                 Arguments.of(new FixedBitSet("1001"), 0, 1, new FixedBitSet("1")),
                 Arguments.of(new FixedBitSet("101"), 0, 2, new FixedBitSet("01"))
         );
-    }
-
-
-    private static <A, B> Stream<Arguments> zip(Stream<A> arg1, Stream<B> arg2) {
-        Iterator<A> iteratorA = arg1.iterator();
-        Iterator<B> iteratorB = arg2.iterator();
-
-        Iterator<Arguments> iterator = new Iterator<Arguments>() {
-            @Override
-            public boolean hasNext() {
-                return iteratorA.hasNext() && iteratorB.hasNext();
-            }
-
-            @Override
-            public Arguments next() {
-                return Arguments.of(iteratorA.next(), iteratorB.next());
-            }
-        };
-
-        Iterable<Arguments> iterable = () -> iterator;
-        return StreamSupport.stream(iterable.spliterator(), false);
     }
 
 

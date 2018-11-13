@@ -1,5 +1,5 @@
 package org.karnes.homebrew.relay.hardware_tests.register_board;
 
-public enum RegisterBoardBusType {
+public enum RegisterBoardBus {
     ADDRESS, DATA
 }
