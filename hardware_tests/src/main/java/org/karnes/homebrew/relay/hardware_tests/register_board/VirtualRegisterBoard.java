@@ -3,8 +3,8 @@ package org.karnes.homebrew.relay.hardware_tests.register_board;
 import org.karnes.homebrew.relay.common.emulator.component.SoftwareComponent;
 import org.karnes.homebrew.relay.common.emulator.component.bus.Bus;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.BidirectionalConnection;
-import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.WritableSignalConnection;
 import org.karnes.homebrew.relay.common.emulator.component.register.Register;
+import org.karnes.homebrew.relay.common.emulator.component.register.RegisterSignalSet;
 
 /**
  * Emulates the behavior of the 2 Bit Register Board Rev A
@@ -12,60 +12,31 @@ import org.karnes.homebrew.relay.common.emulator.component.register.Register;
 public class VirtualRegisterBoard extends SoftwareComponent implements RegisterBoard {
 
     //Components
-    Bus addressBus = new Bus("Address Bus", width);
-    Bus dataBus = new Bus("Data Bus", width);
-    Register registerA = new Register("Register A", addressBus, dataBus);
-    Register registerB = new Register("Register B", addressBus, dataBus);
+    private Bus addressBus = new Bus("Address Bus", width);
+    private Bus dataBus = new Bus("Data Bus", width);
+    private Register registerA = new Register("Register A", addressBus, dataBus);
+    private Register registerB = new Register("Register B", addressBus, dataBus);
 
     //Signals
-    WritableSignalConnection registerASelectA = registerA.getSelectAConnection();
-    WritableSignalConnection registerALoadA = registerA.getLoadAConnection();
-    WritableSignalConnection registerASelectD = registerA.getSelectDConnection();
-    WritableSignalConnection registerALoadD = registerA.getLoadDConnection();
-
-    WritableSignalConnection registerBSelectA = registerB.getSelectAConnection();
-    WritableSignalConnection registerBLoadA = registerB.getLoadAConnection();
-    WritableSignalConnection registerBSelectD = registerB.getSelectDConnection();
-    WritableSignalConnection registerBLoadD = registerB.getLoadDConnection();
+    private RegisterSignalSet registerASignalSet = registerA.getAllSignals();
+    private RegisterSignalSet registerBSignalSet = registerB.getAllSignals();
 
     //Bus Connections
-    BidirectionalConnection addressBusConnection = addressBus.createBidirectionalConnection();
-    BidirectionalConnection dataBusConnection = dataBus.createBidirectionalConnection();
+    private BidirectionalConnection addressBusConnection = addressBus.createBidirectionalConnection();
+    private BidirectionalConnection dataBusConnection = dataBus.createBidirectionalConnection();
 
     public VirtualRegisterBoard() {
         super("Virtual 2-bit Register Board", 2);
     }
 
-    public WritableSignalConnection getRegisterASelectA() {
-        return registerASelectA;
+    @Override
+    public RegisterSignalSet getRegisterASignalSet() {
+        return registerASignalSet;
     }
 
-    public WritableSignalConnection getRegisterALoadA() {
-        return registerALoadA;
-    }
-
-    public WritableSignalConnection getRegisterASelectD() {
-        return registerASelectD;
-    }
-
-    public WritableSignalConnection getRegisterALoadD() {
-        return registerALoadD;
-    }
-
-    public WritableSignalConnection getRegisterBSelectA() {
-        return registerBSelectA;
-    }
-
-    public WritableSignalConnection getRegisterBLoadA() {
-        return registerBLoadA;
-    }
-
-    public WritableSignalConnection getRegisterBSelectD() {
-        return registerBSelectD;
-    }
-
-    public WritableSignalConnection getRegisterBLoadD() {
-        return registerBLoadD;
+    @Override
+    public RegisterSignalSet getRegisterBSignalSet() {
+        return registerBSignalSet;
     }
 
     public BidirectionalConnection getAddressBusConnection() {

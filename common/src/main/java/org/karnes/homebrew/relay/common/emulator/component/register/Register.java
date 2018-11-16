@@ -270,6 +270,20 @@ public class Register extends SoftwareComponent {
         }
     }
 
+    /**
+     * Gets all of the signals at once.
+     *
+     * @return A collection of all the signals for this register.
+     */
+    public RegisterSignalSet getAllSignals() {
+        return new RegisterSignalSet(getName(),
+                getSelectAConnection(),
+                getLoadAConnection(),
+                getSelectDConnection(),
+                getLoadDConnection()
+        );
+    }
+
 
     public ReadableConnection getRegisterOutputConnection() {
         //Check if we're already connected

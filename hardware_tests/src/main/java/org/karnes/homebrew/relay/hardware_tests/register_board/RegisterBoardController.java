@@ -1,10 +1,17 @@
 package org.karnes.homebrew.relay.hardware_tests.register_board;
 
 import org.karnes.homebrew.relay.common.bitset.FixedBitSet;
+import org.karnes.homebrew.relay.common.emulator.component.bus.BusName;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.BidirectionalConnection;
-import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.WritableSignalConnection;
+import org.karnes.homebrew.relay.common.emulator.component.register.RegisterSignalSet;
 
-import static org.karnes.homebrew.relay.hardware_tests.register_board.RegisterBoardBus.ADDRESS;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.karnes.homebrew.relay.common.emulator.component.bus.BusName.ADDRESS;
+import static org.karnes.homebrew.relay.common.emulator.component.bus.BusName.DATA;
+import static org.karnes.homebrew.relay.hardware_tests.register_board.RegisterName.A;
+import static org.karnes.homebrew.relay.hardware_tests.register_board.RegisterName.B;
 
 /**
  * Controls a register board, providing a nicer interface to available operations
@@ -14,86 +21,80 @@ public class RegisterBoardController {
     private final int WIDTH = 2;
     private final int delay;
 
-    //Signals
-    private WritableSignalConnection registerASelectA;
-    private WritableSignalConnection registerALoadA;
-    private WritableSignalConnection registerASelectD;
-    private WritableSignalConnection registerALoadD;
+    //Register Map
+    Map<RegisterName, RegisterSignalSet> registerMap = new HashMap<>();
 
-    private WritableSignalConnection registerBSelectA;
-    private WritableSignalConnection registerBLoadA;
-    private WritableSignalConnection registerBSelectD;
-    private WritableSignalConnection registerBLoadD;
+    //Bus Map
+    Map<BusName, BidirectionalConnection> busMap = new HashMap<>();
 
     //Bus Connections
     private BidirectionalConnection addressBusConnection;
     private BidirectionalConnection dataBusConnection;
 
+    /**
+     * Creates a new controller for the given register board
+     *
+     * @param board The board to control
+     */
     public RegisterBoardController(RegisterBoard board) {
-        registerASelectA = board.getRegisterASelectA();
-        registerALoadA = board.getRegisterALoadA();
-        registerASelectD = board.getRegisterASelectD();
-        registerALoadD = board.getRegisterALoadD();
+        //Save our signals for register A
+        var registerASignalSet = board.getRegisterASignalSet();
+        registerMap.put(A, registerASignalSet);
 
-        registerBSelectA = board.getRegisterBSelectA();
-        registerBLoadA = board.getRegisterBLoadA();
-        registerBSelectD = board.getRegisterBSelectD();
-        registerBLoadD = board.getRegisterBLoadD();
+        //Save our signals for register B
+        var registerBSignalSet = board.getRegisterBSignalSet();
+        registerMap.put(B, registerBSignalSet);
 
+        //Save address bus connection
         addressBusConnection = board.getAddressBusConnection();
-        dataBusConnection = board.getDataBusConnection();
+        busMap.put(ADDRESS, addressBusConnection);
 
+        //Save data bus connection
+        dataBusConnection = board.getDataBusConnection();
+        busMap.put(DATA, dataBusConnection);
+
+        //Get the delay specified by the board
         delay = board.getDelay();
     }
 
     /**
-     * Gets the current value in Register A via the specified bus.
+     * Gets the current value in {@code reg} via the specified {@code bus}.
      *
-     * @param busType which bus to use to get the value.
+     * @param reg which register to get the value from.
+     * @param bus which bus to use to get the value.
      * @return The current value in Register A.
      */
-    public FixedBitSet getRegisterAValue(RegisterBoardBus busType) {
-        FixedBitSet value = null;
-        //Check which Bus we're going to be using
-        if (busType == ADDRESS) {
-            //We're using the address bus
-            //Set SELECT_A HIGH
-            registerASelectA.writeSignal(true);
-            pause();
+    public FixedBitSet getRegisterValue(RegisterName reg, BusName bus) {
+        //Get the signals for the specified register
+        RegisterSignalSet signals = registerMap.get(reg);
 
-            //Read the value
-            value = addressBusConnection.readValue();
+        //Set the SELECT signal high on the specified bus
+        signals.select(bus, true);
+        pause();
 
-            //Set the signal low again
-            registerASelectA.writeSignal(false);
-            pause();
-        } else {
-            //We're using the data bus
-            //Set SELECT_A HIGH
-            registerASelectD.writeSignal(true);
-            pause();
+        //Read the value
+        FixedBitSet value = busMap.get(bus).readValue();
 
-            //Read the value
-            value = dataBusConnection.readValue();
-
-            //Set the signal low again
-            registerASelectD.writeSignal(false);
-            pause();
-        }
+        //Set the SELECT signal low again
+        signals.select(bus, false);
+        pause();
 
         return value;
     }
 
     /**
-     * Gets the value in register A by reading from both buses. There is no real advantage to this. Its primary
+     * Gets the value in the specified register by reading from both buses. There is no real advantage to this. Its primary
      * purpose is to allow for easy validation that we can select onto both values at once.
      *
-     * @return the value in register A.
+     * @return the value in {@code reg}.
      */
-    public FixedBitSet getRegisterABothBuses() {
+    public FixedBitSet getRegisterBothBuses(RegisterName reg) {
+        //Get the signals for the specified register
+        RegisterSignalSet signals = registerMap.get(reg);
+
         //Set select signals HIGH
-        registerASelectA.writeSignal(true);
-        registerASelectD.writeSignal(true);
+        signals.select(ADDRESS, true);
+        signals.select(DATA, true);
         pause();
 
         //Read the value
@@ -101,77 +102,8 @@ public class RegisterBoardController {
         FixedBitSet dataValue = dataBusConnection.readValue();
 
         //Set the signal low again
-        registerASelectA.writeSignal(false);
-        registerASelectD.writeSignal(false);
-        pause();
-
-        //Check that the values match
-        if (!addressValue.equals(dataValue)) {
-            throw new IllegalStateException("The address value (" + addressValue + ") and data value (" + dataValue + ") " +
-                    "should match");
-        } else {
-            //They both match, just return whichever. 
-            return addressValue;
-        }
-    }
-
-    /**
-     * Gets the current value in Register B via the specified bus.
-     *
-     * @param busType which bus to use to get the value.
-     * @return The current value in B.
-     */
-    public FixedBitSet getRegisterBValue(RegisterBoardBus busType) {
-        FixedBitSet value = null;
-        //Check which Bus we're going to be using
-        if (busType == ADDRESS) {
-            //We're using the address bus
-            //Set SELECT_A HIGH
-            registerBSelectA.writeSignal(true);
-            pause();
-
-            //Read the value
-            value = addressBusConnection.readValue();
-
-            //Set the signal low again
-            registerBSelectA.writeSignal(false);
-            pause();
-        } else {
-            //We're using the data bus
-            //Set SELECT_A HIGH
-            registerBSelectD.writeSignal(true);
-            pause();
-
-            //Read the value
-            value = dataBusConnection.readValue();
-
-            //Set the signal low again
-            registerBSelectD.writeSignal(false);
-            pause();
-        }
-
-        return value;
-    }
-
-    /**
-     * Gets the value in register B by reading from both buses. There is no real advantage to this. Its primary
-     * purpose is to allow for easy validation that we can select onto both values at once.
-     *
-     * @return the value in register B.
-     */
-    public FixedBitSet getRegisterBBothBuses() {
-        //Set select signals HIGH
-        registerBSelectA.writeSignal(true);
-        registerBSelectD.writeSignal(true);
-        pause();
-
-        //Read the value
-        FixedBitSet addressValue = addressBusConnection.readValue();
-        FixedBitSet dataValue = dataBusConnection.readValue();
-
-        //Set the signal low again
-        registerBSelectA.writeSignal(false);
-        registerBSelectD.writeSignal(false);
+        signals.select(ADDRESS, false);
+        signals.select(DATA, false);
         pause();
 
         //Check that the values match
@@ -187,16 +119,19 @@ public class RegisterBoardController {
 
     /**
      * Gets the values of both registers at once, using both buses simultaneously. This is faster than calling
-     * {@link #getRegisterAValue(RegisterBoardBus)} and {@link #getRegisterBValue(RegisterBoardBus)}
-     * individually.
+     * {@link  #getRegisterValue(RegisterName, BusName)} for both registers individually.
      *
      * @return An array of FixedBitSets where the value of register A is in position 0 and the value of register B is
      * in position 1.
      */
     public FixedBitSet[] getBothRegisterValues() {
+        //Get the signals for the both registers
+        RegisterSignalSet aSignals = registerMap.get(A);
+        RegisterSignalSet bSignals = registerMap.get(B);
+
         //Start outputting register A on the address bus, and register B on the data bus
-        registerASelectA.writeSignal(true);
-        registerBSelectD.writeSignal(true);
+        aSignals.select(ADDRESS, true);
+        bSignals.select(DATA, true);
         pause();
 
         //Read the values
@@ -204,8 +139,8 @@ public class RegisterBoardController {
         FixedBitSet registerBValue = dataBusConnection.readValue();
 
         //Set the signals low again
-        registerASelectA.writeSignal(false);
-        registerBSelectD.writeSignal(false);
+        aSignals.select(ADDRESS, false);
+        bSignals.select(DATA, false);
         pause();
 
         return new FixedBitSet[]{registerAValue, registerBValue};
@@ -213,103 +148,56 @@ public class RegisterBoardController {
     }
 
     /**
-     * Sets the value of register A using the specified bus.
+     * Sets the value of reg using the specified bus.
      *
-     * @param busType which bus to use to set the value.
-     * @param value   the new value.
+     * @param reg   which register to set the value of.
+     * @param bus   which bus to use to set the value.
+     * @param value the new value.
      */
-    public void setRegisterAValue(RegisterBoardBus busType, FixedBitSet value) {
-        //Check which Bus we're going to be using
-        if (busType == ADDRESS) {
-            //We're using the address bus
-            //Put the value on the bus and set the LOAD signal HIGH
-            addressBusConnection.writeValue(value);
-            registerALoadA.writeSignal(true);
-            pause();
+    public void setRegisterValue(RegisterName reg, BusName bus, FixedBitSet value) {
+        //Get the signals for the specified register
+        RegisterSignalSet signals = registerMap.get(reg);
+        BidirectionalConnection busConnection = busMap.get(bus);
 
-            //Set the signal low again. The falling edge latches the value
-            registerALoadA.writeSignal(false);
-            pause();
+        //Put the value on the bus and set the LOAD signal HIGH
+        busConnection.writeValue(value);
+        signals.load(bus, true);
+        pause();
 
-            //Stop writing the value to the bus.
-            addressBusConnection.writeValue(new FixedBitSet(WIDTH));
-            pause();
-        } else {
-            //We're using the data bus
-            //Put the value on the bus and set the LOAD signal HIGH
-            dataBusConnection.writeValue(value);
-            registerALoadD.writeSignal(true);
-            pause();
+        //Set the signal low again. The falling edge latches the value
+        signals.load(bus, false);
+        pause();
 
-            //Set the signal low again. The falling edge latches the value
-            registerALoadD.writeSignal(false);
-            pause();
-
-            //Stop writing the value to the bus.
-            dataBusConnection.writeValue(new FixedBitSet(WIDTH));
-            pause();
-        }
+        //Stop writing the value to the bus.
+        busConnection.writeValue(new FixedBitSet(WIDTH));
+        pause();
     }
 
-    /**
-     * Sets the value of register B using the specified bus.
-     *
-     * @param busType which bus to use to set the value.
-     * @param value   the new value.
-     */
-    public void setRegisterBValue(RegisterBoardBus busType, FixedBitSet value) {
-        //Check which Bus we're going to be using
-        if (busType == ADDRESS) {
-            //We're using the address bus
-            //Put the value on the bus and set the LOAD signal HIGH
-            addressBusConnection.writeValue(value);
-            registerBLoadA.writeSignal(true);
-            pause();
-
-            //Set the signal low again. The falling edge latches the value
-            registerBLoadA.writeSignal(false);
-            pause();
-
-            //Stop writing the value to the bus.
-            addressBusConnection.writeValue(new FixedBitSet(WIDTH));
-            pause();
-        } else {
-            //We're using the data bus
-            //Put the value on the bus and set the LOAD signal HIGH
-            dataBusConnection.writeValue(value);
-            registerBLoadD.writeSignal(true);
-            pause();
-
-            //Set the signal low again. The falling edge latches the value
-            registerBLoadD.writeSignal(false);
-            pause();
-
-            //Stop writing the value to the bus.
-            dataBusConnection.writeValue(new FixedBitSet(WIDTH));
-            pause();
-        }
-    }
 
     /**
      * Sets both register values at once, using both buses. This is faster than calling
-     * {@link #setRegisterAValue(RegisterBoardBus, FixedBitSet)} then
-     * {@link #setRegisterBValue(RegisterBoardBus, FixedBitSet)} individually.
+     * {@link #setRegisterValue(RegisterName, BusName, FixedBitSet)} for both registers individually individually.
      *
      * @param registerAValue the new value for register A.
      * @param registerBValue the new value for register B.
      */
     public void setBothRegisterValues(FixedBitSet registerAValue, FixedBitSet registerBValue) {
+        //Get the signals for the both registers
+        RegisterSignalSet aSignals = registerMap.get(A);
+        RegisterSignalSet bSignals = registerMap.get(B);
+
         //Put register A's value on the address bus, and register B's value on the data bus
         addressBusConnection.writeValue(registerAValue);
         dataBusConnection.writeValue(registerBValue);
+
         //Set the load signals HIGH
-        registerALoadA.writeSignal(true);
-        registerBLoadD.writeSignal(true);
+        aSignals.load(ADDRESS, true);
+        bSignals.load(DATA, true);
         pause();
 
         //Set the signals low again, latching the value
-        registerALoadA.writeSignal(false);
-        registerBLoadD.writeSignal(false);
+        aSignals.load(ADDRESS, false);
+        bSignals.load(DATA, false);
         pause();
 
         //Stop writing the values onto the buses
@@ -318,51 +206,44 @@ public class RegisterBoardController {
         pause();
     }
 
+
+    /**
+     * Moves the value from the src register to the dst register using the specified bus. Note, if src and dst are the
+     * same register, this will clear the register.
+     *
+     * @param src The register to move the value from.
+     * @param dst The register to move the value into.
+     * @param bus The bus to use.
+     */
+    public void moveValue(RegisterName src, RegisterName dst, BusName bus) {
+        //Get the signals for the both registers
+        RegisterSignalSet srcSignals = registerMap.get(src);
+        RegisterSignalSet dstSignals = registerMap.get(dst);
+
+
+        //Set the SELECT and the LOAD signals high at the same time
+        srcSignals.select(bus, true);
+        dstSignals.load(bus, true);
+        pause();
+
+        //Set the load signal low, latching the empty value
+        dstSignals.load(bus, false);
+        pause();
+
+        //Set the select signal low
+        srcSignals.select(bus, false);
+        pause();
+    }
+
     /**
      * Clears the value in register A
      */
-    public void clearRegisterA() {
-        /*
-         * Note: this method COULD just use the load signal, but I'm trying to test what the instruction decoder will
-         * likely produce.
-         */
-
-        //Set the SELECT and the LOAD signals high at the same time
-        registerASelectA.writeSignal(true);
-        registerALoadA.writeSignal(true);
-        pause();
-
-        //Set the load signal low, latching the empty value
-        registerALoadA.writeSignal(false);
-        pause();
-
-        //Set the select signal low
-        registerASelectA.writeSignal(false);
-        pause();
+    public void clearRegister(RegisterName reg) {
+        //Reuse the move functionality like the instruction decoder will.
+        //The choice of using the ADDRESS bus here is arbitrary.
+        moveValue(reg, reg, ADDRESS);
     }
 
-    /**
-     * Clears the value in register B
-     */
-    public void clearRegisterB() {
-        /*
-         * Note: this method COULD just use the load signal, but I'm trying to test what the instruction decoder will
-         * likely produce.
-         */
-
-        //Set the SELECT and the LOAD signals high at the same time
-        registerBSelectD.writeSignal(true);
-        registerBLoadD.writeSignal(true);
-        pause();
-
-        //Set the load signal low, latching the empty value
-        registerBLoadD.writeSignal(false);
-        pause();
-
-        //Set the select signal low
-        registerBSelectD.writeSignal(false);
-        pause();
-    }
 
     /**
      * Clears both registers at once
@@ -373,103 +254,28 @@ public class RegisterBoardController {
          * Note: this method COULD just use the load signal, but I'm trying to test what the instruction decoder will
          * likely produce.
          */
+        //Get the signals for the both registers
+        RegisterSignalSet aSignals = registerMap.get(A);
+        RegisterSignalSet bSignals = registerMap.get(B);
 
         //Set the SELECT and the LOAD signals high at the same time
-        registerASelectA.writeSignal(true);
-        registerALoadA.writeSignal(true);
-        registerBSelectD.writeSignal(true);
-        registerBLoadD.writeSignal(true);
+        aSignals.select(ADDRESS, true);
+        aSignals.load(ADDRESS, true);
+        bSignals.select(DATA, true);
+        bSignals.load(DATA, true);
         pause();
 
         //Set the load signal low, latching the empty value
-        registerALoadA.writeSignal(false);
-        registerBLoadD.writeSignal(false);
+        aSignals.load(ADDRESS, false);
+        bSignals.load(DATA, false);
         pause();
 
         //Set the select signal low
-        registerASelectA.writeSignal(false);
-        registerBSelectD.writeSignal(false);
+        aSignals.select(ADDRESS, false);
+        bSignals.select(DATA, false);
         pause();
 
     }
-
-
-    /**
-     * Moves the current value in Register A into Register B, without affecting Register's A value.
-     *
-     * @param busType which bus to use for the move.
-     */
-    public void moveAtoB(RegisterBoardBus busType) {
-        //Check which Bus we're going to be using
-        if (busType == ADDRESS) {
-            //We're using the address bus
-            //Put the value on the bus and set the LOAD signal HIGH
-            registerASelectA.writeSignal(true);
-            registerBLoadA.writeSignal(true);
-            pause();
-
-            //Set the signal low again. The falling edge latches the value
-            registerBLoadA.writeSignal(false);
-            pause();
-
-            //Stop writing the value to the bus.
-            registerASelectA.writeSignal(false);
-            pause();
-        } else {
-            //We're using the data bus
-            //Put the value on the bus and set the LOAD signal HIGH
-            registerASelectD.writeSignal(true);
-            registerBLoadD.writeSignal(true);
-            pause();
-
-            //Set the signal low again. The falling edge latches the value
-            registerBLoadD.writeSignal(false);
-            pause();
-
-            //Stop writing the value to the bus.
-            registerASelectD.writeSignal(false);
-            pause();
-        }
-    }
-
-    /**
-     * Moves the current value in Register B into Register A, without affecting Register's B value.
-     *
-     * @param busType which bus to use for the move.
-     */
-    public void moveBtoA(RegisterBoardBus busType) {
-        //Check which Bus we're going to be using
-        if (busType == ADDRESS) {
-            //We're using the address bus
-            //Put the value on the bus and set the LOAD signal HIGH
-            registerBSelectA.writeSignal(true);
-            registerALoadA.writeSignal(true);
-            pause();
-
-            //Set the signal low again. The falling edge latches the value
-            registerALoadA.writeSignal(false);
-            pause();
-
-            //Stop writing the value to the bus.
-            registerBSelectA.writeSignal(false);
-            pause();
-        } else {
-            //We're using the data bus
-            //Put the value on the bus and set the LOAD signal HIGH
-            registerBSelectD.writeSignal(true);
-            registerALoadD.writeSignal(true);
-            pause();
-
-            //Set the signal low again. The falling edge latches the value
-            registerALoadD.writeSignal(false);
-            pause();
-
-            //Stop writing the value to the bus.
-            registerBSelectD.writeSignal(false);
-            pause();
-        }
-    }
-
 
     private void pause() {
         if (delay > 0) {

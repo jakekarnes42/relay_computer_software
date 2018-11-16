@@ -5,13 +5,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.karnes.homebrew.relay.common.bitset.FixedBitSet;
+import org.karnes.homebrew.relay.common.emulator.component.bus.BusName;
 import org.karnes.homebrew.relay.common.test.TestUtil;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.karnes.homebrew.relay.hardware_tests.register_board.RegisterBoardBus.ADDRESS;
-import static org.karnes.homebrew.relay.hardware_tests.register_board.RegisterBoardBus.DATA;
+import static org.karnes.homebrew.relay.common.emulator.component.bus.BusName.ADDRESS;
+import static org.karnes.homebrew.relay.common.emulator.component.bus.BusName.DATA;
+import static org.karnes.homebrew.relay.hardware_tests.register_board.RegisterName.A;
+import static org.karnes.homebrew.relay.hardware_tests.register_board.RegisterName.B;
 
 class RegisterBoardControllerTest {
     private static final int WIDTH = 2;
@@ -24,32 +27,32 @@ class RegisterBoardControllerTest {
             new FixedBitSet("11")
     );
 
-    RegisterBoard board = new VirtualRegisterBoard();
-    RegisterBoardController registerBoardController = new RegisterBoardController(board);
+    private RegisterBoard board = new VirtualRegisterBoard();
+    private RegisterBoardController registerBoardController = new RegisterBoardController(board);
 
 
     @Test
     void simpleGetSetClearRegisterATest() {
         //Get the value before
-        FixedBitSet before = registerBoardController.getRegisterAValue(ADDRESS);
+        FixedBitSet before = registerBoardController.getRegisterValue(A, ADDRESS);
 
         //There should be no existing value
         assertEquals(ZERO_VAL, before);
 
         //Set a new value
-        registerBoardController.setRegisterAValue(ADDRESS, ONES_VAL);
+        registerBoardController.setRegisterValue(A, ADDRESS, ONES_VAL);
 
         //Get the value again
-        FixedBitSet after = registerBoardController.getRegisterAValue(ADDRESS);
+        FixedBitSet after = registerBoardController.getRegisterValue(A, ADDRESS);
 
         //We should be able to read back the value we set
         assertEquals(ONES_VAL, after);
 
         //Clear the register
-        registerBoardController.clearRegisterA();
+        registerBoardController.clearRegister(A);
 
         //Get the value after the clear
-        FixedBitSet cleared = registerBoardController.getRegisterAValue(ADDRESS);
+        FixedBitSet cleared = registerBoardController.getRegisterValue(A, ADDRESS);
 
         //There should be no value after the clear
         assertEquals(ZERO_VAL, cleared);
@@ -58,155 +61,109 @@ class RegisterBoardControllerTest {
     @Test
     void simpleGetSetClearRegisterBTest() {
         //Get the value before
-        FixedBitSet before = registerBoardController.getRegisterBValue(DATA);
+        FixedBitSet before = registerBoardController.getRegisterValue(B, DATA);
 
         //There should be no existing value
         assertEquals(ZERO_VAL, before);
 
         //Set a new value
-        registerBoardController.setRegisterBValue(DATA, ONES_VAL);
+        registerBoardController.setRegisterValue(B, DATA, ONES_VAL);
 
         //Get the value again
-        FixedBitSet after = registerBoardController.getRegisterBValue(DATA);
+        FixedBitSet after = registerBoardController.getRegisterValue(B, DATA);
 
         //We should be able to read back the value we set
         assertEquals(ONES_VAL, after);
 
         //Clear the register
-        registerBoardController.clearRegisterB();
+        registerBoardController.clearRegister(B);
 
         //Get the value after the clear
-        FixedBitSet cleared = registerBoardController.getRegisterBValue(DATA);
+        FixedBitSet cleared = registerBoardController.getRegisterValue(B, DATA);
 
         //There should be no value after the clear
         assertEquals(ZERO_VAL, cleared);
     }
 
     @ParameterizedTest
-    @MethodSource("getValueBusPairs")
-    void testGetSetClearAllRegisterA(FixedBitSet value, RegisterBoardBus bus) {
+    @MethodSource("getRegisterBusValueCombos")
+    void testGetSetClearAll(RegisterName reg, BusName bus, FixedBitSet value) {
         //Set a new value
-        registerBoardController.setRegisterAValue(bus, value);
+        registerBoardController.setRegisterValue(reg, bus, value);
 
         //Get the value again
-        FixedBitSet after = registerBoardController.getRegisterAValue(bus);
+        FixedBitSet after = registerBoardController.getRegisterValue(reg, bus);
 
         //We should be able to read back the value we set
         assertEquals(value, after);
 
         //Clear the register
-        registerBoardController.clearRegisterA();
+        registerBoardController.clearRegister(reg);
 
         //Get the value after the clear
-        FixedBitSet cleared = registerBoardController.getRegisterAValue(bus);
+        FixedBitSet cleared = registerBoardController.getRegisterValue(reg, bus);
 
         //There should be no value after the clear
         assertEquals(ZERO_VAL, cleared);
     }
 
-    @ParameterizedTest
-    @MethodSource("getValueBusPairs")
-    void testGetSetClearAllRegisterB(FixedBitSet value, RegisterBoardBus bus) {
-        //Set a new value
-        registerBoardController.setRegisterBValue(bus, value);
-
-        //Get the value again
-        FixedBitSet after = registerBoardController.getRegisterBValue(bus);
-
-        //We should be able to read back the value we set
-        assertEquals(value, after);
-
-        //Clear the register
-        registerBoardController.clearRegisterB();
-
-        //Get the value after the clear
-        FixedBitSet cleared = registerBoardController.getRegisterBValue(bus);
-
-        //There should be no value after the clear
-        assertEquals(ZERO_VAL, cleared);
-    }
 
     @ParameterizedTest
-    @MethodSource("getValueBusPairs")
-    void testMovAtoB(FixedBitSet value, RegisterBoardBus bus) {
+    @MethodSource("getRegisterRegisterBusValueCombos")
+    void testMoves(RegisterName src, RegisterName dst, BusName bus, FixedBitSet value) {
         //Set a new value
-        registerBoardController.setRegisterAValue(bus, value);
+        registerBoardController.setRegisterValue(src, bus, value);
 
         //Move from A to B
-        registerBoardController.moveAtoB(bus);
+        registerBoardController.moveValue(src, dst, bus);
 
-        //Get the value from B
-        FixedBitSet after = registerBoardController.getRegisterBValue(bus);
+        //Check if src and dst are equal
+        if (src == dst) {
+            //The move should clear the src register
 
-        //We should be able to read back the value we set
-        assertEquals(value, after);
+            //Get the value from src
+            FixedBitSet after = registerBoardController.getRegisterValue(src, bus);
 
-        //The value should still be in A
-        after = registerBoardController.getRegisterAValue(bus);
-        assertEquals(value, after);
+            //The register should be cleared
+            assertEquals(new FixedBitSet(WIDTH), after);
 
-        //Clear the registers
-        registerBoardController.clearRegisterA();
-        registerBoardController.clearRegisterB();
+        } else {
+            //The move should put the src value in dst, while leaving dst alone
 
-    }
+            //Get the value from dst
+            FixedBitSet after = registerBoardController.getRegisterValue(dst, bus);
 
-    @ParameterizedTest
-    @MethodSource("getValueBusPairs")
-    void testMovBtoA(FixedBitSet value, RegisterBoardBus bus) {
-        //Set a new value
-        registerBoardController.setRegisterBValue(bus, value);
+            //We should be able to read back the value we set
+            assertEquals(value, after);
 
-        //Move from B to A
-        registerBoardController.moveBtoA(bus);
+            //The value should still be in src
+            after = registerBoardController.getRegisterValue(src, bus);
+            assertEquals(value, after);
 
-        //Get the value from A
-        FixedBitSet after = registerBoardController.getRegisterAValue(bus);
+            //Clear the registers
+            registerBoardController.clearBothRegisters();
+        }
 
-        //We should be able to read back the value we set
-        assertEquals(value, after);
-
-        //The value should still be in B
-        after = registerBoardController.getRegisterBValue(bus);
-        assertEquals(value, after);
-
-        //Clear the registers
-        registerBoardController.clearRegisterA();
-        registerBoardController.clearRegisterB();
 
     }
 
+
     @ParameterizedTest
-    @MethodSource("allValues")
-    void testGetRegisterABothBuses(FixedBitSet value) {
+    @MethodSource("getRegisterBusValueCombos")
+    void testGetRegisterBothBuses(RegisterName reg, BusName bus, FixedBitSet value) {
         //Set a new value
-        registerBoardController.setRegisterAValue(ADDRESS, value);
+        registerBoardController.setRegisterValue(reg, bus, value);
 
         //Get the value again
-        FixedBitSet after = registerBoardController.getRegisterABothBuses();
+        FixedBitSet after = registerBoardController.getRegisterBothBuses(reg);
 
         //We should be able to read back the value we set
         assertEquals(value, after);
 
         //Clear the register
-        registerBoardController.clearRegisterA();
+        registerBoardController.clearRegister(reg);
     }
 
-    @ParameterizedTest
-    @MethodSource("allValues")
-    void testGetRegisterBBothBuses(FixedBitSet value) {
-        //Set a new value
-        registerBoardController.setRegisterBValue(DATA, value);
-
-        //Get the value again
-        FixedBitSet after = registerBoardController.getRegisterBBothBuses();
-
-        //We should be able to read back the value we set
-        assertEquals(value, after);
-
-        //Clear the register
-        registerBoardController.clearRegisterB();
-    }
 
     @ParameterizedTest
     @MethodSource("allValueCombinations")
@@ -235,16 +192,20 @@ class RegisterBoardControllerTest {
     }
 
 
-    private static List<Arguments> allValues() {
+    private static List<Arguments> getRegisterRegisterBusValueCombos() {
         return TestUtil.cartesianProduct(
+                List.of(A, B),
+                List.of(A, B),
+                List.of(ADDRESS, DATA),
                 allValues
         );
     }
 
-    private static List<Arguments> getValueBusPairs() {
+    private static List<Arguments> getRegisterBusValueCombos() {
         return TestUtil.cartesianProduct(
-                allValues,
-                List.of(ADDRESS, DATA)
+                List.of(A, B),
+                List.of(ADDRESS, DATA),
+                allValues
         );
     }
 

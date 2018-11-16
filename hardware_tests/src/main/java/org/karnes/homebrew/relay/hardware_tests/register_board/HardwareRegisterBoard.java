@@ -2,8 +2,8 @@ package org.karnes.homebrew.relay.hardware_tests.register_board;
 
 import org.karnes.homebrew.relay.common.emulator.component.SoftwareComponent;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.BidirectionalConnection;
-import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.WritableSignalConnection;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.WritableSignalConnectionWrapper;
+import org.karnes.homebrew.relay.common.emulator.component.register.RegisterSignalSet;
 import org.karnes.homebrew.relay.common.hardware.*;
 
 import static org.karnes.homebrew.relay.common.hardware.MCP23017Pin.*;
@@ -13,21 +13,13 @@ import static org.karnes.homebrew.relay.common.hardware.MCP23017Pin.*;
  */
 public class HardwareRegisterBoard extends SoftwareComponent implements RegisterBoard {
 
-
     //Signals
-    WritableSignalConnection registerASelectA;
-    WritableSignalConnection registerALoadA;
-    WritableSignalConnection registerASelectD;
-    WritableSignalConnection registerALoadD;
-
-    WritableSignalConnection registerBSelectA;
-    WritableSignalConnection registerBLoadA;
-    WritableSignalConnection registerBSelectD;
-    WritableSignalConnection registerBLoadD;
+    private RegisterSignalSet registerASignalSet;
+    private RegisterSignalSet registerBSignalSet;
 
     //Bus Connections
-    BidirectionalConnection addressBusConnection;
-    BidirectionalConnection dataBusConnection;
+    private BidirectionalConnection addressBusConnection;
+    private BidirectionalConnection dataBusConnection;
 
     public HardwareRegisterBoard() {
         super("Hardware 2-bit Register Board", 2);
@@ -39,31 +31,40 @@ public class HardwareRegisterBoard extends SoftwareComponent implements Register
         mcp23017.setAllPinsToOutput();
 
         //Set up connections
-        registerASelectA = new WritableSignalConnectionWrapper(
+        var registerASelectA = new WritableSignalConnectionWrapper(
                 new WritableHardwareConnection("RegisterA_Select_A",
                         mcp23017, GPIOB_3));
-        registerALoadA = new WritableSignalConnectionWrapper(
+        var registerALoadA = new WritableSignalConnectionWrapper(
                 new WritableHardwareConnection("RegisterA_Load_A",
                         mcp23017, GPIOB_2));
-        registerASelectD = new WritableSignalConnectionWrapper(
+        var registerASelectD = new WritableSignalConnectionWrapper(
                 new WritableHardwareConnection("RegisterA_Select_D",
                         mcp23017, GPIOB_0));
-        registerALoadD = new WritableSignalConnectionWrapper(
+        var registerALoadD = new WritableSignalConnectionWrapper(
                 new WritableHardwareConnection("RegisterA_Load_D",
                         mcp23017, GPIOB_1));
 
-        registerBSelectA = new WritableSignalConnectionWrapper(
+        //Create wrapper
+        registerASignalSet = new RegisterSignalSet("Hardware Register A", registerASelectA, registerALoadA,
+                registerASelectD, registerALoadD);
+
+        //Set up signals for B
+        var registerBSelectA = new WritableSignalConnectionWrapper(
                 new WritableHardwareConnection("RegisterB_Select_A",
                         mcp23017, GPIOB_7));
-        registerBLoadA = new WritableSignalConnectionWrapper(
+        var registerBLoadA = new WritableSignalConnectionWrapper(
                 new WritableHardwareConnection("RegisterB_Load_A",
                         mcp23017, GPIOB_6));
-        registerBSelectD = new WritableSignalConnectionWrapper(
+        var registerBSelectD = new WritableSignalConnectionWrapper(
                 new WritableHardwareConnection("RegisterB_Select_D",
                         mcp23017, GPIOB_4));
-        registerBLoadD = new WritableSignalConnectionWrapper(
+        var registerBLoadD = new WritableSignalConnectionWrapper(
                 new WritableHardwareConnection("RegisterB_Load_D",
                         mcp23017, GPIOB_5));
+
+        //Create wrapper
+        registerBSignalSet = new RegisterSignalSet("Hardware Register B", registerBSelectA, registerBLoadA,
+                registerBSelectD, registerBLoadD);
 
         //Bus Connections
         addressBusConnection =
@@ -77,43 +78,13 @@ public class HardwareRegisterBoard extends SoftwareComponent implements Register
     }
 
     @Override
-    public WritableSignalConnection getRegisterASelectA() {
-        return registerASelectA;
+    public RegisterSignalSet getRegisterASignalSet() {
+        return registerASignalSet;
     }
 
     @Override
-    public WritableSignalConnection getRegisterALoadA() {
-        return registerALoadA;
-    }
-
-    @Override
-    public WritableSignalConnection getRegisterASelectD() {
-        return registerASelectD;
-    }
-
-    @Override
-    public WritableSignalConnection getRegisterALoadD() {
-        return registerALoadD;
-    }
-
-    @Override
-    public WritableSignalConnection getRegisterBSelectA() {
-        return registerBSelectA;
-    }
-
-    @Override
-    public WritableSignalConnection getRegisterBLoadA() {
-        return registerBLoadA;
-    }
-
-    @Override
-    public WritableSignalConnection getRegisterBSelectD() {
-        return registerBSelectD;
-    }
-
-    @Override
-    public WritableSignalConnection getRegisterBLoadD() {
-        return registerBLoadD;
+    public RegisterSignalSet getRegisterBSignalSet() {
+        return registerBSignalSet;
     }
 
     @Override

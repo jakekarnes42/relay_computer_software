@@ -52,11 +52,11 @@ public class TestUtil {
      * products that you would get from nesting for loops:
      *
      * <pre>{@code
-     * for (B b0 : axes.get(0)) {
-     *   for (B b1 : axes.get(1)) {
+     * for (B b0 : axes[0]) {
+     *   for (B b1 : axes[1]) {
      *     ...
-     *     List<B> tuple = List.of(b0, b1, ...);
-     *     // operate on tuple
+     *     Arguments args = Arguments.of(b0, b1, ...);
+     *     // Save Arguments and continue
      *   }
      * }
      * }</pre>
