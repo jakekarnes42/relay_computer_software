@@ -27,7 +27,7 @@ class RegisterBoardControllerTest {
             new FixedBitSet("11")
     );
 
-    private RegisterBoard board = new VirtualRegisterBoard();
+    private RegisterBoard board = new VirtualRegisterBoard(); //new HardwareRegisterBoard(); 
     private RegisterBoardController registerBoardController = new RegisterBoardController(board);
 
 
@@ -85,6 +85,19 @@ class RegisterBoardControllerTest {
         assertEquals(ZERO_VAL, cleared);
     }
 
+    @Test
+    void clearAll() {
+        //Clear the registers
+        registerBoardController.clearBothRegisters();
+
+        //Ensure they are cleared
+        FixedBitSet[] registerValues = registerBoardController.getBothRegisterValues();
+
+        //There should be no value after the clear
+        assertEquals(ZERO_VAL, registerValues[0]);
+        assertEquals(ZERO_VAL, registerValues[1]);
+    }
+
     @ParameterizedTest
     @MethodSource("getRegisterBusValueCombos")
     void testGetSetClearAll(RegisterName reg, BusName bus, FixedBitSet value) {
@@ -131,14 +144,21 @@ class RegisterBoardControllerTest {
             //The move should put the src value in dst, while leaving dst alone
 
             //Get the value from dst
-            FixedBitSet after = registerBoardController.getRegisterValue(dst, bus);
+            FixedBitSet dstAfter = registerBoardController.getRegisterValue(dst, bus);
 
             //We should be able to read back the value we set
-            assertEquals(value, after);
+            assertEquals(value, dstAfter);
 
             //The value should still be in src
-            after = registerBoardController.getRegisterValue(src, bus);
-            assertEquals(value, after);
+            FixedBitSet srcAfter = registerBoardController.getRegisterValue(src, bus);
+            assertEquals(value, srcAfter);
+
+            //If we clear the value in src, the value should still be in dst
+            registerBoardController.clearRegister(src);
+            FixedBitSet srcAfterClear = registerBoardController.getRegisterValue(src, bus);
+            assertEquals(new FixedBitSet(WIDTH), srcAfterClear);
+            FixedBitSet dstAfterClear = registerBoardController.getRegisterValue(dst, bus);
+            assertEquals(value, dstAfter);
 
             //Clear the registers
             registerBoardController.clearBothRegisters();

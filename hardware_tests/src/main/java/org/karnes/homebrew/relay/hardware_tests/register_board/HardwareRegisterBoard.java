@@ -1,5 +1,6 @@
 package org.karnes.homebrew.relay.hardware_tests.register_board;
 
+import org.karnes.homebrew.relay.common.bitset.FixedBitSet;
 import org.karnes.homebrew.relay.common.emulator.component.SoftwareComponent;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.BidirectionalConnection;
 import org.karnes.homebrew.relay.common.emulator.component.bus.connection.signal.WritableSignalConnectionWrapper;
@@ -69,11 +70,23 @@ public class HardwareRegisterBoard extends SoftwareComponent implements Register
         //Bus Connections
         addressBusConnection =
                 new BidirectionalHardwareConnection("Address Bus Connection",
-                        mcp23017, new MCP23017Pin[]{GPIOA_6, GPIOA_4},
-                        mcp23017, new MCP23017Pin[]{GPIOA_7, GPIOA_5});
+                        mcp23017, new MCP23017Pin[]{GPIOA_4, GPIOA_6},
+                        mcp23017, new MCP23017Pin[]{GPIOA_5, GPIOA_7});
         dataBusConnection = new BidirectionalHardwareConnection("Data Bus Connection",
-                mcp23017, new MCP23017Pin[]{GPIOA_2, GPIOA_0},
-                mcp23017, new MCP23017Pin[]{GPIOA_3, GPIOA_1});
+                mcp23017, new MCP23017Pin[]{GPIOA_0, GPIOA_2 },
+                mcp23017, new MCP23017Pin[]{GPIOA_1, GPIOA_3});
+
+        //Clear all outputs
+        registerASelectA.writeSignal(false);
+        registerALoadA.writeSignal(false);
+        registerASelectD.writeSignal(false);
+        registerALoadD.writeSignal(false);
+        registerBSelectA.writeSignal(false);
+        registerBLoadA.writeSignal(false);
+        registerBSelectD.writeSignal(false);
+        registerBLoadD.writeSignal(false);
+        addressBusConnection.writeValue(new FixedBitSet(getWidth()));
+        dataBusConnection.writeValue(new FixedBitSet(getWidth()));
 
     }
 
@@ -99,7 +112,11 @@ public class HardwareRegisterBoard extends SoftwareComponent implements Register
 
     @Override
     public int getDelay() {
-        //TODO: I don't know what this delay is yet;
-        return 25;
+        /*
+         * The minimum delay that seems to work reliably is 20ms between actions (micro-ops in the CPU).
+         *
+         * To preserve the relays, a delay of 200ms may work better in the long term
+         */
+        return 200;
     }
 }
