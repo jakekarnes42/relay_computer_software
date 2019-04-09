@@ -50,6 +50,6 @@ public class BidirectionalSignalConnectionWrapper extends SoftwareComponent impl
 
     @Override
     public boolean isConnected() {
-        return connection.isConnected() && connection.isConnected();
+        return connection.isConnected();
     }
 }

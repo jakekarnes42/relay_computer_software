@@ -282,6 +282,7 @@ public class RegisterBoardController {
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw new RuntimeException("Interrupted while paused", e);
             }
         }

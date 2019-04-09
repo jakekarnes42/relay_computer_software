@@ -3,6 +3,7 @@ package org.karnes.homebrew.relay.common.bitset;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * A binary data holder very similar to Java's {@link java.util.BitSet} with a couple of key differences:
@@ -144,7 +145,11 @@ public class FixedBitSet implements Serializable, Iterable<Boolean> {
 
             @Override
             public Boolean next() {
-                return bits[pos--];
+                if (hasNext()) {
+                    return bits[pos--];
+                } else {
+                    throw new NoSuchElementException();
+                }
             }
         };
     }
@@ -186,7 +191,7 @@ public class FixedBitSet implements Serializable, Iterable<Boolean> {
     public static FixedBitSet fromByte(byte value) {
         final boolean[] bits = new boolean[Byte.SIZE];
         for (int i = 0; i < Byte.SIZE; i++) {
-            bits[Byte.SIZE - 1 - i] = (1 << i & value) != 0;
+            bits[Byte.SIZE - 1 - i] = (1 << i & (value & 0xff)) != 0;
         }
         return new FixedBitSet(bits);
     }

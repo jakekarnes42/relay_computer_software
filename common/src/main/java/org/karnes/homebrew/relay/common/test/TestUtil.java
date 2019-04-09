@@ -103,7 +103,7 @@ public class TestUtil {
             int numItems = items.size();
 
             //Calculate how many combinations would be needed if we only consider the columns to the right.
-            int combosRight = Arrays.stream(axes).skip(i + 1).mapToInt(List::size).reduce(1, (x, size) -> x * size);
+            int combosRight = Arrays.stream(axes).skip(i + 1L).mapToInt(List::size).reduce(1, (x, size) -> x * size);
 
             //If we're in a linear array, get the starting index for this row.
             int rowStart = (axes.length - 1 - i) * rows;
