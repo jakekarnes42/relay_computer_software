@@ -135,7 +135,7 @@ public class FixedBitSet implements Serializable, Iterable<Boolean> {
      * @return an Iterator.
      */
     public Iterator<Boolean> iterator() {
-        return new Iterator<Boolean>() {
+        return new Iterator<>() {
             private int pos = bits.length - 1;
 
             @Override
@@ -301,8 +301,7 @@ public class FixedBitSet implements Serializable, Iterable<Boolean> {
     public String toString() {
         StringBuilder builder = new StringBuilder(bits.length + 2);
         builder.append('[');
-        for (int i = 0; i < bits.length; i++) {
-            boolean bitBoolean = bits[i];
+        for (boolean bitBoolean : bits) {
             if (bitBoolean) {
                 builder.append('1');
             } else {

@@ -70,7 +70,7 @@ public class DirectiveExecutor extends AsmHomeBrewBaseVisitor<Void> {
         strValue = strValue.substring(1, strValue.length() - 1);
 
         //Store each character in the string into memory
-        strValue.chars().mapToObj(c -> FixedBitSet.fromChar((char) c)).forEach(bs -> storeValueInMem(bs));
+        strValue.chars().mapToObj(c -> FixedBitSet.fromChar((char) c)).forEach(this::storeValueInMem);
 
         return null;
     }

@@ -92,29 +92,33 @@ public class ForthRelayComputer extends RelayComputer {
 
     //Updates our tracking information so the indentation depth is correct
     private void updateDebugTracking(String targetName) {
-        if (targetName.equals("EXIT")) {
-            indentation--;
-            if (inUP) {
-                //Extra indentation fix
+        switch (targetName) {
+            case "EXIT":
                 indentation--;
-                inUP = false;
-            }
-            if (inDOUSE) {
-                //Extra indentation fix
-                indentation--;
-                inDOUSE = false;
-            }
-        } else if (targetName.equals("UP")) {
-            inUP = true;
-        } else if (targetName.equals("DOUSE")) {
-            inDOUSE = true;
+                if (inUP) {
+                    //Extra indentation fix
+                    indentation--;
+                    inUP = false;
+                }
+                if (inDOUSE) {
+                    //Extra indentation fix
+                    indentation--;
+                    inDOUSE = false;
+                }
+                break;
+            case "UP":
+                inUP = true;
+                break;
+            case "DOUSE":
+                inDOUSE = true;
+                break;
         }
     }
 
     /**
      * Gets the value on the data stack at the {@code index} position from the top of stack (TOS). If index is 0, this will return the TOS.
      *
-     * @param index
+     * @param index The position from the top of stack
      * @return The value on the data stack at position X
      * @throws IllegalArgumentException if {@code index} is negative.
      */
@@ -131,7 +135,7 @@ public class ForthRelayComputer extends RelayComputer {
     /**
      * Gets the value on the return stack at the {@code index} position from the top of stack (TOS). If index is 0, this will return the TOS.
      *
-     * @param index
+     * @param index The position from the Top of the Stack
      * @return The value on the data stack at position X
      * @throws IllegalArgumentException if {@code index} is negative.
      */

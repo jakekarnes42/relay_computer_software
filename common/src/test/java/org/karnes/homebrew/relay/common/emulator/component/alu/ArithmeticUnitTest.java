@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArithmeticUnitTest {
     private static int DATA_WIDTH = 4;
 
-    private ArithmeticUnit arithmeticUnit;
     private WritableConnection auOperationConnection;
     private WritableConnection tmp1Connection;
     private WritableConnection tmp2Connection;
@@ -27,7 +26,7 @@ class ArithmeticUnitTest {
     @BeforeEach
     void setUp() {
         //Create a new AU
-        arithmeticUnit = new ArithmeticUnit(DATA_WIDTH);
+        ArithmeticUnit arithmeticUnit = new ArithmeticUnit(DATA_WIDTH);
 
         //Get connections for testing
         auOperationConnection = arithmeticUnit.getOpcodeConnection();

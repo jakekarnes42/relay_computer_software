@@ -3,7 +3,6 @@ package org.karnes.homebrew.relay.computer.assemblr.parse.macro;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Expands macros in assembly code.
@@ -23,7 +22,7 @@ public class MacroExpander {
 
         List<String> expandedTextLines = expandTextWithMacros(nonMacroLines, parsedMacros);
 
-        String expandedText = expandedTextLines.stream().collect(Collectors.joining());
+        String expandedText = String.join("", expandedTextLines);
 
         return expandedText;
     }

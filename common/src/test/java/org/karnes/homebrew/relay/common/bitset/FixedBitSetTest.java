@@ -1,5 +1,6 @@
 package org.karnes.homebrew.relay.common.bitset;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -166,7 +167,7 @@ public class FixedBitSetTest {
     public void testBytes() {
         byte zero = (byte) 0;
         FixedBitSet zeroBitSet = FixedBitSet.fromByte(zero);
-        zeroBitSet.forEach(val -> assertFalse(val));
+        zeroBitSet.forEach(Assertions::assertFalse);
         assertEquals(zero, zeroBitSet.toByte());
 
         byte one = (byte) 1;
@@ -179,7 +180,7 @@ public class FixedBitSetTest {
 
         byte minusOne = (byte) -1;
         FixedBitSet minusOneBitSet = FixedBitSet.fromByte(minusOne);
-        minusOneBitSet.forEach(val -> assertTrue(val));
+        minusOneBitSet.forEach(Assertions::assertTrue);
         assertEquals(minusOne, minusOneBitSet.toByte());
 
 
@@ -205,7 +206,7 @@ public class FixedBitSetTest {
     public void testMyShorts() {
         short zero = (short) 0;
         FixedBitSet zeroBitSet = FixedBitSet.fromShort(zero);
-        zeroBitSet.forEach(val -> assertFalse(val));
+        zeroBitSet.forEach(Assertions::assertFalse);
         assertEquals(zero, zeroBitSet.toShort());
 
         short one = (short) 1;
@@ -218,7 +219,7 @@ public class FixedBitSetTest {
 
         short minusOne = (short) -1;
         FixedBitSet minusOneBitSet = FixedBitSet.fromShort(minusOne);
-        minusOneBitSet.forEach(val -> assertTrue(val));
+        minusOneBitSet.forEach(Assertions::assertTrue);
         assertEquals(minusOne, minusOneBitSet.toShort());
 
 
@@ -244,7 +245,7 @@ public class FixedBitSetTest {
     public void testChars() {
         char zero = (char) 0;
         FixedBitSet zeroBitSet = FixedBitSet.fromChar(zero);
-        zeroBitSet.forEach(val -> assertFalse(val));
+        zeroBitSet.forEach(Assertions::assertFalse);
         assertEquals(zero, zeroBitSet.toChar());
 
         char one = (char) 1;
@@ -258,13 +259,13 @@ public class FixedBitSetTest {
 
         char min = Character.MIN_VALUE;
         FixedBitSet minBitSet = FixedBitSet.fromChar(min);
-        minBitSet.forEach(val -> assertFalse(val));
+        minBitSet.forEach(Assertions::assertFalse);
         assertEquals(min, minBitSet.toChar());
 
 
         char max = Character.MAX_VALUE;
         FixedBitSet maxBitSet = FixedBitSet.fromChar(max);
-        maxBitSet.forEach(val -> assertTrue(val));
+        maxBitSet.forEach(Assertions::assertTrue);
         assertEquals(max, maxBitSet.toChar());
     }
 

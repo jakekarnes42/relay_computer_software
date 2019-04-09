@@ -2,6 +2,7 @@ package org.karnes.homebrew.relay.computer.assemblr.parse.macro;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Data holder for a macro that has been analyzed into its components. This may hold data for a macro definition or a reference.
@@ -52,9 +53,9 @@ public class ParsedMacro {
 
         ParsedMacro that = (ParsedMacro) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (paramNames != null ? !paramNames.equals(that.paramNames) : that.paramNames != null) return false;
-        return lines != null ? lines.equals(that.lines) : that.lines == null;
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(paramNames, that.paramNames)) return false;
+        return Objects.equals(lines, that.lines);
     }
 
     @Override

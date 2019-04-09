@@ -27,7 +27,7 @@ public class TestUtil {
         Iterator<A> iteratorA = aStream.iterator();
         Iterator<B> iteratorB = bStream.iterator();
 
-        Iterator<Arguments> iterator = new Iterator<Arguments>() {
+        Iterator<Arguments> iterator = new Iterator<>() {
             @Override
             public boolean hasNext() {
                 return iteratorA.hasNext() && iteratorB.hasNext();
