@@ -26,14 +26,14 @@ class LogicUnitTest {
     @BeforeEach
     void setUp() {
         //Create a new AU
-        LogicUnit arithmeticUnit = new LogicUnit(DATA_WIDTH);
+        LogicUnit logicUnit = new LogicUnit(DATA_WIDTH);
 
         //Get connections for testing
-        luOperationConnection = arithmeticUnit.getOpcodeConnection();
-        tmp1Connection = arithmeticUnit.getTmp1BusConnection();
-        tmp2Connection = arithmeticUnit.getTmp2BusConnection();
-        outputConnection = arithmeticUnit.getOutputBusConnection();
-        ccConnection = arithmeticUnit.getCcBusConnection();
+        luOperationConnection = logicUnit.getOpcodeConnection();
+        tmp1Connection = logicUnit.getTmp1BusConnection();
+        tmp2Connection = logicUnit.getTmp2BusConnection();
+        outputConnection = logicUnit.getOutputBusConnection();
+        ccConnection = logicUnit.getCcBusConnection();
     }
 
 
